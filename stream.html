@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Java 8+ Stream API - Complete Syllabus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: "Segoe UI", system-ui, sans-serif;
+            background: #ffffff;
+            padding: 24px;
+            color: #111;
+        }
+
+        /* OUTER NOTEBOOK BOX */
+        .page {
+            border: 2px solid #2563eb;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 100%;
+        }
+
+        /* TITLE */
+        h1 {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1e40af;
+        }
+
+        /* PHASE STRIP */
+        .phase {
+            background: #bbf7d0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        /* MODULE HEADER */
+        .module {
+            background: #ecfeff;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* LISTS */
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 8px 0 16px 0;
+        }
+
+        li {
+            margin: 6px 0;
+        }
+
+        label {
+            cursor: pointer;
+        }
+
+        /* CHECKBOX STYLE (VERY LIGHT) */
+        input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* SUB ITEMS */
+        .sub {
+            margin-left: 24px;
+            margin-top: 6px;
+        }
+
+        .sub li {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="page">
+
+    <h1>Java 8+ Stream API - Complete Syllabus</h1>
+
+    <div class="phase">
+        PHASE 1 — Foundations (0 → Confident)
+    </div>
+
+    <!-- MODULE 0 -->
+    <div class="module">
+        MODULE 0 — Prerequisites Refresher (Must-Know)
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> External iteration vs Internal iteration</label></li>
+        <li><label><input type="checkbox"> for loop vs enhanced for loop</label></li>
+        <li><label><input type="checkbox"> Iterable vs Iterator</label></li>
+        <li><label><input type="checkbox"> Anonymous class vs Lambda (why change happened)</label></li>
+        <li><label><input type="checkbox"> Imperative vs Declarative programming mindset</label></li>
+    </ul>
+
+    <!-- MODULE 1 -->
+    <div class="module">
+        MODULE 1 — What Is a Stream? (Core Concept)
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> What exactly is a Stream</label></li>
+        <li><label><input type="checkbox"> Stream ≠ Collection (CRITICAL)</label></li>
+
+        <li>
+            <label><input type="checkbox"> Stream lifecycle</label>
+            <ul class="sub">
+                <li><input type="checkbox">Source</li>
+                <li><input type="checkbox">Operations</li>
+                <li><input type="checkbox">Consumption</li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> One-time use rule (why stream cannot be reused)</label></li>
+        <li><label><input type="checkbox"> Lazy evaluation (nothing runs immediately)</label></li>
+    </ul>
+
+    <!-- MODULE 2 -->
+    <div class="module">
+        MODULE 2 — Stream Creation (All Ways)
+    </div>
+    <ul>
+        <li>
+            <label><input type="checkbox"> From Collections</label>
+            <ul class="sub">
+                <li><input type="checkbox">collection.stream()</li>
+                <li><input type="checkbox">collection.parallelStream()</li>
+            </ul>
+        </li>
+
+        <li>
+            <label><input type="checkbox"> From Arrays</label>
+            <ul class="sub">
+                <li><input type="checkbox">Arrays.stream()</li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Using Stream.of()</label></li>
+        <li><label><input type="checkbox"> Empty Streams</label></li>
+
+        <li>
+            <label><input type="checkbox"> Infinite Streams (intro)</label>
+            <ul class="sub">
+                <li><input type="checkbox">Stream.generate()</li>
+                <li><input type="checkbox">Stream.iterate()</li>
+            </ul>
+        </li>
+
+        <li>
+            <label><input type="checkbox"> Primitive Streams</label>
+            <ul class="sub">
+                <li><input type="checkbox">IntStream</li>
+                <li><input type="checkbox">LongStream</li>
+                <li><input type="checkbox">DoubleStream</li>
+            </ul>
+        </li>
+    </ul>
+
+    <!-- MODULE 3 -->
+    <div class="module">
+        MODULE 3 — Lambda Expressions (Fuel of Streams)
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> What a lambda really is</label></li>
+        <li><label><input type="checkbox"> Lambda syntax breakdown</label></li>
+        <li><label><input type="checkbox"> Lambda vs Anonymous class</label></li>
+        <li><label><input type="checkbox"> Effectively final variables</label></li>
+        <li><label><input type="checkbox"> Method references (::)</label></li>
+    </ul>
+
+    <!-- MODULE 4 -->
+    <div class="module">
+        MODULE 4 — Stream Pipeline Anatomy
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> Stream pipeline structure</label></li>
+        <li><label><input type="checkbox"> Source → Intermediate → Terminal</label></li>
+        <li><label><input type="checkbox"> Why intermediate ops don’t execute immediately</label></li>
+        <li><label><input type="checkbox"> Execution order inside pipeline</label></li>
+        <li><label><input type="checkbox"> Why terminal operation is mandatory</label></li>
+    </ul>
+
+    <!-- MODULE 5 -->
+    <div class="module">
+        MODULE 5 — Intermediate Operations (Core Set)
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> filter()</label></li>
+        <li><label><input type="checkbox"> map()</label></li>
+        <li><label><input type="checkbox"> flatMap() (basic only)</label></li>
+        <li><label><input type="checkbox"> distinct()</label></li>
+        <li><label><input type="checkbox"> sorted()</label></li>
+        <li><label><input type="checkbox"> limit()</label></li>
+        <li><label><input type="checkbox"> skip()</label></li>
+        <li><label><input type="checkbox"> peek() (rules & warnings)</label></li>
+        <li><label><input type="checkbox"> Stateless operations (intro)</label></li>
+        <li><label><input type="checkbox"> Stateful operations (basic idea)</label></li>
+    </ul>
+
+    <!-- MODULE 6 -->
+    <div class="module">
+        MODULE 6 — Terminal Operations (Core Set)
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> forEach()</label></li>
+        <li><label><input type="checkbox"> toArray()</label></li>
+        <li><label><input type="checkbox"> count()</label></li>
+        <li><label><input type="checkbox"> min() / max()</label></li>
+        <li><label><input type="checkbox"> findFirst() / findAny()</label></li>
+        <li><label><input type="checkbox"> anyMatch()</label></li>
+        <li><label><input type="checkbox"> allMatch()</label></li>
+        <li><label><input type="checkbox"> noneMatch()</label></li>
+        <li><label><input type="checkbox"> collect() (basic usage only)</label></li>
+    </ul>
+
+    <!-- MODULE 7 -->
+    <div class="module">
+        MODULE 7 — reduce() (Thinking Like Streams)
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> What reduce() actually does</label></li>
+        <li><label><input type="checkbox"> Identity, Accumulator, Combiner</label></li>
+        <li><label><input type="checkbox"> Reduce with numbers</label></li>
+        <li><label><input type="checkbox"> Reduce with strings</label></li>
+        <li><label><input type="checkbox"> Reduce with objects</label></li>
+        <li><label><input type="checkbox"> Common beginner mistakes</label></li>
+    </ul>
+
+    <!-- MODULE 8 -->
+    <div class="module">
+        MODULE 8 — Streams with Custom Objects (Real Use)
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> Filtering POJOs</label></li>
+        <li><label><input type="checkbox"> Mapping object fields</label></li>
+        <li><label><input type="checkbox"> Sorting by properties</label></li>
+        <li><label><input type="checkbox"> Chaining multiple operations</label></li>
+        <li><label><input type="checkbox"> Null-safe stream handling</label></li>
+    </ul>
+
+    <!-- MODULE 9 -->
+    <div class="module">
+        MODULE 9 — Imperative vs Declarative Programming
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> Traditional loops approach</label></li>
+        <li><label><input type="checkbox"> Stream API approach</label></li>
+        <li><label><input type="checkbox"> Readability comparison</label></li>
+        <li><label><input type="checkbox"> Maintainability comparison</label></li>
+        <li><label><input type="checkbox"> When NOT to use streams</label></li>
+    </ul>
+
+    <!-- MODULE 10 -->
+    <div class="module">
+        MODULE 10 — Common Mistakes & Interview Traps
+    </div>
+    <ul>
+        <li><label><input type="checkbox"> Using streams for side effects</label></li>
+        <li><label><input type="checkbox"> Misusing peek()</label></li>
+        <li><label><input type="checkbox"> Modifying source collection</label></li>
+        <li><label><input type="checkbox"> Nested streams misuse</label></li>
+        <li><label><input type="checkbox"> Overusing streams where loops are better</label></li>
+    </ul>
+
+    <div class="phase">
+        PHASE 2 — Advanced Stream Operations
+    </div>
+
+    <div class="module">
+        MODULE 1 — flatMap() Deep Dive (Critical Module)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Why map() is not enough</label></li>
+        <li><label><input type="checkbox"> One-to-many transformation problem</label></li>
+        <li><label><input type="checkbox"> map() vs flatMap() (visual thinking)</label></li>
+        <li>
+            <label><input type="checkbox"> Flattening</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> List&lt;List&lt;T&gt;&gt;</label></li>
+                <li><label><input type="checkbox"> Arrays inside objects</label></li>
+                <li><label><input type="checkbox"> Optional streams</label></li>
+            </ul>
+        </li>
+        <li><label><input type="checkbox"> Real project use cases</label></li>
+        <li><label><input type="checkbox"> Common mistakes with flatMap()</label></li>
+    </ul>
+    <div class="module">
+        MODULE 2 — Short-Circuiting Operations
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> What “short-circuiting” means</label></li>
+
+        <li>
+            <label><input type="checkbox"> Operations that stop the stream early</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> findFirst()</label></li>
+                <li><label><input type="checkbox"> findAny()</label></li>
+                <li><label><input type="checkbox"> anyMatch()</label></li>
+                <li><label><input type="checkbox"> allMatch()</label></li>
+                <li><label><input type="checkbox"> noneMatch()</label></li>
+                <li><label><input type="checkbox"> limit()</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Execution order with short-circuiting</label></li>
+        <li><label><input type="checkbox"> Performance implications</label></li>
+        <li><label><input type="checkbox"> Interview-level trick questions</label></li>
+    </ul>
+    <div class="module">
+        MODULE 3 — Ordering & Encounter Order
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> What is encounter order</label></li>
+        <li><label><input type="checkbox"> Ordered vs unordered streams</label></li>
+
+        <li>
+            <label><input type="checkbox"> How source affects order</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> List</label></li>
+                <li><label><input type="checkbox"> Set</label></li>
+                <li><label><input type="checkbox"> Map</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> forEach() vs forEachOrdered()</label></li>
+        <li><label><input type="checkbox"> How sorted() really works</label></li>
+        <li><label><input type="checkbox"> Order behavior in parallel streams (intro)</label></li>
+    </ul>
+    <div class="module">
+        MODULE 4 — Stateful vs Stateless Operations (Deep)
+    </div>
+
+    <ul>
+        <li>
+            <label><input type="checkbox"> Stateless operations</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> map()</label></li>
+                <li><label><input type="checkbox"> filter()</label></li>
+            </ul>
+        </li>
+
+        <li>
+            <label><input type="checkbox"> Stateful operations</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> distinct()</label></li>
+                <li><label><input type="checkbox"> sorted()</label></li>
+                <li><label><input type="checkbox"> limit() (sometimes)</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Why stateful ops are dangerous</label></li>
+        <li><label><input type="checkbox"> Impact on performance</label></li>
+        <li><label><input type="checkbox"> Why stateful lambdas are a big NO</label></li>
+        <li><label><input type="checkbox"> Interview traps around state</label></li>
+    </ul>
+    <div class="module">
+        MODULE 5 — Infinite Streams (Advanced Usage)
+    </div>
+
+    <ul>
+        <li>
+            <label><input type="checkbox"> Revisiting infinite streams</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> Stream.generate()</label></li>
+                <li><label><input type="checkbox"> Stream.iterate()</label></li>
+            </ul>
+        </li>
+
+        <li>
+            <label><input type="checkbox"> Controlling infinite streams</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> limit()</label></li>
+                <li><label><input type="checkbox"> takeWhile()</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> When infinite streams are useful</label></li>
+        <li><label><input type="checkbox"> When they are a bad idea</label></li>
+        <li><label><input type="checkbox"> Memory & performance concerns</label></li>
+    </ul>
+    <div class="module">
+        MODULE 6 — Java 9+ Stream Enhancements
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> takeWhile()</label></li>
+        <li><label><input type="checkbox"> dropWhile()</label></li>
+        <li><label><input type="checkbox"> iterate(seed, predicate, next)</label></li>
+        <li><label><input type="checkbox"> Stream.ofNullable()</label></li>
+        <li><label><input type="checkbox"> Differences from Java 8 behavior</label></li>
+        <li><label><input type="checkbox"> Backward-compatibility considerations</label></li>
+    </ul>
+
+    <div class="phase">
+        PHASE 3 — Collectors & Real Business Logic
+    </div>
+
+    <div class="module">
+        MODULE 1 — Collectors Basics (Foundation)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> What is a Collector</label></li>
+        <li><label><input type="checkbox"> Why collect() exists</label></li>
+        <li><label><input type="checkbox"> Collector vs reduce()</label></li>
+
+        <li>
+            <label><input type="checkbox"> Common collectors</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> Collectors.toList()</label></li>
+                <li><label><input type="checkbox"> Collectors.toSet()</label></li>
+                <li><label><input type="checkbox"> Collectors.toCollection()</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Mutability vs immutability discussion</label></li>
+    </ul>
+
+    <div class="module">
+        MODULE 2 — toMap() (Most Error-Prone Collector)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Basic toMap(keyMapper, valueMapper)</label></li>
+        <li><label><input type="checkbox"> Handling duplicate keys (merge function)</label></li>
+        <li><label><input type="checkbox"> Custom map suppliers</label></li>
+        <li><label><input type="checkbox"> HashMap vs LinkedHashMap</label></li>
+
+        <li>
+            <label><input type="checkbox"> Common runtime exceptions</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> Duplicate key exception</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Real-world examples (ID → Object mapping)</label></li>
+    </ul>
+
+    <div class="module">
+        MODULE 3 — groupingBy() (Single Level)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Why grouping is needed in business logic</label></li>
+        <li><label><input type="checkbox"> groupingBy(classifier)</label></li>
+        <li><label><input type="checkbox"> groupingBy(classifier, collector)</label></li>
+
+        <li>
+            <label><input type="checkbox"> Grouping by</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> Field</label></li>
+                <li><label><input type="checkbox"> Derived value</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Difference between groupingBy and toMap</label></li>
+    </ul>
+    <div class="module">
+        MODULE 4 — groupingBy() (Multi-Level / Nested)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Nested grouping</label></li>
+        <li><label><input type="checkbox"> Map inside Map</label></li>
+        <li><label><input type="checkbox"> Grouping with downstream collectors</label></li>
+
+        <li>
+            <label><input type="checkbox"> Real examples</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> Dept → Role → Employees</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Performance & readability concerns</label></li>
+    </ul>
+    <div class="module">
+        MODULE 5 — partitioningBy()
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> What partitioning means</label></li>
+        <li><label><input type="checkbox"> partitioningBy(predicate)</label></li>
+
+        <li>
+            <label><input type="checkbox"> Difference between partitioningBy and groupingBy</label>
+        </li>
+
+        <li><label><input type="checkbox"> Boolean-based splitting</label></li>
+
+        <li>
+            <label><input type="checkbox"> Real use cases</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> Active / Inactive</label></li>
+                <li><label><input type="checkbox"> Pass / Fail</label></li>
+            </ul>
+        </li>
+    </ul>
+    <div class="module">
+        MODULE 6 — Downstream Collectors (Power Tools)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> What is a downstream collector</label></li>
+
+        <li>
+            <label><input type="checkbox"> Common downstream collectors</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> counting()</label></li>
+                <li><label><input type="checkbox"> mapping()</label></li>
+                <li><label><input type="checkbox"> summingInt()</label></li>
+                <li><label><input type="checkbox"> averagingDouble()</label></li>
+                <li><label><input type="checkbox"> maxBy() / minBy()</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Combining collectors</label></li>
+        <li><label><input type="checkbox"> Real reporting-style queries</label></li>
+    </ul>
+    <div class="module">
+        MODULE 7 — Custom Collectors (Advanced but Important)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Why custom collectors exist</label></li>
+
+        <li>
+            <label><input type="checkbox"> Collector components</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> Supplier</label></li>
+                <li><label><input type="checkbox"> Accumulator</label></li>
+                <li><label><input type="checkbox"> Combiner</label></li>
+                <li><label><input type="checkbox"> Finisher</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> When NOT to write a custom collector</label></li>
+        <li><label><input type="checkbox"> Simple custom collector examples</label></li>
+        <li><label><input type="checkbox"> Parallel stream compatibility</label></li>
+    </ul>
+
+    <div class="phase">
+        PHASE 4 — Performance, Internals & Parallel Streams
+    </div>
+
+
+    <div class="module">
+        MODULE 1 — Stream Internals (How Streams Really Work)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Internal iteration model</label></li>
+        <li><label><input type="checkbox"> Pull vs Push model</label></li>
+        <li><label><input type="checkbox"> How streams process elements one by one</label></li>
+        <li><label><input type="checkbox"> Pipeline fusion (why multiple ops don’t mean multiple loops)</label></li>
+        <li><label><input type="checkbox"> Why streams are not data structures</label></li>
+        <li><label><input type="checkbox"> Role of Spliterator</label></li>
+    </ul>
+
+    <div class="module">
+        MODULE 2 — Lazy Evaluation (Deep Dive)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Why streams are lazy</label></li>
+        <li><label><input type="checkbox"> When intermediate operations execute</label></li>
+        <li><label><input type="checkbox"> Element-by-element processing</label></li>
+
+        <li>
+            <label><input type="checkbox"> Effect of operation order</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> filter → map</label></li>
+                <li><label><input type="checkbox"> map → filter</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Short-circuiting + laziness</label></li>
+        <li><label><input type="checkbox"> Debugging lazy pipelines</label></li>
+    </ul>
+    <div class="module">
+        MODULE 3 — Boxing vs Primitive Streams
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> What boxing / unboxing really costs</label></li>
+        <li><label><input type="checkbox"> Stream&lt;Integer&gt; vs IntStream</label></li>
+        <li><label><input type="checkbox"> Performance differences</label></li>
+
+        <li>
+            <label><input type="checkbox"> Conversion methods</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> mapToInt()</label></li>
+                <li><label><input type="checkbox"> boxed()</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> When primitive streams matter</label></li>
+        <li><label><input type="checkbox"> When they don’t</label></li>
+    </ul>
+    <div class="module">
+        MODULE 4 — Parallel Streams (Truth & Myths)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> What parallel streams are</label></li>
+        <li><label><input type="checkbox"> ForkJoinPool basics</label></li>
+        <li><label><input type="checkbox"> How data is split</label></li>
+        <li><label><input type="checkbox"> When parallel streams help</label></li>
+        <li><label><input type="checkbox"> When they make things worse</label></li>
+        <li><label><input type="checkbox"> Thread-safety rules</label></li>
+        <li><label><input type="checkbox"> forEach() vs forEachOrdered()</label></li>
+    </ul>
+    <div class="module">
+        MODULE 5 — Performance Anti-Patterns & Best Practices
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Using streams in hot loops</label></li>
+        <li><label><input type="checkbox"> Heavy lambdas</label></li>
+        <li><label><input type="checkbox"> Stateful lambdas</label></li>
+        <li><label><input type="checkbox"> Excessive boxing</label></li>
+        <li><label><input type="checkbox"> Misusing parallel streams</label></li>
+        <li><label><input type="checkbox"> Streams vs traditional loops (real comparison)</label></li>
+
+        <li>
+            <label><input type="checkbox"> When to choose</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> for-loop</label></li>
+                <li><label><input type="checkbox"> stream</label></li>
+                <li><label><input type="checkbox"> parallel stream</label></li>
+            </ul>
+        </li>
+    </ul>
+    <div class="phase">
+        PHASE 5 — Interview Mastery & Real-World Usage
+    </div>
+    <div class="module">
+        MODULE 1 — Stream Problem-Solving Patterns
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Filter → Map → Collect</label></li>
+        <li><label><input type="checkbox"> Group → Aggregate → Transform</label></li>
+        <li><label><input type="checkbox"> Flatten → Filter → Reduce</label></li>
+        <li><label><input type="checkbox"> Match → Short-circuit</label></li>
+        <li><label><input type="checkbox"> Sort → Limit → Extract</label></li>
+
+        <li>
+            <label><input type="checkbox"> Apply patterns to</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> Arrays</label></li>
+                <li><label><input type="checkbox"> Lists</label></li>
+                <li><label><input type="checkbox"> Maps</label></li>
+                <li><label><input type="checkbox"> Nested objects</label></li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="module">
+        MODULE 2 — Loop → Stream Refactoring (Real Code)
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Identifying loop patterns</label></li>
+        <li><label><input type="checkbox"> Refactoring nested loops</label></li>
+        <li><label><input type="checkbox"> Replacing flags & counters</label></li>
+        <li><label><input type="checkbox"> When refactoring is a bad idea</label></li>
+        <li><label><input type="checkbox"> Readability vs cleverness</label></li>
+    </ul>
+    <div class="module">
+        MODULE 3 — Tricky Interview Questions
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Stream reuse errors</label></li>
+        <li><label><input type="checkbox"> Order-dependent behavior</label></li>
+        <li><label><input type="checkbox"> findFirst() vs findAny()</label></li>
+        <li><label><input type="checkbox"> forEach() vs forEachOrdered()</label></li>
+        <li><label><input type="checkbox"> map() vs flatMap()</label></li>
+        <li><label><input type="checkbox"> reduce() vs collect()</label></li>
+        <li><label><input type="checkbox"> Parallel stream pitfalls</label></li>
+    </ul>
+    <div class="module">
+        MODULE 4 — Streams in Spring Boot Services
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Streams in service layer</label></li>
+        <li><label><input type="checkbox"> Entity → DTO mapping</label></li>
+
+        <li>
+            <label><input type="checkbox"> Stream usage with</label>
+            <ul class="sub">
+                <li><label><input type="checkbox"> JPA results</label></li>
+                <li><label><input type="checkbox"> Repositories</label></li>
+            </ul>
+        </li>
+
+        <li><label><input type="checkbox"> Transaction & lazy-loading considerations</label></li>
+        <li><label><input type="checkbox"> When streams hide performance issues</label></li>
+    </ul>
+    <div class="module">
+        MODULE 5 — Debugging, Testing & Maintainability
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Debugging stream pipelines</label></li>
+        <li><label><input type="checkbox"> Using peek() responsibly</label></li>
+        <li><label><input type="checkbox"> Unit testing stream logic</label></li>
+        <li><label><input type="checkbox"> Breaking complex streams for readability</label></li>
+        <li><label><input type="checkbox"> Code review best practices</label></li>
+    </ul>
+    <div class="module">
+        MODULE 6 — Real-World Mini Scenarios
+    </div>
+
+    <ul>
+        <li><label><input type="checkbox"> Reporting logic (grouping + aggregation)</label></li>
+        <li><label><input type="checkbox"> Filtering & transformation pipelines</label></li>
+        <li><label><input type="checkbox"> Data cleanup & validation</label></li>
+        <li><label><input type="checkbox"> API response shaping</label></li>
+        <li><label><input type="checkbox"> Performance-sensitive scenarios</label></li>
+    </ul>
+
+    <footer style="margin-top:40px; padding-top:16px; border-top:1px solid #ddd; font-size:0.9rem; color:#444;">
+        ✅ Tick what you complete. Consistency beats talent.
+    </footer>
+</div>
+<script>
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+
+    checkboxes.forEach((cb, index) => {
+        const key = "java_stream_syllabus_" + index;
+
+        // restore saved state
+        cb.checked = localStorage.getItem(key) === "true";
+
+        // save state on change
+        cb.addEventListener("change", () => {
+            localStorage.setItem(key, cb.checked);
+        });
+    });
+</script>
+
+
+</body>
+</html>
