@@ -60,6 +60,27 @@
             margin-right: 8px;
             vertical-align: middle;
         }
+
+        .checklist li {
+            margin: 6px 0;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            border-left: 4px solid #38bdf8;
+            padding: 10px 12px;
+            margin: 12px 0;
+            font-size: 0.95rem;
+        }
+
+        .warning-box {
+            background: #fff7ed;
+            border-left: 4px solid #fb923c;
+            padding: 10px 12px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
     </style>
 </head>
 
@@ -67,11 +88,8 @@
 <div class="page">
 
     <h1>Problem-Solving Techniques — Complete Syllabus</h1>
-
-    <div class="phase">🟢 LEVEL 1 — Absolute Core (Non-Negotiable)</div>
-
+    <div class="phase">🟢 LEVEL 1 — Absolute Core (Non-Negotiable) · DAYS 1–15</div>
     <div class="module">MODULE 1 — Core Scanning & Control</div>
-
     <ul>
         <li><label><input type="checkbox"> Linear Scan</label></li>
         <li><label><input type="checkbox"> Reverse Traversal</label></li>
@@ -82,7 +100,16 @@
         <li><label><input type="checkbox"> Single Counter</label></li>
         <li><label><input type="checkbox"> Multiple Counters</label></li>
     </ul>
-    <div class="phase">🟢 LEVEL 2 — Pointer & Window Mastery</div>
+    <div class="info-box">
+        <strong>🕒 Daily Routine</strong>
+        <p>30 min concept revision · 90 min problem solving · 15 min explain aloud</p>
+    </div>
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>50–60 problems · No unnecessary nested loops · Instant scan logic</p></div>
+    <div class="warning-box">📌 If LEVEL 1 isn’t automatic, <strong>do NOT move on</strong></div>
+
+    <div class="phase">🟢 LEVEL 2 — Pointer & Window Mastery · Days 16–30</div>
 
     <div class="module">MODULE 2 — Pointers & Sliding Window</div>
 
@@ -95,7 +122,15 @@
         <li><label><input type="checkbox"> Window Expansion & Shrinking</label></li>
     </ul>
 
-    <div class="phase">🟢 LEVEL 3 — Hashing & Lookup Thinking</div>
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>40–50 problems · Instant pointer & window recognition · O(n²) → O(n)</p>
+    </div>
+    <div class="warning-box">
+        📌 Most array & string interview problems live here.
+    </div>
+
+    <div class="phase">🟢 LEVEL 3 — Hashing & Lookup Thinking · Days 31–40</div>
 
     <div class="module">MODULE 3 — Hash-Based Techniques</div>
 
@@ -108,8 +143,16 @@
         <li><label><input type="checkbox"> Complement Technique</label></li>
         <li><label><input type="checkbox"> Hash + Window Combination</label></li>
     </ul>
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>35–40 problems · Confident HashMap logic · One-pass thinking</p>
+    </div>
 
-    <div class="phase">🟢 LEVEL 4 — Prefix, Accumulation & Range Logic</div>
+    <div class="warning-box">
+        📌 This level removes fear of “one pass” interview questions.
+    </div>
+
+    <div class="phase">🟢 LEVEL 4 — Prefix, Accumulation & Range Logic · Days 41–50</div>
 
     <div class="module">MODULE 4 — Prefix & Range Techniques</div>
 
@@ -122,7 +165,16 @@
         <li><label><input type="checkbox"> Range Query Logic</label></li>
     </ul>
 
-    <div class="phase">🟢 LEVEL 5 — Sorting-Driven Problem Solving</div>
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>25–30 problems · Spot repeated calculations instantly · Confident time-complexity explanations</p>
+    </div>
+
+    <div class="warning-box">
+        📌 This level kills repeated work and over-looping.
+    </div>
+
+    <div class="phase">🟢 LEVEL 5 — Sorting-Driven Problem Solving · Days 51–58</div>
 
     <div class="module">MODULE 5 — Sorting-Based Techniques</div>
 
@@ -134,7 +186,16 @@
         <li><label><input type="checkbox"> Interval Merging</label></li>
         <li><label><input type="checkbox"> Greedy After Sorting</label></li>
     </ul>
-    <div class="phase">🟢 LEVEL 6 — Mathematical & Logical Optimization</div>
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>25–30 problems · “Sort first?” instinct · Clean O(n log n) reasoning</p>
+    </div>
+
+    <div class="warning-box">
+        📌 Many “hard” problems collapse once sorted.
+    </div>
+
+    <div class="phase">🟢 LEVEL 6 — Mathematical & Logical Optimization · Days 59–65</div>
 
     <div class="module">MODULE 6 — Math & Logic Techniques</div>
 
@@ -146,7 +207,16 @@
         <li><label><input type="checkbox"> Constraint-Driven Optimization</label></li>
         <li><label><input type="checkbox"> Invariant Logic</label></li>
     </ul>
-    <div class="phase">🟢 LEVEL 7 — Recursion & Backtracking (Controlled Use)</div>
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>15–20 problems · Cleaner, shorter solutions · Strong reasoning explanations</p>
+    </div>
+
+    <div class="warning-box">
+        📌 This level separates “works” from “well reasoned”.
+    </div>
+
+    <div class="phase">🟢 LEVEL 7 — Recursion & Backtracking (Controlled Use) · Days 66–72</div>
 
     <div class="module">MODULE 7 — Recursion & Backtracking Techniques</div>
 
@@ -157,7 +227,16 @@
         <li><label><input type="checkbox"> Backtracking Templates</label></li>
         <li><label><input type="checkbox"> Subproblem Decomposition</label></li>
     </ul>
-    <div class="phase">🟢 LEVEL 8 — Dynamic Programming (Professional Scope)</div>
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>15–20 problems · Clear recursion explanations · Not afraid, not addicted</p>
+    </div>
+
+    <div class="warning-box">
+        📌 Recursion is a tool, not a lifestyle.
+    </div>
+
+    <div class="phase">🟢 LEVEL 8 — Dynamic Programming (Professional Scope) · Days 73–82</div>
 
     <div class="module">MODULE 8 — Dynamic Programming Techniques</div>
 
@@ -170,7 +249,17 @@
         <li><label><input type="checkbox"> 2D DP Patterns</label></li>
         <li><label><input type="checkbox"> State Transition Thinking</label></li>
     </ul>
-    <div class="phase">🟢 LEVEL 9 — Graph & Advanced Patterns (Selective)</div>
+
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>20–25 DP problems · Define DP state in words · No brute-force recursion</p>
+    </div>
+
+    <div class="warning-box">
+        📌 If DP feels hard, slow down — that’s normal.
+    </div>
+
+    <div class="phase">🟢 LEVEL 9 — Graph & Advanced Patterns (Selective) · Days 83–87</div>
 
     <div class="module">MODULE 9 — Graph & Advanced Techniques</div>
 
@@ -180,8 +269,16 @@
         <li><label><input type="checkbox"> Union-Find Logic</label></li>
         <li><label><input type="checkbox"> Shortest Path Intuition</label></li>
     </ul>
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>10–15 problems · Focus on “when to use”, not memorization</p>
+    </div>
 
-    <div class="phase">🟢 LEVEL 10 — Interview & Real-World Mastery</div>
+    <div class="warning-box">
+        📌 Graphs reward understanding, not pattern hoarding.
+    </div>
+
+    <div class="phase">🟢 LEVEL 10 — Interview & Real-World Mastery · Days 88–90</div>
 
     <div class="module">MODULE 10 — Interview & Production Skills</div>
 
@@ -192,7 +289,14 @@
         <li><label><input type="checkbox"> Clean Code Under Pressure</label></li>
         <li><label><input type="checkbox"> Verbal Problem Decomposition</label></li>
     </ul>
+    <div class="info-box">
+        <strong>🎯 Target</strong>
+        <p>Mock interviews · Whiteboard or paper practice · Confidence over perfection</p>
+    </div>
 
+    <div class="warning-box">
+        📌 Interviews reward clarity and calm more than speed.
+    </div>
 
     <footer style="margin-top:40px; padding-top:16px; border-top:1px solid #ddd; font-size:0.9rem; color:#444;">
         ✅ Tick what you complete. Consistency beats talent.
