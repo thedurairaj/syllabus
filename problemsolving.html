@@ -1,321 +1,615 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Problem-Solving Techniques - Complete Syllabus</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem-Solving Techniques — Complete Syllabus</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f8fa;
+  --white: #ffffff;
+  --border: #e4e7ed;
+  --border2: #d0d5de;
+  --text: #1a1d27;
+  --text2: #5a6175;
+  --text3: #9aa0b4;
+  --green: #16a34a;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+  --accent: #2563eb;
+  --accent-bg: #eff6ff;
+  --amber: #d97706;
+  --amber-bg: #fffbeb;
+  --red: #dc2626;
+  --purple: #7c3aed;
+  --teal: #0891b2;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+}
 
-    <style>
-        body {
-            font-family: "Segoe UI", system-ui, sans-serif;
-            background: #ffffff;
-            padding: 24px;
-            color: #111;
-        }
+/* HEADER */
+.header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 36px 40px 28px;
+}
+.header-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
+.badge-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.badge {
+  font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase;
+  padding:3px 10px; border-radius:20px;
+  border:1px solid var(--green-border); background:var(--green-bg); color:var(--green);
+}
+h1 { font-size:clamp(22px,4vw,34px); font-weight:600; color:var(--text); letter-spacing:-0.3px; margin-bottom:6px; }
+.subtitle { font-size:14px; color:var(--text2); font-weight:300; margin-bottom:24px; }
 
-        .page {
-            border: 2px solid #2563eb;
-            border-radius: 16px;
-            padding: 24px;
-            max-width: 100%;
-        }
+.stats-row { display:flex; gap:24px; flex-wrap:wrap; }
+.stat { text-align:center; }
+.stat-n { font-family:'JetBrains Mono',monospace; font-size:24px; font-weight:600; color:var(--text); }
+.stat-l { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:.8px; margin-top:1px; }
 
-        h1 {
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #1e40af;
-        }
+/* STICKY PROGRESS */
+.sticky-bar {
+  position:sticky; top:0; z-index:50;
+  background:rgba(255,255,255,0.95);
+  border-bottom:1px solid var(--border);
+  padding:12px 40px;
+  backdrop-filter:blur(8px);
+  display:flex; align-items:center; gap:16px;
+}
+.sticky-label { font-size:12px; color:var(--text3); font-family:'JetBrains Mono',monospace; white-space:nowrap; }
+.track { flex:1; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.fill { height:100%; background:linear-gradient(90deg,#16a34a,#2563eb); border-radius:3px; transition:width .4s; width:0; }
+.pct { font-size:12px; font-weight:600; color:var(--accent); font-family:'JetBrains Mono',monospace; white-space:nowrap; min-width:48px; text-align:right; }
 
-        .phase {
-            background: #bbf7d0;
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
+/* MAIN */
+.container { max-width:820px; margin:0 auto; padding:36px 24px; }
 
-        .module {
-            background: #ecfeff;
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+/* LEVEL CARD */
+.level-card {
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:24px;
+  overflow:hidden;
+}
 
-        ul {
-            list-style: none;
-            padding-left: 0;
-            margin: 8px 0 16px 0;
-        }
+.level-head {
+  display:flex; align-items:flex-start; gap:14px;
+  padding:20px 22px;
+  cursor:pointer;
+  user-select:none;
+  transition:background .15s;
+}
+.level-head:hover { background:var(--bg); }
 
-        li {
-            margin: 6px 0;
-        }
+.level-num {
+  flex-shrink:0;
+  width:36px; height:36px;
+  border-radius:9px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px; font-weight:600;
+  display:flex; align-items:center; justify-content:center;
+}
+.level-meta { flex:1; min-width:0; }
+.level-title { font-size:15px; font-weight:600; color:var(--text); }
+.level-subtitle { font-size:12px; color:var(--text2); margin-top:2px; }
+.level-days {
+  flex-shrink:0;
+  font-size:11px;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--text3);
+  background:var(--bg);
+  border:1px solid var(--border);
+  padding:4px 10px; border-radius:6px;
+  white-space:nowrap; align-self:center;
+}
+.level-arrow {
+  flex-shrink:0;
+  color:var(--text3);
+  font-size:11px;
+  align-self:center;
+  transition:transform .2s;
+  margin-left:4px;
+}
+.level-card.open .level-arrow { transform:rotate(90deg); }
 
-        input[type="checkbox"] {
-            width: 14px;
-            height: 14px;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
+/* BODY */
+.level-body { display:none; border-top:1px solid var(--border); }
+.level-card.open .level-body { display:block; }
 
-        .checklist li {
-            margin: 6px 0;
-        }
+/* MODULE */
+.module { padding:20px 22px; border-bottom:1px solid var(--border); }
+.module:last-child { border-bottom:none; }
+.module-name {
+  font-size:12px; font-weight:600; text-transform:uppercase;
+  letter-spacing:1px; color:var(--text2);
+  margin-bottom:14px;
+  display:flex; align-items:center; gap:8px;
+}
+.module-name::before { content:''; display:block; width:16px; height:2px; border-radius:1px; background:var(--accent); }
 
-        .info-box {
-            background: #f8fafc;
-            border-left: 4px solid #38bdf8;
-            padding: 10px 12px;
-            margin: 12px 0;
-            font-size: 0.95rem;
-        }
+/* CHECKLIST */
+.check-item {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:8px 0;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+  transition:opacity .15s;
+}
+.check-item:last-of-type { border-bottom:none; }
+.check-item:hover { opacity:.82; }
 
-        .warning-box {
-            background: #fff7ed;
-            border-left: 4px solid #fb923c;
-            padding: 10px 12px;
-            margin-top: 12px;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-    </style>
+.box {
+  flex-shrink:0;
+  width:20px; height:20px;
+  border:1.5px solid var(--border2);
+  border-radius:5px;
+  margin-top:2px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .18s;
+  position:relative;
+}
+.check-item.done .box {
+  background:var(--green);
+  border-color:var(--green);
+}
+.box::after {
+  content:'';
+  display:none;
+  width:5px; height:9px;
+  border:2px solid #fff;
+  border-top:none; border-left:none;
+  transform:rotate(45deg) translate(-1px,-1px);
+}
+.check-item.done .box::after { display:block; }
+
+.item-text {
+  font-size:14px; font-weight:400; color:var(--text);
+  transition:color .18s;
+  padding-top:1px;
+}
+.check-item.done .item-text { color:var(--text3); text-decoration:line-through; }
+
+/* INFO BOXES */
+.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:20px 22px; background:var(--bg); }
+@media(max-width:520px){ .info-grid { grid-template-columns:1fr; } }
+.info-box {
+  border-radius:10px; padding:14px 16px;
+  border:1px solid;
+}
+.info-box.routine { background:#fffbeb; border-color:#fde68a; }
+.info-box.target { background:#eff6ff; border-color:#bfdbfe; }
+.info-box-label {
+  font-size:10px; font-weight:600; text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:8px;
+  display:flex; align-items:center; gap:6px;
+}
+.info-box.routine .info-box-label { color:var(--amber); }
+.info-box.target .info-box-label { color:var(--accent); }
+.info-box-text { font-size:13px; color:var(--text2); line-height:1.6; font-weight:300; }
+.info-box-text b { font-weight:600; color:var(--text); }
+
+/* WARNING BANNER */
+.warn-banner {
+  margin:0 22px 20px;
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  border-radius:8px;
+  padding:10px 14px;
+  font-size:12px;
+  color:#9a3412;
+  display:flex; align-items:center; gap:8px;
+}
+
+/* PHASE DONE BANNER */
+.done-banner {
+  margin:0 22px 20px;
+  background:var(--green-bg);
+  border:1px solid var(--green-border);
+  border-radius:8px;
+  padding:10px 14px;
+  font-size:12px;
+  color:var(--green);
+  display:flex; align-items:center; gap:8px;
+  display:none;
+}
+
+/* PROGRESS PER LEVEL */
+.level-progress {
+  display:flex; align-items:center; gap:8px; align-self:center;
+}
+.level-mini-track { width:60px; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+.level-mini-fill { height:100%; background:var(--green); border-radius:2px; transition:width .3s; }
+.level-mini-text { font-size:11px; font-family:'JetBrains Mono',monospace; color:var(--text3); min-width:28px; }
+
+/* COLORS */
+.c1 .level-num { background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; }
+.c2 .level-num { background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; }
+.c3 .level-num { background:#faf5ff; color:#7c3aed; border:1px solid #ddd6fe; }
+.c4 .level-num { background:#fff7ed; color:#d97706; border:1px solid #fed7aa; }
+.c5 .level-num { background:#f0fdfa; color:#0891b2; border:1px solid #99f6e4; }
+.c6 .level-num { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }
+.c7 .level-num { background:#fdf4ff; color:#a21caf; border:1px solid #f0abfc; }
+.c8 .level-num { background:#f0fdf4; color:#15803d; border:1px solid #86efac; }
+.c9 .level-num { background:#eff6ff; color:#1d4ed8; border:1px solid #93c5fd; }
+.c10 .level-num { background:#fff7ed; color:#b45309; border:1px solid #fcd34d; }
+
+.reset-btn {
+  background:none; border:1px solid var(--border2);
+  color:var(--text3); padding:7px 14px;
+  border-radius:7px; font-size:12px;
+  font-family:'DM Sans',sans-serif; cursor:pointer;
+  transition:all .15s;
+}
+.reset-btn:hover { border-color:var(--red); color:var(--red); }
+
+footer {
+  text-align:center; padding:40px;
+  color:var(--text3); font-size:12px;
+  font-family:'JetBrains Mono',monospace;
+  border-top:1px solid var(--border);
+}
+@media(max-width:600px){
+  .header { padding:28px 20px 22px; }
+  .sticky-bar { padding:10px 20px; }
+  .container { padding:24px 14px; }
+  .level-head { padding:16px 16px; }
+  .level-days { display:none; }
+}
+</style>
 </head>
-
 <body>
-<div class="page">
 
-    <h1>Problem-Solving Techniques — Complete Syllabus</h1>
-    <div class="phase">🟢 LEVEL 1 — Absolute Core (Non-Negotiable) · DAYS 1–15</div>
-    <div class="module">MODULE 1 — Core Scanning & Control</div>
-    <ul>
-        <li><label><input type="checkbox"> Linear Scan</label></li>
-        <li><label><input type="checkbox"> Reverse Traversal</label></li>
-        <li><label><input type="checkbox"> Early Break / Continue</label></li>
-        <li><label><input type="checkbox"> Flag / Boolean Logic</label></li>
-        <li><label><input type="checkbox"> Single Counter</label></li>
-        <li><label><input type="checkbox"> Multiple Counters</label></li>
-        <li><label><input type="checkbox"> Track Min / Max</label></li>
-        <li><label><input type="checkbox"> Compare Current vs Previous</label></li>
-        <li><label><input type="checkbox"> Index Tracking</label></li>
-        <li><label><input type="checkbox"> Prefix / Running Result</label></li>
-    </ul>
-    <div class="info-box">
-        <strong>🕒 Daily Routine</strong>
-        <p>30 min concept revision · 90 min problem solving · 15 min explain aloud</p>
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="badge-row">
+        <span class="badge">🟢 10 Levels</span>
+        <span class="badge">90 Days</span>
+        <span class="badge">Java Developer</span>
+      </div>
+      <h1>Problem-Solving Techniques</h1>
+      <p class="subtitle">Complete Syllabus — Absolute Core to Interview Mastery</p>
     </div>
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>50–60 problems · No unnecessary nested loops · Instant scan logic</p></div>
-    <div class="warning-box">📌 If LEVEL 1 isn’t automatic, <strong>do NOT move on</strong></div>
-
-    <div class="phase">🟢 LEVEL 2 — Pointer & Window Mastery · Days 16–30</div>
-
-    <div class="module">MODULE 2 — Pointers & Sliding Window</div>
-
-    <ul>
-        <li><label><input type="checkbox"> Two Counters (Left & Right)</label></li>
-        <li><label><input type="checkbox"> Two Pointers (Opposite Direction)</label></li>
-        <li><label><input type="checkbox"> Fast & Slow Pointers</label></li>
-        <li><label><input type="checkbox"> Fixed Sliding Window</label></li>
-        <li><label><input type="checkbox"> Variable Sliding Window</label></li>
-        <li><label><input type="checkbox"> Window Expansion & Shrinking</label></li>
-    </ul>
-
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>40–50 problems · Instant pointer & window recognition · O(n²) → O(n)</p>
-    </div>
-    <div class="warning-box">
-        📌 Most array & string interview problems live here.
-    </div>
-
-    <div class="phase">🟢 LEVEL 3 — Hashing & Lookup Thinking · Days 31–40</div>
-
-    <div class="module">MODULE 3 — Hash-Based Techniques</div>
-
-    <ul>
-        <li><label><input type="checkbox"> Frequency Map</label></li>
-        <li><label><input type="checkbox"> Presence Checking</label></li>
-        <li><label><input type="checkbox"> First / Last Occurrence</label></li>
-        <li><label><input type="checkbox"> Duplicate Detection</label></li>
-        <li><label><input type="checkbox"> Index Mapping</label></li>
-        <li><label><input type="checkbox"> Complement Technique</label></li>
-        <li><label><input type="checkbox"> Hash + Window Combination</label></li>
-    </ul>
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>35–40 problems · Confident HashMap logic · One-pass thinking</p>
-    </div>
-
-    <div class="warning-box">
-        📌 This level removes fear of “one pass” interview questions.
-    </div>
-
-    <div class="phase">🟢 LEVEL 4 — Prefix, Accumulation & Range Logic · Days 41–50</div>
-
-    <div class="module">MODULE 4 — Prefix & Range Techniques</div>
-
-    <ul>
-        <li><label><input type="checkbox"> Running Sum</label></li>
-        <li><label><input type="checkbox"> Prefix Sum</label></li>
-        <li><label><input type="checkbox"> Suffix Sum</label></li>
-        <li><label><input type="checkbox"> Difference Array</label></li>
-        <li><label><input type="checkbox"> Carry Forward Technique</label></li>
-        <li><label><input type="checkbox"> Range Query Logic</label></li>
-    </ul>
-
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>25–30 problems · Spot repeated calculations instantly · Confident time-complexity explanations</p>
-    </div>
-
-    <div class="warning-box">
-        📌 This level kills repeated work and over-looping.
-    </div>
-
-    <div class="phase">🟢 LEVEL 5 — Sorting-Driven Problem Solving · Days 51–58</div>
-
-    <div class="module">MODULE 5 — Sorting-Based Techniques</div>
-
-    <ul>
-        <li><label><input type="checkbox"> Sort + Linear Scan</label></li>
-        <li><label><input type="checkbox"> Sort + Two Pointers</label></li>
-        <li><label><input type="checkbox"> Adjacent Comparison</label></li>
-        <li><label><input type="checkbox"> Grouping After Sort</label></li>
-        <li><label><input type="checkbox"> Interval Merging</label></li>
-        <li><label><input type="checkbox"> Greedy After Sorting</label></li>
-    </ul>
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>25–30 problems · “Sort first?” instinct · Clean O(n log n) reasoning</p>
-    </div>
-
-    <div class="warning-box">
-        📌 Many “hard” problems collapse once sorted.
-    </div>
-
-    <div class="phase">🟢 LEVEL 6 — Mathematical & Logical Optimization · Days 59–65</div>
-
-    <div class="module">MODULE 6 — Math & Logic Techniques</div>
-
-    <ul>
-        <li><label><input type="checkbox"> Modulo Arithmetic</label></li>
-        <li><label><input type="checkbox"> Divisibility Logic</label></li>
-        <li><label><input type="checkbox"> Even–Odd Optimization</label></li>
-        <li><label><input type="checkbox"> Greedy Choice Property</label></li>
-        <li><label><input type="checkbox"> Constraint-Driven Optimization</label></li>
-        <li><label><input type="checkbox"> Invariant Logic</label></li>
-    </ul>
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>15–20 problems · Cleaner, shorter solutions · Strong reasoning explanations</p>
-    </div>
-
-    <div class="warning-box">
-        📌 This level separates “works” from “well reasoned”.
-    </div>
-
-    <div class="phase">🟢 LEVEL 7 — Recursion & Backtracking (Controlled Use) · Days 66–72</div>
-
-    <div class="module">MODULE 7 — Recursion & Backtracking Techniques</div>
-
-    <ul>
-        <li><label><input type="checkbox"> Base Case Identification</label></li>
-        <li><label><input type="checkbox"> Recursive State Design</label></li>
-        <li><label><input type="checkbox"> Choice → Explore → Undo</label></li>
-        <li><label><input type="checkbox"> Backtracking Templates</label></li>
-        <li><label><input type="checkbox"> Subproblem Decomposition</label></li>
-    </ul>
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>15–20 problems · Clear recursion explanations · Not afraid, not addicted</p>
-    </div>
-
-    <div class="warning-box">
-        📌 Recursion is a tool, not a lifestyle.
-    </div>
-
-    <div class="phase">🟢 LEVEL 8 — Dynamic Programming (Professional Scope) · Days 73–82</div>
-
-    <div class="module">MODULE 8 — Dynamic Programming Techniques</div>
-
-    <ul>
-        <li><label><input type="checkbox"> Overlapping Subproblems</label></li>
-        <li><label><input type="checkbox"> Optimal Substructure</label></li>
-        <li><label><input type="checkbox"> Memoization</label></li>
-        <li><label><input type="checkbox"> Tabulation</label></li>
-        <li><label><input type="checkbox"> 1D DP Patterns</label></li>
-        <li><label><input type="checkbox"> 2D DP Patterns</label></li>
-        <li><label><input type="checkbox"> State Transition Thinking</label></li>
-    </ul>
-
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>20–25 DP problems · Define DP state in words · No brute-force recursion</p>
-    </div>
-
-    <div class="warning-box">
-        📌 If DP feels hard, slow down — that’s normal.
-    </div>
-
-    <div class="phase">🟢 LEVEL 9 — Graph & Advanced Patterns (Selective) · Days 83–87</div>
-
-    <div class="module">MODULE 9 — Graph & Advanced Techniques</div>
-
-    <ul>
-        <li><label><input type="checkbox"> BFS / DFS Thinking</label></li>
-        <li><label><input type="checkbox"> Topological Thinking</label></li>
-        <li><label><input type="checkbox"> Union-Find Logic</label></li>
-        <li><label><input type="checkbox"> Shortest Path Intuition</label></li>
-    </ul>
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>10–15 problems · Focus on “when to use”, not memorization</p>
-    </div>
-
-    <div class="warning-box">
-        📌 Graphs reward understanding, not pattern hoarding.
-    </div>
-
-    <div class="phase">🟢 LEVEL 10 — Interview & Real-World Mastery · Days 88–90</div>
-
-    <div class="module">MODULE 10 — Interview & Production Skills</div>
-
-    <ul>
-        <li><label><input type="checkbox"> Brute → Optimized Transformation</label></li>
-        <li><label><input type="checkbox"> Edge-Case First Thinking</label></li>
-        <li><label><input type="checkbox"> Complexity Trade-off Explanation</label></li>
-        <li><label><input type="checkbox"> Clean Code Under Pressure</label></li>
-        <li><label><input type="checkbox"> Verbal Problem Decomposition</label></li>
-    </ul>
-    <div class="info-box">
-        <strong>🎯 Target</strong>
-        <p>Mock interviews · Whiteboard or paper practice · Confidence over perfection</p>
-    </div>
-
-    <div class="warning-box">
-        📌 Interviews reward clarity and calm more than speed.
-    </div>
-
-    <footer style="margin-top:40px; padding-top:16px; border-top:1px solid #ddd; font-size:0.9rem; color:#444;">
-        ✅ Tick what you complete. Consistency beats talent.
-    </footer>
-
+    <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n" id="s-done">0</div><div class="stat-l">Completed</div></div>
+    <div class="stat"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total Topics</div></div>
+    <div class="stat"><div class="stat-n">10</div><div class="stat-l">Levels</div></div>
+    <div class="stat"><div class="stat-n">90</div><div class="stat-l">Days</div></div>
+  </div>
 </div>
 
-<script>
-    const checkboxes = document.querySelectorAll("input[type='checkbox']");
-    checkboxes.forEach((cb, index) => {
-        const key = "problem_solving_syllabus_" + index;
-        cb.checked = localStorage.getItem(key) === "true";
-        cb.addEventListener("change", () => {
-            localStorage.setItem(key, cb.checked);
-        });
-    });
-</script>
+<div class="sticky-bar">
+  <span class="sticky-label">progress</span>
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <span class="pct" id="pct-text">0 / 0</span>
+</div>
 
+<div class="container" id="app"></div>
+
+<footer>✅ Tick what you complete · Consistency beats talent · thedurairaj.github.io</footer>
+
+<script>
+const LEVELS = [
+  {
+    id:"L1", color:"c1", num:"01",
+    title:"Core Scanning & Control",
+    sub:"LEVEL 1 — Absolute Core (Non-Negotiable)",
+    days:"Days 1–15",
+    warn:"If LEVEL 1 isn't automatic, do NOT move on.",
+    routine:"30 min concept revision · 90 min problem solving · 15 min explain aloud",
+    target:"50–60 problems · No unnecessary nested loops · Instant scan logic",
+    modules:[
+      { name:"MODULE 1 — Core Scanning & Control", items:[
+        "Linear Scan",
+        "Reverse Traversal",
+        "Early Break / Continue",
+        "Flag / Boolean Logic",
+        "Single Counter",
+        "Multiple Counters",
+        "Track Min / Max",
+        "Compare Current vs Previous",
+        "Index Tracking",
+        "Prefix / Running Result",
+      ]}
+    ]
+  },
+  {
+    id:"L2", color:"c2", num:"02",
+    title:"Pointer & Window Mastery",
+    sub:"LEVEL 2 — Pointer & Window Mastery",
+    days:"Days 16–30",
+    warn:"Most array & string interview problems live here.",
+    routine:"30 min concept · 90 min problems · 15 min explain",
+    target:"40–50 problems · Instant pointer & window recognition · O(n²) → O(n)",
+    modules:[
+      { name:"MODULE 2 — Pointers & Sliding Window", items:[
+        "Two Counters (Left & Right)",
+        "Two Pointers (Opposite Direction)",
+        "Fast & Slow Pointers",
+        "Fixed Sliding Window",
+        "Variable Sliding Window",
+        "Window Expansion & Shrinking",
+      ]}
+    ]
+  },
+  {
+    id:"L3", color:"c3", num:"03",
+    title:"Hashing & Lookup Thinking",
+    sub:"LEVEL 3 — Hashing & Lookup Thinking",
+    days:"Days 31–40",
+    warn:"This level removes fear of 'one pass' interview questions.",
+    routine:"30 min concept · 90 min problems · 15 min explain",
+    target:"35–40 problems · Confident HashMap logic · One-pass thinking",
+    modules:[
+      { name:"MODULE 3 — Hash-Based Techniques", items:[
+        "Frequency Map",
+        "Presence Checking",
+        "First / Last Occurrence",
+        "Duplicate Detection",
+        "Index Mapping",
+        "Complement Technique",
+        "Hash + Window Combination",
+      ]}
+    ]
+  },
+  {
+    id:"L4", color:"c4", num:"04",
+    title:"Prefix, Accumulation & Range Logic",
+    sub:"LEVEL 4 — Prefix, Accumulation & Range Logic",
+    days:"Days 41–50",
+    warn:"This level kills repeated work and over-looping.",
+    routine:"30 min concept · 90 min problems · 15 min explain",
+    target:"25–30 problems · Spot repeated calculations instantly · Confident time-complexity explanations",
+    modules:[
+      { name:"MODULE 4 — Prefix & Range Techniques", items:[
+        "Running Sum",
+        "Prefix Sum",
+        "Suffix Sum",
+        "Difference Array",
+        "Carry Forward Technique",
+        "Range Query Logic",
+      ]}
+    ]
+  },
+  {
+    id:"L5", color:"c5", num:"05",
+    title:"Sorting-Driven Problem Solving",
+    sub:"LEVEL 5 — Sorting-Driven Problem Solving",
+    days:"Days 51–58",
+    warn:"Many 'hard' problems collapse once sorted.",
+    routine:"30 min concept · 90 min problems · 15 min explain",
+    target:"25–30 problems · 'Sort first?' instinct · Clean O(n log n) reasoning",
+    modules:[
+      { name:"MODULE 5 — Sorting-Based Techniques", items:[
+        "Sort + Linear Scan",
+        "Sort + Two Pointers",
+        "Adjacent Comparison",
+        "Grouping After Sort",
+        "Interval Merging",
+        "Greedy After Sorting",
+      ]}
+    ]
+  },
+  {
+    id:"L6", color:"c6", num:"06",
+    title:"Mathematical & Logical Optimization",
+    sub:"LEVEL 6 — Mathematical & Logical Optimization",
+    days:"Days 59–65",
+    warn:"This level separates 'works' from 'well reasoned'.",
+    routine:"30 min concept · 90 min problems · 15 min explain",
+    target:"15–20 problems · Cleaner, shorter solutions · Strong reasoning explanations",
+    modules:[
+      { name:"MODULE 6 — Math & Logic Techniques", items:[
+        "Modulo Arithmetic",
+        "Divisibility Logic",
+        "Even–Odd Optimization",
+        "Greedy Choice Property",
+        "Constraint-Driven Optimization",
+        "Invariant Logic",
+      ]}
+    ]
+  },
+  {
+    id:"L7", color:"c7", num:"07",
+    title:"Recursion & Backtracking",
+    sub:"LEVEL 7 — Recursion & Backtracking (Controlled Use)",
+    days:"Days 66–72",
+    warn:"Recursion is a tool, not a lifestyle.",
+    routine:"30 min concept · 90 min problems · 15 min explain",
+    target:"15–20 problems · Clear recursion explanations · Not afraid, not addicted",
+    modules:[
+      { name:"MODULE 7 — Recursion & Backtracking Techniques", items:[
+        "Base Case Identification",
+        "Recursive State Design",
+        "Choice → Explore → Undo",
+        "Backtracking Templates",
+        "Subproblem Decomposition",
+      ]}
+    ]
+  },
+  {
+    id:"L8", color:"c8", num:"08",
+    title:"Dynamic Programming",
+    sub:"LEVEL 8 — Dynamic Programming (Professional Scope)",
+    days:"Days 73–82",
+    warn:"If DP feels hard, slow down — that's normal.",
+    routine:"30 min concept · 90 min problems · 15 min explain",
+    target:"20–25 DP problems · Define DP state in words · No brute-force recursion",
+    modules:[
+      { name:"MODULE 8 — Dynamic Programming Techniques", items:[
+        "Overlapping Subproblems",
+        "Optimal Substructure",
+        "Memoization",
+        "Tabulation",
+        "1D DP Patterns",
+        "2D DP Patterns",
+        "State Transition Thinking",
+      ]}
+    ]
+  },
+  {
+    id:"L9", color:"c9", num:"09",
+    title:"Graph & Advanced Patterns",
+    sub:"LEVEL 9 — Graph & Advanced Patterns (Selective)",
+    days:"Days 83–87",
+    warn:"Graphs reward understanding, not pattern hoarding.",
+    routine:"30 min concept · 90 min problems · 15 min explain",
+    target:"10–15 problems · Focus on 'when to use', not memorization",
+    modules:[
+      { name:"MODULE 9 — Graph & Advanced Techniques", items:[
+        "BFS / DFS Thinking",
+        "Topological Thinking",
+        "Union-Find Logic",
+        "Shortest Path Intuition",
+      ]}
+    ]
+  },
+  {
+    id:"L10", color:"c10", num:"10",
+    title:"Interview & Real-World Mastery",
+    sub:"LEVEL 10 — Interview & Real-World Mastery",
+    days:"Days 88–90",
+    warn:"Interviews reward clarity and calm more than speed.",
+    routine:"Mock interviews · Whiteboard or paper practice · Timer-based sessions",
+    target:"Mock interviews · Whiteboard or paper practice · Confidence over perfection",
+    modules:[
+      { name:"MODULE 10 — Interview & Production Skills", items:[
+        "Brute → Optimized Transformation",
+        "Edge-Case First Thinking",
+        "Complexity Trade-off Explanation",
+        "Clean Code Under Pressure",
+        "Verbal Problem Decomposition",
+      ]}
+    ]
+  }
+];
+
+const KEY = 'ps-syllabus-v2';
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY)||'{}'); } catch{}
+
+function save(){ localStorage.setItem(KEY,JSON.stringify(state)); }
+
+function itemKey(lid,mi,ii){ return `${lid}-${mi}-${ii}`; }
+function isDone(lid,mi,ii){ return !!state[itemKey(lid,mi,ii)]; }
+function toggle(lid,mi,ii){
+  const k=itemKey(lid,mi,ii);
+  state[k]=!state[k];
+  save(); render();
+}
+
+function totals(){
+  let total=0,done=0;
+  LEVELS.forEach(l=>l.modules.forEach((m,mi)=>m.items.forEach((_,ii)=>{
+    total++;
+    if(isDone(l.id,mi,ii)) done++;
+  })));
+  return {total,done};
+}
+
+function levelTotals(l){
+  let total=0,done=0;
+  l.modules.forEach((m,mi)=>m.items.forEach((_,ii)=>{
+    total++; if(isDone(l.id,mi,ii)) done++;
+  }));
+  return {total,done};
+}
+
+function resetAll(){
+  if(confirm('Reset all progress?')){ state={}; save(); render(); }
+}
+
+function toggleLevel(id){
+  const el=document.getElementById('card-'+id);
+  el.classList.toggle('open');
+}
+
+function render(){
+  const {total,done}=totals();
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('pct-text').textContent=`${done} / ${total}`;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('fill').style.width=pct+'%';
+
+  document.getElementById('app').innerHTML=LEVELS.map(l=>{
+    const lt=levelTotals(l);
+    const lpct=lt.total?Math.round(lt.done/lt.total*100):0;
+    const allDone=lt.done===lt.total && lt.total>0;
+    return `
+    <div class="level-card ${l.color}" id="card-${l.id}">
+      <div class="level-head" onclick="toggleLevel('${l.id}')">
+        <div class="level-num">${l.num}</div>
+        <div class="level-meta">
+          <div class="level-title">${l.title}</div>
+          <div class="level-subtitle">${l.sub}</div>
+        </div>
+        <div class="level-days">${l.days}</div>
+        <div class="level-progress">
+          <div class="level-mini-track"><div class="level-mini-fill" style="width:${lpct}%"></div></div>
+          <span class="level-mini-text">${lt.done}/${lt.total}</span>
+        </div>
+        <div class="level-arrow">▶</div>
+      </div>
+      <div class="level-body">
+        ${l.modules.map((m,mi)=>`
+          <div class="module">
+            <div class="module-name">${m.name}</div>
+            ${m.items.map((item,ii)=>`
+              <div class="check-item ${isDone(l.id,mi,ii)?'done':''}"
+                   onclick="toggle('${l.id}',${mi},${ii})">
+                <div class="box"></div>
+                <div class="item-text">${item}</div>
+              </div>
+            `).join('')}
+          </div>
+        `).join('')}
+        ${allDone?`<div style="padding:0 22px 18px"><div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:12px;color:#16a34a;display:flex;align-items:center;gap:8px">✅ Level Complete! Move to the next level.</div></div>`:''}
+        <div class="info-grid">
+          <div class="info-box routine">
+            <div class="info-box-label">🕒 Daily Routine</div>
+            <div class="info-box-text">${l.routine}</div>
+          </div>
+          <div class="info-box target">
+            <div class="info-box-label">🎯 Target</div>
+            <div class="info-box-text">${l.target}</div>
+          </div>
+        </div>
+        <div style="padding:0 22px 18px">
+          <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 14px;font-size:12px;color:#9a3412;display:flex;align-items:center;gap:8px">
+            📌 ${l.warn}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // open first incomplete level
+  let opened=false;
+  LEVELS.forEach(l=>{
+    const lt=levelTotals(l);
+    if(!opened && lt.done<lt.total){
+      document.getElementById('card-'+l.id).classList.add('open');
+      opened=true;
+    }
+  });
+  if(!opened && LEVELS.length){
+    document.getElementById('card-'+LEVELS[LEVELS.length-1].id).classList.add('open');
+  }
+}
+
+render();
+</script>
 </body>
 </html>
