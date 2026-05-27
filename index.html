@@ -1,303 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Frontend → Angular Complete Learning Syllabus (6 Months)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontend → Angular Complete Learning Syllabus</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fa;--white:#fff;--border:#e4e7ed;--border2:#d0d5de;
+  --text:#1a1d27;--text2:#5a6175;--text3:#9aa0b4;
+  --green:#16a34a;--green-bg:#f0fdf4;--green-border:#bbf7d0;
+  --accent:#2563eb;--amber:#d97706;--red:#dc2626;--purple:#7c3aed;--teal:#0891b2;--orange:#ea580c;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;}
 
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f6f8;
-      padding: 20px;
-      line-height: 1.6;
-    }
+/* HEADER */
+.header{background:var(--white);border-bottom:1px solid var(--border);padding:36px 40px 28px;}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.badge{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:20px;border:1px solid var(--green-border);background:var(--green-bg);color:var(--green);}
+.badge.blue{border-color:#bfdbfe;background:#eff6ff;color:var(--accent);}
+.badge.amber{border-color:#fde68a;background:#fffbeb;color:var(--amber);}
+.badge.purple{border-color:#ddd6fe;background:#faf5ff;color:var(--purple);}
+h1{font-size:clamp(22px,4vw,34px);font-weight:600;color:var(--text);letter-spacing:-.3px;margin-bottom:6px;}
+.subtitle{font-size:14px;color:var(--text2);font-weight:300;margin-bottom:24px;}
+.stats-row{display:flex;gap:24px;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-n{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;color:var(--text);}
+.stat-l{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-top:1px;}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+/* STICKY */
+.sticky-bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);border-bottom:1px solid var(--border);padding:12px 40px;backdrop-filter:blur(8px);display:flex;align-items:center;gap:16px;}
+.sticky-label{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace;white-space:nowrap;}
+.track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.fill{height:100%;background:linear-gradient(90deg,#f59e0b,#16a34a,#2563eb);border-radius:3px;transition:width .4s;width:0;}
+.pct{font-size:12px;font-weight:600;color:var(--accent);font-family:'JetBrains Mono',monospace;white-space:nowrap;min-width:48px;text-align:right;}
 
-    h2 {
-      background: #222;
-      color: #fff;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 40px;
-    }
+/* CONTAINER */
+.container{max-width:860px;margin:0 auto;padding:36px 24px;}
 
-    h3 {
-      margin-top: 20px;
-      color: #333;
-    }
+/* PHASE CARD */
+.phase-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.phase-head{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;user-select:none;transition:background .15s;}
+.phase-head:hover{background:var(--bg);}
+.phase-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
+.phase-meta{flex:1;}
+.phase-title{font-size:15px;font-weight:600;color:var(--text);}
+.phase-sub{font-size:12px;color:var(--text2);font-weight:300;margin-top:1px;}
+.phase-prog{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3);min-width:32px;text-align:right;}
+.mini-track{width:52px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.mini-fill{height:100%;border-radius:2px;transition:width .3s;}
+.ph-arrow{font-size:10px;color:var(--text3);transition:transform .2s;margin-left:4px;}
+.phase-card.open .ph-arrow{transform:rotate(90deg);}
+.phase-body{display:none;border-top:1px solid var(--border);}
+.phase-card.open .phase-body{display:block;}
 
-    ul {
-      list-style: none;
-      padding-left: 0;
-    }
+/* SECTION GROUP inside a phase */
+.section-group{padding:14px 18px 4px;}
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.section-label::before{content:'';display:block;width:14px;height:2px;border-radius:1px;}
+.section-divider{border:none;border-top:1px solid var(--border);margin:4px 18px;}
 
-    li {
-      background: #fff;
-      margin: 6px 0;
-      padding: 8px 10px;
-      border-radius: 4px;
-      border-left: 5px solid #4caf50;
-      display: flex;
-      align-items: center;
-    }
+/* FLAT items (no section) */
+.flat-items{padding:4px 18px 12px;}
 
-    input[type="checkbox"] {
-      margin-right: 10px;
-      transform: scale(1.2);
-    }
+/* CHECK ITEM */
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s;}
+.check-item:last-child{border-bottom:none;}
+.check-item:hover{opacity:.8;}
+.box{flex-shrink:0;width:18px;height:18px;border:1.5px solid var(--border2);border-radius:4px;margin-top:3px;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.check-item.done .box{background:var(--green);border-color:var(--green);}
+.box::after{content:'';display:none;width:4px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);}
+.check-item.done .box::after{display:block;}
+.item-text{font-size:13.5px;color:var(--text);transition:color .18s;padding-top:1px;}
+.check-item.done .item-text{color:var(--text3);text-decoration:line-through;}
 
-    footer {
-      margin-top: 50px;
-      text-align: center;
-      font-size: 14px;
-      color: #555;
-    }
-  </style>
+/* DONE BANNER */
+.done-banner{margin:0 18px 12px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:8px 14px;font-size:12px;color:var(--green);display:flex;align-items:center;gap:6px;}
+
+/* PHASE COLOUR THEMES */
+/* p0 green */ .p0 .phase-head{border-left:3px solid #16a34a;}
+.p0 .mini-fill,.p0 .section-label::before{background:#16a34a;}
+.p0 .section-label{color:#15803d;}
+/* p1 yellow */ .p1 .phase-head{border-left:3px solid #ca8a04;}
+.p1 .mini-fill,.p1 .section-label::before{background:#ca8a04;}
+.p1 .section-label{color:#92400e;}
+/* p2 amber */ .p2 .phase-head{border-left:3px solid var(--orange);}
+.p2 .mini-fill,.p2 .section-label::before{background:var(--orange);}
+.p2 .section-label{color:#9a3412;}
+/* p3 blue */ .p3 .phase-head{border-left:3px solid var(--accent);}
+.p3 .mini-fill,.p3 .section-label::before{background:var(--accent);}
+.p3 .section-label{color:#1e40af;}
+/* p4 purple */ .p4 .phase-head{border-left:3px solid var(--purple);}
+.p4 .mini-fill,.p4 .section-label::before{background:var(--purple);}
+.p4 .section-label{color:#5b21b6;}
+/* p5 blue2 */ .p5 .phase-head{border-left:3px solid var(--teal);}
+.p5 .mini-fill,.p5 .section-label::before{background:var(--teal);}
+.p5 .section-label{color:#0e7490;}
+/* p6 red */ .p6 .phase-head{border-left:3px solid var(--red);}
+.p6 .mini-fill,.p6 .section-label::before{background:var(--red);}
+.p6 .section-label{color:#991b1b;}
+/* p7 green2 */ .p7 .phase-head{border-left:3px solid #0d9488;}
+.p7 .mini-fill,.p7 .section-label::before{background:#0d9488;}
+.p7 .section-label{color:#0f766e;}
+
+.reset-btn{background:none;border:1px solid var(--border2);color:var(--text3);padding:7px 14px;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;}
+.reset-btn:hover{border-color:var(--red);color:var(--red);}
+footer{text-align:center;padding:40px;color:var(--text3);font-size:12px;font-family:'JetBrains Mono',monospace;border-top:1px solid var(--border);}
+@media(max-width:600px){
+  .header{padding:28px 20px 22px;}
+  .sticky-bar{padding:10px 20px;}
+  .container{padding:24px 14px;}
+}
+</style>
 </head>
-
 <body>
 
-<h1>📘 Frontend → Angular Learning Syllabus (0 → Expert | 6 Months)</h1>
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="badge-row">
+        <span class="badge">🌐 Frontend</span>
+        <span class="badge blue">Angular</span>
+        <span class="badge amber">6 Months</span>
+        <span class="badge purple">0 → Expert</span>
+      </div>
+      <h1>Frontend → Angular</h1>
+      <p class="subtitle">Complete Learning Syllabus — 0 to Expert in 6 Months</p>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n" id="s-done">0</div><div class="stat-l">Completed</div></div>
+    <div class="stat"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total Topics</div></div>
+    <div class="stat"><div class="stat-n">8</div><div class="stat-l">Phases</div></div>
+    <div class="stat"><div class="stat-n">6mo</div><div class="stat-l">Duration</div></div>
+  </div>
+</div>
 
-<!-- ================= PHASE 0 ================= -->
-<h2>🟢 PHASE 0 — Web & Browser Fundamentals</h2>
-<ul>
-  <li><input type="checkbox">What is Internet</li>
-  <li><input type="checkbox">Website vs Web Application</li>
-  <li><input type="checkbox">Client–Server Architecture</li>
-  <li><input type="checkbox">Browser role</li>
-  <li><input type="checkbox">Request & Response flow</li>
-  <li><input type="checkbox">HTTP vs HTTPS (basic)</li>
-  <li><input type="checkbox">Frontend vs Backend roles</li>
-</ul>
+<div class="sticky-bar">
+  <span class="sticky-label">progress</span>
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <span class="pct" id="pct-text">0 / 0</span>
+</div>
 
-<!-- ================= PHASE 1 ================= -->
-<h2>🟡 PHASE 1 — HTML (Complete)</h2>
+<div class="container" id="app"></div>
 
-<h3>HTML Foundations</h3>
-<ul>
-  <li><input type="checkbox">What is HTML</li>
-  <li><input type="checkbox">HTML versions (HTML5)</li>
-  <li><input type="checkbox">HTML vs CSS vs JavaScript</li>
-  <li><input type="checkbox">How browser parses HTML</li>
-</ul>
-
-<h3>Document Structure</h3>
-<ul>
-  <li><input type="checkbox">DOCTYPE</li>
-  <li><input type="checkbox">html, head, body</li>
-  <li><input type="checkbox">title tag</li>
-  <li><input type="checkbox">meta charset</li>
-  <li><input type="checkbox">meta viewport</li>
-  <li><input type="checkbox">HTML comments</li>
-</ul>
-
-<h3>Text & Layout Elements</h3>
-<ul>
-  <li><input type="checkbox">Headings (h1–h6)</li>
-  <li><input type="checkbox">Paragraph (p)</li>
-  <li><input type="checkbox">div vs span</li>
-  <li><input type="checkbox">Inline vs Block elements</li>
-  <li><input type="checkbox">br, hr</li>
-  <li><input type="checkbox">strong, em, small, mark</li>
-  <li><input type="checkbox">code, pre</li>
-</ul>
-
-<h3>Links & Navigation</h3>
-<ul>
-  <li><input type="checkbox">Anchor tag (a)</li>
-  <li><input type="checkbox">Internal links</li>
-  <li><input type="checkbox">External links</li>
-  <li><input type="checkbox">Relative vs absolute paths</li>
-  <li><input type="checkbox">Open links in new tab</li>
-</ul>
-
-<h3>Media</h3>
-<ul>
-  <li><input type="checkbox">Images (img)</li>
-  <li><input type="checkbox">Image paths & alt attribute</li>
-  <li><input type="checkbox">audio tag</li>
-  <li><input type="checkbox">video tag</li>
-  <li><input type="checkbox">iframe</li>
-</ul>
-
-<h3>Lists & Tables</h3>
-<ul>
-  <li><input type="checkbox">ul, ol, li</li>
-  <li><input type="checkbox">Nested lists</li>
-  <li><input type="checkbox">Tables</li>
-  <li><input type="checkbox">thead, tbody, th, td</li>
-</ul>
-
-<h3>Forms (Static)</h3>
-<ul>
-  <li><input type="checkbox">form tag</li>
-  <li><input type="checkbox">input types</li>
-  <li><input type="checkbox">label & accessibility</li>
-  <li><input type="checkbox">select & textarea</li>
-  <li><input type="checkbox">required, disabled, placeholder</li>
-  <li><input type="checkbox">GET vs POST (concept)</li>
-</ul>
-
-<h3>Semantic HTML</h3>
-<ul>
-  <li><input type="checkbox">header</li>
-  <li><input type="checkbox">nav</li>
-  <li><input type="checkbox">main</li>
-  <li><input type="checkbox">section</li>
-  <li><input type="checkbox">article</li>
-  <li><input type="checkbox">aside</li>
-  <li><input type="checkbox">footer</li>
-</ul>
-
-<h3>Attributes & Best Practices</h3>
-<ul>
-  <li><input type="checkbox">id vs class</li>
-  <li><input type="checkbox">data-* attributes</li>
-  <li><input type="checkbox">File & folder naming rules</li>
-  <li><input type="checkbox">HTML validation</li>
-</ul>
-
-<!-- ================= PHASE 2 ================= -->
-<h2>🟡 PHASE 2 — CSS (Complete)</h2>
-
-<h3>CSS Basics</h3>
-<ul>
-  <li><input type="checkbox">What is CSS</li>
-  <li><input type="checkbox">Inline, Internal, External CSS</li>
-  <li><input type="checkbox">Selectors</li>
-  <li><input type="checkbox">Colors & units</li>
-  <li><input type="checkbox">Fonts & text styling</li>
-</ul>
-
-<h3>Core Concepts</h3>
-<ul>
-  <li><input type="checkbox">Box Model</li>
-  <li><input type="checkbox">Specificity</li>
-  <li><input type="checkbox">Inheritance</li>
-  <li><input type="checkbox">CSS units (px, %, em, rem, vw, vh)</li>
-</ul>
-
-<h3>Layout</h3>
-<ul>
-  <li><input type="checkbox">Display types</li>
-  <li><input type="checkbox">Positioning</li>
-  <li><input type="checkbox">Z-index</li>
-  <li><input type="checkbox">Overflow</li>
-</ul>
-
-<h3>Flexbox & Responsive</h3>
-<ul>
-  <li><input type="checkbox">Flex container & items</li>
-  <li><input type="checkbox">Axis & alignment</li>
-  <li><input type="checkbox">Media queries</li>
-  <li><input type="checkbox">Mobile-first design</li>
-</ul>
-
-<h3>Advanced CSS</h3>
-<ul>
-  <li><input type="checkbox">Grid basics</li>
-  <li><input type="checkbox">Pseudo-classes</li>
-  <li><input type="checkbox">Pseudo-elements</li>
-  <li><input type="checkbox">CSS variables</li>
-  <li><input type="checkbox">Transitions & animations</li>
-</ul>
-
-<h3>Debugging</h3>
-<ul>
-  <li><input type="checkbox">Browser DevTools</li>
-  <li><input type="checkbox">Common layout mistakes</li>
-</ul>
-
-<!-- ================= PHASE 3 ================= -->
-<h2>🟠 PHASE 3 — JavaScript (Complete)</h2>
-<ul>
-  <li><input type="checkbox">Variables, data types, operators</li>
-  <li><input type="checkbox">Conditions & loops</li>
-  <li><input type="checkbox">Functions & arrow functions</li>
-  <li><input type="checkbox">Arrays & objects</li>
-  <li><input type="checkbox">Scope & this keyword</li>
-  <li><input type="checkbox">DOM manipulation</li>
-  <li><input type="checkbox">Events</li>
-  <li><input type="checkbox">JSON</li>
-  <li><input type="checkbox">localStorage & sessionStorage</li>
-  <li><input type="checkbox">Error handling (try/catch)</li>
-  <li><input type="checkbox">Promises</li>
-  <li><input type="checkbox">async / await</li>
-  <li><input type="checkbox">Fetch API</li>
-  <li><input type="checkbox">Debugging & breakpoints</li>
-</ul>
-
-<!-- ================= PHASE 4 ================= -->
-<h2>🟣 PHASE 4 — TypeScript</h2>
-<ul>
-  <li><input type="checkbox">Type annotations</li>
-  <li><input type="checkbox">Interfaces</li>
-  <li><input type="checkbox">Classes & access modifiers</li>
-  <li><input type="checkbox">Enums</li>
-  <li><input type="checkbox">Generics (basic)</li>
-  <li><input type="checkbox">Type inference</li>
-  <li><input type="checkbox">tsconfig basics</li>
-</ul>
-
-<!-- ================= PHASE 5 ================= -->
-<h2>🔵 PHASE 5 — Angular</h2>
-<ul>
-  <li><input type="checkbox">Angular CLI</li>
-  <li><input type="checkbox">Project structure</li>
-  <li><input type="checkbox">Components</li>
-  <li><input type="checkbox">Data binding</li>
-  <li><input type="checkbox">Directives</li>
-  <li><input type="checkbox">Pipes</li>
-  <li><input type="checkbox">Services & DI</li>
-  <li><input type="checkbox">Routing & guards</li>
-  <li><input type="checkbox">Lifecycle hooks</li>
-  <li><input type="checkbox">Parent–child communication</li>
-  <li><input type="checkbox">Template & reactive forms</li>
-  <li><input type="checkbox">HttpClient & interceptors</li>
-  <li><input type="checkbox">RxJS & observables</li>
-  <li><input type="checkbox">Environment files</li>
-  <li><input type="checkbox">Build & deployment</li>
-</ul>
-
-<!-- ================= PHASE 6 ================= -->
-<h2>🔴 PHASE 6 — Production & Professional</h2>
-<ul>
-  <li><input type="checkbox">Performance optimization</li>
-  <li><input type="checkbox">Security basics (XSS, CSRF)</li>
-  <li><input type="checkbox">Clean code practices</li>
-  <li><input type="checkbox">Debugging production issues</li>
-</ul>
-
-<!-- ================= PHASE 7 ================= -->
-<h2>🏁 PHASE 7 — Projects</h2>
-<ul>
-  <li><input type="checkbox">HTML + CSS static website</li>
-  <li><input type="checkbox">JavaScript mini projects</li>
-  <li><input type="checkbox">Angular CRUD application</li>
-  <li><input type="checkbox">Angular + Backend integration</li>
-  <li><input type="checkbox">Final capstone project</li>
-</ul>
-
-<footer>
-  ✅ Tick what you complete. Consistency beats talent.
-</footer>
+<footer>✅ Tick what you complete · Consistency beats talent · thedurairaj.github.io</footer>
 
 <script>
-  const checkboxes = document.querySelectorAll("input[type='checkbox']");
-  checkboxes.forEach((cb, index) => {
-    const key = "frontend_syllabus_" + index;
-    cb.checked = localStorage.getItem(key) === "true";
-    cb.addEventListener("change", () => {
-      localStorage.setItem(key, cb.checked);
-    });
-  });
-</script>
+// Each phase: flat items OR sections:[{name, items:[]}]
+const PHASES=[
+  {
+    id:"P0",cls:"p0",icon:"🟢",num:"00",
+    title:"Web & Browser Fundamentals",
+    sub:"The foundation everything runs on",
+    items:["What is Internet","Website vs Web Application","Client–Server Architecture","Browser role","Request & Response flow","HTTP vs HTTPS (basic)","Frontend vs Backend roles"]
+  },
+  {
+    id:"P1",cls:"p1",icon:"🟡",num:"01",
+    title:"HTML (Complete)",
+    sub:"Structure of every webpage",
+    sections:[
+      {name:"HTML Foundations",items:["What is HTML","HTML versions (HTML5)","HTML vs CSS vs JavaScript","How browser parses HTML"]},
+      {name:"Document Structure",items:["DOCTYPE","html, head, body","title tag","meta charset","meta viewport","HTML comments"]},
+      {name:"Text & Layout Elements",items:["Headings (h1–h6)","Paragraph (p)","div vs span","Inline vs Block elements","br, hr","strong, em, small, mark","code, pre"]},
+      {name:"Links & Navigation",items:["Anchor tag (a)","Internal links","External links","Relative vs absolute paths","Open links in new tab"]},
+      {name:"Media",items:["Images (img)","Image paths & alt attribute","audio tag","video tag","iframe"]},
+      {name:"Lists & Tables",items:["ul, ol, li","Nested lists","Tables","thead, tbody, th, td"]},
+      {name:"Forms (Static)",items:["form tag","input types","label & accessibility","select & textarea","required, disabled, placeholder","GET vs POST (concept)"]},
+      {name:"Semantic HTML",items:["header","nav","main","section","article","aside","footer"]},
+      {name:"Attributes & Best Practices",items:["id vs class","data-* attributes","File & folder naming rules","HTML validation"]},
+    ]
+  },
+  {
+    id:"P2",cls:"p2",icon:"🟡",num:"02",
+    title:"CSS (Complete)",
+    sub:"Styling, layout, and responsive design",
+    sections:[
+      {name:"CSS Basics",items:["What is CSS","Inline, Internal, External CSS","Selectors","Colors & units","Fonts & text styling"]},
+      {name:"Core Concepts",items:["Box Model","Specificity","Inheritance","CSS units (px, %, em, rem, vw, vh)"]},
+      {name:"Layout",items:["Display types","Positioning","Z-index","Overflow"]},
+      {name:"Flexbox & Responsive",items:["Flex container & items","Axis & alignment","Media queries","Mobile-first design"]},
+      {name:"Advanced CSS",items:["Grid basics","Pseudo-classes","Pseudo-elements","CSS variables","Transitions & animations"]},
+      {name:"Debugging",items:["Browser DevTools","Common layout mistakes"]},
+    ]
+  },
+  {
+    id:"P3",cls:"p3",icon:"🟠",num:"03",
+    title:"JavaScript (Complete)",
+    sub:"Behaviour, logic, and interactivity",
+    items:["Variables, data types, operators","Conditions & loops","Functions & arrow functions","Arrays & objects","Scope & this keyword","DOM manipulation","Events","JSON","localStorage & sessionStorage","Error handling (try/catch)","Promises","async / await","Fetch API","Debugging & breakpoints"]
+  },
+  {
+    id:"P4",cls:"p4",icon:"🟣",num:"04",
+    title:"TypeScript",
+    sub:"Typed JavaScript for Angular development",
+    items:["Type annotations","Interfaces","Classes & access modifiers","Enums","Generics (basic)","Type inference","tsconfig basics"]
+  },
+  {
+    id:"P5",cls:"p5",icon:"🔵",num:"05",
+    title:"Angular",
+    sub:"Component-based SPA framework",
+    items:["Angular CLI","Project structure","Components","Data binding","Directives","Pipes","Services & DI","Routing & guards","Lifecycle hooks","Parent–child communication","Template & reactive forms","HttpClient & interceptors","RxJS & observables","Environment files","Build & deployment"]
+  },
+  {
+    id:"P6",cls:"p6",icon:"🔴",num:"06",
+    title:"Production & Professional",
+    sub:"Real-world engineering standards",
+    items:["Performance optimization","Security basics (XSS, CSRF)","Clean code practices","Debugging production issues"]
+  },
+  {
+    id:"P7",cls:"p7",icon:"🏁",num:"07",
+    title:"Projects",
+    sub:"Build it to own it",
+    items:["HTML + CSS static website","JavaScript mini projects","Angular CRUD application","Angular + Backend integration","Final capstone project"]
+  },
+];
 
+const KEY='angular-syllabus-v1';
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||'{}');}catch{}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// flatten all items for a phase into (sectionIdx or -1, itemIdx) -> key
+function ikey(pid,si,ii){return `${pid}-${si}-${ii}`;}
+function isDone(pid,si,ii){return !!state[ikey(pid,si,ii)];}
+function toggle(pid,si,ii){state[ikey(pid,si,ii)]=!state[ikey(pid,si,ii)];save();render();}
+function resetAll(){if(confirm('Reset all progress?')){state={};save();render();}}
+function togglePhase(id){document.getElementById('pc-'+id).classList.toggle('open');}
+
+function phaseItems(p){
+  // returns array of {si, ii} for counting
+  const out=[];
+  if(p.items) p.items.forEach((_,ii)=>out.push({si:-1,ii}));
+  if(p.sections) p.sections.forEach((s,si)=>s.items.forEach((_,ii)=>out.push({si,ii})));
+  return out;
+}
+function phaseTotals(p){
+  const all=phaseItems(p);
+  const done=all.filter(({si,ii})=>isDone(p.id,si,ii)).length;
+  return{total:all.length,done};
+}
+function totals(){
+  let total=0,done=0;
+  PHASES.forEach(p=>{const t=phaseTotals(p);total+=t.total;done+=t.done;});
+  return{total,done};
+}
+
+function renderItems(pid,si,items){
+  return items.map((item,ii)=>`
+  <div class="check-item ${isDone(pid,si,ii)?'done':''}" onclick="toggle('${pid}',${si},${ii})">
+    <div class="box"></div>
+    <div class="item-text">${esc(item)}</div>
+  </div>`).join('');
+}
+
+function render(){
+  const{total,done}=totals();
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('pct-text').textContent=`${done} / ${total}`;
+  document.getElementById('fill').style.width=(total?Math.round(done/total*100):0)+'%';
+
+  document.getElementById('app').innerHTML=PHASES.map(p=>{
+    const{total:pt,done:pd}=phaseTotals(p);
+    const ppct=pt?Math.round(pd/pt*100):0;
+    const allDone=pd===pt&&pt>0;
+
+    let bodyContent='';
+    if(allDone) bodyContent+=`<div class="done-banner">✅ Phase complete! Move to the next phase.</div>`;
+
+    if(p.items){
+      bodyContent+=`<div class="flat-items">${renderItems(p.id,-1,p.items)}</div>`;
+    } else if(p.sections){
+      bodyContent+=p.sections.map((sec,si)=>`
+        <div class="section-group">
+          <div class="section-label">${esc(sec.name)}</div>
+          ${renderItems(p.id,si,sec.items)}
+        </div>
+        <hr class="section-divider">
+      `).join('');
+    }
+
+    return `
+    <div class="phase-card ${p.cls}" id="pc-${p.id}">
+      <div class="phase-head" onclick="togglePhase('${p.id}')">
+        <span class="phase-icon">${p.icon}</span>
+        <div class="phase-meta">
+          <div class="phase-title">PHASE ${p.num} — ${esc(p.title)}</div>
+          <div class="phase-sub">${esc(p.sub)}</div>
+        </div>
+        <span class="phase-prog">${pd}/${pt}</span>
+        <div class="mini-track"><div class="mini-fill" style="width:${ppct}%"></div></div>
+        <span class="ph-arrow">▶</span>
+      </div>
+      <div class="phase-body">${bodyContent}</div>
+    </div>`;
+  }).join('');
+
+  // auto-open first incomplete phase
+  let opened=false;
+  PHASES.forEach(p=>{
+    const{total:pt,done:pd}=phaseTotals(p);
+    if(!opened&&pd<pt){document.getElementById('pc-'+p.id).classList.add('open');opened=true;}
+  });
+  if(!opened) document.getElementById('pc-'+PHASES[PHASES.length-1].id).classList.add('open');
+}
+
+render();
+</script>
 </body>
 </html>
