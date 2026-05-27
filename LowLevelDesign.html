@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15-Day LLD Plan — 147 Technique</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fa;--white:#fff;--border:#e4e7ed;--border2:#d0d5de;
+  --text:#1a1d27;--text2:#5a6175;--text3:#9aa0b4;
+  --green:#16a34a;--green-bg:#f0fdf4;--green-border:#bbf7d0;
+  --accent:#2563eb;--accent-bg:#eff6ff;
+  --amber:#d97706;--amber-bg:#fffbeb;--amber-border:#fde68a;
+  --purple:#7c3aed;--purple-bg:#faf5ff;--purple-border:#ddd6fe;
+  --red:#dc2626;--teal:#0891b2;--orange:#ea580c;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;}
+
+/* HEADER */
+.header{background:var(--white);border-bottom:1px solid var(--border);padding:36px 40px 28px;}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.badge{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.badge.green{border:1px solid var(--green-border);background:var(--green-bg);color:var(--green);}
+.badge.blue{border:1px solid #bfdbfe;background:var(--accent-bg);color:var(--accent);}
+.badge.amber{border:1px solid var(--amber-border);background:var(--amber-bg);color:var(--amber);}
+.badge.purple{border:1px solid var(--purple-border);background:var(--purple-bg);color:var(--purple);}
+h1{font-size:clamp(22px,4vw,34px);font-weight:600;color:var(--text);letter-spacing:-.3px;margin-bottom:6px;}
+.subtitle{font-size:14px;color:var(--text2);font-weight:300;margin-bottom:24px;}
+.stats-row{display:flex;gap:24px;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-n{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;color:var(--text);}
+.stat-l{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-top:1px;}
+
+/* STICKY */
+.sticky-bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);border-bottom:1px solid var(--border);padding:12px 40px;backdrop-filter:blur(8px);display:flex;align-items:center;gap:16px;}
+.sticky-label{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace;white-space:nowrap;}
+.track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.fill{height:100%;background:linear-gradient(90deg,#7c3aed,#2563eb,#16a34a);border-radius:3px;transition:width .4s;width:0;}
+.pct{font-size:12px;font-weight:600;color:var(--accent);font-family:'JetBrains Mono',monospace;white-space:nowrap;min-width:48px;text-align:right;}
+
+/* CONTAINER */
+.container{max-width:900px;margin:0 auto;padding:36px 24px;}
+
+/* 147 RULE BANNER */
+.rule-banner{
+  background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:12px;
+  padding:16px 20px;margin-bottom:28px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.rule-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.rule-text{font-size:13px;color:var(--text2);line-height:1.7;}
+.rule-text strong{color:var(--text);font-weight:600;}
+
+/* LEGEND */
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:20px;}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);}
+.legend-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;}
+.ld-learn{background:#dbeafe;border:1px solid #93c5fd;}
+.ld-revise{background:var(--purple-bg);border:1px solid var(--purple-border);}
+.ld-task{background:var(--green-bg);border:1px solid var(--green-border);}
+
+/* DAY CARD */
+.day-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:12px;margin-bottom:10px;overflow:hidden;
+  transition:box-shadow .2s;
+}
+.day-card.all-done{border-color:var(--green-border);}
+.day-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06);}
+
+.day-head{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;cursor:pointer;user-select:none;
+  transition:background .15s;
+}
+.day-head:hover{background:var(--bg);}
+
+.day-num{
+  flex-shrink:0;width:40px;height:40px;
+  border-radius:10px;
+  font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg);border:1px solid var(--border);color:var(--text2);
+  transition:all .2s;
+}
+.day-card.all-done .day-num{background:var(--green-bg);border-color:var(--green-border);color:var(--green);}
+
+.day-meta{flex:1;min-width:0;}
+.day-topic{font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.day-revise-tag{font-size:11px;color:var(--text3);font-weight:300;margin-top:1px;}
+
+/* mini pills inside head */
+.day-pills{display:flex;gap:5px;flex-shrink:0;}
+.pill{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--border2);}
+.pill.done-learn{background:#2563eb;border-color:#2563eb;}
+.pill.done-revise{background:#7c3aed;border-color:#7c3aed;}
+.pill.done-task{background:#16a34a;border-color:#16a34a;}
+
+.day-arrow{font-size:10px;color:var(--text3);transition:transform .2s;margin-left:4px;}
+.day-card.open .day-arrow{transform:rotate(90deg);}
+
+/* DAY BODY */
+.day-body{display:none;border-top:1px solid var(--border);}
+.day-card.open .day-body{display:block;}
+
+/* THREE ROWS */
+.day-row{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 18px;border-bottom:1px solid var(--border);
+  cursor:pointer;transition:background .15s;
+}
+.day-row:last-child{border-bottom:none;}
+.day-row:hover{background:var(--bg);}
+
+.row-check{
+  flex-shrink:0;width:20px;height:20px;
+  border:1.5px solid var(--border2);border-radius:5px;
+  margin-top:2px;display:flex;align-items:center;justify-content:center;
+  transition:all .18s;
+}
+.row-check::after{content:'';display:none;width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);}
+
+.row-learn .row-check{border-color:#93c5fd;}
+.row-learn.checked .row-check{background:#2563eb;border-color:#2563eb;}
+.row-learn.checked .row-check::after{display:block;}
+
+.row-revise .row-check{border-color:var(--purple-border);}
+.row-revise.checked .row-check{background:#7c3aed;border-color:#7c3aed;}
+.row-revise.checked .row-check::after{display:block;}
+
+.row-task .row-check{border-color:var(--green-border);}
+.row-task.checked .row-check{background:#16a34a;border-color:#16a34a;}
+.row-task.checked .row-check::after{display:block;}
+
+.row-content{flex:1;}
+.row-type-tag{
+  font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:3px;
+}
+.row-learn .row-type-tag{color:var(--accent);}
+.row-revise .row-type-tag{color:var(--purple);}
+.row-task .row-type-tag{color:var(--green);}
+
+.row-text{font-size:13.5px;color:var(--text);transition:color .15s;}
+.checked .row-text{color:var(--text3);text-decoration:line-through;}
+
+/* REVISE CHIP */
+.revise-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--purple-bg);border:1px solid var(--purple-border);
+  color:var(--purple);font-size:11px;font-weight:600;
+  padding:2px 8px;border-radius:4px;
+  font-family:'JetBrains Mono',monospace;
+  margin-bottom:4px;
+}
+
+/* NO REVISE YET */
+.no-revise{
+  padding:10px 18px 10px 50px;
+  font-size:12px;color:var(--text3);font-style:italic;
+  border-bottom:1px solid var(--border);
+}
+
+.reset-btn{background:none;border:1px solid var(--border2);color:var(--text3);padding:7px 14px;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;}
+.reset-btn:hover{border-color:var(--red);color:var(--red);}
+
+footer{text-align:center;padding:40px;color:var(--text3);font-size:12px;font-family:'JetBrains Mono',monospace;border-top:1px solid var(--border);}
+
+/* SUBTOPICS */
+.subtopics{margin:8px 0 4px;display:flex;flex-direction:column;}
+.subtopic{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text2);padding:4px 0;border-bottom:1px solid var(--border);font-weight:300;line-height:1.5;}
+.subtopic:last-child{border-bottom:none;}
+.subtopic::before{content:'›';color:var(--accent);font-weight:700;font-size:14px;flex-shrink:0;}
+.checked .subtopics .subtopic{color:var(--text3);}
+.checked .subtopics .subtopic::before{color:var(--text3);}
+/* HINT */
+.hint-box{margin:10px 0 2px;background:var(--accent-bg);border:1px solid #bfdbfe;border-radius:8px;padding:9px 12px;font-size:12px;color:#1e3a8a;line-height:1.6;}
+/* TASK DETAIL */
+.task-detail{margin-top:7px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:9px 12px;font-size:12px;color:#14532d;line-height:1.6;}
+.checked .task-detail{opacity:.5;}
+
+@media(max-width:600px){
+  .header{padding:28px 20px 22px;}
+  .sticky-bar{padding:10px 20px;}
+  .container{padding:24px 14px;}
+  .day-topic{font-size:13px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="badge-row">
+        <span class="badge purple">📘 LLD</span>
+        <span class="badge blue">15 Days</span>
+        <span class="badge amber">147 Technique</span>
+        <span class="badge green">Java Developer</span>
+      </div>
+      <h1>15-Day LLD Study Plan</h1>
+      <p class="subtitle">Low Level Design — 147 Learning Technique</p>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n" id="s-days">0</div><div class="stat-l">Days Done</div></div>
+    <div class="stat"><div class="stat-n" id="s-done">0</div><div class="stat-n" style="font-size:14px;display:inline"> / </div><div class="stat-n" id="s-total" style="display:inline">0</div></div>
+    <div class="stat"><div class="stat-n">15</div><div class="stat-l">Total Days</div></div>
+    <div class="stat"><div class="stat-n">3</div><div class="stat-l">Tasks / Day</div></div>
+  </div>
+</div>
+
+<div class="sticky-bar">
+  <span class="sticky-label">progress</span>
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <span class="pct" id="pct-text">0 / 0</span>
+</div>
+
+<div class="container" id="app"></div>
+
+<footer>📌 Explain each day's topic aloud for 5 minutes · If you can't explain it clearly, repeat the day · thedurairaj.github.io</footer>
+
+<script>
+const DAYS=[
+  {
+    day:1, revise:null,
+    learn:"Classes, Objects, Encapsulation",
+    points:["What is a class vs an object","Fields, methods, constructors","Access modifiers: private, protected, public","Encapsulation: hide fields, expose via getters/setters","Why public fields are dangerous","Data hiding vs data access"],
+    hint:"Encapsulation = control over your own data. If anyone can directly change your field, you've lost control.",
+    task:"Write bad class → fix encapsulation",
+    taskDetail:"Create a BankAccount class with public balance field. Then refactor: make balance private, add deposit() and withdraw() with validation."
+  },
+  {
+    day:2, revise:null,
+    learn:"Abstraction, Interface vs Abstract Class",
+    points:["What abstraction means in OOP","Abstract class: partial implementation allowed","Interface: contract, no state (pre-Java 8)","When to use interface vs abstract class","Default methods in interfaces (Java 8+)","Multiple interface implementation vs single inheritance"],
+    hint:"Interface = what to do. Abstract class = what to do + some how. Choose interface when you want to define a contract across unrelated classes.",
+    task:"Decide where interface is needed",
+    taskDetail:"Design a Payment system. Decide which of CreditCard, UPI, NetBanking should implement an interface vs extend a class. Write the skeleton."
+  },
+  {
+    day:3, revise:null,
+    learn:"Inheritance, IS-A vs HAS-A, Composition",
+    points:["IS-A relationship (extends)","HAS-A relationship (field reference)","Why deep inheritance chains break","Composition over inheritance principle","When inheritance is actually fine","Fragile base class problem"],
+    hint:"Prefer HAS-A over IS-A whenever possible. A Car HAS-A Engine is safer than Car extends Engine.",
+    task:"Replace inheritance with composition",
+    taskDetail:"Take a Logger extends FileWriter example. Refactor so Logger HAS-A Writer (interface). Now you can swap FileWriter, ConsoleWriter, DBWriter without changing Logger."
+  },
+  {
+    day:4, revise:"Day 1",
+    learn:"Polymorphism (Runtime vs Compile)",
+    points:["Compile-time polymorphism: method overloading","Runtime polymorphism: method overriding","Dynamic dispatch — how JVM picks the method","Liskov preview: why override must make sense","Polymorphism + interfaces in real services","Avoid instanceof — it breaks polymorphism"],
+    hint:"Runtime polymorphism is the power behind Strategy, Factory, and almost every design pattern. Master it here.",
+    task:"Explain encapsulation aloud",
+    taskDetail:"Without looking at notes, explain to yourself: what is encapsulation, why it matters, and give a real-world analogy. Record yourself if needed."
+  },
+  {
+    day:5, revise:"Day 2",
+    learn:"Coupling, Cohesion, Immutability",
+    points:["Tight coupling vs loose coupling","High cohesion: one class, one purpose","Low coupling: depend on abstractions not concretions","Immutable objects: final fields, no setters","Why immutability is thread-safe by default","String, LocalDate as immutable examples in Java"],
+    hint:"High cohesion + low coupling = classes that are easy to test, change, and understand independently.",
+    task:"Refactor tightly coupled code",
+    taskDetail:"Take an OrderService that directly creates new EmailService() inside. Refactor to inject NotificationService interface via constructor. Now OrderService doesn't care how notifications work."
+  },
+  {
+    day:6, revise:"Day 3",
+    learn:"SRP — Single Responsibility Principle",
+    points:["A class should have one reason to change","Identify responsibilities vs identify methods","God class anti-pattern","How to split a class correctly","SRP at method level too","SRP in Spring Boot: Controller vs Service vs Repository"],
+    hint:"Ask: 'If this requirement changes, which classes need to change?' If the answer is more than one team's concern — you've violated SRP.",
+    task:"Split a god-class properly",
+    taskDetail:"Take a UserManager class that handles: DB save, email sending, password hashing, and logging. Split into UserRepository, EmailService, PasswordEncoder, AuditLogger."
+  },
+  {
+    day:7, revise:"Day 4",
+    learn:"OCP — Open/Closed Principle",
+    points:["Open for extension, closed for modification","Strategy pattern as the primary OCP tool","Adding new behaviour via new classes, not editing old ones","OCP violation: giant if-else or switch on type","Using interfaces + polymorphism to enable OCP","OCP in discount/pricing/notification systems"],
+    hint:"Every time you add a new if-else branch to handle a new type, ask: should this be a new class instead?",
+    task:"Add feature without modifying code",
+    taskDetail:"Build a DiscountCalculator with if-else for STUDENT, SENIOR, EMPLOYEE. Refactor: create DiscountStrategy interface. Each discount type is its own class. Adding VIP discount = new class only."
+  },
+  {
+    day:8, revise:"Day 5",
+    learn:"LSP — Liskov Substitution Principle",
+    points:["Subclass must be usable wherever parent is used","LSP violation signs: override throws exception, override does nothing, override weakens postcondition","Classic violation: Square extends Rectangle","Behavioural subtyping vs syntactic subtyping","How LSP enables safe polymorphism","Fix: favour interfaces over deep inheritance"],
+    hint:"If your subclass surprises the caller with unexpected behaviour, you've broken LSP. The caller shouldn't need to know which subclass it's using.",
+    task:"Detect LSP violation",
+    taskDetail:"Study the Square-Rectangle problem. Implement it, write a test that fails for Square. Then fix by removing the inheritance and using a Shape interface instead."
+  },
+  {
+    day:9, revise:"Day 6",
+    learn:"ISP — Interface Segregation Principle",
+    points:["Clients should not be forced to depend on methods they don't use","Fat interface anti-pattern","Splitting interfaces by role/client","ISP and the role interface pattern","Real example: Printer, Scanner, Fax — one fat vs three lean","Java: Readable, Writable, Closeable instead of one IOStream"],
+    hint:"If a class implements an interface and leaves some methods empty or throws UnsupportedOperationException — ISP is violated.",
+    task:"Break fat interface",
+    taskDetail:"Create a fat Worker interface with work(), eat(), sleep(). A RobotWorker is forced to implement eat() and sleep(). Split into Workable, Eatable, Sleepable. Now Robot only implements Workable."
+  },
+  {
+    day:10, revise:"Day 7",
+    learn:"DIP — Dependency Inversion Principle",
+    points:["High-level modules should not depend on low-level modules","Both should depend on abstractions (interfaces)","Dependency Injection vs Dependency Inversion (difference)","Constructor injection vs field injection","How Spring @Autowired implements DIP","Why DIP makes unit testing easy (mock the interface)"],
+    hint:"DIP is why Spring works. You declare what you need (interface), Spring decides what to give you (implementation). Your class never knows the concrete type.",
+    task:"Refactor to interface-based design",
+    taskDetail:"Take a ReportService that directly uses MySQLDatabase. Introduce DatabaseRepository interface. Inject it via constructor. Now swap MySQL with InMemoryDatabase in tests — no change to ReportService."
+  },
+  {
+    day:11, revise:"Day 8",
+    learn:"Singleton (Thread-Safe) & Factory Pattern",
+    points:["Singleton: only one instance in the JVM","Eager vs lazy initialization","Double-checked locking with volatile","Enum-based Singleton (safest in Java)","Factory Method: delegate object creation to subclass","Simple Factory vs Factory Method vs Abstract Factory","When to use: object creation logic is complex or varies"],
+    hint:"In Spring, every @Bean is a Singleton by default. But for non-Spring code, use Enum Singleton — it handles serialization and reflection attacks automatically.",
+    task:"Write thread-safe Singleton",
+    taskDetail:"Implement Singleton 3 ways: (1) eager, (2) double-checked locking, (3) enum. Then write a SimpleFactory for Shape objects (Circle, Rectangle) based on a string input."
+  },
+  {
+    day:12, revise:"Day 9",
+    learn:"Builder & Strategy Pattern",
+    points:["Builder: construct complex objects step by step","When to use Builder: many optional fields, telescoping constructor problem","Fluent API style with method chaining","Builder in Java: Lombok @Builder, StringBuilder","Strategy: define a family of algorithms, make them interchangeable","Strategy eliminates if-else chains on behaviour","Context holds a Strategy reference, delegates to it"],
+    hint:"Builder = how to create a complex object cleanly. Strategy = how to switch behaviour at runtime without changing the object.",
+    task:"Replace if-else with Strategy",
+    taskDetail:"Build a SortingContext with if-else for 'bubble', 'merge', 'quick'. Refactor: SortStrategy interface, BubbleSort/MergeSort/QuickSort classes. Context just calls strategy.sort(data)."
+  },
+  {
+    day:13, revise:"Day 10",
+    learn:"Adapter, Facade & Observer Pattern",
+    points:["Adapter: make incompatible interfaces work together (wrapper)","Real use: legacy code integration, third-party library wrapping","Facade: simplified interface to a complex subsystem","Facade hides complexity — like a hotel concierge","Observer: one-to-many dependency, publish-subscribe","Java built-in: EventListener, Spring ApplicationEvent","When to use Observer: decoupled event-driven systems"],
+    hint:"Adapter = plug converter. Facade = remote control for your TV, DVD, Speakers as one button. Observer = subscribe to a YouTube channel.",
+    task:"Choose correct pattern for scenario",
+    taskDetail:"For each scenario, name the correct pattern: (1) New payment gateway has different API than yours. (2) Order placed should notify email, SMS, inventory. (3) One interface for starting order-shipping-billing subsystem."
+  },
+  {
+    day:14, revise:"Day 11",
+    learn:"UML, DTO vs Entity, Validations",
+    points:["Class diagram: class, fields, methods, relationships","UML relationships: association, aggregation, composition, dependency","DTO (Data Transfer Object): for API in/out, no business logic","Entity: mapped to DB, has identity, lifecycle managed by JPA","Why mixing DTO and Entity is dangerous","Bean validation: @NotNull, @Size, @Email, @Pattern","Where to validate: Controller layer (input), Service layer (business rule)"],
+    hint:"Never expose your Entity directly in API responses. Entity changes should not break your API contract. DTO is your firewall.",
+    task:"Draw Parking Lot class diagram",
+    taskDetail:"Design a Parking Lot LLD. Identify classes: ParkingLot, Floor, Slot, Vehicle, Ticket. Draw relationships. Mark which are composition vs aggregation. Add key methods to each class."
+  },
+  {
+    day:15, revise:"Day 12",
+    learn:"LLD Case Flow & Error Handling",
+    points:["LLD interview approach: clarify → entities → relationships → methods → edge cases","Identify actors and use cases first","Design for extensibility: what if requirements change?","Custom exceptions: checked vs unchecked in LLD","Exception hierarchy design for a system","Error propagation: where to catch, where to throw","LLD mini-systems: Parking Lot, Library, Elevator, ATM, BookMyShow"],
+    hint:"In LLD interviews: think aloud, start with core entities, add behaviour, then handle edge cases. Interviewers want to see your thought process, not just the final diagram.",
+    task:"Design Library System (explain aloud)",
+    taskDetail:"Design a Library Management System: Book, Member, Librarian, Loan, Catalogue. Define operations: borrow(), return(), search(), reserve(). Add fine calculation. Explain every design decision aloud."
+  },
+];
+
+const KEY='lld-syllabus-v1';
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||'{}');}catch{}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function ikey(day,type){return `d${day}-${type}`;}
+function isDone(day,type){return !!state[ikey(day,type)];}
+function toggle(day,type){state[ikey(day,type)]=!state[ikey(day,type)];save();render();}
+function resetAll(){if(confirm('Reset all progress?')){state={};save();render();}}
+function toggleDay(day){document.getElementById('dc-'+day).classList.toggle('open');}
+
+function dayDone(d){
+  const haRevise=d.revise!==null;
+  return isDone(d.day,'learn')&&isDone(d.day,'task')&&(!haRevise||isDone(d.day,'revise'));
+}
+
+function render(){
+  let totalItems=0,doneItems=0,daysDone=0;
+  DAYS.forEach(d=>{
+    const hasRevise=d.revise!==null;
+    const items=hasRevise?3:2;
+    totalItems+=items;
+    if(isDone(d.day,'learn'))doneItems++;
+    if(isDone(d.day,'task'))doneItems++;
+    if(hasRevise&&isDone(d.day,'revise'))doneItems++;
+    if(dayDone(d))daysDone++;
+  });
+  document.getElementById('s-days').textContent=daysDone;
+  document.getElementById('s-done').textContent=doneItems;
+  document.getElementById('s-total').textContent=totalItems;
+  document.getElementById('pct-text').textContent=`${doneItems} / ${totalItems}`;
+  document.getElementById('fill').style.width=(totalItems?Math.round(doneItems/totalItems*100):0)+'%';
+
+  document.getElementById('app').innerHTML=`
+    <div class="rule-banner">
+      <div class="rule-icon">💡</div>
+      <div class="rule-text">
+        <strong>147 Rule:</strong> On Day 4, revise Day 1. On Day 7, revise Day 4. On Day 11, revise Day 7… and so on.
+        Spaced repetition locks the concept in long-term memory. <strong>Explain each day's topic aloud for 5 minutes.</strong>
+        If you can't explain it clearly, repeat the day.
+      </div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot ld-learn"></div>Learn</div>
+      <div class="legend-item"><div class="legend-dot ld-revise"></div>Revise (147)</div>
+      <div class="legend-item"><div class="legend-dot ld-task"></div>Task (Must Do)</div>
+    </div>
+    ${DAYS.map(d=>{
+      const hasRevise=d.revise!==null;
+      const learnDone=isDone(d.day,'learn');
+      const reviseDone=hasRevise&&isDone(d.day,'revise');
+      const taskDone=isDone(d.day,'task');
+      const allDone=dayDone(d);
+      const num=String(d.day).padStart(2,'0');
+
+      return `
+      <div class="day-card ${allDone?'all-done':''}" id="dc-${d.day}">
+        <div class="day-head" onclick="toggleDay(${d.day})">
+          <div class="day-num">D${num}</div>
+          <div class="day-meta">
+            <div class="day-topic">${esc(d.learn)}</div>
+            ${hasRevise?`<div class="day-revise-tag">↩ Revise: ${esc(d.revise)}</div>`:`<div class="day-revise-tag" style="color:#c3c9d5">No revision today</div>`}
+          </div>
+          <div class="day-pills">
+            <div class="pill ${learnDone?'done-learn':''}"></div>
+            <div class="pill ${reviseDone?'done-revise':''}"></div>
+            <div class="pill ${taskDone?'done-task':''}"></div>
+          </div>
+          <span class="day-arrow">▶</span>
+        </div>
+        <div class="day-body">
+          <!-- LEARN -->
+          <div class="day-row row-learn ${learnDone?'checked':''}" onclick="toggle(${d.day},'learn')">
+            <div class="row-check"></div>
+            <div class="row-content">
+              <div class="row-type-tag">📖 Learn</div>
+              <div class="row-text">${esc(d.learn)}</div>
+              <div class="subtopics">${d.points.map(p=>`<div class="subtopic">${esc(p)}</div>`).join('')}</div>
+              <div class="hint-box">💡 <strong>Key insight:</strong> ${esc(d.hint)}</div>
+            </div>
+          </div>
+          <!-- REVISE -->
+          ${hasRevise?`
+          <div class="day-row row-revise ${reviseDone?'checked':''}" onclick="toggle(${d.day},'revise')">
+            <div class="row-check"></div>
+            <div class="row-content">
+              <div class="row-type-tag">🔁 Revise (147)</div>
+              <div class="revise-chip">↩ ${esc(d.revise)}</div>
+              <div class="row-text">Go back and revise ${esc(d.revise)}'s topic thoroughly</div>
+            </div>
+          </div>`:`
+          <div class="no-revise">🔁 No revision scheduled today — focus only on learning</div>`}
+          <!-- TASK -->
+          <div class="day-row row-task ${taskDone?'checked':''}" onclick="toggle(${d.day},'task')">
+            <div class="row-check"></div>
+            <div class="row-content">
+              <div class="row-type-tag">⚡ Task (Must Do)</div>
+              <div class="row-text">${esc(d.task)}</div>
+              <div class="task-detail">${esc(d.taskDetail)}</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+
+  // auto-open first incomplete day
+  let opened=false;
+  DAYS.forEach(d=>{
+    if(!opened&&!dayDone(d)){
+      document.getElementById('dc-'+d.day).classList.add('open');
+      opened=true;
+    }
+  });
+  if(!opened) document.getElementById('dc-15').classList.add('open');
+}
+
+render();
+</script>
+</body>
+</html>
