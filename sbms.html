@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Boot — Complete Enterprise Syllabus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0f1729;
+      --navy-2: #162035;
+      --navy-3: #1e2d4a;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --blue-pale: #dbeafe;
+      --blue-xpale: #eff6ff;
+      --green: #16a34a;
+      --green-pale: #dcfce7;
+      --amber: #d97706;
+      --amber-pale: #fef3c7;
+      --red: #dc2626;
+      --red-pale: #fee2e2;
+      --purple: #7c3aed;
+      --purple-pale: #ede9fe;
+      --text: #0f172a;
+      --text-2: #334155;
+      --text-3: #64748b;
+      --text-4: #94a3b8;
+      --border: #e2e8f0;
+      --border-2: #cbd5e1;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --surface-3: #f1f5f9;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.07);
+      --shadow: 0 4px 16px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,.10), 0 4px 12px rgba(0,0,0,.05);
+      --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;font-size:16px;}
+    body{font-family:'Outfit',system-ui,sans-serif;background:var(--surface-2);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;}
+    .nav-inner{max-width:1300px;margin:0 auto;height:60px;display:flex;align-items:center;gap:16px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+    .nav-logo-icon{width:32px;height:32px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+    .nav-logo-icon svg{width:18px;height:18px;}
+    .nav-logo-text{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.3px;}
+    .nav-logo-text span{color:var(--blue);}
+    .nav-links{display:flex;align-items:center;gap:4px;margin-left:16px;}
+    .nav-links a{font-size:13.5px;font-weight:500;color:var(--text-3);text-decoration:none;padding:6px 12px;border-radius:var(--radius-sm);transition:color var(--transition),background var(--transition);white-space:nowrap;}
+    .nav-links a:hover{color:var(--blue);background:var(--blue-xpale);}
+    .nav-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+    .nav-stat{font-size:12px;font-weight:600;color:var(--text-3);background:var(--surface-3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;white-space:nowrap;}
+    .nav-cta{font-size:13px;font-weight:600;color:#fff;background:var(--blue);border:none;border-radius:var(--radius-sm);padding:7px 16px;cursor:pointer;text-decoration:none;transition:background var(--transition),transform var(--transition);white-space:nowrap;}
+    .nav-cta:hover{background:#1d4ed8;transform:translateY(-1px);}
+
+    /* HERO */
+    .hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-3) 60%,#1a3a6b 100%);padding:80px 24px 90px;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;top:-40%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(37,99,235,.15) 0%,transparent 70%);pointer-events:none;}
+    .hero::after{content:'';position:absolute;bottom:-20%;left:-5%;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,.1) 0%,transparent 70%);pointer-events:none;}
+    .hero-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;position:relative;z-index:1;}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#93c5fd;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;background:rgba(37,99,235,.15);border:1px solid rgba(59,130,246,.3);border-radius:20px;padding:5px 14px;}
+    .hero-eyebrow-dot{width:6px;height:6px;background:#60a5fa;border-radius:50%;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+    .hero h1{font-size:clamp(32px,5vw,52px);font-weight:800;color:#fff;line-height:1.15;letter-spacing:-1.5px;margin-bottom:20px;}
+    .hero h1 span{color:#60a5fa;}
+    .hero-subtitle{font-size:17px;color:#94a3b8;line-height:1.65;max-width:580px;margin-bottom:36px;}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:#fff;background:var(--blue);border:none;border-radius:var(--radius);padding:13px 24px;cursor:pointer;text-decoration:none;transition:background var(--transition),transform var(--transition),box-shadow var(--transition);box-shadow:0 4px 16px rgba(37,99,235,.4);font-family:inherit;}
+    .btn-primary:hover{background:#1d4ed8;transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,.5);}
+    .btn-secondary{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:#cbd5e1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius);padding:13px 24px;cursor:pointer;text-decoration:none;transition:all var(--transition);font-family:inherit;}
+    .btn-secondary:hover{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25);}
+    .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:220px;}
+    .hero-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:18px 20px;text-align:center;}
+    .hero-stat-num{font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1;margin-bottom:4px;}
+    .hero-stat-label{font-size:11px;font-weight:500;color:#64748b;text-transform:uppercase;letter-spacing:.5px;}
+
+    /* PROGRESS */
+    .progress-section{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;position:sticky;top:60px;z-index:90;}
+    .progress-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:16px;}
+    .progress-label{font-size:13px;font-weight:600;color:var(--text-3);white-space:nowrap;}
+    .progress-track{flex:1;height:6px;background:var(--surface-3);border-radius:99px;overflow:hidden;border:1px solid var(--border);}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--blue) 0%,#6366f1 100%);border-radius:99px;width:0%;transition:width .6s ease;}
+    .progress-pct{font-size:13px;font-weight:700;color:var(--blue);white-space:nowrap;min-width:36px;}
+    .progress-checks{font-size:12px;color:var(--text-3);white-space:nowrap;}
+
+    /* SEARCH */
+    .search-section{max-width:1300px;margin:0 auto;padding:40px 24px 24px;}
+    .search-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+    .search-box{flex:1;min-width:240px;position:relative;}
+    .search-box svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-4);width:16px;height:16px;}
+    .search-box input{width:100%;height:44px;border:1.5px solid var(--border);border-radius:var(--radius);padding:0 16px 0 42px;font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;transition:border-color var(--transition),box-shadow var(--transition);}
+    .search-box input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12);}
+    .search-box input::placeholder{color:var(--text-4);}
+    .filter-chips{display:flex;gap:8px;flex-wrap:wrap;}
+    .chip{font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-3);cursor:pointer;transition:all var(--transition);white-space:nowrap;font-family:inherit;}
+    .chip:hover,.chip.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+    /* PHASE BANNERS */
+    .journey-phase{max-width:1300px;margin:40px auto 0;padding:0 24px;}
+    .phase-banner{border-radius:var(--radius);padding:16px 24px;display:flex;align-items:center;gap:16px;margin-bottom:28px;border:1px solid;}
+    .phase-banner.beginner{background:var(--green-pale);border-color:#bbf7d0;}
+    .phase-banner.intermediate{background:var(--amber-pale);border-color:#fde68a;}
+    .phase-banner.advanced{background:var(--red-pale);border-color:#fecaca;}
+    .phase-banner.production{background:var(--purple-pale);border-color:#ddd6fe;}
+    .phase-number{font-size:28px;font-weight:800;line-height:1;}
+    .phase-banner.beginner .phase-number{color:var(--green);}
+    .phase-banner.intermediate .phase-number{color:var(--amber);}
+    .phase-banner.advanced .phase-number{color:var(--red);}
+    .phase-banner.production .phase-number{color:var(--purple);}
+    .phase-title{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-.3px;}
+    .phase-sub{font-size:13px;color:var(--text-3);margin-top:2px;}
+    .phase-mods{font-size:12px;font-weight:600;margin-left:auto;white-space:nowrap;}
+    .phase-banner.beginner .phase-mods{color:var(--green);}
+    .phase-banner.intermediate .phase-mods{color:var(--amber);}
+    .phase-banner.advanced .phase-mods{color:var(--red);}
+    .phase-banner.production .phase-mods{color:var(--purple);}
+
+    /* GRID */
+    .modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:20px;}
+
+    /* MODULE CARD */
+    .module-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;transition:transform var(--transition),box-shadow var(--transition),border-color var(--transition);animation:fadeUp .4s ease both;}
+    .module-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--border-2);}
+    .module-card.hidden{display:none;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+    .card-stripe{height:4px;width:100%;}
+    .card-header{padding:20px 22px 14px;display:flex;align-items:flex-start;gap:14px;}
+    .card-num{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text-4);flex-shrink:0;min-width:52px;padding-top:2px;font-family:'JetBrains Mono',monospace;}
+    .card-title-block{flex:1;}
+    .card-title{font-size:15.5px;font-weight:700;color:var(--text);line-height:1.35;letter-spacing:-.3px;margin-bottom:6px;}
+    .card-desc{font-size:12.5px;color:var(--text-3);line-height:1.5;}
+    .card-icon{width:38px;height:38px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .card-icon svg{width:19px;height:19px;}
+    .card-meta{padding:0 22px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .badge{font-size:10.5px;font-weight:700;letter-spacing:.3px;padding:3px 10px;border-radius:20px;text-transform:uppercase;}
+    .badge-beginner{background:var(--green-pale);color:#15803d;}
+    .badge-intermediate{background:var(--amber-pale);color:#92400e;}
+    .badge-advanced{background:var(--red-pale);color:#991b1b;}
+    .badge-production{background:var(--purple-pale);color:#6d28d9;}
+    .topic-count-badge{font-size:11px;font-weight:600;color:var(--text-4);margin-left:auto;font-family:'JetBrains Mono',monospace;}
+    .card-divider{height:1px;background:var(--border);margin:0 22px;}
+
+    /* HIERARCHICAL TOPICS */
+    .card-topics{padding:14px 22px 18px;display:flex;flex-direction:column;gap:0;}
+
+    /* Level 1 topic (1.1 style) */
+    .topic-l1{margin-bottom:10px;}
+    .topic-l1-header{display:flex;align-items:baseline;gap:8px;padding:6px 0 4px;cursor:pointer;user-select:none;}
+    .topic-l1-num{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;color:var(--text-4);flex-shrink:0;min-width:28px;}
+    .topic-l1-title{font-size:13px;font-weight:600;color:var(--text-2);line-height:1.4;flex:1;}
+    .topic-l1-arrow{font-size:10px;color:var(--text-4);transition:transform .2s;flex-shrink:0;margin-left:4px;}
+    .topic-l1-header:hover .topic-l1-title{color:var(--blue);}
+    .topic-l1-header:hover .topic-l1-num{color:var(--blue);}
+    .topic-l1.open .topic-l1-arrow{transform:rotate(90deg);}
+
+    /* Level 2 topic (1.1.1 style) */
+    .topic-l2-list{display:none;padding-left:0;margin-top:0;}
+    .topic-l1.open .topic-l2-list{display:flex;flex-direction:column;gap:0;}
+    .topic-l2{margin-bottom:6px;}
+    .topic-l2-header{display:flex;align-items:baseline;gap:8px;padding:4px 0 2px 22px;cursor:pointer;user-select:none;}
+    .topic-l2-num{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--text-4);flex-shrink:0;min-width:32px;}
+    .topic-l2-title{font-size:12.5px;font-weight:600;color:var(--text-3);line-height:1.4;flex:1;}
+    .topic-l2-arrow{font-size:9px;color:var(--text-4);transition:transform .2s;flex-shrink:0;}
+    .topic-l2-header:hover .topic-l2-title{color:var(--blue);}
+    .topic-l2.open .topic-l2-arrow{transform:rotate(90deg);}
+
+    /* Level 3 subtopics (1.1.1.1 style) */
+    .topic-l3-list{display:none;padding-left:0;margin-top:0;}
+    .topic-l2.open .topic-l3-list{display:flex;flex-direction:column;gap:0;}
+    .topic-l3-item{display:flex;align-items:baseline;gap:8px;padding:3px 0 3px 54px;}
+    .topic-l3-num{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:500;color:var(--text-4);flex-shrink:0;min-width:36px;}
+    .topic-l3-text{font-size:12px;color:var(--text-3);line-height:1.45;}
+
+    .card-footer{padding:12px 22px;border-top:1px solid var(--border);background:var(--surface-2);margin-top:auto;display:flex;align-items:center;justify-content:space-between;}
+    .card-footer-label{font-size:12px;color:var(--text-4);font-weight:500;}
+    .card-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border-2);cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;background:var(--surface);}
+    .card-check.checked{background:var(--green);border-color:var(--green);}
+    .card-check.checked svg{color:#fff;}
+    .card-check svg{width:11px;height:11px;color:transparent;}
+
+    /* FOOTER */
+    .footer{background:var(--navy);color:#64748b;padding:60px 24px 40px;margin-top:60px;}
+    .footer-inner{max-width:1300px;margin:0 auto;}
+    .footer-top{display:flex;gap:48px;flex-wrap:wrap;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.06);}
+    .footer-brand{flex:1;min-width:240px;}
+    .footer-brand-name{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:10px;}
+    .footer-brand-name span{color:#60a5fa;}
+    .footer-brand-desc{font-size:14px;line-height:1.65;}
+    .footer-col{min-width:160px;}
+    .footer-col-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;margin-bottom:16px;}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+    .footer-col ul li a{font-size:13.5px;color:#64748b;text-decoration:none;transition:color var(--transition);}
+    .footer-col ul li a:hover{color:#e2e8f0;}
+    .footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+    .footer-bottom p{font-size:13px;}
+    .footer-tags{display:flex;gap:8px;flex-wrap:wrap;}
+    .footer-tag{font-size:11.5px;font-weight:600;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:4px 10px;color:#475569;}
+
+    /* SCROLL TOP */
+    .scroll-top{position:fixed;bottom:24px;right:24px;width:44px;height:44px;background:var(--blue);color:#fff;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);transition:all var(--transition);z-index:200;font-family:inherit;}
+    .scroll-top.visible{opacity:1;transform:translateY(0);}
+    .scroll-top:hover{background:#1d4ed8;transform:translateY(-2px);}
+    .scroll-top svg{width:18px;height:18px;}
+
+    /* NO RESULTS */
+    .no-results{display:none;text-align:center;padding:60px 24px;color:var(--text-3);font-size:15px;grid-column:1/-1;}
+    .no-results svg{display:block;margin:0 auto 16px;color:var(--text-4);}
+
+    .modules-section-wrap{max-width:1300px;margin:0 auto;padding:0 24px 80px;}
+
+    @media(max-width:900px){
+      .hero-inner{grid-template-columns:1fr;}
+      .hero-stats{display:none;}
+      .nav-links{display:none;}
+      .modules-grid{grid-template-columns:1fr;}
+    }
+    @media(max-width:600px){
+      .hero{padding:56px 16px 64px;}
+      .hero h1{font-size:28px;}
+      .hero-actions{flex-direction:column;}
+      .modules-section-wrap,.search-section,.journey-phase{padding-left:16px;padding-right:16px;}
+      .progress-section{top:56px;}
+      .progress-checks{display:none;}
+      .nav{padding:0 16px;}
+      .phase-banner{flex-wrap:wrap;}
+      .phase-mods{margin-left:0;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 2L3 6v8l7 4 7-4V6L10 2z" fill="white" opacity=".9"/>
+          <path d="M10 6l-4 2.5v4L10 15l4-2.5v-4L10 6z" fill="#60a5fa"/>
+        </svg>
+      </div>
+      <span class="nav-logo-text">Spring<span>Boot</span> Syllabus</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#beginner-phase">Beginner</a>
+      <a href="#intermediate-phase">Intermediate</a>
+      <a href="#advanced-phase">Advanced</a>
+      <a href="#production-phase">Production</a>
+    </nav>
+    <div class="nav-right">
+      <span class="nav-stat" id="nav-stat">20 Modules</span>
+      <a href="#search" class="nav-cta">Start Learning</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow"><div class="hero-eyebrow-dot"></div>Complete Enterprise Curriculum · 20 Modules · 120+ Topics · 400+ Subtopics</div>
+      <h1>Master <span>Spring Boot</span><br>from Zero to Production</h1>
+      <p class="hero-subtitle">A comprehensive, industry-aligned learning path covering Core Java prerequisites, Spring Framework internals, REST APIs, microservices, cloud deployment, and enterprise architecture patterns.</p>
+      <div class="hero-actions">
+        <a href="#beginner-phase" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Start the Journey
+        </a>
+        <a href="#search" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Browse Modules
+        </a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">20</div><div class="hero-stat-label">Modules</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">120+</div><div class="hero-stat-label">Topics</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">400+</div><div class="hero-stat-label">Subtopics</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4</div><div class="hero-stat-label">Levels</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS -->
+<div class="progress-section">
+  <div class="progress-inner">
+    <span class="progress-label">Your Progress</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <span class="progress-pct" id="progress-pct">0%</span>
+    <div class="progress-checks" id="progress-checks">0 / 20 modules</div>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-section" id="search">
+  <div class="search-row">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Search modules, topics, subtopics…" autocomplete="off">
+    </div>
+    <div class="filter-chips">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="beginner">Beginner</button>
+      <button class="chip" data-filter="intermediate">Intermediate</button>
+      <button class="chip" data-filter="advanced">Advanced</button>
+      <button class="chip" data-filter="production">Production</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODULES -->
+<main>
+  <div class="journey-phase" id="beginner-phase">
+    <div class="phase-banner beginner">
+      <div class="phase-number">01</div>
+      <div class="phase-info"><div class="phase-title">Foundation &amp; Core</div><div class="phase-sub">Java prerequisites, Spring fundamentals, and Spring Boot basics</div></div>
+      <div class="phase-mods">Modules 1–4</div>
+    </div>
+    <div class="modules-grid" id="grid-beginner"></div>
+  </div>
+
+  <div class="journey-phase" id="intermediate-phase">
+    <div class="phase-banner intermediate">
+      <div class="phase-number">02</div>
+      <div class="phase-info"><div class="phase-title">Core Skills</div><div class="phase-sub">REST APIs, database layer, logging, observability, and security</div></div>
+      <div class="phase-mods">Modules 5–9</div>
+    </div>
+    <div class="modules-grid" id="grid-intermediate"></div>
+  </div>
+
+  <div class="journey-phase" id="advanced-phase">
+    <div class="phase-banner advanced">
+      <div class="phase-number">03</div>
+      <div class="phase-info"><div class="phase-title">Advanced Engineering</div><div class="phase-sub">Testing, messaging, caching, microservices, and cloud-native patterns</div></div>
+      <div class="phase-mods">Modules 10–15</div>
+    </div>
+    <div class="modules-grid" id="grid-advanced"></div>
+  </div>
+
+  <div class="journey-phase" id="production-phase">
+    <div class="phase-banner production">
+      <div class="phase-number">04</div>
+      <div class="phase-info"><div class="phase-title">Production &amp; Enterprise</div><div class="phase-sub">Performance, distributed patterns, scalability, and best practices</div></div>
+      <div class="phase-mods">Modules 16–20</div>
+    </div>
+    <div class="modules-grid" id="grid-production"></div>
+  </div>
+
+  <div class="modules-section-wrap">
+    <div class="modules-grid" id="grid-search" style="display:none;">
+      <div class="no-results" id="no-results">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        No modules match your search.
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">Spring<span>Boot</span> Syllabus</div>
+        <p class="footer-brand-desc">A complete enterprise curriculum covering the full Spring Boot ecosystem — from Core Java through microservices, cloud-native deployment, and production best practices.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Phases</div>
+        <ul><li><a href="#beginner-phase">Foundation</a></li><li><a href="#intermediate-phase">Core Skills</a></li><li><a href="#advanced-phase">Advanced</a></li><li><a href="#production-phase">Production</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Key Topics</div>
+        <ul><li><a href="#">Spring Security</a></li><li><a href="#">Spring Data JPA</a></li><li><a href="#">Microservices</a></li><li><a href="#">Kafka &amp; RabbitMQ</a></li><li><a href="#">Docker &amp; Kubernetes</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tools Covered</div>
+        <ul><li><a href="#">Prometheus &amp; Grafana</a></li><li><a href="#">OpenTelemetry</a></li><li><a href="#">Resilience4j</a></li><li><a href="#">Testcontainers</a></li><li><a href="#">GitHub Actions</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Spring Boot Enterprise Syllabus — From Beginner to Production-Level Mastery</p>
+      <div class="footer-tags">
+        <span class="footer-tag">Spring Boot 3</span>
+        <span class="footer-tag">Java 17+</span>
+        <span class="footer-tag">Enterprise</span>
+        <span class="footer-tag">Cloud-Native</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+  const MODULES = [
+    {
+      id:1, phase:"beginner",
+      title:"Core Java Prerequisites for Spring Boot",
+      desc:"Essential Java fundamentals required before Spring Boot — OOP, collections, streams, concurrency, annotations, and design patterns.",
+      color:"#16a34a", bg:"#dcfce7", difficulty:"beginner",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+      topics:[
+        { num:"1.1", title:"Object-Oriented Programming Fundamentals", subs:[
+            { num:"1.1.1", title:"Classes, Objects, and Constructors", items:["1.1.1.1 Default and parameterized constructors","1.1.1.2 Constructor chaining with this() and super()","1.1.1.3 Object creation and memory allocation on heap"] },
+            { num:"1.1.2", title:"Inheritance and Polymorphism", items:["1.1.2.1 Single and multilevel inheritance","1.1.2.2 Method overriding and the @Override annotation","1.1.2.3 Runtime polymorphism and dynamic dispatch"] },
+            { num:"1.1.3", title:"Abstraction and Encapsulation", items:["1.1.3.1 Abstract classes and abstract methods","1.1.3.2 Interface definition and implementation","1.1.3.3 Access modifiers: public, private, protected, package-private"] },
+            { num:"1.1.4", title:"Interfaces and Design", items:["1.1.4.1 Default and static methods in interfaces (Java 8+)","1.1.4.2 Functional interfaces and the @FunctionalInterface annotation","1.1.4.3 Marker interfaces and their role in frameworks"] }
+          ]},
+        { num:"1.2", title:"Java Collections Framework", subs:[
+            { num:"1.2.1", title:"List Implementations", items:["1.2.1.1 ArrayList vs LinkedList: performance and use cases","1.2.1.2 CopyOnWriteArrayList for concurrent access"] },
+            { num:"1.2.2", title:"Map Implementations", items:["1.2.2.1 HashMap, LinkedHashMap, TreeMap internals","1.2.2.2 ConcurrentHashMap for thread-safe operations","1.2.2.3 HashSet and TreeSet"] },
+            { num:"1.2.3", title:"Queue and Deque", items:["1.2.3.1 PriorityQueue, ArrayDeque, LinkedList as Queue","1.2.3.2 BlockingQueue and ArrayBlockingQueue"] },
+            { num:"1.2.4", title:"Collections Utility Class", items:["1.2.4.1 Sorting, searching, and shuffling","1.2.4.2 Unmodifiable and synchronized wrappers"] }
+          ]},
+        { num:"1.3", title:"Java 8+ Features", subs:[
+            { num:"1.3.1", title:"Lambda Expressions", items:["1.3.1.1 Syntax: single-line and block lambdas","1.3.1.2 Capturing effectively final variables","1.3.1.3 Method references: static, instance, constructor"] },
+            { num:"1.3.2", title:"Stream API", items:["1.3.2.1 Intermediate ops: filter, map, flatMap, sorted, distinct","1.3.2.2 Terminal ops: collect, reduce, forEach, count, findFirst","1.3.2.3 Collectors: toList, toMap, groupingBy, partitioningBy","1.3.2.4 Parallel streams and ForkJoinPool"] },
+            { num:"1.3.3", title:"Optional Class", items:["1.3.3.1 Creating: Optional.of, Optional.ofNullable, Optional.empty","1.3.3.2 orElse, orElseGet, orElseThrow, ifPresent, map, flatMap"] },
+            { num:"1.3.4", title:"Date and Time API", items:["1.3.4.1 LocalDate, LocalTime, LocalDateTime, ZonedDateTime","1.3.4.2 Instant, Duration, Period, DateTimeFormatter"] },
+            { num:"1.3.5", title:"Java 9–17+ Features", items:["1.3.5.1 var keyword and local variable type inference (Java 10)","1.3.5.2 Records as immutable data carriers (Java 16+)","1.3.5.3 Sealed classes and interfaces (Java 17)","1.3.5.4 Text blocks for multi-line strings (Java 15+)","1.3.5.5 Pattern matching instanceof (Java 16+)"] }
+          ]},
+        { num:"1.4", title:"Exception Handling", subs:[
+            { num:"1.4.1", title:"Checked vs Unchecked Exceptions", items:["1.4.1.1 Exception hierarchy: Throwable, Error, Exception, RuntimeException","1.4.1.2 Custom exception classes and best practices"] },
+            { num:"1.4.2", title:"try-catch-finally and try-with-resources", items:["1.4.2.1 Multi-catch blocks","1.4.2.2 AutoCloseable and resource management"] },
+            { num:"1.4.3", title:"Exception Wrapping and Propagation", items:["1.4.3.1 Wrapping checked exceptions in unchecked","1.4.3.2 getCause() and initCause()"] }
+          ]},
+        { num:"1.5", title:"Generics and Type Safety", subs:[
+            { num:"1.5.1", title:"Generic Classes and Methods", items:["1.5.1.1 Type parameters and wildcards: <T>, <? extends T>, <? super T>","1.5.1.2 Bounded type parameters"] },
+            { num:"1.5.2", title:"Type Erasure and Reification", items:["1.5.2.1 Runtime behavior of generics","1.5.2.2 Using ParameterizedType for reflection"] }
+          ]},
+        { num:"1.6", title:"Multithreading and Concurrency", subs:[
+            { num:"1.6.1", title:"Thread Fundamentals", items:["1.6.1.1 Creating threads: Thread class, Runnable, Callable","1.6.1.2 Thread states and lifecycle"] },
+            { num:"1.6.2", title:"ExecutorService and Thread Pools", items:["1.6.2.1 Fixed, cached, scheduled, and single thread executors","1.6.2.2 Future and CompletableFuture","1.6.2.3 CompletableFuture chaining: thenApply, thenCompose, exceptionally"] },
+            { num:"1.6.3", title:"Synchronization Mechanisms", items:["1.6.3.1 synchronized keyword and intrinsic locks","1.6.3.2 ReentrantLock, ReadWriteLock, StampedLock","1.6.3.3 volatile keyword and memory visibility","1.6.3.4 Atomic classes: AtomicInteger, AtomicReference, AtomicBoolean"] },
+            { num:"1.6.4", title:"Java Memory Model", items:["1.6.4.1 Happens-before relationship","1.6.4.2 Thread-local variables: ThreadLocal<T>"] }
+          ]},
+        { num:"1.7", title:"Java Annotations and Reflection", subs:[
+            { num:"1.7.1", title:"Built-in Annotations", items:["1.7.1.1 @Override, @Deprecated, @SuppressWarnings, @FunctionalInterface","1.7.1.2 Meta-annotations: @Target, @Retention, @Inherited, @Documented"] },
+            { num:"1.7.2", title:"Custom Annotations", items:["1.7.2.1 Defining annotation interfaces with elements","1.7.2.2 Annotation processors (APT)"] },
+            { num:"1.7.3", title:"Reflection API", items:["1.7.3.1 Class, Field, Method, Constructor introspection","1.7.3.2 Invoking methods and accessing fields at runtime","1.7.3.3 Proxy and InvocationHandler for dynamic proxies"] }
+          ]},
+        { num:"1.8", title:"Design Patterns in Java", subs:[
+            { num:"1.8.1", title:"Creational Patterns", items:["1.8.1.1 Singleton (double-checked locking, enum-based)","1.8.1.2 Factory Method and Abstract Factory","1.8.1.3 Builder pattern for complex object construction","1.8.1.4 Prototype pattern"] },
+            { num:"1.8.2", title:"Structural Patterns", items:["1.8.2.1 Adapter, Decorator, Facade, Proxy","1.8.2.2 Composite and Flyweight"] },
+            { num:"1.8.3", title:"Behavioral Patterns", items:["1.8.3.1 Strategy, Observer, Command, Template Method","1.8.3.2 Chain of Responsibility, Iterator, State"] }
+          ]}
+      ]
+    },
+    {
+      id:2, phase:"beginner",
+      title:"Spring Framework Fundamentals",
+      desc:"Deep understanding of the Spring IoC container, dependency injection, bean lifecycle, and AOP — the engine behind Spring Boot.",
+      color:"#16a34a", bg:"#dcfce7", difficulty:"beginner",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>`,
+      topics:[
+        { num:"2.1", title:"Introduction to Spring Framework", subs:[
+            { num:"2.1.1", title:"History and Evolution", items:["2.1.1.1 Spring Framework history and versions","2.1.1.2 Spring modules overview: Core, Context, AOP, Data, Web","2.1.1.3 Spring vs Java EE / Jakarta EE comparison"] }
+          ]},
+        { num:"2.2", title:"IoC Container", subs:[
+            { num:"2.2.1", title:"Inversion of Control Principle", items:["2.2.1.1 Hollywood Principle: Don't call us, we'll call you","2.2.1.2 IoC vs Dependency Lookup"] },
+            { num:"2.2.2", title:"BeanFactory vs ApplicationContext", items:["2.2.2.1 BeanFactory: lazy initialization and basic DI","2.2.2.2 ApplicationContext: eager loading, events, i18n, AOP","2.2.2.3 AnnotationConfigApplicationContext","2.2.2.4 ClassPathXmlApplicationContext (legacy)"] },
+            { num:"2.2.3", title:"ApplicationContext Hierarchy", items:["2.2.3.1 Parent-child context relationships","2.2.3.2 Web ApplicationContext for Spring MVC"] }
+          ]},
+        { num:"2.3", title:"Dependency Injection", subs:[
+            { num:"2.3.1", title:"Constructor Injection", items:["2.3.1.1 Single and multiple dependency injection","2.3.1.2 Immutability benefits and required dependencies"] },
+            { num:"2.3.2", title:"Setter Injection", items:["2.3.2.1 Optional dependencies and circular dependency resolution"] },
+            { num:"2.3.3", title:"Field Injection", items:["2.3.3.1 @Autowired on fields — pitfalls and anti-patterns"] },
+            { num:"2.3.4", title:"Injection Qualifiers and Disambiguation", items:["2.3.4.1 @Qualifier annotation with bean names","2.3.4.2 @Primary for default bean selection","2.3.4.3 Custom qualifier annotations"] },
+            { num:"2.3.5", title:"Circular Dependency Detection", items:["2.3.5.1 Spring's circular dependency detection mechanism","2.3.5.2 Resolution strategies: setter injection, @Lazy"] }
+          ]},
+        { num:"2.4", title:"Bean Lifecycle", subs:[
+            { num:"2.4.1", title:"Bean Definition and Registration", items:["2.4.1.1 BeanDefinition metadata","2.4.1.2 BeanDefinitionRegistry and BeanDefinitionRegistryPostProcessor"] },
+            { num:"2.4.2", title:"Instantiation and Dependency Resolution", items:["2.4.2.1 Order of instantiation for singleton beans","2.4.2.2 @DependsOn annotation"] },
+            { num:"2.4.3", title:"Initialization Callbacks", items:["2.4.3.1 @PostConstruct annotation (JSR-250)","2.4.3.2 InitializingBean.afterPropertiesSet()","2.4.3.3 initMethod attribute on @Bean"] },
+            { num:"2.4.4", title:"Destruction Callbacks", items:["2.4.4.1 @PreDestroy annotation (JSR-250)","2.4.4.2 DisposableBean.destroy()","2.4.4.3 destroyMethod attribute on @Bean"] },
+            { num:"2.4.5", title:"BeanPostProcessor", items:["2.4.5.1 postProcessBeforeInitialization and postProcessAfterInitialization","2.4.5.2 AutowiredAnnotationBeanPostProcessor internals"] },
+            { num:"2.4.6", title:"Bean Scopes", items:["2.4.6.1 singleton: single shared instance","2.4.6.2 prototype: new instance on each request","2.4.6.3 request, session, application, websocket (web scopes)","2.4.6.4 Custom scope implementation"] }
+          ]},
+        { num:"2.5", title:"Spring AOP", subs:[
+            { num:"2.5.1", title:"AOP Concepts", items:["2.5.1.1 Aspect, Advice, Pointcut, JoinPoint, Target, Proxy, Weaving"] },
+            { num:"2.5.2", title:"Spring AOP vs AspectJ", items:["2.5.2.1 Proxy-based AOP limitations","2.5.2.2 AspectJ weaving modes: compile-time, post-compile, load-time"] },
+            { num:"2.5.3", title:"Defining Aspects", items:["2.5.3.1 @Aspect and @Component","2.5.3.2 Pointcut expressions: execution, within, args, @annotation"] },
+            { num:"2.5.4", title:"Advice Types", items:["2.5.4.1 @Before, @After, @AfterReturning, @AfterThrowing, @Around","2.5.4.2 ProceedingJoinPoint for @Around advice"] }
+          ]}
+      ]
+    },
+    {
+      id:3, phase:"beginner",
+      title:"Spring Core Annotations & Configuration",
+      desc:"Stereotype and configuration annotations, profiles, Spring events, and externalized configuration.",
+      color:"#16a34a", bg:"#dcfce7", difficulty:"beginner",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+      topics:[
+        { num:"3.1", title:"Stereotype Annotations", subs:[
+            { num:"3.1.1", title:"Core Stereotypes", items:["3.1.1.1 @Component, @Service, @Repository, @Controller, @RestController","3.1.1.2 Component scan internals and @ComponentScan","3.1.1.3 Difference between stereotypes and their semantics"] }
+          ]},
+        { num:"3.2", title:"Configuration Annotations", subs:[
+            { num:"3.2.1", title:"@Configuration and @Bean", items:["3.2.1.1 CGLIB proxy for @Configuration classes","3.2.1.2 Lite mode with @Component-based @Bean methods"] },
+            { num:"3.2.2", title:"@Import and @ImportResource", items:["3.2.2.1 Importing configuration classes","3.2.2.2 Importing XML configuration resources"] },
+            { num:"3.2.3", title:"@PropertySource and @Value", items:["3.2.3.1 @PropertySource and @PropertySources","3.2.3.2 @Value with SpEL expressions"] },
+            { num:"3.2.4", title:"@ConfigurationProperties", items:["3.2.4.1 Nested properties and collection binding","3.2.4.2 @EnableConfigurationProperties","3.2.4.3 Validation with JSR-303 on @ConfigurationProperties"] }
+          ]},
+        { num:"3.3", title:"Spring Profiles", subs:[
+            { num:"3.3.1", title:"Profile Configuration", items:["3.3.1.1 @Profile annotation on beans and configuration classes","3.3.1.2 Activating profiles: application.properties, JVM args, env var","3.3.1.3 Profile-specific property files (application-dev.properties)","3.3.1.4 Default profile and multiple active profiles","3.3.1.5 Profile expressions: complex conditions with & and |"] }
+          ]},
+        { num:"3.4", title:"Spring Events", subs:[
+            { num:"3.4.1", title:"Event Model", items:["3.4.1.1 ApplicationEvent and ApplicationListener","3.4.1.2 @EventListener annotation","3.4.1.3 ApplicationEventPublisher","3.4.1.4 Ordered event listeners and @Order","3.4.1.5 Async event processing with @Async","3.4.1.6 Built-in events: ContextRefreshedEvent, ApplicationReadyEvent"] }
+          ]},
+        { num:"3.5", title:"Spring Expression Language (SpEL)", subs:[
+            { num:"3.5.1", title:"SpEL Usage", items:["3.5.1.1 SpEL syntax and operators","3.5.1.2 Property access, method invocation, constructors","3.5.1.3 Collection selection and projection","3.5.1.4 Conditional expressions and safe navigation","3.5.1.5 SpEL in @Value, @Query, @PreAuthorize, @Cacheable"] }
+          ]}
+      ]
+    },
+    {
+      id:4, phase:"beginner",
+      title:"Spring Boot Fundamentals",
+      desc:"Auto-configuration magic, starter dependencies, embedded servers, and the Spring Boot application lifecycle.",
+      color:"#16a34a", bg:"#dcfce7", difficulty:"beginner",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+      topics:[
+        { num:"4.1", title:"Spring Boot Introduction", subs:[
+            { num:"4.1.1", title:"Boot Philosophy", items:["4.1.1.1 Convention over configuration","4.1.1.2 Spring Boot vs Spring Framework","4.1.1.3 Spring Initializr: project scaffolding","4.1.1.4 @SpringBootApplication: @Configuration + @EnableAutoConfiguration + @ComponentScan"] }
+          ]},
+        { num:"4.2", title:"Auto-Configuration", subs:[
+            { num:"4.2.1", title:"How Auto-Configuration Works", items:["4.2.1.1 spring.factories / AutoConfiguration.imports (Spring Boot 2.7+)","4.2.1.2 @EnableAutoConfiguration annotation"] },
+            { num:"4.2.2", title:"Conditional Annotations", items:["4.2.2.1 @ConditionalOnClass, @ConditionalOnMissingClass","4.2.2.2 @ConditionalOnBean, @ConditionalOnMissingBean","4.2.2.3 @ConditionalOnProperty, @ConditionalOnResource","4.2.2.4 @ConditionalOnWebApplication, @ConditionalOnExpression","4.2.2.5 Custom Condition with Condition interface"] },
+            { num:"4.2.3", title:"Debugging Auto-Configuration", items:["4.2.3.1 --debug flag and ConditionEvaluationReport","4.2.3.2 spring.autoconfigure.exclude property"] }
+          ]},
+        { num:"4.3", title:"Starter Dependencies", subs:[
+            { num:"4.3.1", title:"Starters Overview", items:["4.3.1.1 What is a Spring Boot Starter","4.3.1.2 Parent POM and version management","4.3.1.3 Common starters: web, data-jpa, security, test, actuator","4.3.1.4 Creating custom starters","4.3.1.5 Dependency management with BOM (Bill of Materials)"] }
+          ]},
+        { num:"4.4", title:"Embedded Servers", subs:[
+            { num:"4.4.1", title:"Embedded Tomcat", items:["4.4.1.1 server.port, server.servlet.context-path, connection timeout","4.4.1.2 Thread pool configuration: min-spare-threads, max-threads"] },
+            { num:"4.4.2", title:"Server Switching", items:["4.4.2.1 Switching to Jetty or Undertow"] },
+            { num:"4.4.3", title:"SSL and HTTP/2", items:["4.4.3.1 Keystore, truststore, SSL protocols and ciphers","4.4.3.2 HTTP/2 support configuration"] },
+            { num:"4.4.4", title:"Graceful Shutdown", items:["4.4.4.1 server.shutdown=graceful and grace-period"] }
+          ]},
+        { num:"4.5", title:"Application Properties and Configuration", subs:[
+            { num:"4.5.1", title:"Configuration Files", items:["4.5.1.1 application.properties vs application.yml","4.5.1.2 Property loading order and precedence","4.5.1.3 Multi-document YAML files","4.5.1.4 External configuration and 12-factor app principles"] }
+          ]},
+        { num:"4.6", title:"CommandLineRunner and ApplicationRunner", subs:[
+            { num:"4.6.1", title:"Startup Hooks", items:["4.6.1.1 CommandLineRunner for startup tasks","4.6.1.2 ApplicationRunner with ApplicationArguments","4.6.1.3 Ordering multiple runners with @Order"] }
+          ]}
+      ]
+    },
+    {
+      id:5, phase:"intermediate",
+      title:"REST API Development",
+      desc:"Build production-grade REST APIs with proper design, validation, exception handling, and JSON processing.",
+      color:"#2563eb", bg:"#dbeafe", difficulty:"intermediate",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+      topics:[
+        { num:"5.1", title:"RESTful API Design Principles", subs:[
+            { num:"5.1.1", title:"REST Fundamentals", items:["5.1.1.1 REST architectural constraints (Roy Fielding)","5.1.1.2 Resource naming conventions and URI design","5.1.1.3 HTTP methods: GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS","5.1.1.4 HTTP status codes: 2xx, 3xx, 4xx, 5xx","5.1.1.5 Richardson Maturity Model: Level 0–3","5.1.1.6 HATEOAS and hypermedia links","5.1.1.7 API versioning strategies: URI, header, query param"] }
+          ]},
+        { num:"5.2", title:"Building REST Controllers", subs:[
+            { num:"5.2.1", title:"Controller Annotations", items:["5.2.1.1 @RestController and @RequestMapping","5.2.1.2 @GetMapping, @PostMapping, @PutMapping, @PatchMapping, @DeleteMapping","5.2.1.3 @PathVariable, @RequestParam, @RequestHeader, @CookieValue","5.2.1.4 @RequestBody and @ResponseBody","5.2.1.5 ResponseEntity for full response control","5.2.1.6 Producing and consuming media types"] }
+          ]},
+        { num:"5.3", title:"Request and Response Handling", subs:[
+            { num:"5.3.1", title:"MVC Pipeline", items:["5.3.1.1 Request lifecycle in Spring MVC","5.3.1.2 DispatcherServlet and HandlerMapping","5.3.1.3 HandlerInterceptor for cross-cutting concerns","5.3.1.4 HttpMessageConverters: Jackson, GSON, XML","5.3.1.5 Multipart file uploads: @RequestPart and MultipartFile","5.3.1.6 Streaming responses with StreamingResponseBody"] }
+          ]},
+        { num:"5.4", title:"Input Validation", subs:[
+            { num:"5.4.1", title:"Bean Validation (JSR-380)", items:["5.4.1.1 @NotNull, @NotEmpty, @NotBlank, @Size, @Min, @Max, @Email, @Pattern","5.4.1.2 @Positive, @PositiveOrZero, @Future, @Past","5.4.1.3 @Valid and @Validated annotations","5.4.1.4 Custom constraint annotations and validators","5.4.1.5 Cross-field validation with class-level constraints","5.4.1.6 Validation groups for conditional validation"] }
+          ]},
+        { num:"5.5", title:"Exception Handling", subs:[
+            { num:"5.5.1", title:"Global Exception Strategy", items:["5.5.1.1 @ExceptionHandler in controllers","5.5.1.2 @ControllerAdvice and @RestControllerAdvice","5.5.1.3 ProblemDetail and RFC 7807 error response format (Spring 6)","5.5.1.4 Custom exception hierarchy design","5.5.1.5 Handling MethodArgumentNotValidException","5.5.1.6 ResponseStatusException for programmatic HTTP status","5.5.1.7 Error response standardization: timestamp, path, message, errorCode"] }
+          ]},
+        { num:"5.6", title:"Jackson JSON Processing", subs:[
+            { num:"5.6.1", title:"Jackson Configuration", items:["5.6.1.1 ObjectMapper configuration","5.6.1.2 Serialization annotations: @JsonProperty, @JsonIgnore, @JsonInclude, @JsonFormat","5.6.1.3 Deserialization annotations: @JsonAlias, @JsonCreator, @JsonDeserialize","5.6.1.4 Custom serializers and deserializers","5.6.1.5 Handling polymorphism: @JsonTypeInfo, @JsonSubTypes","5.6.1.6 Jackson modules: JavaTimeModule, Jdk8Module"] }
+          ]}
+      ]
+    },
+    {
+      id:6, phase:"intermediate",
+      title:"Spring Data JPA & Database Layer",
+      desc:"Full database layer mastery: JPA/Hibernate, relationships, repositories, transactions, connection pooling, and migrations.",
+      color:"#2563eb", bg:"#dbeafe", difficulty:"intermediate",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+      topics:[
+        { num:"6.1", title:"JPA and Hibernate Fundamentals", subs:[
+            { num:"6.1.1", title:"JPA Core", items:["6.1.1.1 JPA specification and Hibernate as ORM provider","6.1.1.2 EntityManagerFactory and EntityManager","6.1.1.3 Persistence context and first-level cache","6.1.1.4 Entity states: transient, persistent, detached, removed","6.1.1.5 N+1 query problem identification and resolution"] }
+          ]},
+        { num:"6.2", title:"Entity Mapping", subs:[
+            { num:"6.2.1", title:"Basic Mapping", items:["6.2.1.1 @Entity, @Table, @Id, @GeneratedValue strategies","6.2.1.2 @Column: nullable, unique, length, columnDefinition","6.2.1.3 @Transient for non-persistent fields","6.2.1.4 @Temporal and @Enumerated","6.2.1.5 @Embeddable and @Embedded for value objects","6.2.1.6 @EmbeddedId for composite primary keys","6.2.1.7 Auditing with @CreatedDate, @LastModifiedDate, @EnableJpaAuditing"] }
+          ]},
+        { num:"6.3", title:"Entity Relationships", subs:[
+            { num:"6.3.1", title:"Relationship Mappings", items:["6.3.1.1 @OneToOne: bidirectional vs unidirectional","6.3.1.2 @OneToMany and @ManyToOne: mappedBy, CascadeType, orphanRemoval","6.3.1.3 @ManyToMany: @JoinTable, extra columns with intermediate entity","6.3.1.4 FetchType: LAZY vs EAGER and LazyInitializationException","6.3.1.5 Inheritance strategies: SINGLE_TABLE, TABLE_PER_CLASS, JOINED"] }
+          ]},
+        { num:"6.4", title:"Spring Data JPA Repositories", subs:[
+            { num:"6.4.1", title:"Repository Hierarchy", items:["6.4.1.1 CrudRepository, PagingAndSortingRepository, JpaRepository"] },
+            { num:"6.4.2", title:"Query Methods", items:["6.4.2.1 Derived query methods: findBy, countBy, existsBy, deleteBy","6.4.2.2 Logical operators: And, Or, Not, Between, LessThan, GreaterThan, Like","6.4.2.3 @Query with JPQL: named and positional parameters","6.4.2.4 @Query with native SQL","6.4.2.5 Projections: interface-based, class-based (DTO), dynamic","6.4.2.6 Pagination and Sorting with Pageable and Sort"] },
+            { num:"6.4.3", title:"Advanced Repository Features", items:["6.4.3.1 Custom Repository implementations: Impl class pattern","6.4.3.2 EntityManager in custom repository","6.4.3.3 Specifications API: Specification<T> and Predicate building","6.4.3.4 QueryDSL integration"] }
+          ]},
+        { num:"6.5", title:"Transaction Management", subs:[
+            { num:"6.5.1", title:"@Transactional Deep Dive", items:["6.5.1.1 ACID properties of transactions","6.5.1.2 Propagation: REQUIRED, REQUIRES_NEW, SUPPORTS, NOT_SUPPORTED, NESTED","6.5.1.3 Isolation: READ_UNCOMMITTED, READ_COMMITTED, REPEATABLE_READ, SERIALIZABLE","6.5.1.4 readOnly optimization, rollbackFor, noRollbackFor, timeout","6.5.1.5 Transaction proxy and self-invocation pitfall"] },
+            { num:"6.5.2", title:"Locking", items:["6.5.2.1 @Version for optimistic locking","6.5.2.2 LockModeType: PESSIMISTIC_READ, PESSIMISTIC_WRITE","6.5.2.3 OptimisticLockException and retry strategies"] }
+          ]},
+        { num:"6.6", title:"Database Connection Pooling with HikariCP", subs:[
+            { num:"6.6.1", title:"HikariCP Configuration", items:["6.6.1.1 HikariCP as Spring Boot default connection pool","6.6.1.2 Pool sizing: maximumPoolSize, minimumIdle","6.6.1.3 Timeout settings: connectionTimeout, idleTimeout, maxLifetime","6.6.1.4 Multiple DataSource configuration"] }
+          ]},
+        { num:"6.7", title:"Database Migration", subs:[
+            { num:"6.7.1", title:"Flyway", items:["6.7.1.1 Versioned and repeatable migrations","6.7.1.2 Naming convention: V__description.sql","6.7.1.3 flyway_schema_history table","6.7.1.4 Flyway callbacks and Java-based migrations","6.7.1.5 Baseline on migrate for existing databases"] },
+            { num:"6.7.2", title:"Liquibase", items:["6.7.2.1 Changelog formats: XML, YAML, JSON, SQL","6.7.2.2 changeSets, preconditions, and rollback","6.7.2.3 DATABASECHANGELOG and DATABASECHANGELOGLOCK tables","6.7.2.4 Tagging and rollback strategies","6.7.2.5 Liquibase vs Flyway comparison"] }
+          ]}
+      ]
+    },
+    {
+      id:7, phase:"intermediate",
+      title:"Logging Architecture",
+      desc:"Enterprise logging strategy with SLF4J, Logback, MDC for correlation IDs, and centralized log aggregation.",
+      color:"#2563eb", bg:"#dbeafe", difficulty:"intermediate",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+      topics:[
+        { num:"7.1", title:"Logging Frameworks", subs:[
+            { num:"7.1.1", title:"SLF4J and Logback", items:["7.1.1.1 SLF4J as logging facade: LoggerFactory.getLogger usage","7.1.1.2 Parameterized log messages","7.1.1.3 Logback architecture: Logger, Appender, Encoder, Layout","7.1.1.4 logback-spring.xml vs logback.xml"] },
+            { num:"7.1.2", title:"Log4j2", items:["7.1.2.1 Switching from Logback to Log4j2","7.1.2.2 Async logging with Log4j2"] },
+            { num:"7.1.3", title:"Log Levels", items:["7.1.3.1 TRACE, DEBUG, INFO, WARN, ERROR levels"] }
+          ]},
+        { num:"7.2", title:"Logback Configuration", subs:[
+            { num:"7.2.1", title:"Appenders and Patterns", items:["7.2.1.1 Console appender with patterns","7.2.1.2 RollingFileAppender: time-based and size-based rolling","7.2.1.3 Log file archiving and compression","7.2.1.4 Profile-specific log configuration with <springProfile>","7.2.1.5 Async appender for performance"] }
+          ]},
+        { num:"7.3", title:"Mapped Diagnostic Context (MDC)", subs:[
+            { num:"7.3.1", title:"MDC Usage", items:["7.3.1.1 MDC.put, MDC.get, MDC.remove, MDC.clear","7.3.1.2 Correlation ID / Trace ID in MDC","7.3.1.3 Filter and interceptor-based MDC population","7.3.1.4 MDC propagation in async and reactive contexts","7.3.1.5 Structured logging with JSON format","7.3.1.6 logstash-logback-encoder for ELK stack"] }
+          ]},
+        { num:"7.4", title:"Log Aggregation", subs:[
+            { num:"7.4.1", title:"Centralized Logging", items:["7.4.1.1 ELK Stack: Elasticsearch, Logstash, Kibana","7.4.1.2 Loki and Grafana for log aggregation","7.4.1.3 Fluentd and Fluent Bit","7.4.1.4 Log shipping from containers"] }
+          ]}
+      ]
+    },
+    {
+      id:8, phase:"intermediate",
+      title:"Spring Boot Actuator & Observability",
+      desc:"Full observability: Actuator, Micrometer metrics, Prometheus, Grafana dashboards, and distributed tracing with OpenTelemetry.",
+      color:"#2563eb", bg:"#dbeafe", difficulty:"intermediate",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+      topics:[
+        { num:"8.1", title:"Spring Boot Actuator", subs:[
+            { num:"8.1.1", title:"Endpoints", items:["8.1.1.1 /health, /info, /metrics, /env, /beans, /mappings, /loggers, /heapdump","8.1.1.2 Enabling and exposing endpoints: management.endpoints.web.exposure.include","8.1.1.3 Custom health indicators: HealthIndicator interface","8.1.1.4 Custom Actuator endpoints with @Endpoint, @ReadOperation, @WriteOperation","8.1.1.5 Actuator security: protecting management endpoints","8.1.1.6 Actuator on separate port: management.server.port"] }
+          ]},
+        { num:"8.2", title:"Metrics with Micrometer", subs:[
+            { num:"8.2.1", title:"Micrometer Meters", items:["8.2.1.1 Micrometer as metrics facade","8.2.1.2 Counter, Gauge, Timer, DistributionSummary, LongTaskTimer","8.2.1.3 MeterRegistry and registering custom metrics","8.2.1.4 Tags and dimensions for metric labeling","8.2.1.5 @Timed annotation for automatic method timing","8.2.1.6 JVM metrics: GC, memory, threads, class loading"] }
+          ]},
+        { num:"8.3", title:"Prometheus Integration", subs:[
+            { num:"8.3.1", title:"Prometheus Setup", items:["8.3.1.1 micrometer-registry-prometheus dependency","8.3.1.2 /actuator/prometheus endpoint","8.3.1.3 Prometheus scrape configuration","8.3.1.4 PromQL basics for querying metrics","8.3.1.5 Alerting rules with Alertmanager"] }
+          ]},
+        { num:"8.4", title:"Grafana Dashboards", subs:[
+            { num:"8.4.1", title:"Grafana Setup", items:["8.4.1.1 Connecting Grafana to Prometheus data source","8.4.1.2 Pre-built Spring Boot dashboards","8.4.1.3 Building custom panels and dashboards","8.4.1.4 Grafana Loki for log correlation with metrics"] }
+          ]},
+        { num:"8.5", title:"Distributed Tracing", subs:[
+            { num:"8.5.1", title:"OpenTelemetry", items:["8.5.1.1 OpenTelemetry concepts: Trace, Span, Context propagation","8.5.1.2 Spring Boot + OpenTelemetry setup","8.5.1.3 Jaeger and Zipkin as tracing backends","8.5.1.4 Trace ID / Span ID in logs (MDC integration)","8.5.1.5 Sampling strategies: always-on, probability, rate-limiting","8.5.1.6 W3C Trace Context propagation standard"] }
+          ]}
+      ]
+    },
+    {
+      id:9, phase:"intermediate",
+      title:"Spring Security",
+      desc:"Authentication, JWT, OAuth2/OIDC, method-level authorization, CORS, CSRF, and API security best practices.",
+      color:"#2563eb", bg:"#dbeafe", difficulty:"intermediate",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+      topics:[
+        { num:"9.1", title:"Spring Security Architecture", subs:[
+            { num:"9.1.1", title:"Core Components", items:["9.1.1.1 Security filter chain and DelegatingFilterProxy","9.1.1.2 SecurityContext and SecurityContextHolder","9.1.1.3 Authentication and Authorization flow","9.1.1.4 AuthenticationManager, AuthenticationProvider, UserDetailsService","9.1.1.5 GrantedAuthority, Role, Permission model"] }
+          ]},
+        { num:"9.2", title:"Basic Authentication and Form Login", subs:[
+            { num:"9.2.1", title:"Auth Configuration", items:["9.2.1.1 HttpSecurity configuration with SecurityFilterChain","9.2.1.2 In-memory and JDBC UserDetailsService","9.2.1.3 Password encoding: BCryptPasswordEncoder, Argon2, PBKDF2","9.2.1.4 Custom login and logout handling","9.2.1.5 Remember-me authentication"] }
+          ]},
+        { num:"9.3", title:"JWT Authentication", subs:[
+            { num:"9.3.1", title:"JWT Implementation", items:["9.3.1.1 JWT structure: Header, Payload, Signature","9.3.1.2 Claims: iss, sub, aud, exp, iat, jti","9.3.1.3 JWT generation and signing (JJWT / Nimbus JOSE)","9.3.1.4 JWT validation and exception handling","9.3.1.5 Custom OncePerRequestFilter for JWT processing","9.3.1.6 Access token and refresh token strategy","9.3.1.7 Token revocation and blacklisting with Redis","9.3.1.8 Rotating refresh tokens"] }
+          ]},
+        { num:"9.4", title:"OAuth2 and OpenID Connect", subs:[
+            { num:"9.4.1", title:"OAuth2 Flows", items:["9.4.1.1 Authorization Code, Client Credentials, Implicit, ROPC flows","9.4.1.2 Spring Authorization Server setup","9.4.1.3 OAuth2 Resource Server configuration","9.4.1.4 OAuth2 Login with Google, GitHub, Facebook","9.4.1.5 OpenID Connect: ID Token, UserInfo endpoint","9.4.1.6 JWT decoder and opaque token introspection","9.4.1.7 PKCE (Proof Key for Code Exchange)"] }
+          ]},
+        { num:"9.5", title:"Method-Level Security", subs:[
+            { num:"9.5.1", title:"Method Security Annotations", items:["9.5.1.1 @EnableMethodSecurity and @EnableGlobalMethodSecurity","9.5.1.2 @PreAuthorize and @PostAuthorize with SpEL","9.5.1.3 @PreFilter and @PostFilter for collection security","9.5.1.4 @Secured and @RolesAllowed (JSR-250)"] }
+          ]},
+        { num:"9.6", title:"API Security Best Practices", subs:[
+            { num:"9.6.1", title:"Security Headers and Protection", items:["9.6.1.1 CORS: @CrossOrigin, allowedOrigins, allowedMethods","9.6.1.2 CSRF token synchronizer pattern and stateless REST APIs","9.6.1.3 X-Content-Type-Options, X-Frame-Options, HSTS, CSP","9.6.1.4 Rate limiting at security layer","9.6.1.5 SQL injection and XSS prevention"] }
+          ]}
+      ]
+    },
+    {
+      id:10, phase:"advanced",
+      title:"Testing in Spring Boot",
+      desc:"Comprehensive testing: unit tests, integration tests, MockMvc, Testcontainers, and consumer-driven contract testing.",
+      color:"#dc2626", bg:"#fee2e2", difficulty:"advanced",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
+      topics:[
+        { num:"10.1", title:"Testing Philosophy and Pyramid", subs:[
+            { num:"10.1.1", title:"Testing Strategies", items:["10.1.1.1 Unit → Integration → End-to-End testing pyramid","10.1.1.2 Test isolation principles","10.1.1.3 Test-Driven Development (TDD) basics","10.1.1.4 Behavior-Driven Development (BDD) with Gherkin"] }
+          ]},
+        { num:"10.2", title:"JUnit 5", subs:[
+            { num:"10.2.1", title:"JUnit 5 Features", items:["10.2.1.1 @Test, @BeforeEach, @AfterEach, @BeforeAll, @AfterAll","10.2.1.2 @DisplayName, @Tag, @Disabled, @Timeout","10.2.1.3 @ParameterizedTest, @ValueSource, @CsvSource, @MethodSource","10.2.1.4 Assertions: assertEquals, assertTrue, assertThrows, assertAll, assertTimeout","10.2.1.5 Assumptions: assumeTrue, assumeThat","10.2.1.6 Nested tests with @Nested, @RepeatedTest"] }
+          ]},
+        { num:"10.3", title:"Mockito", subs:[
+            { num:"10.3.1", title:"Mockito Features", items:["10.3.1.1 @Mock, @Spy, @InjectMocks, @Captor","10.3.1.2 when/thenReturn, when/thenThrow, doReturn/doThrow","10.3.1.3 Argument matchers: any, eq, argThat","10.3.1.4 Verification: verify, verifyNoMoreInteractions, inOrder","10.3.1.5 ArgumentCaptor for capturing method arguments","10.3.1.6 Mocking static methods with Mockito 3.4+","10.3.1.7 Strict stubbing and STRICT_STUBS MockitoExtension"] }
+          ]},
+        { num:"10.4", title:"Spring Boot Test Slices", subs:[
+            { num:"10.4.1", title:"Test Slice Annotations", items:["10.4.1.1 @SpringBootTest: full application context, WebEnvironment modes","10.4.1.2 @WebMvcTest for controller layer testing","10.4.1.3 @DataJpaTest for repository layer with embedded H2","10.4.1.4 @AutoConfigureTestDatabase for real DB testing","10.4.1.5 @DataRedisTest, @DataMongoTest, @WebFluxTest, @JsonTest","10.4.1.6 @MockBean and @SpyBean for mocking in Spring context"] }
+          ]},
+        { num:"10.5", title:"MockMvc", subs:[
+            { num:"10.5.1", title:"MockMvc Testing", items:["10.5.1.1 MockMvc setup: standalone vs full context","10.5.1.2 Performing requests: get, post, put, delete, multipart","10.5.1.3 Result matchers: status, content, jsonPath, header, cookie","10.5.1.4 Security test support: @WithMockUser, @WithUserDetails","10.5.1.5 MockMvcResultHandlers: print, log"] }
+          ]},
+        { num:"10.6", title:"Testcontainers", subs:[
+            { num:"10.6.1", title:"Testcontainers Setup", items:["10.6.1.1 Testcontainers philosophy and Docker dependency","10.6.1.2 PostgreSQLContainer, MySQLContainer, RedisContainer, KafkaContainer","10.6.1.3 @Container and @Testcontainers annotations","10.6.1.4 DynamicPropertySource for container-based properties","10.6.1.5 Reusable containers for faster tests"] }
+          ]},
+        { num:"10.7", title:"Integration and Contract Testing", subs:[
+            { num:"10.7.1", title:"Contract Testing", items:["10.7.1.1 TestRestTemplate and WebTestClient for integration testing","10.7.1.2 Spring Cloud Contract for consumer-driven contracts","10.7.1.3 Pact for consumer-driven contract testing","10.7.1.4 WireMock for HTTP stubbing"] }
+          ]}
+      ]
+    },
+    {
+      id:11, phase:"advanced",
+      title:"Caching, Messaging & Async Processing",
+      desc:"Redis caching, RabbitMQ AMQP messaging, Apache Kafka event streaming, async processing, and scheduling.",
+      color:"#dc2626", bg:"#fee2e2", difficulty:"advanced",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
+      topics:[
+        { num:"11.1", title:"Caching with Spring Cache Abstraction", subs:[
+            { num:"11.1.1", title:"Cache Annotations", items:["11.1.1.1 @EnableCaching and CacheManager","11.1.1.2 @Cacheable, @CachePut, @CacheEvict, @Caching","11.1.1.3 Cache key generation: SpEL expressions, KeyGenerator","11.1.1.4 Conditional caching: condition and unless attributes","11.1.1.5 Cache providers: Caffeine, EhCache, Simple, Redis","11.1.1.6 TTL configuration per cache"] }
+          ]},
+        { num:"11.2", title:"Redis", subs:[
+            { num:"11.2.1", title:"Spring Data Redis", items:["11.2.1.1 Redis data structures: String, Hash, List, Set, Sorted Set, Stream","11.2.1.2 RedisTemplate and StringRedisTemplate","11.2.1.3 RedisRepository and @RedisHash","11.2.1.4 Serialization: JdkSerializationRedisSerializer, Jackson2JsonRedisSerializer","11.2.1.5 Redis as cache provider: RedisCacheManager","11.2.1.6 Redis pub/sub with MessageListener","11.2.1.7 Redis Lua scripting for atomic operations","11.2.1.8 Distributed locking with Redisson","11.2.1.9 Session management with Spring Session + Redis"] }
+          ]},
+        { num:"11.3", title:"RabbitMQ", subs:[
+            { num:"11.3.1", title:"Spring AMQP", items:["11.3.1.1 AMQP concepts: Exchange, Queue, Binding, Routing Key","11.3.1.2 Exchange types: Direct, Fanout, Topic, Headers","11.3.1.3 AmqpTemplate and RabbitTemplate","11.3.1.4 @RabbitListener and @EnableRabbit","11.3.1.5 Message acknowledgment: AUTO, MANUAL, NONE","11.3.1.6 Dead Letter Exchange (DLX) and dead letter queues","11.3.1.7 RabbitMQ reliability: publisher confirms, consumer acks"] }
+          ]},
+        { num:"11.4", title:"Apache Kafka", subs:[
+            { num:"11.4.1", title:"Spring Kafka", items:["11.4.1.1 Kafka architecture: Broker, Topic, Partition, Consumer Group, Offset","11.4.1.2 Kafka guarantees: at-most-once, at-least-once, exactly-once","11.4.1.3 KafkaTemplate and @KafkaListener","11.4.1.4 Producer configuration: acks, retries, batch.size, compression","11.4.1.5 Consumer configuration: group.id, auto.offset.reset, max.poll.records","11.4.1.6 Manual offset commit with Acknowledgment","11.4.1.7 Kafka Transactions and exactly-once semantics","11.4.1.8 Schema Registry and Avro serialization","11.4.1.9 Kafka Streams basics with Spring Kafka Streams"] }
+          ]},
+        { num:"11.5", title:"Event-Driven Architecture", subs:[
+            { num:"11.5.1", title:"EDA Patterns", items:["11.5.1.1 Event-Driven vs Request-Response architecture","11.5.1.2 Event types: domain events, integration events, commands, queries","11.5.1.3 Choreography vs Orchestration","11.5.1.4 Event schema design and backward compatibility","11.5.1.5 CloudEvents specification"] }
+          ]},
+        { num:"11.6", title:"Asynchronous Processing", subs:[
+            { num:"11.6.1", title:"@Async and Scheduling", items:["11.6.1.1 @Async annotation and ThreadPoolTaskExecutor configuration","11.6.1.2 @EnableAsync and task executor setup","11.6.1.3 AsyncResult and CompletableFuture return types","11.6.1.4 Exception handling in @Async methods","11.6.1.5 TaskDecorator for context propagation in async threads"] }
+          ]},
+        { num:"11.7", title:"Scheduling", subs:[
+            { num:"11.7.1", title:"Scheduled Tasks", items:["11.7.1.1 @Scheduled: fixedRate, fixedDelay, initialDelay","11.7.1.2 Cron expression syntax and examples","11.7.1.3 @EnableScheduling and ThreadPoolTaskScheduler","11.7.1.4 Dynamic scheduling with SchedulingConfigurer","11.7.1.5 Distributed scheduling with ShedLock","11.7.1.6 Quartz Scheduler integration with Spring Boot"] }
+          ]}
+      ]
+    },
+    {
+      id:12, phase:"advanced",
+      title:"File Processing & API Documentation",
+      desc:"File upload/download, batch processing with Spring Batch, and OpenAPI/Swagger documentation generation.",
+      color:"#dc2626", bg:"#fee2e2", difficulty:"advanced",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`,
+      topics:[
+        { num:"12.1", title:"File Handling", subs:[
+            { num:"12.1.1", title:"File Upload and Download", items:["12.1.1.1 File upload: MultipartFile and MultipartHttpServletRequest","12.1.1.2 spring.servlet.multipart configuration: max-file-size, max-request-size","12.1.1.3 Streaming large file downloads with StreamingResponseBody","12.1.1.4 File storage strategies: local filesystem, S3, Azure Blob, GCS","12.1.1.5 AWS S3 integration with Spring Cloud AWS","12.1.1.6 File type validation and malware scanning"] }
+          ]},
+        { num:"12.2", title:"Batch File Processing", subs:[
+            { num:"12.2.1", title:"File Formats", items:["12.2.1.1 CSV processing with OpenCSV","12.2.1.2 Excel processing with Apache POI","12.2.1.3 PDF processing with Apache PDFBox or iText"] },
+            { num:"12.2.2", title:"Spring Batch", items:["12.2.2.1 Job, Step, ItemReader, ItemProcessor, ItemWriter","12.2.2.2 Chunk-oriented processing and restart capability","12.2.2.3 FlatFileItemReader, JdbcCursorItemReader, JpaPagingItemReader","12.2.2.4 Job parameters and job repository"] }
+          ]},
+        { num:"12.3", title:"OpenAPI and Swagger", subs:[
+            { num:"12.3.1", title:"API Documentation", items:["12.3.1.1 OpenAPI 3.0 specification","12.3.1.2 springdoc-openapi vs springfox","12.3.1.3 Auto-generated documentation from Spring MVC annotations","12.3.1.4 @Operation, @ApiResponse, @Parameter, @Schema, @Tag","12.3.1.5 Authentication documentation in Swagger UI","12.3.1.6 Grouping APIs and customizing Swagger UI","12.3.1.7 API-first development with OpenAPI Generator"] }
+          ]}
+      ]
+    },
+    {
+      id:13, phase:"advanced",
+      title:"Spring Cloud & Microservices",
+      desc:"Full Spring Cloud: Config Server, Eureka, API Gateway, OpenFeign, WebClient, load balancing, and Resilience4j.",
+      color:"#dc2626", bg:"#fee2e2", difficulty:"advanced",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="6" height="6" rx="1"/><rect x="16" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M5 9v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9"/><line x1="12" y1="14" x2="12" y2="9"/></svg>`,
+      topics:[
+        { num:"13.1", title:"Microservices Architecture", subs:[
+            { num:"13.1.1", title:"Microservices Design", items:["13.1.1.1 Microservices vs Monolith: pros, cons, when to use","13.1.1.2 Domain-Driven Design (DDD) and bounded contexts","13.1.1.3 Service decomposition strategies","13.1.1.4 Data management in microservices: database per service","13.1.1.5 Inter-service communication: synchronous vs asynchronous"] }
+          ]},
+        { num:"13.2", title:"Spring Cloud Config Server", subs:[
+            { num:"13.2.1", title:"Config Server Setup", items:["13.2.1.1 Centralized configuration management","13.2.1.2 Git backend for config server","13.2.1.3 Vault backend for secrets","13.2.1.4 Client-side refresh with /actuator/refresh","13.2.1.5 @RefreshScope for dynamic refresh of beans","13.2.1.6 Spring Cloud Bus for broadcasting config changes"] }
+          ]},
+        { num:"13.3", title:"Service Discovery with Eureka", subs:[
+            { num:"13.3.1", title:"Eureka Setup", items:["13.3.1.1 Service discovery: server-side vs client-side","13.3.1.2 Eureka Server setup and configuration","13.3.1.3 Eureka Client registration and heartbeat","13.3.1.4 Peer-to-peer Eureka Server replication","13.3.1.5 Consul as alternative service registry"] }
+          ]},
+        { num:"13.4", title:"API Gateway with Spring Cloud Gateway", subs:[
+            { num:"13.4.1", title:"Gateway Configuration", items:["13.4.1.1 Spring Cloud Gateway architecture (reactive, non-blocking)","13.4.1.2 Route definition: predicates, filters, URI","13.4.1.3 Built-in predicates: Path, Method, Header, Query, Cookie","13.4.1.4 Built-in filters: RewritePath, AddRequestHeader, CircuitBreaker, RateLimiter","13.4.1.5 Custom GatewayFilter and GlobalFilter","13.4.1.6 Rate limiting with Redis RateLimiter","13.4.1.7 Authentication and authorization at gateway"] }
+          ]},
+        { num:"13.5", title:"OpenFeign for Declarative HTTP Clients", subs:[
+            { num:"13.5.1", title:"Feign Client", items:["13.5.1.1 @FeignClient declaration","13.5.1.2 Feign with Eureka service discovery","13.5.1.3 Custom Feign configuration: encoder, decoder, logger, interceptor","13.5.1.4 Feign error decoder and fallback","13.5.1.5 Feign with circuit breaker integration"] }
+          ]},
+        { num:"13.6", title:"WebClient for Reactive HTTP", subs:[
+            { num:"13.6.1", title:"WebClient Usage", items:["13.6.1.1 WebClient.Builder configuration","13.6.1.2 GET, POST, PUT, DELETE requests","13.6.1.3 Error handling with onStatus and onErrorMap","13.6.1.4 Retry with Reactor Retry","13.6.1.5 Exchange filter functions for logging and auth","13.6.1.6 Timeout configuration"] }
+          ]},
+        { num:"13.7", title:"Resilience with Resilience4j", subs:[
+            { num:"13.7.1", title:"Resilience Patterns", items:["13.7.1.1 Circuit Breaker: CLOSED, OPEN, HALF_OPEN states","13.7.1.2 @CircuitBreaker: failure rate threshold, wait duration","13.7.1.3 @Retry with maxAttempts, waitDuration, exponential backoff","13.7.1.4 Bulkhead: ThreadPool Bulkhead and Semaphore Bulkhead","13.7.1.5 @RateLimiter with limitForPeriod and limitRefreshPeriod","13.7.1.6 @TimeLimiter pattern","13.7.1.7 Fallback methods for resilience patterns","13.7.1.8 Resilience4j metrics integration with Micrometer"] }
+          ]}
+      ]
+    },
+    {
+      id:14, phase:"advanced",
+      title:"Containerization & Orchestration",
+      desc:"Docker, Docker Compose, Kubernetes deployment, and Helm chart packaging for Spring Boot applications.",
+      color:"#dc2626", bg:"#fee2e2", difficulty:"advanced",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`,
+      topics:[
+        { num:"14.1", title:"Docker", subs:[
+            { num:"14.1.1", title:"Docker Basics", items:["14.1.1.1 Docker architecture: daemon, client, registry, image, container","14.1.1.2 Multi-stage builds for lean images","14.1.1.3 Layer caching optimization","14.1.1.4 Non-root user for security","14.1.1.5 ENTRYPOINT vs CMD","14.1.1.6 Spring Boot layered JARs","14.1.1.7 Building images with Cloud Native Buildpacks (spring-boot:build-image)","14.1.1.8 Jib for containerizing without Docker daemon","14.1.1.9 Docker image scanning: Trivy, Snyk"] }
+          ]},
+        { num:"14.2", title:"Docker Compose", subs:[
+            { num:"14.2.1", title:"Compose Configuration", items:["14.2.1.1 Docker Compose file structure: version, services, networks, volumes","14.2.1.2 Multi-service setup: Spring Boot + PostgreSQL + Redis + Kafka","14.2.1.3 Health checks and service dependencies","14.2.1.4 Environment variables and .env files","14.2.1.5 Named volumes for data persistence","14.2.1.6 Spring Boot with Docker Compose support"] }
+          ]},
+        { num:"14.3", title:"Kubernetes", subs:[
+            { num:"14.3.1", title:"K8s Resources", items:["14.3.1.1 Kubernetes architecture: control plane, nodes, pods","14.3.1.2 Core resources: Pod, Deployment, Service, ConfigMap, Secret","14.3.1.3 Deployment strategies: RollingUpdate, Recreate, Canary, Blue-Green","14.3.1.4 Service types: ClusterIP, NodePort, LoadBalancer, ExternalName","14.3.1.5 Ingress and IngressController (NGINX, Traefik)","14.3.1.6 Horizontal Pod Autoscaler (HPA)","14.3.1.7 Resource requests and limits: cpu, memory","14.3.1.8 Liveness, Readiness, Startup probes with Actuator endpoints","14.3.1.9 PersistentVolume (PV) and PersistentVolumeClaim (PVC)","14.3.1.10 Kubernetes RBAC: Role, ClusterRole, RoleBinding","14.3.1.11 Namespace isolation and resource quotas"] }
+          ]},
+        { num:"14.4", title:"Helm", subs:[
+            { num:"14.4.1", title:"Helm Charts", items:["14.4.1.1 Helm architecture: charts, repositories, releases","14.4.1.2 Chart structure: Chart.yaml, values.yaml, templates/","14.4.1.3 Writing Helm templates with Go templating","14.4.1.4 Helm lifecycle commands: install, upgrade, rollback, uninstall","14.4.1.5 Helm hooks for lifecycle management","14.4.1.6 Packaging and publishing Helm charts"] }
+          ]}
+      ]
+    },
+    {
+      id:15, phase:"advanced",
+      title:"CI/CD Pipelines",
+      desc:"Automated build, test, and deployment pipelines with GitHub Actions and Jenkins, plus code quality scanning.",
+      color:"#dc2626", bg:"#fee2e2", difficulty:"advanced",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>`,
+      topics:[
+        { num:"15.1", title:"CI/CD Concepts", subs:[
+            { num:"15.1.1", title:"Pipeline Fundamentals", items:["15.1.1.1 Continuous Integration principles","15.1.1.2 Continuous Delivery vs Continuous Deployment","15.1.1.3 Pipeline stages: build, test, quality gate, package, deploy","15.1.1.4 GitFlow vs trunk-based development","15.1.1.5 Shift-left testing strategy"] }
+          ]},
+        { num:"15.2", title:"GitHub Actions", subs:[
+            { num:"15.2.1", title:"Actions Workflow", items:["15.2.1.1 Workflow syntax: on, jobs, steps, uses, with, env, secrets","15.2.1.2 Spring Boot workflow: checkout, setup-jdk, mvn package, docker build, push","15.2.1.3 Matrix builds for multiple Java versions","15.2.1.4 Caching Maven/Gradle dependencies","15.2.1.5 GitHub Secrets and Environments","15.2.1.6 GitHub Container Registry (GHCR)","15.2.1.7 Deploy to Kubernetes with kubectl in Actions","15.2.1.8 OIDC-based credential-less cloud authentication"] }
+          ]},
+        { num:"15.3", title:"Jenkins", subs:[
+            { num:"15.3.1", title:"Jenkins Pipelines", items:["15.3.1.1 Jenkins installation and plugin management","15.3.1.2 Declarative vs scripted pipelines","15.3.1.3 Jenkinsfile for Spring Boot projects","15.3.1.4 Jenkins agents: master-agent architecture","15.3.1.5 Jenkins with Docker agents","15.3.1.6 SonarQube integration for code quality gates","15.3.1.7 Nexus/Artifactory for artifact management"] }
+          ]},
+        { num:"15.4", title:"Code Quality and Security Scanning", subs:[
+            { num:"15.4.1", title:"Quality Tools", items:["15.4.1.1 SonarQube: SAST, code smells, coverage, technical debt","15.4.1.2 Checkstyle and PMD for code style","15.4.1.3 SpotBugs for bug detection","15.4.1.4 OWASP Dependency Check for vulnerability scanning","15.4.1.5 License compliance checking"] }
+          ]}
+      ]
+    },
+    {
+      id:16, phase:"production",
+      title:"Production Security & Secrets Management",
+      desc:"SSL/TLS, HashiCorp Vault, cloud secrets managers, rate limiting algorithms, and API threat mitigation.",
+      color:"#7c3aed", bg:"#ede9fe", difficulty:"production",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+      topics:[
+        { num:"16.1", title:"SSL/TLS and HTTPS", subs:[
+            { num:"16.1.1", title:"TLS Configuration", items:["16.1.1.1 TLS handshake and certificate chain","16.1.1.2 Generating self-signed certs for development (keytool)","16.1.1.3 Let's Encrypt certificates","16.1.1.4 Configuring HTTPS in Spring Boot: server.ssl properties","16.1.1.5 Mutual TLS (mTLS) for service-to-service security","16.1.1.6 TLS termination at load balancer vs service","16.1.1.7 Certificate rotation strategies"] }
+          ]},
+        { num:"16.2", title:"Secrets Management", subs:[
+            { num:"16.2.1", title:"Secrets Backends", items:["16.2.1.1 HashiCorp Vault: KV secrets engine, dynamic secrets","16.2.1.2 Vault authentication: Token, AppRole, Kubernetes","16.2.1.3 AWS Secrets Manager and Parameter Store with Spring Cloud AWS","16.2.1.4 Azure Key Vault with Spring Cloud Azure","16.2.1.5 Kubernetes External Secrets Operator","16.2.1.6 Sealed Secrets for GitOps workflows","16.2.1.7 Jasypt for encrypting properties in application.properties"] }
+          ]},
+        { num:"16.3", title:"Rate Limiting", subs:[
+            { num:"16.3.1", title:"Rate Limiting Algorithms", items:["16.3.1.1 Rate limiting algorithms: Token Bucket, Leaky Bucket, Fixed Window, Sliding Window","16.3.1.2 Application-level rate limiting with Bucket4j","16.3.1.3 Redis-backed distributed rate limiting","16.3.1.4 API Gateway rate limiting","16.3.1.5 Rate limiting by user, IP, API key"] }
+          ]}
+      ]
+    },
+    {
+      id:17, phase:"production",
+      title:"Performance Tuning & JVM Optimization",
+      desc:"JVM memory, GC tuning, heap and thread dump analysis, profiling, GraalVM Native Image, and Virtual Threads.",
+      color:"#7c3aed", bg:"#ede9fe", difficulty:"production",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+      topics:[
+        { num:"17.1", title:"JVM Architecture and Tuning", subs:[
+            { num:"17.1.1", title:"JVM Internals", items:["17.1.1.1 JVM memory areas: Heap, Stack, Metaspace, Code Cache","17.1.1.2 Heap regions: Young Generation (Eden, S0, S1), Old Generation","17.1.1.3 Garbage Collectors: Serial, Parallel, G1GC, ZGC, Shenandoah","17.1.1.4 GC tuning flags: -Xms, -Xmx, -XX:NewRatio, -XX:MaxGCPauseMillis","17.1.1.5 JIT compiler: C1, C2, GraalVM Native Image","17.1.1.6 JVM flags for Spring Boot in containers","17.1.1.7 GraalVM Native Image compilation for Spring Boot","17.1.1.8 Spring AOT (Ahead-of-Time compilation)"] }
+          ]},
+        { num:"17.2", title:"Memory Analysis", subs:[
+            { num:"17.2.1", title:"Heap Analysis", items:["17.2.1.1 Heap dump generation: jmap, jcmd, Actuator /heapdump","17.2.1.2 Heap dump analysis with Eclipse MAT","17.2.1.3 Memory leak detection and object retention paths","17.2.1.4 Off-heap memory: DirectByteBuffer, Metaspace leaks"] }
+          ]},
+        { num:"17.3", title:"Thread and CPU Analysis", subs:[
+            { num:"17.3.1", title:"Profiling", items:["17.3.1.1 Thread dump generation: jstack, jcmd, /actuator/threaddump","17.3.1.2 Analyzing thread dumps: blocked threads, deadlocks, WAITING states","17.3.1.3 CPU profiling with async-profiler, JFR (Java Flight Recorder)","17.3.1.4 JVM Mission Control (JMC) for profiling"] }
+          ]},
+        { num:"17.4", title:"Application Performance Tuning", subs:[
+            { num:"17.4.1", title:"Tuning Strategies", items:["17.4.1.1 Database query optimization: EXPLAIN ANALYZE, index strategy","17.4.1.2 Connection pool tuning for throughput and latency","17.4.1.3 HTTP server thread pool tuning","17.4.1.4 Lazy initialization: spring.main.lazy-initialization=true","17.4.1.5 Virtual Threads (Project Loom) with Spring Boot 3","17.4.1.6 Reactive programming with Spring WebFlux and Project Reactor","17.4.1.7 Load testing with Gatling, k6, or JMeter"] }
+          ]}
+      ]
+    },
+    {
+      id:18, phase:"production",
+      title:"Enterprise Design Patterns",
+      desc:"Saga, CQRS, Event Sourcing, Outbox Pattern, Service Mesh with Istio, and Anti-Corruption Layer.",
+      color:"#7c3aed", bg:"#ede9fe", difficulty:"production",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
+      topics:[
+        { num:"18.1", title:"Saga Pattern for Distributed Transactions", subs:[
+            { num:"18.1.1", title:"Saga Implementations", items:["18.1.1.1 Choreography-based Saga: event-driven compensation and rollback","18.1.1.2 Orchestration-based Saga: orchestrator and step management","18.1.1.3 Eventuate Tram and Eventuate Saga frameworks","18.1.1.4 Compensation transaction design"] }
+          ]},
+        { num:"18.2", title:"CQRS", subs:[
+            { num:"18.2.1", title:"CQRS Implementation", items:["18.2.1.1 CQRS concepts: separating read and write models","18.2.1.2 Command side: command handlers and command bus","18.2.1.3 Query side: read models and projections","18.2.1.4 Eventual consistency between write and read models","18.2.1.5 Axon Framework for CQRS in Spring Boot"] }
+          ]},
+        { num:"18.3", title:"Event Sourcing", subs:[
+            { num:"18.3.1", title:"Event Sourcing Implementation", items:["18.3.1.1 Event Sourcing concepts: event log as source of truth","18.3.1.2 Event store design and implementation","18.3.1.3 Aggregate reconstruction from event log","18.3.1.4 Snapshots for performance optimization","18.3.1.5 Event Sourcing with Axon Framework and EventStoreDB"] }
+          ]},
+        { num:"18.4", title:"Outbox Pattern", subs:[
+            { num:"18.4.1", title:"Outbox Implementation", items:["18.4.1.1 Transactional Outbox for reliable event publishing","18.4.1.2 Outbox table design","18.4.1.3 Message relay with polling publisher or Debezium CDC","18.4.1.4 Idempotent message consumers","18.4.1.5 Inbox pattern for duplicate detection"] }
+          ]},
+        { num:"18.5", title:"Additional Enterprise Patterns", subs:[
+            { num:"18.5.1", title:"Architectural Patterns", items:["18.5.1.1 API Gateway Pattern","18.5.1.2 Backend for Frontend (BFF) Pattern","18.5.1.3 Strangler Fig Pattern for monolith migration","18.5.1.4 Anti-Corruption Layer for legacy integration","18.5.1.5 Sidecar and Ambassador Patterns in Kubernetes","18.5.1.6 Service Mesh with Istio: traffic management, observability, mTLS","18.5.1.7 VirtualService, DestinationRule, Gateway resources"] }
+          ]}
+      ]
+    },
+    {
+      id:19, phase:"production",
+      title:"Scalability & High Availability",
+      desc:"Horizontal scaling, HA architecture, distributed locking, CAP theorem, consensus algorithms, and chaos engineering.",
+      color:"#7c3aed", bg:"#ede9fe", difficulty:"production",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>`,
+      topics:[
+        { num:"19.1", title:"Horizontal and Vertical Scaling", subs:[
+            { num:"19.1.1", title:"Scaling Strategies", items:["19.1.1.1 Stateless service design for horizontal scaling","19.1.1.2 Session management in clustered environments","19.1.1.3 Database read replicas and read-write splitting","19.1.1.4 Database sharding strategies","19.1.1.5 Caching tiers: local, distributed, CDN"] }
+          ]},
+        { num:"19.2", title:"High Availability Design", subs:[
+            { num:"19.2.1", title:"HA Architecture", items:["19.2.1.1 Availability zones and region redundancy","19.2.1.2 Health check endpoints for load balancers","19.2.1.3 Graceful degradation and fallback strategies","19.2.1.4 Database HA: primary-replica failover, clustering","19.2.1.5 Multi-region deployments","19.2.1.6 Chaos engineering: Chaos Monkey principles"] }
+          ]},
+        { num:"19.3", title:"System Design Considerations", subs:[
+            { num:"19.3.1", title:"Distributed System Principles", items:["19.3.1.1 CAP Theorem: Consistency, Availability, Partition Tolerance","19.3.1.2 BASE vs ACID: eventual consistency","19.3.1.3 Idempotency in API design","19.3.1.4 Pagination, cursors, and infinite scroll patterns","19.3.1.5 Backpressure in high-throughput systems","19.3.1.6 Bulkhead isolation for cascading failure prevention"] }
+          ]},
+        { num:"19.4", title:"Distributed Systems Challenges", subs:[
+            { num:"19.4.1", title:"Distributed Algorithms", items:["19.4.1.1 Distributed locking: Redis, ZooKeeper, database-based","19.4.1.2 Distributed leader election","19.4.1.3 Two-Phase Commit (2PC) and its limitations","19.4.1.4 Consensus algorithms: Raft, Paxos overview","19.4.1.5 Clock skew and logical clocks: Lamport, Vector clocks"] }
+          ]}
+      ]
+    },
+    {
+      id:20, phase:"production",
+      title:"Production Readiness & Enterprise Best Practices",
+      desc:"Production checklist, 12-factor app, clean architecture, API design standards, DevOps, SRE, and GitOps.",
+      color:"#7c3aed", bg:"#ede9fe", difficulty:"production",
+      icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      topics:[
+        { num:"20.1", title:"Production Readiness Checklist", subs:[
+            { num:"20.1.1", title:"Readiness Items", items:["20.1.1.1 Health checks: liveness, readiness, startup probes configured","20.1.1.2 Graceful shutdown with drain period","20.1.1.3 Structured JSON logging with correlation IDs","20.1.1.4 Metrics, alerting, and SLOs defined","20.1.1.5 Distributed tracing enabled","20.1.1.6 All secrets managed externally","20.1.1.7 Database migrations automated and tested","20.1.1.8 Retry and circuit breaker configured for external calls","20.1.1.9 Rate limiting and DDoS protection at edge","20.1.1.10 Container image scanned and non-root","20.1.1.11 RBAC and least privilege access","20.1.1.12 Backup and disaster recovery plan"] }
+          ]},
+        { num:"20.2", title:"Twelve-Factor App Principles", subs:[
+            { num:"20.2.1", title:"12-Factor Factors", items:["20.2.1.1 Codebase: one repo, many deploys","20.2.1.2 Dependencies: explicitly declared","20.2.1.3 Config: stored in environment variables","20.2.1.4 Backing services: treat as attached resources","20.2.1.5 Build, Release, Run: strict separation","20.2.1.6 Processes: stateless, share-nothing","20.2.1.7 Port binding: self-contained services","20.2.1.8 Concurrency: scale via process model","20.2.1.9 Disposability: fast startup, graceful shutdown","20.2.1.10 Dev/Prod parity","20.2.1.11 Logs: treated as event streams","20.2.1.12 Admin processes: one-off tasks"] }
+          ]},
+        { num:"20.3", title:"API Design Best Practices", subs:[
+            { num:"20.3.1", title:"API Standards", items:["20.3.1.1 RESTful naming conventions and consistency","20.3.1.2 Backward compatibility and deprecation strategies","20.3.1.3 Pagination standards: cursor-based, offset-based","20.3.1.4 Sorting and filtering query parameters","20.3.1.5 Error response standards: RFC 7807 Problem Details","20.3.1.6 API changelog and versioning documentation"] }
+          ]},
+        { num:"20.4", title:"Code Quality and Architecture", subs:[
+            { num:"20.4.1", title:"Clean Architecture", items:["20.4.1.1 Clean Architecture and Hexagonal (Ports and Adapters) Architecture","20.4.1.2 SOLID principles in Spring Boot context","20.4.1.3 Package structure: feature-based vs layer-based","20.4.1.4 DTO pattern: Request/Response separation from entities","20.4.1.5 MapStruct for DTO mapping","20.4.1.6 Avoiding business logic in controllers and repositories","20.4.1.7 Code review checklists for Spring Boot projects"] }
+          ]},
+        { num:"20.5", title:"DevOps and SRE Practices", subs:[
+            { num:"20.5.1", title:"SRE Fundamentals", items:["20.5.1.1 SLI, SLO, SLA definitions and measurement","20.5.1.2 Error budgets and burn rate alerting","20.5.1.3 Runbooks and incident response playbooks","20.5.1.4 On-call rotations and PagerDuty integration","20.5.1.5 Post-mortem culture and blameless retrospectives","20.5.1.6 Canary deployments and feature flags","20.5.1.7 Blue-Green deployments and rollback strategy","20.5.1.8 GitOps with ArgoCD or Flux"] }
+          ]}
+      ]
+    }
+  ];
+
+  const DIFF_BADGE = { beginner:"badge-beginner", intermediate:"badge-intermediate", advanced:"badge-advanced", production:"badge-production" };
+  const DIFF_LABEL = { beginner:"Beginner", intermediate:"Intermediate", advanced:"Advanced", production:"Production" };
+
+  let checked = new Set();
+
+  function countAllSubtopics(topics) {
+    let n = 0;
+    topics.forEach(t => t.subs.forEach(s => { n += s.items.length; }));
+    return n;
+  }
+
+  function buildTopicsHTML(topics) {
+    return topics.map(l1 => `
+    <div class="topic-l1" onclick="toggleL1(this)">
+      <div class="topic-l1-header">
+        <span class="topic-l1-num">${l1.num}</span>
+        <span class="topic-l1-title">${l1.title}</span>
+        <span class="topic-l1-arrow">▶</span>
+      </div>
+      <div class="topic-l2-list">
+        ${l1.subs.map(l2 => `
+          <div class="topic-l2" onclick="event.stopPropagation(); toggleL2(this)">
+            <div class="topic-l2-header">
+              <span class="topic-l2-num">${l2.num}</span>
+              <span class="topic-l2-title">${l2.title}</span>
+              <span class="topic-l2-arrow">▶</span>
+            </div>
+            <div class="topic-l3-list">
+              ${l2.items.map(item => {
+      const parts = item.match(/^(\S+)\s+(.+)$/);
+      return parts ? `<div class="topic-l3-item"><span class="topic-l3-num">${parts[1]}</span><span class="topic-l3-text">${parts[2]}</span></div>` : `<div class="topic-l3-item"><span class="topic-l3-text">${item}</span></div>`;
+    }).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+  }
+
+  function buildCard(mod) {
+    const subtopicCount = countAllSubtopics(mod.topics);
+    return `
+<div class="module-card" data-id="${mod.id}" data-phase="${mod.phase}" style="animation-delay:${(mod.id % 5)*0.05}s">
+  <div class="card-stripe" style="background:${mod.color}"></div>
+  <div class="card-header">
+    <div class="card-num">Module ${String(mod.id).padStart(2,'0')}</div>
+    <div class="card-title-block">
+      <div class="card-title">${mod.title}</div>
+      <div class="card-desc">${mod.desc}</div>
+    </div>
+    <div class="card-icon" style="background:${mod.bg};color:${mod.color}">${mod.icon}</div>
+  </div>
+  <div class="card-meta">
+    <span class="badge ${DIFF_BADGE[mod.difficulty]}">${DIFF_LABEL[mod.difficulty]}</span>
+    <span class="topic-count-badge">${mod.topics.length} sections · ${subtopicCount} subtopics</span>
+  </div>
+  <div class="card-divider"></div>
+  <div class="card-topics">${buildTopicsHTML(mod.topics)}</div>
+  <div class="card-footer">
+    <span class="card-footer-label">Mark complete</span>
+    <div class="card-check" id="check-${mod.id}" onclick="toggleCheck(${mod.id})" title="Mark as complete">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg>
+    </div>
+  </div>
+</div>`;
+  }
+
+  function toggleL1(el) {
+    el.classList.toggle('open');
+  }
+  function toggleL2(el) {
+    el.classList.toggle('open');
+  }
+
+  function render() {
+    ['beginner','intermediate','advanced','production'].forEach(phase => {
+      document.getElementById('grid-'+phase).innerHTML = MODULES.filter(m => m.phase === phase).map(buildCard).join('');
+    });
+    updateProgress();
+  }
+
+  function toggleCheck(id) {
+    if (checked.has(id)) checked.delete(id); else checked.add(id);
+    document.querySelectorAll('#check-'+id).forEach(el => {
+      if (checked.has(id)) el.classList.add('checked'); else el.classList.remove('checked');
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = Math.round((checked.size / MODULES.length) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+    document.getElementById('progress-checks').textContent = checked.size + ' / ' + MODULES.length + ' modules';
+  }
+
+  let activeFilter = 'all';
+  let searchQuery = '';
+
+  function applyFilters() {
+    const q = searchQuery.toLowerCase();
+    const isSearch = q.length > 0;
+    const phases = document.querySelectorAll('.journey-phase');
+    const searchGrid = document.getElementById('grid-search');
+
+    if (isSearch) {
+      phases.forEach(p => p.style.display = 'none');
+      searchGrid.parentElement.style.display = 'block';
+      searchGrid.style.display = 'grid';
+      const matched = MODULES.filter(m => {
+        const filterOk = activeFilter === 'all' || m.phase === activeFilter;
+        const text = (m.title + ' ' + m.desc + ' ' + m.topics.map(t => t.title + ' ' + t.subs.map(s => s.title + ' ' + s.items.join(' ')).join(' ')).join(' ')).toLowerCase();
+        return filterOk && text.includes(q);
+      });
+      searchGrid.innerHTML = matched.length ? matched.map(buildCard).join('') : `<div class="no-results" style="display:block"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>No modules match "<strong>${q}</strong>".</div>`;
+      checked.forEach(id => document.querySelectorAll('#check-'+id).forEach(el => el.classList.add('checked')));
+    } else {
+      searchGrid.parentElement.style.display = 'none';
+      searchGrid.style.display = 'none';
+      phases.forEach(p => {
+        p.style.display = '';
+        p.querySelectorAll('.module-card').forEach(c => {
+          c.classList.toggle('hidden', activeFilter !== 'all' && c.dataset.phase !== activeFilter);
+        });
+        const anyVisible = [...p.querySelectorAll('.module-card')].some(c => !c.classList.contains('hidden'));
+        const banner = p.querySelector('.phase-banner');
+        if (banner) banner.style.display = anyVisible ? '' : 'none';
+      });
+      checked.forEach(id => document.querySelectorAll('#check-'+id).forEach(el => el.classList.add('checked')));
+    }
+  }
+
+  document.getElementById('searchInput').addEventListener('input', function(){ searchQuery = this.value; applyFilters(); });
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      activeFilter = this.dataset.filter;
+      applyFilters();
+    });
+  });
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('scrollTop');
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  render();
+</script>
+</body>
+</html>
