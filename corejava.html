@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Core Java — Complete Syllabus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #FAFAF8;
+      --sidebar-bg: #FFFFFF;
+      --accent: #E07A3A;
+      --accent-light: #FEF3EA;
+      --accent-mid: #F5C99E;
+      --text-primary: #1A1A18;
+      --text-secondary: #5C5C58;
+      --text-tertiary: #9C9C96;
+      --border: #EAEAE6;
+      --border-dark: #D4D4CE;
+      --chip-bg: #F2F2EE;
+      --white: #FFFFFF;
+      --blue: #2A6DD9;
+      --blue-dot: #3B82F6;
+      --sidebar-w: 280px;
+      --header-h: 56px;
+    }
+
+    html {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6
+    }
+
+    /* TOPBAR */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+      gap: 16px
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #FF8C42, #E07A3A);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px
+    }
+
+    .brand-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--text-primary)
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      display: block;
+      line-height: 1.2
+    }
+
+    .topbar-stats {
+      display: flex;
+      gap: 8px;
+      margin-left: auto
+    }
+
+    .stat-pill {
+      border: 1px solid var(--border-dark);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      white-space: nowrap
+    }
+
+    .stat-pill strong {
+      color: var(--text-primary)
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 20px 0
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 4px
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--border-dark);
+      border-radius: 4px
+    }
+
+    .sidebar-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      padding: 0 18px;
+      margin-bottom: 6px
+    }
+
+    .sidebar-module-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 7px 18px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background .15s, color .15s;
+      border-radius: 0
+    }
+
+    .sidebar-module-btn:hover {
+      background: #F6F6F2;
+      color: var(--text-primary)
+    }
+
+    .sidebar-module-btn.active {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 600
+    }
+
+    .sidebar-module-btn .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue-dot);
+      flex-shrink: 0
+    }
+
+    .sidebar-module-btn.active .dot {
+      background: var(--accent)
+    }
+
+    .sidebar-sep {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 18px
+    }
+
+    .sidebar-topic-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .07em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      padding: 10px 18px 4px
+    }
+
+    .sidebar-topic-link {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px 18px 5px 30px;
+      text-align: left;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color .15s
+    }
+
+    .sidebar-topic-link:hover {
+      color: var(--text-primary)
+    }
+
+    .sidebar-topic-link .sdot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--blue-dot);
+      flex-shrink: 0
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: var(--sidebar-w);
+      padding-top: var(--header-h);
+      min-height: 100vh
+    }
+
+    .main-inner {
+      padding: 28px 32px;
+      max-width: 960px
+    }
+
+    /* MODULE HERO */
+    .module-hero {
+      background: var(--accent-light);
+      border: 1px solid var(--accent-mid);
+      border-radius: 14px;
+      padding: 28px 30px;
+      margin-bottom: 24px
+    }
+
+    .hero-module-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .hero-module-label svg {
+      width: 14px;
+      height: 14px
+    }
+
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 10px
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+      line-height: 1.6;
+      max-width: 72ch
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px
+    }
+
+    .hero-chip {
+      background: var(--white);
+      border: 1px solid var(--border-dark);
+      border-radius: 20px;
+      padding: 4px 13px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary)
+    }
+
+    /* SEARCH + CONTROLS */
+    .controls-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      width: 15px;
+      height: 15px
+    }
+
+    .search-input {
+      width: 100%;
+      border: 1px solid var(--border-dark);
+      border-radius: 9px;
+      padding: 9px 12px 9px 36px;
+      font-size: 13.5px;
+      font-family: inherit;
+      background: var(--white);
+      color: var(--text-primary);
+      outline: none;
+      transition: border .15s
+    }
+
+    .search-input:focus {
+      border-color: var(--accent)
+    }
+
+    .search-input::placeholder {
+      color: var(--text-tertiary)
+    }
+
+    .ctrl-btn {
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--white);
+      color: var(--text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .15s, border-color .15s, color .15s
+    }
+
+    .ctrl-btn:hover {
+      background: var(--chip-bg)
+    }
+
+    /* MODULE SECTION */
+    .module-section {
+      margin-bottom: 10px
+    }
+
+    .module-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .mod-sec-left {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .mod-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid var(--accent-mid);
+      border-radius: 6px;
+      padding: 3px 9px;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .mod-sec-title {
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary)
+    }
+
+    .mod-sec-count {
+      font-size: 12px;
+      color: var(--text-tertiary)
+    }
+
+    /* TOPIC GROUPS */
+    .topic-card {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      transition: box-shadow .15s
+    }
+
+    .topic-card:hover {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .06)
+    }
+
+    .topic-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      cursor: pointer;
+      background: var(--white);
+      transition: background .15s;
+      user-select: none
+    }
+
+    .topic-header:hover {
+      background: #FAFAF8
+    }
+
+    .topic-num {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 7px;
+      padding: 4px 9px;
+      min-width: 38px;
+      text-align: center;
+      flex-shrink: 0;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .topic-info {
+      flex: 1
+    }
+
+    .topic-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px
+    }
+
+    .topic-tags {
+      font-size: 12px;
+      color: var(--text-tertiary)
+    }
+
+    .topic-chevron {
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+      transition: transform .22s
+    }
+
+    .topic-chevron.open {
+      transform: rotate(180deg)
+    }
+
+    .subtopics-wrap {
+      display: none;
+      border-top: 1px solid var(--border);
+      background: #FDFDFB
+    }
+
+    .subtopics-wrap.open {
+      display: block
+    }
+
+    .subtopics-grid {
+      display: grid;
+      grid-template-columns:1fr 1fr;
+      gap: 0;
+      padding: 0
+    }
+
+    @media (max-width: 640px) {
+      .subtopics-grid {
+        grid-template-columns:1fr
+      }
+    }
+
+    .subtopic-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      transition: background .1s
+    }
+
+    .subtopic-item:hover {
+      background: #F6F6F2;
+      color: var(--text-primary)
+    }
+
+    .subtopic-item:nth-child(even) {
+      border-right: none
+    }
+
+    .subtopic-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent-mid);
+      flex-shrink: 0;
+      margin-top: 6px
+    }
+
+    .module-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 28px;
+      flex-wrap: wrap
+    }
+
+    .mod-nav-btn {
+      border: 1px solid var(--border-dark);
+      border-radius: 7px;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      background: var(--white);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all .15s
+    }
+
+    .mod-nav-btn:hover {
+      background: var(--chip-bg)
+    }
+
+    .mod-nav-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--white)
+    }
+
+    .hidden {
+      display: none !important
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">☕</div>
+    <div>
+      <span class="brand-name">Core Java</span>
+      <span class="brand-sub">Complete Syllabus</span>
+    </div>
+  </div>
+  <div class="topbar-stats">
+    <div class="stat-pill"><strong>15</strong> Modules</div>
+    <div class="stat-pill"><strong>72+</strong> Topic Groups</div>
+    <div class="stat-pill"><strong>290+</strong> Leaf Items</div>
+    <div class="stat-pill" id="active-module-pill">Module 1 of 15</div>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section-label">Modules</div>
+  <button class="sidebar-module-btn active" onclick="showModule(0,this)"><span class="dot"></span>1. Platform &
+    Environment
+  </button>
+  <button class="sidebar-module-btn" onclick="showModule(1,this)"><span class="dot"></span>2. Java Fundamentals</button>
+  <button class="sidebar-module-btn" onclick="showModule(2,this)"><span class="dot"></span>3. Arrays & Strings</button>
+  <button class="sidebar-module-btn" onclick="showModule(3,this)"><span class="dot"></span>4. OOP — Foundations</button>
+  <button class="sidebar-module-btn" onclick="showModule(4,this)"><span class="dot"></span>5. OOP — Advanced</button>
+  <button class="sidebar-module-btn" onclick="showModule(5,this)"><span class="dot"></span>6. Exception Handling
+  </button>
+  <button class="sidebar-module-btn" onclick="showModule(6,this)"><span class="dot"></span>7. Wrapper, Enum &
+    Annotations
+  </button>
+  <button class="sidebar-module-btn" onclick="showModule(7,this)"><span class="dot"></span>8. Generics</button>
+  <button class="sidebar-module-btn" onclick="showModule(8,this)"><span class="dot"></span>9. Collections Framework
+  </button>
+  <button class="sidebar-module-btn" onclick="showModule(9,this)"><span class="dot"></span>10. Functional & Streams
+  </button>
+  <button class="sidebar-module-btn" onclick="showModule(10,this)"><span class="dot"></span>11. Date/Time, I/O &
+    Serialization
+  </button>
+  <button class="sidebar-module-btn" onclick="showModule(11,this)"><span class="dot"></span>12. Multithreading &
+    Concurrency
+  </button>
+  <button class="sidebar-module-btn" onclick="showModule(12,this)"><span class="dot"></span>13. Reflection & Modern
+    Features
+  </button>
+  <button class="sidebar-module-btn" onclick="showModule(13,this)"><span class="dot"></span>14. JVM Internals &
+    Performance
+  </button>
+  <button class="sidebar-module-btn" onclick="showModule(14,this)"><span class="dot"></span>15. Design, Security &
+    Testing
+  </button>
+
+  <div class="sidebar-sep"></div>
+  <div class="sidebar-topic-label" id="sidebar-topics-label">Topic Groups</div>
+  <div id="sidebar-topics"></div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="main-inner" id="main-inner"></div>
+</main>
+
+<script>
+  const modules = [
+    {
+      num: 1, title: "Java Platform & Environment Setup",
+      level: "Beginner",
+      chips: ["JDK/JVM/JRE", "Java Versions", "IDE Setup", "javac & java", "JAR & Build Tools"],
+      desc: "Everything needed to understand the Java platform, install and configure the JDK, set up a development environment, and write your first compiled Java program.",
+      topics: [
+        {
+          name: "Java Platform Overview",
+          tags: "JDK · JRE · JVM · Distributions · LTS",
+          subs: ["Java SE vs Java EE vs Jakarta EE vs Java ME", "JDK vs JRE vs JVM distinction", "Java release cadence and LTS versions (8, 11, 17, 21)", "OpenJDK and vendor distributions (Oracle, Adoptium, Azul, Amazon Corretto)"]
+        },
+        {
+          name: "Development Environment",
+          tags: "Installation · PATH · JAVA_HOME · IDE",
+          subs: ["JDK installation and JAVA_HOME configuration", "PATH and classpath environment variables", "IDE setup: IntelliJ IDEA, Eclipse, VS Code", "Compiling with javac and running with java", "JAR file creation and execution", "Maven and Gradle project structure basics"]
+        },
+        {
+          name: "Java Program Structure",
+          tags: "Class · main · Package · Import · Bytecode",
+          subs: ["Source file naming conventions", "Package declaration", "Import statements", "Class declaration anatomy", "main method signature", "Compilation and bytecode (.class files)", "javap bytecode disassembler basics"]
+        }
+      ]
+    },
+    {
+      num: 2, title: "Java Fundamentals",
+      level: "Beginner",
+      chips: ["Data Types", "Operators", "Control Flow", "Switch Expressions"],
+      desc: "Master primitive types, type conversions, all operator categories, and every control flow construct including modern switch expressions introduced in Java 14+.",
+      topics: [
+        {
+          name: "Data Types & Variables",
+          tags: "Primitives · var · Literals · Defaults",
+          subs: ["Primitive types: byte, short, int, long, float, double, char, boolean", "Primitive size, range, and default values", "Reference types overview", "Variable declaration and initialization", "Local, instance, and static variables", "var keyword (local variable type inference, Java 10+)", "Literal formats: decimal, octal, hex, binary, underscore separators"]
+        },
+        {
+          name: "Type Conversions",
+          tags: "Widening · Narrowing · Casting · Overflow",
+          subs: ["Widening and narrowing conversions", "Implicit vs explicit casting", "Casting between numeric types", "String to primitive conversions", "Overflow and underflow behavior"]
+        },
+        {
+          name: "Operators",
+          tags: "Arithmetic · Bitwise · Ternary · instanceof",
+          subs: ["Arithmetic operators (+, -, *, /, %)", "Relational operators", "Logical operators (&& || !)", "Bitwise and shift operators (& | ^ ~ << >> >>>)", "Compound assignment operators", "Ternary operator", "instanceof operator", "Operator precedence and associativity"]
+        },
+        {
+          name: "Control Flow",
+          tags: "if · switch · for · while · break · continue",
+          subs: ["if / else if / else", "switch statement (traditional)", "Switch expression (Java 14+, arrow syntax)", "Switch with yield (Java 14+)", "Pattern matching in switch (Java 21)", "for loop", "while loop", "do-while loop", "break and continue", "Labeled break and continue", "Enhanced for-each loop"]
+        }
+      ]
+    },
+    {
+      num: 3, title: "Arrays & Strings",
+      level: "Beginner",
+      chips: ["Arrays", "String", "StringBuilder", "Text Blocks"],
+      desc: "Deep dive into arrays, the String class and its immutability, StringBuilder for mutation, and Text Blocks for multi-line string literals introduced in Java 15.",
+      topics: [
+        {
+          name: "Arrays",
+          tags: "1D · 2D · Jagged · Arrays utility · Varargs",
+          subs: ["Single-dimensional array declaration and initialization", "Multi-dimensional and jagged arrays", "Array traversal with loops and for-each", "Arrays class utility methods (sort, binarySearch, copyOf, fill)", "Array to List conversion", "System.arraycopy", "Varargs (variable-length arguments)"]
+        },
+        {
+          name: "String Class",
+          tags: "Immutability · Pool · Methods · Comparison",
+          subs: ["String immutability and string pool", "String literals vs new String()", "String class methods (length, charAt, substring, indexOf, contains, replace, split, trim, strip)", "String comparison: equals vs ==", "String concatenation and + operator internals", "String.format and formatted method", "String.valueOf and toString", "Conversion between String and primitives"]
+        },
+        {
+          name: "StringBuilder & StringBuffer",
+          tags: "Mutable · Thread-safety · Performance",
+          subs: ["Mutability rationale", "StringBuilder methods (append, insert, delete, reverse, replace)", "StringBuffer thread safety", "Performance considerations"]
+        },
+        {
+          name: "Text Blocks",
+          tags: "Java 15+ · Multiline · Whitespace · Escape",
+          subs: ["Syntax and delimiter rules (Java 15+)", "Incidental vs essential whitespace", "Escape sequences in text blocks", "formatted method on text blocks", "Use cases: JSON, SQL, HTML snippets"]
+        }
+      ]
+    },
+    {
+      num: 4, title: "OOP — Foundations",
+      level: "Beginner",
+      chips: ["Classes", "Objects", "Constructors", "Packages", "Access Modifiers", "Static"],
+      desc: "Build a rock-solid OOP foundation: class structure, object creation, constructor chaining, encapsulation via access modifiers, packages, and static members.",
+      topics: [
+        {
+          name: "Classes & Objects",
+          tags: "Fields · Methods · this · Object class",
+          subs: ["Class definition structure", "Fields (instance and static)", "Methods (instance and static)", "Object creation with new keyword", "Object references and null", "this reference", "Object class methods: equals, hashCode, toString, getClass, clone, finalize", "Memory layout: stack vs heap"]
+        },
+        {
+          name: "Constructors",
+          tags: "Default · Parameterized · Overloading · this()",
+          subs: ["Default constructor", "Parameterized constructors", "Constructor overloading", "this() constructor chaining", "Constructor best practices", "Copy constructors"]
+        },
+        {
+          name: "Access Modifiers",
+          tags: "private · protected · public · package-private",
+          subs: ["private, default (package-private), protected, public", "Visibility rules across packages", "Encapsulation principle", "Getter and setter methods", "Immutable class design"]
+        },
+        {
+          name: "Packages",
+          tags: "Declaration · Import · Static Import · Naming",
+          subs: ["Package declaration and naming conventions", "import statement", "Static imports", "Package-private access", "java.lang automatic import", "Directory structure matching package structure"]
+        },
+        {
+          name: "Static Members",
+          tags: "Static fields · Methods · Initializer · Singleton",
+          subs: ["Static fields and methods", "Static initializer blocks", "Instance initializer blocks", "Static vs instance method invocation", "Utility class pattern", "Singleton pattern basics"]
+        }
+      ]
+    },
+    {
+      num: 5, title: "OOP — Advanced Concepts",
+      level: "Intermediate",
+      chips: ["Inheritance", "Polymorphism", "Abstract Classes", "Interfaces", "Inner Classes"],
+      desc: "Master inheritance hierarchies, runtime polymorphism, abstract classes, interface default/static/private methods, sealed interfaces, and all inner class varieties.",
+      topics: [
+        {
+          name: "Inheritance",
+          tags: "extends · super · Overriding · final · Covariant",
+          subs: ["extends keyword", "super keyword and super()", "Method overriding rules", "Covariant return types", "final class and final method", "Object class as root", "Constructor chaining across hierarchy", "Liskov Substitution Principle intro"]
+        },
+        {
+          name: "Polymorphism",
+          tags: "Overloading · Overriding · Upcasting · Dispatch",
+          subs: ["Compile-time (method overloading)", "Runtime (dynamic dispatch)", "Upcasting and downcasting", "instanceof and pattern matching instanceof (Java 16+)", "Overloading rules: argument matching and promotion", "Overriding vs hiding"]
+        },
+        {
+          name: "Abstract Classes",
+          tags: "abstract · Template · vs Interface",
+          subs: ["abstract keyword", "Abstract methods", "Concrete methods in abstract classes", "Abstract class constructors", "When to use abstract class vs interface"]
+        },
+        {
+          name: "Interfaces",
+          tags: "default · static · private · Functional · Sealed",
+          subs: ["Interface declaration and implementation", "Multiple interface implementation", "Default methods (Java 8+)", "Static methods in interfaces (Java 8+)", "Private methods in interfaces (Java 9+)", "Functional interfaces", "Marker interfaces", "Interface vs abstract class decision", "Interface inheritance and diamond problem resolution", "Sealed interfaces (Java 17+)"]
+        },
+        {
+          name: "Inner Classes",
+          tags: "Static Nested · Inner · Local · Anonymous",
+          subs: ["Static nested classes", "Non-static inner classes", "Local classes", "Anonymous classes", "Enum in switch with inner class", "Access rules for inner classes"]
+        }
+      ]
+    },
+    {
+      num: 6, title: "Exception Handling",
+      level: "Intermediate",
+      chips: ["Checked", "Unchecked", "try-catch-finally", "Custom Exceptions", "try-with-resources"],
+      desc: "Master the exception hierarchy, multi-catch, try-with-resources, exception chaining, custom exceptions, and best practices for production-grade error handling.",
+      topics: [
+        {
+          name: "Exception Hierarchy",
+          tags: "Throwable · Error · Checked · Unchecked",
+          subs: ["Throwable → Error → Exception", "Checked vs unchecked exceptions", "RuntimeException subclasses", "Common checked exceptions (IOException, SQLException)", "Common unchecked exceptions (NPE, IllegalArgumentException, AIOOBE)", "Error types (OutOfMemoryError, StackOverflowError)"]
+        },
+        {
+          name: "Exception Handling Mechanics",
+          tags: "try-catch · multi-catch · finally · propagation",
+          subs: ["try-catch block", "Multiple catch blocks", "Multi-catch (Java 7+, pipe syntax)", "finally block", "try-with-resources (AutoCloseable, Java 7+)", "Exception propagation and call stack", "Rethrowing exceptions", "Exception chaining (initCause, cause constructor)"]
+        },
+        {
+          name: "Custom Exceptions",
+          tags: "Extending · Constructors · Checked vs Unchecked",
+          subs: ["Extending Exception and RuntimeException", "Custom exception constructors", "When to create custom exceptions", "Exception message best practices"]
+        },
+        {
+          name: "Best Practices",
+          tags: "Specific catch · Logging · Control flow anti-pattern",
+          subs: ["Specific before general catch", "Avoid empty catch blocks", "Logging exceptions", "Not using exceptions for control flow", "Checked vs unchecked design decisions"]
+        }
+      ]
+    },
+    {
+      num: 7, title: "Wrapper Classes, Enums & Annotations",
+      level: "Intermediate",
+      chips: ["Wrapper Classes", "Autoboxing", "Enums", "Annotations", "Meta-annotations"],
+      desc: "Cover the full wrapper class API, autoboxing pitfalls, powerful enum capabilities, built-in and custom annotations, and meta-annotations with retention policies.",
+      topics: [
+        {
+          name: "Wrapper Classes",
+          tags: "Integer · Double · Autoboxing · Integer cache",
+          subs: ["Wrapper class for each primitive (Integer, Long, Double, etc.)", "Autoboxing and unboxing", "Integer cache (−128 to 127)", "Parsing methods (Integer.parseInt, Double.parseDouble)", "MAX_VALUE, MIN_VALUE constants", "Number formatting", "Null pitfalls with unboxing"]
+        },
+        {
+          name: "Enums",
+          tags: "Fields · Methods · EnumSet · EnumMap · Interface",
+          subs: ["Enum declaration and constants", "Enum fields, constructors, and methods", "Ordinal and name", "Enum comparison (== vs equals)", "EnumSet and EnumMap", "Abstract methods in enum", "Enum implementing interface", "switch with enum", "Enum best practices"]
+        },
+        {
+          name: "Annotations",
+          tags: "@Override · @Deprecated · Custom · Meta-annotations",
+          subs: ["Built-in annotations (@Override, @Deprecated, @SuppressWarnings, @FunctionalInterface, @SafeVarargs)", "Meta-annotations (@Target, @Retention, @Documented, @Inherited, @Repeatable)", "Custom annotation definition", "Annotation processing basics", "Reflection-based annotation reading", "Repeating annotations (Java 8+)"]
+        }
+      ]
+    },
+    {
+      num: 8, title: "Generics",
+      level: "Intermediate",
+      chips: ["Generic Classes", "Bounded Wildcards", "Type Erasure", "PECS", "Variance"],
+      desc: "Understand generic classes and methods, type erasure, bounded wildcards, the PECS principle, and design robust reusable APIs with type safety.",
+      topics: [
+        {
+          name: "Generic Classes & Methods",
+          tags: "Type parameters · Raw types · Type erasure",
+          subs: ["Generic class declaration with type parameters", "Generic methods", "Type parameter naming conventions (T, E, K, V, N)", "Raw types and why to avoid them", "Type erasure mechanism", "Heap pollution"]
+        },
+        {
+          name: "Bounded Type Parameters",
+          tags: "? extends · ? super · PECS · Multiple bounds",
+          subs: ["Upper bounded wildcards (? extends T)", "Lower bounded wildcards (? super T)", "Unbounded wildcards (?)", "PECS principle (Producer Extends, Consumer Super)", "Multiple bounds"]
+        },
+        {
+          name: "Advanced Generics",
+          tags: "Generic interfaces · Recursive bounds · Type tokens",
+          subs: ["Generic interfaces", "Generic methods in non-generic classes", "Recursive type bounds", "Type tokens", "Reifiable vs non-reifiable types", "Unchecked cast warnings and @SuppressWarnings"]
+        }
+      ]
+    },
+    {
+      num: 9, title: "Collections Framework",
+      level: "Intermediate",
+      chips: ["List", "Set", "Map", "Queue", "Deque", "Sorting", "Algorithms"],
+      desc: "Master every List, Set, Map, Queue and Deque implementation with internals, immutable factory methods (Java 9+), Comparable/Comparator, and collection algorithms.",
+      topics: [
+        {
+          name: "Collections Hierarchy",
+          tags: "Iterable · Collection · List/Set/Queue · Map",
+          subs: ["Iterable → Collection → List/Set/Queue", "Map hierarchy (separate)", "Collection interface methods", "Iterator and ListIterator", "Collections and Arrays utility classes"]
+        },
+        {
+          name: "List Implementations",
+          tags: "ArrayList · LinkedList · CopyOnWriteArrayList",
+          subs: ["ArrayList: internals, resizing, amortized cost", "LinkedList: doubly linked, Deque implementation", "Vector and Stack (legacy)", "CopyOnWriteArrayList (concurrent)", "List.of, List.copyOf (immutable, Java 9+)", "Arrays.asList behavior"]
+        },
+        {
+          name: "Set Implementations",
+          tags: "HashSet · LinkedHashSet · TreeSet · EnumSet",
+          subs: ["HashSet: hash table internals", "LinkedHashSet: insertion-order", "TreeSet: Red-Black tree, natural ordering, Comparator", "Set.of (immutable, Java 9+)", "EnumSet"]
+        },
+        {
+          name: "Queue & Deque",
+          tags: "PriorityQueue · ArrayDeque · BlockingQueue",
+          subs: ["Queue interface: offer, poll, peek", "PriorityQueue: heap-based ordering", "ArrayDeque: stack and queue operations", "Deque interface methods", "LinkedList as Deque"]
+        },
+        {
+          name: "Map Implementations",
+          tags: "HashMap · LinkedHashMap · TreeMap · EnumMap",
+          subs: ["HashMap: hashing, buckets, load factor, resizing", "LinkedHashMap: insertion and access order", "TreeMap: sorted key order, NavigableMap", "WeakHashMap and IdentityHashMap", "Hashtable (legacy)", "EnumMap", "Map.of, Map.copyOf (immutable, Java 9+)", "Map.Entry and entrySet iteration", "merge, compute, computeIfAbsent, computeIfPresent", "getOrDefault, putIfAbsent, Map.forEach"]
+        },
+        {
+          name: "Sorting & Ordering",
+          tags: "Comparable · Comparator · Chaining",
+          subs: ["Comparable interface (natural ordering)", "Comparator interface and comparator chaining", "Comparator.comparing, thenComparing, reversed", "Collections.sort vs List.sort", "Sorting with lambdas"]
+        },
+        {
+          name: "Collection Algorithms",
+          tags: "Utility methods · Unmodifiable · Synchronized",
+          subs: ["Collections.shuffle, Collections.frequency", "Collections.unmodifiableList/Set/Map", "Collections.synchronizedList/Set/Map", "Collections.min, max, nCopies", "binarySearch with Comparator"]
+        }
+      ]
+    },
+    {
+      num: 10, title: "Functional Programming & Stream API",
+      level: "Intermediate",
+      chips: ["Functional Interfaces", "Lambdas", "Method References", "Streams", "Optional"],
+      desc: "Embrace functional Java with the full Streams pipeline, all Collectors, parallel streams, Optional, method references, and functional interface composition.",
+      topics: [
+        {
+          name: "Functional Interfaces",
+          tags: "Function · Consumer · Supplier · Predicate",
+          subs: ["Function<T,R>, BiFunction<T,U,R>", "Consumer<T>, BiConsumer<T,U>", "Supplier<T>", "Predicate<T>, BiPredicate<T,U>", "UnaryOperator<T>, BinaryOperator<T>", "Composing: andThen, compose, negate, or, and", "Custom functional interfaces", "@FunctionalInterface annotation"]
+        },
+        {
+          name: "Lambda Expressions",
+          tags: "Syntax · Closure · Effectively final · Collections",
+          subs: ["Lambda syntax forms", "Effectively final and captured variables", "Lambda vs anonymous class", "Type inference for lambdas", "Exception handling in lambdas", "Lambdas in collections (removeIf, replaceAll, forEach)"]
+        },
+        {
+          name: "Method References",
+          tags: "Static · Instance · Type · Constructor",
+          subs: ["Static method reference (Class::method)", "Instance method reference on instance (obj::method)", "Instance method reference on type (Class::method)", "Constructor reference (Class::new)", "Method references vs lambdas"]
+        },
+        {
+          name: "Stream API",
+          tags: "Intermediate · Terminal · Collectors · Parallel",
+          subs: ["Stream creation (of, generate, iterate, from collections, Arrays.stream)", "Intermediate: filter, map, flatMap, distinct, sorted, peek, limit, skip", "Terminal: forEach, collect, reduce, count, min, max, findFirst, findAny, anyMatch", "Collectors: toList, toSet, toMap, groupingBy, partitioningBy, joining, counting, teeing", "toList() collector (Java 16+)", "Primitive streams: IntStream, LongStream, DoubleStream", "Parallel streams and ForkJoinPool", "Lazy evaluation and short-circuit", "Stateful vs stateless operations", "Infinite streams", "Stream.Builder"]
+        },
+        {
+          name: "Optional",
+          tags: "of · ofNullable · map · flatMap · orElse",
+          subs: ["Optional creation (of, ofNullable, empty)", "isPresent, isEmpty (Java 11+)", "get, orElse, orElseGet, orElseThrow", "map, flatMap, filter on Optional", "ifPresent, ifPresentOrElse (Java 9+)", "Optional.stream (Java 9+)", "Optional anti-patterns", "Avoiding NullPointerException with Optional"]
+        }
+      ]
+    },
+    {
+      num: 11, title: "Date & Time, I/O & Serialization",
+      level: "Intermediate",
+      chips: ["java.time", "java.io", "NIO.2", "Serialization", "File Handling"],
+      desc: "Master the modern java.time API, classic I/O streams, NIO.2 Path/Files API, WatchService, FileChannel, and Java serialization with security considerations.",
+      topics: [
+        {
+          name: "Date & Time API (java.time)",
+          tags: "LocalDate · ZonedDateTime · Instant · Formatter",
+          subs: ["LocalDate, LocalTime, LocalDateTime", "ZonedDateTime, ZoneId, ZoneOffset", "Instant and Duration", "Period", "DateTimeFormatter (format and parse)", "Temporal adjusters", "OffsetDateTime", "MonthDay, YearMonth", "Clock abstraction", "Legacy Date/Calendar interop (toInstant, from)"]
+        },
+        {
+          name: "File I/O — java.io",
+          tags: "Streams · Reader/Writer · Buffered · try-with-resources",
+          subs: ["File class", "InputStream and OutputStream hierarchy", "FileInputStream, FileOutputStream", "BufferedReader, BufferedWriter", "InputStreamReader, OutputStreamWriter", "PrintWriter, PrintStream", "DataInputStream, DataOutputStream", "Byte vs character streams", "try-with-resources for streams"]
+        },
+        {
+          name: "NIO.2 — java.nio.file",
+          tags: "Path · Files · WatchService · FileChannel",
+          subs: ["Path and Paths", "Files utility class (read, write, copy, move, delete)", "Files.walk and Files.find", "DirectoryStream", "WatchService (file system events)", "FileChannel and ByteBuffer", "StandardOpenOption", "Attribute views (BasicFileAttributes, PosixFileAttributes)", "Files.readString, Files.writeString (Java 11+)"]
+        },
+        {
+          name: "Serialization",
+          tags: "Serializable · ObjectStream · transient · Externalizable",
+          subs: ["Serializable interface", "ObjectOutputStream and ObjectInputStream", "serialVersionUID", "transient keyword", "Externalizable interface", "Custom readObject/writeObject", "Serialization security considerations", "Record serialization behavior"]
+        }
+      ]
+    },
+    {
+      num: 12, title: "Multithreading & Concurrency",
+      level: "Advanced",
+      chips: ["Threads", "Synchronization", "Locks", "Executors", "CompletableFuture", "Virtual Threads"],
+      desc: "From Thread lifecycle to lock-free atomics, concurrent collections, CompletableFuture chaining, Fork/Join, and Project Loom virtual threads (Java 21+).",
+      topics: [
+        {
+          name: "Thread Fundamentals",
+          tags: "Thread · Runnable · Lifecycle · Daemon · ThreadLocal",
+          subs: ["Thread class and Runnable interface", "Thread lifecycle states", "Thread creation methods", "Thread naming, priority, daemon threads", "Thread.sleep, Thread.yield, Thread.join", "Thread.interrupt and InterruptedException", "Thread local storage (ThreadLocal)", "Stack trace and thread dumps"]
+        },
+        {
+          name: "Synchronization",
+          tags: "synchronized · volatile · wait/notify · Deadlock",
+          subs: ["Race conditions and data races", "synchronized keyword (method and block)", "Object monitor and intrinsic locks", "wait, notify, notifyAll", "Deadlock, livelock, starvation", "volatile keyword and visibility guarantee", "Happens-before relationship", "double-checked locking and volatile", "Memory visibility without synchronization"]
+        },
+        {
+          name: "Locks — java.util.concurrent",
+          tags: "ReentrantLock · ReadWriteLock · StampedLock",
+          subs: ["Lock interface", "ReentrantLock", "ReadWriteLock and ReentrantReadWriteLock", "StampedLock (Java 8+)", "Condition interface and await/signal", "LockSupport (park/unpark)", "Lock vs synchronized comparison"]
+        },
+        {
+          name: "Atomic Variables",
+          tags: "AtomicInteger · CAS · LongAdder · VarHandle",
+          subs: ["AtomicInteger, AtomicLong, AtomicBoolean, AtomicReference", "Compare-and-swap (CAS) semantics", "AtomicIntegerArray, AtomicReferenceArray", "LongAdder and DoubleAdder (Java 8+)", "VarHandle (Java 9+)"]
+        },
+        {
+          name: "Concurrent Collections",
+          tags: "ConcurrentHashMap · BlockingQueue · CopyOnWrite",
+          subs: ["ConcurrentHashMap (segment locking, Java 8 improvements)", "CopyOnWriteArrayList, CopyOnWriteArraySet", "BlockingQueue: ArrayBlockingQueue, LinkedBlockingQueue, PriorityBlockingQueue", "LinkedTransferQueue, SynchronousQueue", "Deque: LinkedBlockingDeque, ConcurrentLinkedDeque", "ConcurrentSkipListMap, ConcurrentSkipListSet"]
+        },
+        {
+          name: "Executor Framework",
+          tags: "ThreadPool · Future · CompletableFuture · Scheduled",
+          subs: ["Executor, ExecutorService, ScheduledExecutorService", "ThreadPoolExecutor configuration", "Executors factory methods", "Future and Callable", "CompletableFuture and CompletionStage (Java 8+)", "Chaining: thenApply, thenCompose, thenCombine, exceptionally, handle", "ScheduledThreadPoolExecutor", "ExecutorService shutdown lifecycle"]
+        },
+        {
+          name: "Synchronization Utilities",
+          tags: "CountDownLatch · CyclicBarrier · Semaphore · Phaser",
+          subs: ["CountDownLatch", "CyclicBarrier", "Semaphore", "Phaser", "Exchanger"]
+        },
+        {
+          name: "Fork/Join Framework",
+          tags: "ForkJoinPool · RecursiveTask · Work-stealing",
+          subs: ["ForkJoinPool", "RecursiveTask and RecursiveAction", "Work-stealing algorithm", "divide-and-conquer patterns", "ForkJoinPool.commonPool"]
+        },
+        {
+          name: "Virtual Threads — Project Loom",
+          tags: "Java 21 · Structured Concurrency · ScopedValue",
+          subs: ["Virtual vs platform threads", "Thread.ofVirtual factory (Java 21+)", "Structured concurrency (Java 21+ preview)", "ScopedValue (Java 21+ preview)", "Pinning and carrier threads", "Virtual thread executor", "Use cases and performance model"]
+        }
+      ]
+    },
+    {
+      num: 13, title: "Reflection, Modules & Modern Java Features",
+      level: "Advanced",
+      chips: ["Reflection", "JPMS", "Records", "Sealed Classes", "Pattern Matching", "Modern APIs"],
+      desc: "Explore the Reflection API, the Java Module System, Records, Sealed classes, and all modern language features from Java 9 through Java 22.",
+      topics: [
+        {
+          name: "Reflection API",
+          tags: "Class · Method.invoke · Field · setAccessible",
+          subs: ["Class object (getClass, Class.forName)", "getDeclaredFields, getDeclaredMethods, getDeclaredConstructors", "Method.invoke, Field.get/set", "Constructor.newInstance", "Access control: setAccessible", "Annotations via reflection", "Use cases: frameworks, testing, serialization", "Reflection performance overhead"]
+        },
+        {
+          name: "Java Module System (JPMS)",
+          tags: "module-info · requires · exports · opens · jlink",
+          subs: ["module-info.java", "requires, exports, opens, uses, provides", "Named, unnamed, and automatic modules", "Strong encapsulation", "jlink and custom runtime images", "--add-opens and --add-exports flags", "Migration strategies from classpath"]
+        },
+        {
+          name: "Records (Java 16+)",
+          tags: "Canonical constructor · Accessors · equals/hashCode",
+          subs: ["Record declaration syntax", "Canonical constructor, compact constructor", "Accessor methods (no getters pattern)", "equals, hashCode, toString auto-generation", "Implementing interfaces with records", "Limitations (no inheritance, fields are final)", "Records with generics", "Serialization behavior"]
+        },
+        {
+          name: "Sealed Classes & Interfaces (Java 17+)",
+          tags: "sealed · permits · non-sealed · Pattern exhaustiveness",
+          subs: ["sealed, permits, non-sealed keywords", "Sealed class hierarchy rules", "Pattern matching integration", "Exhaustiveness in switch", "Use cases for algebraic data types"]
+        },
+        {
+          name: "Pattern Matching",
+          tags: "instanceof · Guarded · Switch patterns · Deconstruction",
+          subs: ["Pattern matching instanceof (Java 16+)", "Guarded patterns (Java 21)", "Pattern matching in switch (Java 21)", "Deconstruction patterns (preview)", "Null handling in pattern switch"]
+        },
+        {
+          name: "Other Modern Features",
+          tags: "var · String methods · Collection factories · Streams+",
+          subs: ["var keyword (Java 10+)", "try-with-resources improvements (Java 9+)", "Private interface methods (Java 9+)", "Collection factory methods (Java 9+)", "Stream improvements across versions (Java 9–22)", "String methods: strip, isBlank, lines, repeat, indent (Java 11+)", "String.formatted (Java 15+)", "Files.readString, Files.writeString (Java 11+)", "Foreign Function & Memory API (Java 22 preview)", "Unnamed classes and instance main (Java 21 preview)"]
+        }
+      ]
+    },
+    {
+      num: 14, title: "JVM Internals, Memory & Performance",
+      level: "Expert",
+      chips: ["JVM Architecture", "Class Loading", "JMM", "GC Algorithms", "Profiling", "JMH"],
+      desc: "Go deep into ClassLoader mechanics, JIT compilation, the Java Memory Model, every GC algorithm from Serial to ZGC, and performance profiling with JMH.",
+      topics: [
+        {
+          name: "JVM Architecture",
+          tags: "ClassLoader · Bytecode · JIT · Tiered compilation",
+          subs: ["ClassLoader subsystem (Bootstrap, Extension/Platform, Application)", "Class loading: loading, linking (verification, preparation, resolution), initialization", "Runtime data areas: method area, heap, JVM stack, native method stack, PC register", "Execution engine: interpreter, JIT compiler (C1, C2)", "Just-In-Time compilation and tiered compilation", "Hotspot detection and optimization", "Bytecode fundamentals"]
+        },
+        {
+          name: "Java Memory Model (JMM)",
+          tags: "Happens-before · Visibility · volatile · final",
+          subs: ["Happens-before guarantee", "Visibility and reordering", "Volatile semantics under JMM", "Synchronized semantics under JMM", "Final field semantics", "JMM and CPU memory models", "Memory barriers"]
+        },
+        {
+          name: "Garbage Collection",
+          tags: "G1 · ZGC · Shenandoah · GC tuning · References",
+          subs: ["Object reachability and GC roots", "Mark-and-sweep, copying, mark-and-compact", "Generational GC: Young (Eden, Survivor), Old gen, Metaspace", "GC algorithms: Serial, Parallel, CMS (deprecated), G1, ZGC (Java 15+), Shenandoah", "GC tuning flags (-Xms, -Xmx, -XX:NewRatio, -XX:SurvivorRatio)", "GC logging and analysis", "Reference types: SoftReference, WeakReference, PhantomReference, ReferenceQueue", "Memory leaks: causes and detection"]
+        },
+        {
+          name: "Performance Optimization",
+          tags: "JMH · Profiling · Escape analysis · Benchmarking",
+          subs: ["Profiling with JMC, JProfiler, async-profiler", "Heap dump analysis (Eclipse MAT, VisualVM)", "Thread dump analysis", "JVM flags and ergonomics", "Escape analysis and stack allocation", "String deduplication", "Object pooling patterns", "Avoiding premature optimization", "Benchmarking with JMH (Java Microbenchmark Harness)", "CPU and I/O bound distinction"]
+        },
+        {
+          name: "Diagnostic Tools",
+          tags: "jstack · jmap · jcmd · JFR · VisualVM · jshell",
+          subs: ["jps, jstack, jmap, jhat, jstat", "jcmd", "Java Flight Recorder (JFR)", "Java Mission Control (JMC)", "VisualVM", "jshell (REPL, Java 9+)", "javap disassembler flags"]
+        }
+      ]
+    },
+    {
+      num: 15, title: "Design, Security, Testing & Build Tools",
+      level: "Expert",
+      chips: ["SOLID", "Design Patterns", "Security", "Logging", "JUnit 5", "Maven/Gradle"],
+      desc: "Round off with SOLID principles, all 23 GoF patterns, Java security APIs, logging frameworks, JUnit 5 with Mockito, and production-grade Maven/Gradle build setup.",
+      topics: [
+        {
+          name: "SOLID Principles",
+          tags: "SRP · OCP · LSP · ISP · DIP",
+          subs: ["Single Responsibility Principle", "Open/Closed Principle", "Liskov Substitution Principle", "Interface Segregation Principle", "Dependency Inversion Principle", "Applying SOLID in Java code"]
+        },
+        {
+          name: "Creational Patterns",
+          tags: "Singleton · Factory · Builder · Prototype",
+          subs: ["Singleton (thread-safe implementations)", "Factory Method", "Abstract Factory", "Builder", "Prototype"]
+        },
+        {
+          name: "Structural Patterns",
+          tags: "Adapter · Decorator · Proxy · Facade · Composite",
+          subs: ["Adapter", "Bridge", "Composite", "Decorator", "Facade", "Flyweight", "Proxy"]
+        },
+        {
+          name: "Behavioral Patterns",
+          tags: "Observer · Strategy · Command · Iterator · Visitor",
+          subs: ["Chain of Responsibility", "Command", "Iterator", "Mediator", "Memento", "Observer", "State", "Strategy", "Template Method", "Visitor"]
+        },
+        {
+          name: "Security Fundamentals",
+          tags: "Crypto · TLS · SecureRandom · Serialization safety",
+          subs: ["Java Security Manager (legacy awareness)", "Cryptography: javax.crypto basics (AES, RSA)", "MessageDigest (SHA-256, SHA-512)", "SecureRandom", "HTTPS and TLS with Java", "Serialization security (object injection)", "Input validation and injection prevention", "OWASP Top 10 awareness from Java perspective"]
+        },
+        {
+          name: "Logging",
+          tags: "SLF4J · Logback · Log4j2 · MDC · Structured",
+          subs: ["java.util.logging (JUL)", "SLF4J API and façade pattern", "Logback configuration", "Log4j2 configuration", "MDC (Mapped Diagnostic Context)", "Log levels best practices", "Structured logging", "Log4Shell awareness and mitigation"]
+        },
+        {
+          name: "Unit Testing — JUnit 5 & Mockito",
+          tags: "@Test · Assertions · Parameterized · Mockito · JaCoCo",
+          subs: ["JUnit 5 architecture (Platform, Jupiter, Vintage)", "@Test, @BeforeEach, @AfterEach, @BeforeAll, @AfterAll", "Assertions: assertEquals, assertThrows, assertAll", "@ParameterizedTest and argument sources", "@DisplayName and @Tag", "@Disabled", "Test lifecycle and extension model", "Mockito: @Mock, @InjectMocks, when/thenReturn, verify", "AssertJ fluent assertions", "Code coverage with JaCoCo", "Test-Driven Development (TDD) cycle"]
+        },
+        {
+          name: "Build Tools & Ecosystem",
+          tags: "Maven · Gradle · Multi-module · CI",
+          subs: ["Maven: pom.xml structure, lifecycle phases, plugins, repositories, dependency scopes", "Gradle: build.gradle, tasks, plugins, Kotlin DSL basics", "Dependency management and version conflicts", "Multi-module projects", "Running tests in CI pipeline basics"]
+        }
+      ]
+    }
+  ];
+
+  let activeModule = 0;
+
+  function buildSidebarTopics(mod) {
+    const container = document.getElementById("sidebar-topics");
+    container.innerHTML = "";
+    mod.topics.forEach((t, i) => {
+      const btn = document.createElement("button");
+      btn.className = "sidebar-topic-link";
+      btn.innerHTML = `<span class="sdot"></span>${mod.num}.${i + 1} ${t.name}`;
+      btn.onclick = () => {
+        const el = document.getElementById("topic-" + i);
+        if (el) el.scrollIntoView({behavior: "smooth", block: "start"});
+      };
+      container.appendChild(btn);
+    });
+  }
+
+  function renderModule(idx) {
+    activeModule = idx;
+    const mod = modules[idx];
+    document.getElementById("active-module-pill").textContent = `Module ${idx + 1} of ${modules.length}`;
+    buildSidebarTopics(mod);
+
+    const main = document.getElementById("main-inner");
+    main.innerHTML = "";
+
+    // Hero
+    const hero = document.createElement("div");
+    hero.className = "module-hero";
+    hero.innerHTML = `
+    <div class="hero-module-label">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2L2 5v4c0 3 2.5 5.5 6 7 3.5-1.5 6-4 6-7V5L8 2z"/></svg>
+      MODULE ${mod.num} — CORE JAVA
+    </div>
+    <div class="hero-title">${mod.title}</div>
+    <div class="hero-desc">${mod.desc}</div>
+    <div class="hero-chips">${mod.chips.map(c => `<span class="hero-chip">${c}</span>`).join("")}</div>
+  `;
+    main.appendChild(hero);
+
+    // Search + controls
+    const cr = document.createElement("div");
+    cr.className = "controls-row";
+    cr.innerHTML = `
+    <div class="search-wrap">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="6"/><path d="M15 15l3 3"/></svg>
+      <input class="search-input" type="text" placeholder="Search topics, subtopics..." id="search-input" />
+    </div>
+    <button class="ctrl-btn" onclick="expandAll()">Expand All</button>
+    <button class="ctrl-btn" onclick="collapseAll()">Collapse All</button>
+  `;
+    main.appendChild(cr);
+
+    // Section header
+    const sh = document.createElement("div");
+    sh.className = "module-section";
+    sh.innerHTML = `<div class="module-section-header">
+    <div class="mod-sec-left">
+      <span class="mod-badge">MODULE ${mod.num}</span>
+      <span class="mod-sec-title">${mod.title}</span>
+    </div>
+    <span class="mod-sec-count">${mod.topics.length} topic groups</span>
+  </div>`;
+    main.appendChild(sh);
+
+    // Topics
+    mod.topics.forEach((t, i) => {
+      const card = document.createElement("div");
+      card.className = "topic-card";
+      card.id = "topic-" + i;
+
+      const subsHtml = t.subs.map(s => `<div class="subtopic-item"><span class="subtopic-dot"></span>${s}</div>`).join("");
+
+      card.innerHTML = `
+      <div class="topic-header" onclick="toggleTopic(this)">
+        <span class="topic-num">${mod.num}.${i + 1}</span>
+        <div class="topic-info">
+          <div class="topic-name">${t.name}</div>
+          <div class="topic-tags">${t.tags}</div>
+        </div>
+        <svg class="topic-chevron" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="5 8 10 13 15 8"/></svg>
+      </div>
+      <div class="subtopics-wrap">
+        <div class="subtopics-grid">${subsHtml}</div>
+      </div>`;
+      sh.appendChild(card);
+    });
+
+    // Search
+    document.getElementById("search-input").addEventListener("input", function () {
+      const q = this.value.toLowerCase();
+      document.querySelectorAll(".topic-card").forEach(card => {
+        const name = card.querySelector(".topic-name").textContent.toLowerCase();
+        const subs = Array.from(card.querySelectorAll(".subtopic-item")).map(s => s.textContent.toLowerCase()).join(" ");
+        const match = !q || name.includes(q) || subs.includes(q);
+        card.classList.toggle("hidden", !match);
+        if (q && match) {
+          card.querySelector(".subtopics-wrap").classList.add("open");
+          card.querySelector(".topic-chevron").classList.add("open");
+        }
+      });
+    });
+  }
+
+  function toggleTopic(header) {
+    const wrap = header.nextElementSibling;
+    const chev = header.querySelector(".topic-chevron");
+    wrap.classList.toggle("open");
+    chev.classList.toggle("open");
+  }
+
+  function expandAll() {
+    document.querySelectorAll(".subtopics-wrap").forEach(w => w.classList.add("open"));
+    document.querySelectorAll(".topic-chevron").forEach(c => c.classList.add("open"));
+  }
+
+  function collapseAll() {
+    document.querySelectorAll(".subtopics-wrap").forEach(w => w.classList.remove("open"));
+    document.querySelectorAll(".topic-chevron").forEach(c => c.classList.remove("open"));
+  }
+
+  function showModule(idx, btn) {
+    document.querySelectorAll(".sidebar-module-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderModule(idx);
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }
+
+  // Init
+  renderModule(0);
+</script>
+</body>
+</html>
