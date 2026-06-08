@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3-Month Java Spring Boot Backend Engineer Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Roboto',sans-serif; background:#fff; font-size:12px; color:#222; }
+
+/* ── HEADER ── */
+.header {
+  background:#fff;
+  padding:18px 24px 10px;
+  text-align:center;
+  border-bottom:2px solid #eee;
+}
+.header-top {
+  display:flex; align-items:center; justify-content:center; gap:20px; margin-bottom:8px;
+}
+.java-logo { display:flex; flex-direction:column; align-items:center; }
+.java-logo .icon { font-size:36px; }
+.java-logo .lbl { font-size:13px; font-weight:700; color:#e76f00; }
+.spring-logo { display:flex; flex-direction:column; align-items:center; }
+.spring-logo .icon { font-size:36px; }
+.spring-logo .lbl { font-size:11px; font-weight:700; color:#6db33f; }
+.header h1 {
+  font-family:'Roboto Condensed',sans-serif;
+  font-size:30px; font-weight:900; color:#1a1a1a; line-height:1.1; flex:1;
+  text-align:center;
+}
+.header h1 span.green { color:#6db33f; }
+.goal-row {
+  background:#fff8f0; border:1.5px solid #f0c060; border-radius:6px;
+  padding:7px 18px; display:inline-flex; align-items:center; gap:8px;
+  font-size:12px; color:#333; margin-top:6px;
+}
+.goal-row .gicon { font-size:18px; }
+
+/* ── MAIN TABLE LAYOUT ── */
+.main-wrap { padding:10px 14px 0; background:#f5f5f5; }
+
+/* ── MONTH BLOCKS ── */
+.month-block { display:grid; margin-bottom:8px; }
+.month-block.m1 { grid-template-columns:105px 1fr 1fr 1fr 1fr; }
+.month-block.m2 { grid-template-columns:105px 1fr 1fr 1fr 1fr; }
+.month-block.m3 { grid-template-columns:105px 1fr 1fr 1fr 1fr; }
+
+/* Month side labels */
+.mlabel {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:12px 8px; color:#fff; text-align:center; font-weight:700;
+  border-radius:6px 0 0 6px;
+}
+.mlabel.m1 { background:#2d7d32; }
+.mlabel.m2 { background:#1565c0; }
+.mlabel.m3 { background:#6a1b9a; }
+.mlabel .mnum { font-size:13px; font-weight:900; letter-spacing:1px; }
+.mlabel .mtitle { font-size:11px; font-weight:700; line-height:1.3; margin-top:4px; }
+.mlabel .msub { font-size:10px; font-weight:400; margin-top:2px; opacity:0.9; }
+.mlabel .micon { font-size:26px; margin-top:10px; }
+
+/* Week cards */
+.wcard {
+  background:#fff; border:1px solid #ddd; padding:10px 10px 10px;
+  display:flex; flex-direction:column; gap:7px;
+  border-left:none;
+}
+.wcard:last-child { border-radius:0 6px 6px 0; }
+
+.whead {
+  display:flex; align-items:center; gap:6px;
+  padding:5px 8px; border-radius:4px; margin:-10px -10px 0; 
+  font-size:11px; font-weight:700; letter-spacing:0.3px; color:#fff;
+}
+.whead .wico { font-size:14px; }
+
+/* Week header colors */
+.wh-dsa   { background:#37474f; }
+.wh-java  { background:#e65100; }
+.wh-spring{ background:#2e7d32; }
+.wh-db    { background:#1565c0; }
+.wh-lld   { background:#f9a825; color:#333 !important; }
+.wh-micro { background:#4a148c; }
+.wh-hld   { background:#006064; }
+.wh-msg   { background:#b71c1c; }
+.wh-proj  { background:#1b5e20; }
+.wh-mock  { background:#1a237e; }
+.wh-resume{ background:#e65100; }
+.wh-sprint{ background:#4a148c; }
+
+.sect-lbl {
+  font-size:10.5px; font-weight:700; color:#e65100; margin-bottom:1px;
+}
+.sect-lbl.blue { color:#1565c0; }
+.sect-lbl.green { color:#2e7d32; }
+.sect-lbl.black { color:#333; }
+
+ul.blist { list-style:disc; padding-left:14px; }
+ul.blist li { font-size:11px; line-height:1.6; color:#222; }
+ul.blist.sub { list-style:none; padding-left:18px; }
+ul.blist.sub li::before { content:"– "; color:#555; }
+
+.goal-box {
+  background:#f1f8e9; border:1px solid #a5d6a7; border-radius:4px;
+  padding:5px 8px; margin-top:auto; font-size:11px; color:#1b5e20;
+}
+.goal-box .glbl { font-weight:700; display:flex; align-items:center; gap:4px; margin-bottom:2px; }
+
+.faq-lbl { font-size:10.5px; font-weight:700; color:#e65100; margin-bottom:1px; }
+
+/* Practice box */
+.prac-box { background:#f1f8e9; border-left:3px solid #66bb6a; padding:4px 7px; border-radius:0 4px 4px 0; }
+.prac-box .plbl { font-size:10.5px; font-weight:700; color:#2e7d32; margin-bottom:2px; }
+
+/* ── DAILY SCHEDULE ── */
+.schedule-wrap {
+  background:#fff; border:1px solid #ddd; border-radius:6px;
+  margin:8px 0; padding:10px 14px;
+}
+.sched-title {
+  text-align:center; font-size:12px; font-weight:700; background:#37474f;
+  color:#fff; margin:-10px -14px 10px; padding:7px; border-radius:6px 6px 0 0; letter-spacing:0.5px;
+}
+.sched-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.sched-col-title { font-size:11px; font-weight:700; color:#333; margin-bottom:6px; }
+.sched-items { display:flex; gap:8px; flex-wrap:wrap; }
+.sched-item {
+  display:flex; align-items:center; gap:5px;
+  border:1px solid #ddd; border-radius:5px; padding:5px 9px; background:#fafafa;
+}
+.sched-item .si-ico { font-size:16px; }
+.sched-item .si-lbl { font-size:11px; font-weight:600; color:#222; }
+.sched-item .si-time { font-size:10px; color:#666; }
+
+/* ── BOTTOM ROW ── */
+.bottom-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+
+.outcome-box, .company-box {
+  background:#fff; border:1px solid #ddd; border-radius:6px; overflow:hidden;
+}
+.ob-title {
+  font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+  padding:6px 12px; background:#37474f; color:#fff;
+}
+.ob-body { padding:10px 12px; }
+.outcome-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px 12px; }
+.oc-item { display:flex; align-items:flex-start; gap:5px; font-size:11px; color:#222; line-height:1.4; }
+.oc-check { color:#2e7d32; font-weight:700; flex-shrink:0; }
+
+.ready-pill {
+  margin-top:10px; background:#e8f5e9; border:1px solid #a5d6a7; border-radius:20px;
+  padding:5px 12px; font-size:11px; color:#1b5e20; font-weight:600; text-align:center;
+}
+
+.comp-row { display:flex; align-items:flex-start; gap:10px; padding:8px 12px; border-bottom:1px solid #eee; }
+.comp-row:last-child { border-bottom:none; }
+.comp-type { font-size:11px; font-weight:600; color:#333; min-width:130px; line-height:1.4; }
+.comp-type .ex { font-weight:400; font-size:10px; color:#666; }
+.comp-arr { color:#e65100; font-size:16px; flex-shrink:0; margin-top:1px; }
+.comp-tag { font-size:11px; font-weight:600; background:#e3f2fd; color:#1565c0; border:1px solid #90caf9; border-radius:4px; padding:3px 8px; }
+.comp-tag.green { background:#e8f5e9; color:#2e7d32; border-color:#a5d6a7; }
+
+/* sprint table */
+.sprint-tbl { width:100%; border-collapse:collapse; margin-top:4px; }
+.sprint-tbl tr td { padding:3px 4px; font-size:11px; vertical-align:middle; }
+.stime { display:inline-flex; align-items:center; gap:3px; background:#ffe082; border-radius:3px; padding:1px 6px; font-size:10px; font-weight:700; color:#333; white-space:nowrap; }
+.stime.blue { background:#bbdefb; }
+.stag { display:inline-block; font-size:10px; padding:2px 7px; border-radius:3px; font-weight:600; background:#ede7f6; color:#4a148c; }
+
+/* platforms */
+.plat-wrap { display:flex; gap:6px; margin-top:4px; flex-wrap:wrap; }
+.plat { background:#e3f2fd; color:#1565c0; border:1px solid #90caf9; border-radius:4px; font-size:10px; font-weight:600; padding:2px 8px; }
+
+/* Deploy tags */
+.dep-wrap { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+.dep-tag { background:#e8f5e9; color:#1b5e20; border:1px solid #a5d6a7; border-radius:4px; font-size:10px; font-weight:600; padding:2px 8px; }
+
+/* Divider line in sprint */
+.srow-div td { border-top:1px solid #eee; padding:1px 0; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<div class="header">
+  <div class="header-top">
+    <div class="java-logo">
+      <div class="icon">☕</div>
+      <div class="lbl">Java</div>
+    </div>
+    <h1>3-MONTH JOB CHANGE ROADMAP<br>FOR <span class="green">JAVA SPRING BOOT</span> BACKEND ENGINEER</h1>
+    <div class="spring-logo">
+      <div class="icon">🌿</div>
+      <div class="lbl">spring<br>boot</div>
+    </div>
+  </div>
+  <div class="goal-row">
+    <span class="gicon">🎯</span>
+    <span><b>Goal:</b> Switch jobs in 90 days by becoming interview-ready with strong fundamentals, problem-solving, system design skills and practical project experience.</span>
+  </div>
+</div>
+
+<div class="main-wrap">
+
+<!-- ══════════ MONTH 1 ══════════ -->
+<div class="month-block m1">
+  <div class="mlabel m1">
+    <div class="mnum">MONTH 1</div>
+    <div class="mtitle">STRENGTHEN<br>CORE<br>FOUNDATIONS</div>
+    <div class="micon">🌱</div>
+  </div>
+
+  <!-- W1: DSA -->
+  <div class="wcard">
+    <div class="whead wh-dsa"><span class="wico">💻</span> WEEK 1: DSA FUNDAMENTALS</div>
+    <div>
+      <div class="sect-lbl">Topics</div>
+      <ul class="blist">
+        <li>Arrays</li><li>Strings</li><li>HashMap</li>
+        <li>Sliding Window</li><li>Two Pointer</li><li>Prefix Sum</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Problems</div>
+      <ul class="blist">
+        <li>Two Sum</li><li>3 Sum</li>
+        <li>Longest Substring Without Repeating Characters</li>
+        <li>Product of Array Except Self</li>
+        <li>Container With Most Water</li>
+        <li>Subarray Sum Equals K</li>
+      </ul>
+    </div>
+    <div class="goal-box">
+      <div class="glbl">🎯 Goal</div>
+      <div>• 2-3 problems daily</div>
+      <div>• Focus on understanding patterns</div>
+    </div>
+  </div>
+
+  <!-- W2: Java Core -->
+  <div class="wcard">
+    <div class="whead wh-java"><span class="wico">☕</span> WEEK 2: JAVA CORE</div>
+    <div>
+      <div class="sect-lbl">Topics</div>
+      <ul class="blist">
+        <li>OOP Concepts</li><li>Collections Framework</li>
+        <li>Generics</li><li>Comparable vs Comparator</li>
+        <li>Streams API</li><li>Optional</li>
+        <li>Exception Handling</li><li>Concurrency Basics</li>
+      </ul>
+    </div>
+    <div>
+      <div class="faq-lbl">Frequently Asked Questions</div>
+      <ul class="blist">
+        <li>HashMap internal working</li>
+        <li>ConcurrentHashMap</li>
+        <li>ArrayList vs LinkedList</li>
+        <li>HashSet vs TreeSet</li>
+        <li>equals() vs hashCode()</li>
+        <li>String vs StringBuilder</li>
+      </ul>
+    </div>
+    <div class="goal-box">
+      <div class="glbl">🎯 Goal</div>
+      Be able to answer Java internals confidently.
+    </div>
+  </div>
+
+  <!-- W3: Spring Boot -->
+  <div class="wcard">
+    <div class="whead wh-spring"><span class="wico">🌿</span> WEEK 3: SPRING BOOT DEEP DIVE</div>
+    <div>
+      <div class="sect-lbl">Topics</div>
+      <ul class="blist">
+        <li>Spring IOC</li><li>Dependency Injection</li>
+        <li>Bean Lifecycle</li><li>Spring MVC</li>
+        <li>REST APIs</li><li>Validation</li>
+        <li>Exception Handling</li><li>Profiles</li>
+        <li>Configuration</li>
+      </ul>
+    </div>
+    <div class="prac-box">
+      <div class="plbl">Practice</div>
+      <div style="font-size:11px;font-weight:600;margin-bottom:2px;">Create:</div>
+      <ul class="blist">
+        <li>User CRUD APIs</li>
+        <li>Global Exception Handling</li>
+        <li>Swagger Documentation</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- W4: DB + SQL -->
+  <div class="wcard">
+    <div class="whead wh-db"><span class="wico">🗄️</span> WEEK 4: DATABASE + SQL</div>
+    <div>
+      <div class="sect-lbl">Topics</div>
+      <ul class="blist">
+        <li>Joins</li><li>Indexes</li>
+        <li>Query Optimization</li><li>Normalization</li>
+        <li>Transactions</li><li>ACID</li>
+        <li>Isolation Levels</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl blue">Practice Queries</div>
+      <ul class="blist">
+        <li>Top N records</li>
+        <li>Duplicate records</li>
+        <li>Window Functions</li>
+        <li>Group By</li>
+      </ul>
+    </div>
+    <div class="goal-box">
+      <div class="glbl">🎯 Goal</div>
+      Solve SQL questions without looking at syntax.
+    </div>
+  </div>
+</div><!-- /month 1 -->
+
+<!-- ══════════ MONTH 2 ══════════ -->
+<div class="month-block m2">
+  <div class="mlabel m2">
+    <div class="mnum">MONTH 2</div>
+    <div class="mtitle">SYSTEM DESIGN<br>+<br>MICROSERVICES</div>
+    <div class="micon">⚙️</div>
+  </div>
+
+  <!-- W5: LLD -->
+  <div class="wcard">
+    <div class="whead wh-lld"><span class="wico">💡</span> WEEK 5: LOW LEVEL DESIGN</div>
+    <div>
+      <div class="sect-lbl">Topics</div>
+      <ul class="blist">
+        <li>SOLID Principles</li>
+        <li>Design Patterns</li>
+      </ul>
+      <ul class="blist sub">
+        <li>Factory</li><li>Strategy</li>
+        <li>Builder</li><li>Observer</li><li>Singleton</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Practice</div>
+      <div style="font-size:11px;margin-bottom:2px;">Design:</div>
+      <ul class="blist">
+        <li>Parking Lot</li>
+        <li>Elevator</li>
+        <li>Library Management</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- W6: Microservices -->
+  <div class="wcard">
+    <div class="whead wh-micro"><span class="wico">🔗</span> WEEK 6: MICROSERVICES</div>
+    <div>
+      <div class="sect-lbl">Topics</div>
+      <ul class="blist">
+        <li>Service Discovery</li><li>API Gateway</li>
+        <li>Circuit Breaker</li><li>Config Server</li>
+        <li>Feign Client</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Tools</div>
+      <ul class="blist">
+        <li>Spring Cloud</li><li>Eureka</li>
+        <li>OpenFeign</li><li>Resilience4j</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Project</div>
+      <div style="font-size:11px;margin-bottom:2px;">Build:</div>
+      <ul class="blist">
+        <li>User Service</li>
+        <li>Order Service</li>
+        <li>Notification Service</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- W7: HLD -->
+  <div class="wcard">
+    <div class="whead wh-hld"><span class="wico">🏗️</span> WEEK 7: HIGH LEVEL DESIGN</div>
+    <div>
+      <div class="sect-lbl">Topics</div>
+      <ul class="blist">
+        <li>Load Balancer</li><li>Caching</li>
+        <li>Database Scaling</li>
+        <li>Message Queue</li><li>CAP Theorem</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Design Questions</div>
+      <ul class="blist">
+        <li>URL Shortener</li><li>WhatsApp</li>
+        <li>Notification Service</li>
+        <li>Food Delivery App</li>
+      </ul>
+    </div>
+    <div class="goal-box">
+      <div class="glbl">🎯 Goal</div>
+      Be able to explain trade-offs.
+    </div>
+  </div>
+
+  <!-- W8: Messaging -->
+  <div class="wcard">
+    <div class="whead wh-msg"><span class="wico">📨</span> WEEK 8: MESSAGING + CACHING</div>
+    <div>
+      <div class="sect-lbl">Topics</div>
+      <ul class="blist">
+        <li>Redis</li><li>Kafka</li><li>RabbitMQ</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Understand</div>
+      <ul class="blist">
+        <li>Producer/Consumer</li>
+        <li>Partitions</li>
+        <li>Consumer Groups</li>
+        <li>Event Driven Architecture</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Project Enhancement</div>
+      <div style="font-size:11px;margin-bottom:2px;">Add:</div>
+      <ul class="blist">
+        <li>Redis Cache</li>
+        <li>Kafka Event Publishing</li>
+      </ul>
+    </div>
+  </div>
+</div><!-- /month 2 -->
+
+<!-- ══════════ MONTH 3 ══════════ -->
+<div class="month-block m3">
+  <div class="mlabel m3">
+    <div class="mnum">MONTH 3</div>
+    <div class="mtitle">INTERVIEW<br>PREPARATION<br>MODE</div>
+    <div class="micon">🚀</div>
+  </div>
+
+  <!-- W9: Project -->
+  <div class="wcard">
+    <div class="whead wh-proj"><span class="wico">🛒</span> WEEK 9: BUILD RESUME-WORTHY PROJECT</div>
+    <div>
+      <div class="sect-lbl">Suggested Project</div>
+      <div style="font-size:11px;font-weight:700;color:#1b5e20;margin-bottom:3px;">E-commerce Backend</div>
+      <div style="font-size:10.5px;font-weight:600;color:#444;margin-bottom:2px;">Features:</div>
+      <ul class="blist">
+        <li>Authentication</li><li>Product Service</li>
+        <li>Cart Service</li><li>Order Service</li>
+        <li>Payment Integration Mock</li>
+        <li>Kafka Events</li><li>Redis Cache</li>
+        <li>JWT Security</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Deploy</div>
+      <div class="dep-wrap">
+        <span class="dep-tag">🐳 Docker</span>
+        <span class="dep-tag">📦 GitHub</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- W10: Mock -->
+  <div class="wcard">
+    <div class="whead wh-mock"><span class="wico">🎤</span> WEEK 10: MOCK INTERVIEWS</div>
+    <div>
+      <div class="sect-lbl">DSA</div>
+      <ul class="blist"><li>1 Medium problem daily</li></ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Java</div>
+      <ul class="blist"><li>30 common interview questions</li></ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Spring Boot</div>
+      <ul class="blist"><li>30 common interview questions</li></ul>
+    </div>
+    <div>
+      <div class="sect-lbl">System Design</div>
+      <ul class="blist"><li>1 design daily</li></ul>
+    </div>
+  </div>
+
+  <!-- W11: Resume -->
+  <div class="wcard">
+    <div class="whead wh-resume"><span class="wico">📄</span> WEEK 11: RESUME + APPLICATIONS</div>
+    <div>
+      <div class="sect-lbl">Resume</div>
+      <div style="font-size:11px;margin-bottom:3px;">Keep it 1-2 pages.</div>
+      <div style="font-size:10.5px;font-weight:700;color:#444;margin-bottom:2px;">Highlight:</div>
+      <ul class="blist">
+        <li>✓ Performance improvements</li>
+        <li>✓ Scalability work</li>
+        <li>✓ Cost optimization</li>
+        <li>✓ Production issues solved</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Applications</div>
+      <ul class="blist"><li>Target: 10-15 applications daily</li></ul>
+    </div>
+    <div>
+      <div class="sect-lbl">Platforms</div>
+      <div class="plat-wrap">
+        <span class="plat">LinkedIn</span>
+        <span class="plat">Naukri</span>
+        <span class="plat">Instahyre</span>
+        <span class="plat">Foundit</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- W12: Sprint -->
+  <div class="wcard">
+    <div class="whead wh-sprint"><span class="wico">🏁</span> WEEK 12: INTERVIEW SPRINT</div>
+    <div>
+      <div class="sect-lbl">Daily Plan</div>
+      <table class="sprint-tbl">
+        <tr>
+          <td><span class="stime blue">💻 1 Hour</span></td>
+          <td style="font-size:11px;padding-left:6px;">DSA</td>
+        </tr>
+        <tr class="srow-div"><td colspan="2"></td></tr>
+        <tr>
+          <td><span class="stime">☕ 1 Hour</span></td>
+          <td style="font-size:11px;padding-left:6px;">Java + Spring Boot</td>
+        </tr>
+        <tr class="srow-div"><td colspan="2"></td></tr>
+        <tr>
+          <td><span class="stime blue">🏗️ 1 Hour</span></td>
+          <td style="font-size:11px;padding-left:6px;">System Design</td>
+        </tr>
+        <tr class="srow-div"><td colspan="2"></td></tr>
+        <tr>
+          <td><span class="stime">🤝 30 Min</span></td>
+          <td style="font-size:11px;padding-left:6px;">Behavioral Questions</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <div class="sect-lbl">Questions</div>
+      <ul class="blist">
+        <li>Tell me about yourself</li>
+        <li>Biggest challenge</li>
+        <li>Production issue you solved</li>
+        <li>Why are you changing jobs?</li>
+      </ul>
+    </div>
+  </div>
+</div><!-- /month 3 -->
+
+<!-- ══════════ DAILY SCHEDULE ══════════ -->
+<div class="schedule-wrap">
+  <div class="sched-title">DAILY SCHEDULE (WORKING PROFESSIONAL)</div>
+  <div class="sched-grid">
+    <div>
+      <div class="sched-col-title">Weekdays (2.5 – 3 Hours)</div>
+      <div class="sched-items">
+        <div class="sched-item">
+          <span class="si-ico">💻</span>
+          <div><div class="si-lbl">DSA</div><div class="si-time">1 hour</div></div>
+        </div>
+        <div class="sched-item">
+          <span class="si-ico">☕</span>
+          <div><div class="si-lbl">Java / Spring Boot</div><div class="si-time">1 hour</div></div>
+        </div>
+        <div class="sched-item">
+          <span class="si-ico">🏗️</span>
+          <div><div class="si-lbl">System Design</div><div class="si-time">30 – 60 min</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sched-col-title">Weekends (6 – 8 Hours)</div>
+      <div class="sched-items">
+        <div class="sched-item">
+          <span class="si-ico">🎤</span>
+          <div><div class="si-lbl">Mock Interviews</div></div>
+        </div>
+        <div class="sched-item">
+          <span class="si-ico">💼</span>
+          <div><div class="si-lbl">Project Work</div></div>
+        </div>
+        <div class="sched-item">
+          <span class="si-ico">📄</span>
+          <div><div class="si-lbl">Resume Improvements</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ BOTTOM ══════════ -->
+<div class="bottom-row">
+  <!-- Outcomes -->
+  <div class="outcome-box">
+    <div class="ob-title">EXPECTED OUTCOME AFTER 3 MONTHS</div>
+    <div class="ob-body">
+      <div class="outcome-grid">
+        <div class="oc-item"><span class="oc-check">✅</span> 150-200 DSA problems</div>
+        <div class="oc-item"><span class="oc-check">✅</span> Redis &amp; Kafka basics</div>
+        <div class="oc-item"><span class="oc-check">✅</span> Java internals</div>
+        <div class="oc-item"><span class="oc-check">✅</span> Low-Level Design</div>
+        <div class="oc-item"><span class="oc-check">✅</span> Spring Boot &amp; Microservices</div>
+        <div class="oc-item"><span class="oc-check">✅</span> High-Level Design</div>
+        <div class="oc-item"><span class="oc-check">✅</span> SQL optimization</div>
+        <div class="oc-item"><span class="oc-check">✅</span> Resume-ready backend project</div>
+      </div>
+      <div class="ready-pill">🏆 Interview-ready for 5–12 years backend engineer roles</div>
+    </div>
+  </div>
+
+  <!-- Company Focus -->
+  <div class="company-box">
+    <div class="ob-title">FOCUS BASED ON COMPANY TYPE</div>
+    <div class="comp-row">
+      <div class="comp-type">
+        Product-Based Companies<br>
+        <span class="ex">Mastercard, Amazon, Walmart, Adobe, PayPal</span>
+      </div>
+      <div class="comp-arr">→</div>
+      <div><span class="comp-tag">Prioritize DSA + System Design</span></div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-type">
+        Service-Based Companies<br>
+        <span class="ex">Focus more on Java, Spring Boot, Microservices, SQL and real project</span>
+      </div>
+      <div class="comp-arr">→</div>
+      <div><span class="comp-tag green">Prioritize Tech Stack + Projects</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main-wrap -->
+</body>
+</html>
