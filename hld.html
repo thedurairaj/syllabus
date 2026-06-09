@@ -1,1771 +1,1772 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>90-Day HLD Learning Plan · Spring Boot Edition</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f5f5f7;
-      --surface: #ffffff;
-      --card: #ffffff;
-
-      --border: #e5e5e7;
-      --border2: #d2d2d7;
-
-      --p1: #0071e3; /* Blue */
-      --p2: #22c55e; /* Green */
-      --p3: #f59e0b; /* Amber */
-      --p4: #a855f7; /* Purple */
-      --p5: #06b6d4; /* Cyan */
-      --p6: #f43f5e; /* Rose */
-
-      --p1l: #eef5ff;
-      --p2l: #ecfdf3;
-      --p3l: #fff7e6;
-      --p4l: #f7f0ff;
-      --p5l: #ecfeff;
-      --p6l: #fff1f2;
-
-      --text: #1d1d1f;
-      --muted: #6e6e73;
-      --dim: #8e8e93;
-
-      --body: -apple-system, BlinkMacSystemFont,
-      "SF Pro Display",
-      "Segoe UI",
-      sans-serif;
-
-      --display: var(--body);
-      --mono: var(--body);
-
-      --radius: 24px;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--body);
-      font-size: 14px;
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ─── GRID BG ─── */
-    body::before {
-      display: none;
-    }
-
-    body {
-      margin: 0;
-    }
-
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-
-      height: 72px;
-
-      background: rgba(255, 255, 255, .8);
-
-      backdrop-filter: blur(20px);
-
-      border-bottom: 1px solid #e5e5e7;
-
-      padding: 0 32px;
-
-      display: flex;
-      align-items: center;
-
-      z-index: 100;
-
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-    .nav-brand {
-      font-family: var(--display);
-      font-weight: 800;
-      font-size: 15px;
-      color: var(--text);
-      text-decoration: none;
-      margin-right: auto;
-      letter-spacing: -.3px;
-    }
-
-    .nav-brand span {
-      color: var(--p1);
-    }
-
-    .nav-phases {
-      display: flex;
-      gap: 4px;
-    }
-
-    .nav-phase-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: transform .2s, opacity .2s;
-      opacity: .5;
-    }
-
-    .nav-phase-dot:hover {
-      transform: scale(1.5);
-      opacity: 1;
-    }
-
-    .nav-tag {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      border: 1px solid var(--border2);
-      border-radius: 4px;
-      padding: 3px 8px;
-      margin-left: 16px;
-    }
-
-    /* ─── HERO ─── */
-    .hero {
-      padding: 180px 24px 100px;
-      max-width: 1100px;
-      margin: auto;
-      text-align: center;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .08em;
-      color: var(--p1);
-      border: 1px solid var(--p1);
-      border-radius: 20px;
-      padding: 4px 14px;
-      margin-bottom: 28px;
-      animation: fadeUp .6s both;
-    }
-
-    .hero h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
-      line-height: .95;
-      font-weight: 700;
-      letter-spacing: -3px;
-      color: #1d1d1f;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--p1) 0%, #818cf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: 22px;
-      color: #6e6e73;
-      max-width: 700px;
-      margin: 24px auto 0;
-    }
-
-    .hero-stats {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 40px;
-      margin-top: 48px;
-      animation: fadeUp .7s .3s both;
-    }
-
-    .stat {
-      background: #fff;
-      border-radius: 28px;
-      padding: 32px;
-      min-width: 180px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
-    }
-
-    .stat-num {
-      font-size: 3.5rem;
-      font-weight: 700;
-      color: #1d1d1f;
-    }
-
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-
-    /* ─── SECTION ─── */
-    .section {
-      position: relative;
-      z-index: 1;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 24px 80px;
-    }
-
-    .section-title {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 24px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* ─── PHASE GRID ─── */
-    .phase-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
-      margin-bottom: 60px;
-    }
-
-    .phase-card:focus-visible,
-    .search-input:focus-visible {
-      outline: 2px solid var(--p1);
-      outline-offset: 2px;
-    }
-
-    .phase-card {
-      background: #fff;
-      border: none;
-      border-radius: 28px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
-      padding: 20px;
-      cursor: pointer;
-      transition: transform .2s ease,
-      box-shadow .2s ease,
-      border-color .2s ease;
-      position: relative;
-      overflow: hidden;
-      text-decoration: none;
-      display: block;
-    }
-
-    .phase-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-    }
-
-    .phase-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, .10);
-    }
-
-    .phase-card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .phase-pill {
-      font-family: var(--mono), monospace;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 4px;
-      letter-spacing: .06em;
-    }
-
-    .phase-weeks {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--muted);
-      margin-left: auto;
-    }
-
-    .phase-card h3 {
-      font-family: var(--display), monospace;
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .phase-desc {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .phase-count {
-      margin-top: 14px;
-      font-family: var(--mono), monospace;
-      font-size: 10px;
-      color: var(--dim);
-    }
-
-    /* ─── PHASE PHASES ─── */
-    .phase-section {
-      margin-bottom: 64px;
-    }
-
-    .phase-header-bar {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-
-      background: #fff;
-
-      border: none;
-
-      border-radius: 28px;
-
-      padding: 28px;
-
-      box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
-    }
-
-    .phase-header-bar .phase-number {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 4px;
-      letter-spacing: .06em;
-    }
-
-    .phase-header-bar h2 {
-      font-family: var(--display);
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    .phase-header-bar .phase-meta {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      margin-left: auto;
-    }
-
-    .phase-header-bar .chevron {
-      font-size: 12px;
-      color: var(--muted);
-      transition: transform .3s;
-      margin-left: 8px;
-    }
-
-    .phase-header-bar.open .chevron {
-      transform: rotate(180deg);
-    }
-
-    .days-grid {
-      border: 1px solid var(--border);
-      border-top: none;
-      border-radius: 0 0 var(--radius) var(--radius);
-      overflow: hidden;
-      display: none;
-    }
-
-    .days-grid.open {
-      display: block;
-    }
-
-    /* ─── DAY CARD ─── */
-    .day-item {
-      border-bottom: 1px solid var(--border);
-      transition: background .15s;
-    }
-
-    .day-item:last-child {
-      border-bottom: none;
-    }
-
-    .day-header {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      cursor: pointer;
-      padding: 0;
-      user-select: none;
-    }
-
-    .day-num {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 14px 0;
-      width: 64px;
-      text-align: center;
-      flex-shrink: 0;
-      border-right: 1px solid var(--border);
-    }
-
-    .day-num .day-label {
-      font-size: 9px;
-      font-weight: 400;
-      display: block;
-      opacity: .6;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-
-    .day-title-wrap {
-      flex: 1;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .day-title {
-      font-family: var(--display);
-      font-size: 13px;
-      font-weight: 700;
-      flex: 1;
-    }
-
-    .review-badge {
-      font-family: var(--mono);
-      font-size: 9px;
-      padding: 2px 7px;
-      border-radius: 4px;
-      letter-spacing: .06em;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .day-toggle {
-      font-size: 11px;
-      color: var(--muted);
-      padding: 14px 18px;
-      flex-shrink: 0;
-      transition: transform .3s;
-    }
-
-    .day-item.open .day-toggle {
-      transform: rotate(180deg);
-    }
-
-    .day-item:hover .day-title-wrap {
-      background: rgba(255, 255, 255, .02);
-    }
-
-    .day-body {
-      display: none;
-      padding: 16px 18px 18px 82px;
-      background: #fafafa;
-      border-top: 1px solid var(--border);
-      animation: slideDown .2s ease;
-    }
-
-    .day-item.open .day-body {
-      display: block;
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .day-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .day-row:last-child {
-      margin-bottom: 0;
-    }
-
-    .row-icon {
-      font-size: 14px;
-      flex-shrink: 0;
-      margin-top: 1px;
-      width: 18px;
-    }
-
-    .row-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .08em;
-      font-weight: 700;
-      flex-shrink: 0;
-      width: 60px;
-      padding-top: 1px;
-    }
-
-    .row-content {
-      font-size: 13px;
-      color: var(--text);
-      line-height: 1.55;
-      flex: 1;
-    }
-
-    .row-content.spring {
-      font-family: var(--mono);
-      font-size: 11.5px;
-      color: var(--p1);
-      background: rgba(59, 130, 246, .06);
-      border: 1px solid rgba(59, 130, 246, .15);
-      border-radius: 4px;
-      padding: 6px 10px;
-    }
-
-    /* ─── TIPS ─── */
-    .tips-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 12px;
-    }
-
-    .tip-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-    }
-
-    .tip-title {
-      font-family: var(--display);
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--p1);
-      margin-bottom: 6px;
-    }
-
-    .tip-desc {
-      font-size: 12.5px;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    /* ─── FOOTER ─── */
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 40px 24px 60px;
-      border-top: 1px solid var(--border);
-    }
-
-    footer p {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    footer .rocket {
-      font-size: 28px;
-      display: block;
-      margin-bottom: 12px;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    /* ─── PROGRESS BAR ─── */
-    #progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--p1), #818cf8);
-      z-index: 200;
-      transition: width .1s;
-    }
-
-    /* ─── SEARCH ─── */
-    .search-bar {
-      margin-bottom: 32px;
-      display: flex;
-      gap: 8px;
-    }
-
-
-    .search-input {
-      flex: 1;
-      width: 100%;
-      background: var(--card);
-      border: 1px solid var(--border2);
-      border-radius: var(--radius);
-      padding: 10px 16px;
-      color: var(--text);
-      font-family: var(--mono), monospace;
-      font-size: 13px;
-      outline: none;
-      transition: border-color .2s;
-    }
-
-    .search-input:focus {
-      border-color: var(--p1);
-    }
-
-    .search-input::placeholder {
-      color: var(--dim);
-    }
-
-    /* ─── ANIMATIONS ─── */
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-6px);
-      }
-    }
-
-    /* ─── PHASE COLORS applied via JS data attr ─── */
-    [data-phase="1"] .phase-card::before,
-    [data-phase="1"] .phase-header-bar {
-      background-color: var(--p1l);
-    }
-
-    [data-phase="1"] .phase-header-bar {
-      border-color: rgba(59, 130, 246, .3);
-    }
-
-    [data-phase="1"] .phase-card::before {
-      background: var(--p1);
-    }
-
-    [data-phase="1"] .phase-card:hover {
-      border-color: var(--p1);
-    }
-
-    [data-phase="1"] .phase-pill, [data-phase="1"] .phase-number {
-      background: rgba(59, 130, 246, .15);
-      color: var(--p1);
-    }
-
-    [data-phase="1"] .phase-header-bar h2, [data-phase="1"] .phase-card h3 {
-      color: var(--p1);
-    }
-
-    [data-phase="1"] .day-num {
-      color: var(--p1);
-    }
-
-    [data-phase="1"] .review-badge {
-      background: rgba(59, 130, 246, .15);
-      color: var(--p1);
-    }
-
-    [data-phase="2"] .phase-card::before {
-      background: var(--p2);
-    }
-
-    [data-phase="2"] .phase-card:hover {
-      border-color: var(--p2);
-    }
-
-    [data-phase="2"] .phase-pill, [data-phase="2"] .phase-number {
-      background: rgba(34, 197, 94, .15);
-      color: var(--p2);
-    }
-
-    [data-phase="2"] .phase-header-bar {
-      background-color: var(--p2l);
-    }
-
-    [data-phase="2"] .phase-header-bar h2, [data-phase="2"] .phase-card h3 {
-      color: var(--p2);
-    }
-
-    [data-phase="2"] .day-num {
-      color: var(--p2);
-    }
-
-    [data-phase="2"] .review-badge {
-      background: rgba(34, 197, 94, .15);
-      color: var(--p2);
-    }
-
-    [data-phase="3"] .phase-card::before {
-      background: var(--p3);
-    }
-
-    [data-phase="3"] .phase-card:hover {
-      border-color: var(--p3);
-    }
-
-    [data-phase="3"] .phase-pill, [data-phase="3"] .phase-number {
-      background: rgba(245, 158, 11, .15);
-      color: var(--p3);
-    }
-
-    [data-phase="3"] .phase-header-bar {
-      background-color: var(--p3l);
-    }
-
-    [data-phase="3"] .phase-header-bar h2, [data-phase="3"] .phase-card h3 {
-      color: var(--p3);
-    }
-
-    [data-phase="3"] .day-num {
-      color: var(--p3);
-    }
-
-    [data-phase="3"] .review-badge {
-      background: rgba(245, 158, 11, .15);
-      color: var(--p3);
-    }
-
-    [data-phase="4"] .phase-card::before {
-      background: var(--p4);
-    }
-
-    [data-phase="4"] .phase-card:hover {
-      border-color: var(--p4);
-    }
-
-    [data-phase="4"] .phase-pill, [data-phase="4"] .phase-number {
-      background: rgba(168, 85, 247, .15);
-      color: var(--p4);
-    }
-
-    [data-phase="4"] .phase-header-bar {
-      background-color: var(--p4l);
-    }
-
-    [data-phase="4"] .phase-header-bar h2, [data-phase="4"] .phase-card h3 {
-      color: var(--p4);
-    }
-
-    [data-phase="4"] .day-num {
-      color: var(--p4);
-    }
-
-    [data-phase="4"] .review-badge {
-      background: rgba(168, 85, 247, .15);
-      color: var(--p4);
-    }
-
-    [data-phase="5"] .phase-card::before {
-      background: var(--p5);
-    }
-
-    [data-phase="5"] .phase-card:hover {
-      border-color: var(--p5);
-    }
-
-    [data-phase="5"] .phase-pill, [data-phase="5"] .phase-number {
-      background: rgba(6, 182, 212, .15);
-      color: var(--p5);
-    }
-
-    [data-phase="5"] .phase-header-bar {
-      background-color: var(--p5l);
-    }
-
-    [data-phase="5"] .phase-header-bar h2, [data-phase="5"] .phase-card h3 {
-      color: var(--p5);
-    }
-
-    [data-phase="5"] .day-num {
-      color: var(--p5);
-    }
-
-    [data-phase="5"] .review-badge {
-      background: rgba(6, 182, 212, .15);
-      color: var(--p5);
-    }
-
-    [data-phase="6"] .phase-card::before {
-      background: var(--p6);
-    }
-
-    [data-phase="6"] .phase-card:hover {
-      border-color: var(--p6);
-    }
-
-    [data-phase="6"] .phase-pill, [data-phase="6"] .phase-number {
-      background: rgba(244, 63, 94, .15);
-      color: var(--p6);
-    }
-
-    [data-phase="6"] .phase-header-bar {
-      background-color: var(--p6l);
-    }
-
-    [data-phase="6"] .phase-header-bar h2, [data-phase="6"] .phase-card h3 {
-      color: var(--p6);
-    }
-
-    [data-phase="6"] .day-num {
-      color: var(--p6);
-    }
-
-    [data-phase="6"] .review-badge {
-      background: rgba(244, 63, 94, .15);
-      color: var(--p6);
-    }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 600px) {
-      .hero-stats {
-        gap: 24px;
-      }
-
-      .nav-phases {
-        display: none;
-      }
-
-      .day-body {
-        padding-left: 18px;
-      }
-
-      .row-label {
-        display: none;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>90-Day HLD Learning Plan · Spring Boot Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap"
+            rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f7;
+            --surface: #ffffff;
+            --card: #ffffff;
+
+            --border: #e5e5e7;
+            --border2: #d2d2d7;
+
+            --p1: #0071e3; /* Blue */
+            --p2: #22c55e; /* Green */
+            --p3: #f59e0b; /* Amber */
+            --p4: #a855f7; /* Purple */
+            --p5: #06b6d4; /* Cyan */
+            --p6: #f43f5e; /* Rose */
+
+            --p1l: #eef5ff;
+            --p2l: #ecfdf3;
+            --p3l: #fff7e6;
+            --p4l: #f7f0ff;
+            --p5l: #ecfeff;
+            --p6l: #fff1f2;
+
+            --text: #1d1d1f;
+            --muted: #6e6e73;
+            --dim: #8e8e93;
+
+            --body: -apple-system, BlinkMacSystemFont,
+            "SF Pro Display",
+            "Segoe UI",
+            sans-serif;
+
+            --display: var(--body);
+            --mono: var(--body);
+
+            --radius: 24px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--body);
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ─── GRID BG ─── */
+        body::before {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 72px;
+
+            background: rgba(255, 255, 255, .8);
+
+            backdrop-filter: blur(20px);
+
+            border-bottom: 1px solid #e5e5e7;
+
+            padding: 0 32px;
+
+            display: flex;
+            align-items: center;
+
+            z-index: 100;
+
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .nav-brand {
+            font-family: var(--display);
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--text);
+            text-decoration: none;
+            margin-right: auto;
+            letter-spacing: -.3px;
+        }
+
+        .nav-brand span {
+            color: var(--p1);
+        }
+
+        .nav-phases {
+            display: flex;
+            gap: 4px;
+        }
+
+        .nav-phase-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform .2s, opacity .2s;
+            opacity: .5;
+        }
+
+        .nav-phase-dot:hover {
+            transform: scale(1.5);
+            opacity: 1;
+        }
+
+        .nav-tag {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            padding: 3px 8px;
+            margin-left: 16px;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            padding: 180px 24px 100px;
+            max-width: 1100px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .08em;
+            color: var(--p1);
+            border: 1px solid var(--p1);
+            border-radius: 20px;
+            padding: 4px 14px;
+            margin-bottom: 28px;
+            animation: fadeUp .6s both;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: .95;
+            font-weight: 700;
+            letter-spacing: -3px;
+            color: #1d1d1f;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--p1) 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 22px;
+            color: #6e6e73;
+            max-width: 700px;
+            margin: 24px auto 0;
+        }
+
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 48px;
+            animation: fadeUp .7s .3s both;
+        }
+
+        .stat {
+            background: #fff;
+            border-radius: 28px;
+            padding: 32px;
+            min-width: 180px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+        }
+
+        .stat-num {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #1d1d1f;
+        }
+
+        .stat-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--muted);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* ─── SECTION ─── */
+        .section {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .section-title {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* ─── PHASE GRID ─── */
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+            margin-bottom: 60px;
+        }
+
+        .phase-card:focus-visible,
+        .search-input:focus-visible {
+            outline: 2px solid var(--p1);
+            outline-offset: 2px;
+        }
+
+        .phase-card {
+            background: #fff;
+            border: none;
+            border-radius: 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+            padding: 20px;
+            cursor: pointer;
+            transition: transform .2s ease,
+            box-shadow .2s ease,
+            border-color .2s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+        }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .10);
+        }
+
+        .phase-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .phase-pill {
+            font-family: var(--mono), monospace;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            letter-spacing: .06em;
+        }
+
+        .phase-weeks {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--muted);
+            margin-left: auto;
+        }
+
+        .phase-card h3 {
+            font-family: var(--display), monospace;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .phase-desc {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .phase-count {
+            margin-top: 14px;
+            font-family: var(--mono), monospace;
+            font-size: 10px;
+            color: var(--dim);
+        }
+
+        /* ─── PHASE PHASES ─── */
+        .phase-section {
+            margin-bottom: 64px;
+        }
+
+        .phase-header-bar {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            background: #fff;
+
+            border: none;
+
+            border-radius: 28px;
+
+            padding: 28px;
+
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+        }
+
+        .phase-header-bar .phase-number {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            letter-spacing: .06em;
+        }
+
+        .phase-header-bar h2 {
+            font-family: var(--display);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .phase-header-bar .phase-meta {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            margin-left: auto;
+        }
+
+        .phase-header-bar .chevron {
+            font-size: 12px;
+            color: var(--muted);
+            transition: transform .3s;
+            margin-left: 8px;
+        }
+
+        .phase-header-bar.open .chevron {
+            transform: rotate(180deg);
+        }
+
+        .days-grid {
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius);
+            overflow: hidden;
+            display: none;
+        }
+
+        .days-grid.open {
+            display: block;
+        }
+
+        /* ─── DAY CARD ─── */
+        .day-item {
+            border-bottom: 1px solid var(--border);
+            transition: background .15s;
+        }
+
+        .day-item:last-child {
+            border-bottom: none;
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            cursor: pointer;
+            padding: 0;
+            user-select: none;
+        }
+
+        .day-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 14px 0;
+            width: 64px;
+            text-align: center;
+            flex-shrink: 0;
+            border-right: 1px solid var(--border);
+        }
+
+        .day-num .day-label {
+            font-size: 9px;
+            font-weight: 400;
+            display: block;
+            opacity: .6;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .day-title-wrap {
+            flex: 1;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day-title {
+            font-family: var(--display);
+            font-size: 13px;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .review-badge {
+            font-family: var(--mono);
+            font-size: 9px;
+            padding: 2px 7px;
+            border-radius: 4px;
+            letter-spacing: .06em;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .day-toggle {
+            font-size: 11px;
+            color: var(--muted);
+            padding: 14px 18px;
+            flex-shrink: 0;
+            transition: transform .3s;
+        }
+
+        .day-item.open .day-toggle {
+            transform: rotate(180deg);
+        }
+
+        .day-item:hover .day-title-wrap {
+            background: rgba(255, 255, 255, .02);
+        }
+
+        .day-body {
+            display: none;
+            padding: 16px 18px 18px 82px;
+            background: #fafafa;
+            border-top: 1px solid var(--border);
+            animation: slideDown .2s ease;
+        }
+
+        .day-item.open .day-body {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .day-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .day-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .row-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 1px;
+            width: 18px;
+        }
+
+        .row-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .08em;
+            font-weight: 700;
+            flex-shrink: 0;
+            width: 60px;
+            padding-top: 1px;
+        }
+
+        .row-content {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.55;
+            flex: 1;
+        }
+
+        .row-content.spring {
+            font-family: var(--mono);
+            font-size: 11.5px;
+            color: var(--p1);
+            background: rgba(59, 130, 246, .06);
+            border: 1px solid rgba(59, 130, 246, .15);
+            border-radius: 4px;
+            padding: 6px 10px;
+        }
+
+        /* ─── TIPS ─── */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+        }
+
+        .tip-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+        }
+
+        .tip-title {
+            font-family: var(--display);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--p1);
+            margin-bottom: 6px;
+        }
+
+        .tip-desc {
+            font-size: 12.5px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 40px 24px 60px;
+            border-top: 1px solid var(--border);
+        }
+
+        footer p {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        footer .rocket {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 12px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* ─── PROGRESS BAR ─── */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--p1), #818cf8);
+            z-index: 200;
+            transition: width .1s;
+        }
+
+        /* ─── SEARCH ─── */
+        .search-bar {
+            margin-bottom: 32px;
+            display: flex;
+            gap: 8px;
+        }
+
+
+        .search-input {
+            flex: 1;
+            width: 100%;
+            background: var(--card);
+            border: 1px solid var(--border2);
+            border-radius: var(--radius);
+            padding: 10px 16px;
+            color: var(--text);
+            font-family: var(--mono), monospace;
+            font-size: 13px;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--p1);
+        }
+
+        .search-input::placeholder {
+            color: var(--dim);
+        }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        /* ─── PHASE COLORS applied via JS data attr ─── */
+        [data-phase="1"] .phase-card::before,
+        [data-phase="1"] .phase-header-bar {
+            background-color: var(--p1l);
+        }
+
+        [data-phase="1"] .phase-header-bar {
+            border-color: rgba(59, 130, 246, .3);
+        }
+
+        [data-phase="1"] .phase-card::before {
+            background: var(--p1);
+        }
+
+        [data-phase="1"] .phase-card:hover {
+            border-color: var(--p1);
+        }
+
+        [data-phase="1"] .phase-pill, [data-phase="1"] .phase-number {
+            background: rgba(59, 130, 246, .15);
+            color: var(--p1);
+        }
+
+        [data-phase="1"] .phase-header-bar h2, [data-phase="1"] .phase-card h3 {
+            color: var(--p1);
+        }
+
+        [data-phase="1"] .day-num {
+            color: var(--p1);
+        }
+
+        [data-phase="1"] .review-badge {
+            background: rgba(59, 130, 246, .15);
+            color: var(--p1);
+        }
+
+        [data-phase="2"] .phase-card::before {
+            background: var(--p2);
+        }
+
+        [data-phase="2"] .phase-card:hover {
+            border-color: var(--p2);
+        }
+
+        [data-phase="2"] .phase-pill, [data-phase="2"] .phase-number {
+            background: rgba(34, 197, 94, .15);
+            color: var(--p2);
+        }
+
+        [data-phase="2"] .phase-header-bar {
+            background-color: var(--p2l);
+        }
+
+        [data-phase="2"] .phase-header-bar h2, [data-phase="2"] .phase-card h3 {
+            color: var(--p2);
+        }
+
+        [data-phase="2"] .day-num {
+            color: var(--p2);
+        }
+
+        [data-phase="2"] .review-badge {
+            background: rgba(34, 197, 94, .15);
+            color: var(--p2);
+        }
+
+        [data-phase="3"] .phase-card::before {
+            background: var(--p3);
+        }
+
+        [data-phase="3"] .phase-card:hover {
+            border-color: var(--p3);
+        }
+
+        [data-phase="3"] .phase-pill, [data-phase="3"] .phase-number {
+            background: rgba(245, 158, 11, .15);
+            color: var(--p3);
+        }
+
+        [data-phase="3"] .phase-header-bar {
+            background-color: var(--p3l);
+        }
+
+        [data-phase="3"] .phase-header-bar h2, [data-phase="3"] .phase-card h3 {
+            color: var(--p3);
+        }
+
+        [data-phase="3"] .day-num {
+            color: var(--p3);
+        }
+
+        [data-phase="3"] .review-badge {
+            background: rgba(245, 158, 11, .15);
+            color: var(--p3);
+        }
+
+        [data-phase="4"] .phase-card::before {
+            background: var(--p4);
+        }
+
+        [data-phase="4"] .phase-card:hover {
+            border-color: var(--p4);
+        }
+
+        [data-phase="4"] .phase-pill, [data-phase="4"] .phase-number {
+            background: rgba(168, 85, 247, .15);
+            color: var(--p4);
+        }
+
+        [data-phase="4"] .phase-header-bar {
+            background-color: var(--p4l);
+        }
+
+        [data-phase="4"] .phase-header-bar h2, [data-phase="4"] .phase-card h3 {
+            color: var(--p4);
+        }
+
+        [data-phase="4"] .day-num {
+            color: var(--p4);
+        }
+
+        [data-phase="4"] .review-badge {
+            background: rgba(168, 85, 247, .15);
+            color: var(--p4);
+        }
+
+        [data-phase="5"] .phase-card::before {
+            background: var(--p5);
+        }
+
+        [data-phase="5"] .phase-card:hover {
+            border-color: var(--p5);
+        }
+
+        [data-phase="5"] .phase-pill, [data-phase="5"] .phase-number {
+            background: rgba(6, 182, 212, .15);
+            color: var(--p5);
+        }
+
+        [data-phase="5"] .phase-header-bar {
+            background-color: var(--p5l);
+        }
+
+        [data-phase="5"] .phase-header-bar h2, [data-phase="5"] .phase-card h3 {
+            color: var(--p5);
+        }
+
+        [data-phase="5"] .day-num {
+            color: var(--p5);
+        }
+
+        [data-phase="5"] .review-badge {
+            background: rgba(6, 182, 212, .15);
+            color: var(--p5);
+        }
+
+        [data-phase="6"] .phase-card::before {
+            background: var(--p6);
+        }
+
+        [data-phase="6"] .phase-card:hover {
+            border-color: var(--p6);
+        }
+
+        [data-phase="6"] .phase-pill, [data-phase="6"] .phase-number {
+            background: rgba(244, 63, 94, .15);
+            color: var(--p6);
+        }
+
+        [data-phase="6"] .phase-header-bar {
+            background-color: var(--p6l);
+        }
+
+        [data-phase="6"] .phase-header-bar h2, [data-phase="6"] .phase-card h3 {
+            color: var(--p6);
+        }
+
+        [data-phase="6"] .day-num {
+            color: var(--p6);
+        }
+
+        [data-phase="6"] .review-badge {
+            background: rgba(244, 63, 94, .15);
+            color: var(--p6);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 600px) {
+            .hero-stats {
+                gap: 24px;
+            }
+
+            .nav-phases {
+                display: none;
+            }
+
+            .day-body {
+                padding-left: 18px;
+            }
+
+            .row-label {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <div id="progress-bar" style="width:0%"></div>
 
 <nav>
-  <a href="#" class="nav-brand">HLD<span>·</span>90</a>
-  <div class="nav-phases" id="nav-dots"></div>
-  <span class="nav-tag">Spring Boot Edition</span>
+    <a href="#" class="nav-brand">HLD<span>·</span>90</a>
+    <div class="nav-phases" id="nav-dots"></div>
+    <span class="nav-tag">Spring Boot Edition</span>
 </nav>
 
 <header class="hero">
-  <div class="hero-badge">SYSTEM DESIGN MASTERY PLAN</div>
-  <h1>90-Day <em>HLD</em> Learning Plan</h1>
-  <p class="hero-sub">A day-by-day roadmap to master High-Level Design — built specifically for Spring Boot developers
-    targeting product companies and MNCs.</p>
-  <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-num">90</div>
-      <div class="stat-label">Days</div>
+    <div class="hero-badge">SYSTEM DESIGN MASTERY PLAN</div>
+    <h1>90-Day <em>HLD</em> Learning Plan</h1>
+    <p class="hero-sub">A day-by-day roadmap to master High-Level Design — built specifically for Spring Boot developers
+        targeting product companies and MNCs.</p>
+    <div class="hero-stats">
+        <div class="stat">
+            <div class="stat-num">90</div>
+            <div class="stat-label">Days</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">6</div>
+            <div class="stat-label">Phases</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">13</div>
+            <div class="stat-label">Reviews</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">1–2h</div>
+            <div class="stat-label">Daily</div>
+        </div>
     </div>
-    <div class="stat">
-      <div class="stat-num">6</div>
-      <div class="stat-label">Phases</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">13</div>
-      <div class="stat-label">Reviews</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">1–2h</div>
-      <div class="stat-label">Daily</div>
-    </div>
-  </div>
 </header>
 
 <main>
 
-  <section class="section">
-    <div class="section-title">// phases overview</div>
-    <div class="phase-grid" id="phase-overview"></div>
-  </section>
+    <section class="section">
+        <div class="section-title">// phases overview</div>
+        <div class="phase-grid" id="phase-overview"></div>
+    </section>
 
-  <section class="section">
-    <div class="section-title">// day-by-day plan</div>
-    <div class="search-bar">
-      <input class="search-input" id="search" placeholder="Search by topic, task, or Spring Boot concept..." type="text"
-             autocomplete="off">
-    </div>
-    <div id="phases-container"></div>
-  </section>
+    <section class="section">
+        <div class="section-title">// day-by-day plan</div>
+        <div class="search-bar">
+            <input class="search-input" id="search" placeholder="Search by topic, task, or Spring Boot concept..."
+                   type="text"
+                   autocomplete="off">
+        </div>
+        <div id="phases-container"></div>
+    </section>
 
-  <section class="section">
-    <div class="section-title">// tips for success</div>
-    <div class="tips-grid" id="tips-grid"></div>
-  </section>
+    <section class="section">
+        <div class="section-title">// tips for success</div>
+        <div class="tips-grid" id="tips-grid"></div>
+    </section>
 
 </main>
 
 <footer>
-  <span class="rocket">🚀</span>
-  <p>You've got this. One day at a time.</p>
-  <p style="margin-top:8px;font-size:11px;">90-Day HLD Learning Plan · Spring Boot Edition</p>
+    <span class="rocket">🚀</span>
+    <p>You've got this. One day at a time.</p>
+    <p style="margin-top:8px;font-size:11px;">90-Day HLD Learning Plan · Spring Boot Edition</p>
 </footer>
 
 <script>
-  const PHASES = [
-    {
-      id: 1,
-      phase: "Phase 1",
-      title: "Foundations",
-      weeks: "Week 1–2",
-      days: "Days 1–14",
-      color: "var(--p1)",
-      desc: "Core concepts: scalability, CAP theorem, databases, caching",
-      count: 14
-    },
-    {
-      id: 2,
-      phase: "Phase 2",
-      title: "Building Blocks",
-      weeks: "Week 3–4",
-      days: "Days 15–28",
-      color: "var(--p2)",
-      desc: "Load balancers, message queues, API gateways, CDN",
-      count: 14
-    },
-    {
-      id: 3,
-      phase: "Phase 3",
-      title: "Databases Deep Dive",
-      weeks: "Week 5–6",
-      days: "Days 29–42",
-      color: "var(--p3)",
-      desc: "Sharding, replication, NoSQL, indexing, data modeling",
-      count: 14
-    },
-    {
-      id: 4,
-      phase: "Phase 4",
-      title: "Microservices & Distributed Systems",
-      weeks: "Week 7–9",
-      days: "Days 43–63",
-      color: "var(--p4)",
-      desc: "Service patterns, distributed transactions, event-driven design",
-      count: 21
-    },
-    {
-      id: 5,
-      phase: "Phase 5",
-      title: "Design Real Systems",
-      weeks: "Week 10–11",
-      days: "Days 64–77",
-      color: "var(--p5)",
-      desc: "Practice designing URL shortener, feed, Uber, chat app, etc.",
-      count: 14
-    },
-    {
-      id: 6,
-      phase: "Phase 6",
-      title: "Advanced + Interview Prep",
-      weeks: "Week 12–13",
-      days: "Days 78–90",
-      color: "var(--p6)",
-      desc: "Consistent hashing, observability, mock interviews, revision",
-      count: 13
-    },
-  ];
+    const PHASES = [
+        {
+            id: 1,
+            phase: "Phase 1",
+            title: "Foundations",
+            weeks: "Week 1–2",
+            days: "Days 1–14",
+            color: "var(--p1)",
+            desc: "Core concepts: scalability, CAP theorem, databases, caching",
+            count: 14
+        },
+        {
+            id: 2,
+            phase: "Phase 2",
+            title: "Building Blocks",
+            weeks: "Week 3–4",
+            days: "Days 15–28",
+            color: "var(--p2)",
+            desc: "Load balancers, message queues, API gateways, CDN",
+            count: 14
+        },
+        {
+            id: 3,
+            phase: "Phase 3",
+            title: "Databases Deep Dive",
+            weeks: "Week 5–6",
+            days: "Days 29–42",
+            color: "var(--p3)",
+            desc: "Sharding, replication, NoSQL, indexing, data modeling",
+            count: 14
+        },
+        {
+            id: 4,
+            phase: "Phase 4",
+            title: "Microservices & Distributed Systems",
+            weeks: "Week 7–9",
+            days: "Days 43–63",
+            color: "var(--p4)",
+            desc: "Service patterns, distributed transactions, event-driven design",
+            count: 21
+        },
+        {
+            id: 5,
+            phase: "Phase 5",
+            title: "Design Real Systems",
+            weeks: "Week 10–11",
+            days: "Days 64–77",
+            color: "var(--p5)",
+            desc: "Practice designing URL shortener, feed, Uber, chat app, etc.",
+            count: 14
+        },
+        {
+            id: 6,
+            phase: "Phase 6",
+            title: "Advanced + Interview Prep",
+            weeks: "Week 12–13",
+            days: "Days 78–90",
+            color: "var(--p6)",
+            desc: "Consistent hashing, observability, mock interviews, revision",
+            count: 13
+        },
+    ];
 
-  const DAYS = [
-    // ── PHASE 1 ──
-    {
-      day: 1,
-      phase: 1,
-      title: "Intro to System Design",
-      topic: "What is HLD? HLD vs LLD. Why it matters. Overview of the 90-day plan.",
-      task: "Watch: Gaurav Sen — 'Introduction to System Design'. Write down 3 systems you use daily and sketch their components.",
-      sb: "Think: how does your Spring Boot app fit into a larger system?"
-    },
-    {
-      day: 2,
-      phase: 1,
-      title: "Scalability Basics",
-      topic: "Vertical vs horizontal scaling. Stateless vs stateful services. What makes a service scalable?",
-      task: "Read: 'Scalability' chapter from System Design Primer (GitHub). Draw a diagram: your app scaled to 3 instances.",
-      sb: "Spring Boot apps are stateless by design — that's your scaling advantage."
-    },
-    {
-      day: 3,
-      phase: 1,
-      title: "Latency & Throughput",
-      topic: "Latency vs throughput. SLA, SLO, SLI concepts. p50, p95, p99 percentiles.",
-      task: "Read Cloudflare's blog on latency. Practice: calculate throughput for 10K requests/sec at 100ms each.",
-      sb: "Check: Spring Actuator metrics expose latency histograms — explore them."
-    },
-    {
-      day: 4,
-      phase: 1,
-      title: "CAP Theorem",
-      topic: "Consistency, Availability, Partition Tolerance — pick 2. CP vs AP systems. Real examples.",
-      task: "Watch: Martin Kleppmann's CAP theorem talk. Map 5 databases to CA, CP, or AP.",
-      sb: "When you use @Transactional, you're prioritizing consistency (CP)."
-    },
-    {
-      day: 5,
-      phase: 1,
-      title: "ACID vs BASE",
-      topic: "ACID properties in relational DBs. BASE in distributed systems. When to choose which.",
-      task: "Read: DDIA Chapter 7 (Transactions). Write a one-page note comparing ACID vs BASE with examples.",
-      sb: "Spring @Transactional + JPA = ACID. NoSQL with Spring Data = BASE territory."
-    },
-    {
-      day: 6,
-      phase: 1,
-      title: "Reliability & Fault Tolerance",
-      topic: "Redundancy, failover, replication. MTTR, MTBF. Single points of failure.",
-      task: "Design: how would you make your current Spring Boot app survive a server crash? Draw it.",
-      sb: "Spring Boot Actuator health endpoints are step 1 of observability."
-    },
-    {
-      day: 7,
-      phase: 1,
-      title: "Review & Practice Day",
-      topic: "Consolidate Week 1: scalability, CAP, ACID, reliability.",
-      task: "Quiz yourself: explain CAP to someone. Revisit your diagrams. Write a 1-page summary of what you learned.",
-      sb: "Practical: Deploy your Spring Boot app with 2 replicas using Docker Compose.",
-      review: true
-    },
-    {
-      day: 8,
-      phase: 1,
-      title: "Caching — Part 1",
-      topic: "Why caching? Cache hit/miss. Cache-aside (lazy loading) pattern. TTL and eviction.",
-      task: "Read: Caching chapter in System Design Primer. Implement cache-aside in a Spring Boot app using @Cacheable.",
-      sb: "Add spring-boot-starter-cache + Caffeine to any project. Use @Cacheable."
-    },
-    {
-      day: 9,
-      phase: 1,
-      title: "Caching — Part 2",
-      topic: "Write-through, write-back, write-around patterns. Cache stampede. Hot key problem.",
-      task: "Draw diagrams for all 3 write strategies. Research: how does Redis handle hot keys?",
-      sb: "Use Redis with Spring Boot: spring-boot-starter-data-redis + RedisTemplate."
-    },
-    {
-      day: 10,
-      phase: 1,
-      title: "Redis Deep Dive",
-      topic: "Redis data structures: String, Hash, Set, Sorted Set, List. Use cases for each.",
-      task: "Install Redis locally. Practice all 5 data structures via redis-cli. Store a leaderboard using Sorted Set.",
-      sb: "Connect Spring Boot to Redis. Use ZSetOperations for a leaderboard feature."
-    },
-    {
-      day: 11,
-      phase: 1,
-      title: "SQL Databases — Design",
-      topic: "Schema design, normalization (1NF–3NF), indexing basics. Primary vs secondary indexes.",
-      task: "Design the schema for a Twitter-like app: users, tweets, follows, likes. Normalize to 3NF.",
-      sb: "Review your JPA entities. Are they well normalized? Check for N+1 query issues."
-    },
-    {
-      day: 12,
-      phase: 1,
-      title: "NoSQL Overview",
-      topic: "Document (MongoDB), Key-Value (Redis), Column (Cassandra), Graph (Neo4j). When to use each.",
-      task: "Watch: ByteByteGo — 'SQL vs NoSQL'. Build a decision tree: given a use case, which DB to pick?",
-      sb: "Try Spring Data MongoDB on a sample project. Compare with Spring Data JPA."
-    },
-    {
-      day: 13,
-      phase: 1,
-      title: "Database Indexing",
-      topic: "B-tree vs Hash indexes. Composite indexes. Covering indexes. Index trade-offs.",
-      task: "Run EXPLAIN on 5 SQL queries in your project. Add indexes. Measure the difference.",
-      sb: "Add @Index in JPA. Use Hibernate's show_sql=true to see what queries run."
-    },
-    {
-      day: 14,
-      phase: 1,
-      title: "Week 2 Review",
-      topic: "Consolidate: caching patterns, SQL, NoSQL, indexing.",
-      task: "Design a simple e-commerce product catalog system using what you know. Choose DB, add caching layer.",
-      sb: "Build it: Spring Boot + JPA + Redis cache for product catalog. Run load test.",
-      review: true
-    },
+    const DAYS = [
+        // ── PHASE 1 ──
+        {
+            day: 1,
+            phase: 1,
+            title: "Intro to System Design",
+            topic: "What is HLD? HLD vs LLD. Why it matters. Overview of the 90-day plan.",
+            task: "Watch: Gaurav Sen — 'Introduction to System Design'. Write down 3 systems you use daily and sketch their components.",
+            sb: "Think: how does your Spring Boot app fit into a larger system?"
+        },
+        {
+            day: 2,
+            phase: 1,
+            title: "Scalability Basics",
+            topic: "Vertical vs horizontal scaling. Stateless vs stateful services. What makes a service scalable?",
+            task: "Read: 'Scalability' chapter from System Design Primer (GitHub). Draw a diagram: your app scaled to 3 instances.",
+            sb: "Spring Boot apps are stateless by design — that's your scaling advantage."
+        },
+        {
+            day: 3,
+            phase: 1,
+            title: "Latency & Throughput",
+            topic: "Latency vs throughput. SLA, SLO, SLI concepts. p50, p95, p99 percentiles.",
+            task: "Read Cloudflare's blog on latency. Practice: calculate throughput for 10K requests/sec at 100ms each.",
+            sb: "Check: Spring Actuator metrics expose latency histograms — explore them."
+        },
+        {
+            day: 4,
+            phase: 1,
+            title: "CAP Theorem",
+            topic: "Consistency, Availability, Partition Tolerance — pick 2. CP vs AP systems. Real examples.",
+            task: "Watch: Martin Kleppmann's CAP theorem talk. Map 5 databases to CA, CP, or AP.",
+            sb: "When you use @Transactional, you're prioritizing consistency (CP)."
+        },
+        {
+            day: 5,
+            phase: 1,
+            title: "ACID vs BASE",
+            topic: "ACID properties in relational DBs. BASE in distributed systems. When to choose which.",
+            task: "Read: DDIA Chapter 7 (Transactions). Write a one-page note comparing ACID vs BASE with examples.",
+            sb: "Spring @Transactional + JPA = ACID. NoSQL with Spring Data = BASE territory."
+        },
+        {
+            day: 6,
+            phase: 1,
+            title: "Reliability & Fault Tolerance",
+            topic: "Redundancy, failover, replication. MTTR, MTBF. Single points of failure.",
+            task: "Design: how would you make your current Spring Boot app survive a server crash? Draw it.",
+            sb: "Spring Boot Actuator health endpoints are step 1 of observability."
+        },
+        {
+            day: 7,
+            phase: 1,
+            title: "Review & Practice Day",
+            topic: "Consolidate Week 1: scalability, CAP, ACID, reliability.",
+            task: "Quiz yourself: explain CAP to someone. Revisit your diagrams. Write a 1-page summary of what you learned.",
+            sb: "Practical: Deploy your Spring Boot app with 2 replicas using Docker Compose.",
+            review: true
+        },
+        {
+            day: 8,
+            phase: 1,
+            title: "Caching — Part 1",
+            topic: "Why caching? Cache hit/miss. Cache-aside (lazy loading) pattern. TTL and eviction.",
+            task: "Read: Caching chapter in System Design Primer. Implement cache-aside in a Spring Boot app using @Cacheable.",
+            sb: "Add spring-boot-starter-cache + Caffeine to any project. Use @Cacheable."
+        },
+        {
+            day: 9,
+            phase: 1,
+            title: "Caching — Part 2",
+            topic: "Write-through, write-back, write-around patterns. Cache stampede. Hot key problem.",
+            task: "Draw diagrams for all 3 write strategies. Research: how does Redis handle hot keys?",
+            sb: "Use Redis with Spring Boot: spring-boot-starter-data-redis + RedisTemplate."
+        },
+        {
+            day: 10,
+            phase: 1,
+            title: "Redis Deep Dive",
+            topic: "Redis data structures: String, Hash, Set, Sorted Set, List. Use cases for each.",
+            task: "Install Redis locally. Practice all 5 data structures via redis-cli. Store a leaderboard using Sorted Set.",
+            sb: "Connect Spring Boot to Redis. Use ZSetOperations for a leaderboard feature."
+        },
+        {
+            day: 11,
+            phase: 1,
+            title: "SQL Databases — Design",
+            topic: "Schema design, normalization (1NF–3NF), indexing basics. Primary vs secondary indexes.",
+            task: "Design the schema for a Twitter-like app: users, tweets, follows, likes. Normalize to 3NF.",
+            sb: "Review your JPA entities. Are they well normalized? Check for N+1 query issues."
+        },
+        {
+            day: 12,
+            phase: 1,
+            title: "NoSQL Overview",
+            topic: "Document (MongoDB), Key-Value (Redis), Column (Cassandra), Graph (Neo4j). When to use each.",
+            task: "Watch: ByteByteGo — 'SQL vs NoSQL'. Build a decision tree: given a use case, which DB to pick?",
+            sb: "Try Spring Data MongoDB on a sample project. Compare with Spring Data JPA."
+        },
+        {
+            day: 13,
+            phase: 1,
+            title: "Database Indexing",
+            topic: "B-tree vs Hash indexes. Composite indexes. Covering indexes. Index trade-offs.",
+            task: "Run EXPLAIN on 5 SQL queries in your project. Add indexes. Measure the difference.",
+            sb: "Add @Index in JPA. Use Hibernate's show_sql=true to see what queries run."
+        },
+        {
+            day: 14,
+            phase: 1,
+            title: "Week 2 Review",
+            topic: "Consolidate: caching patterns, SQL, NoSQL, indexing.",
+            task: "Design a simple e-commerce product catalog system using what you know. Choose DB, add caching layer.",
+            sb: "Build it: Spring Boot + JPA + Redis cache for product catalog. Run load test.",
+            review: true
+        },
 
-    // ── PHASE 2 ──
-    {
-      day: 15,
-      phase: 2,
-      title: "Load Balancers",
-      topic: "L4 vs L7 load balancing. Algorithms: round-robin, least connections, IP hash, weighted.",
-      task: "Watch: Gaurav Sen — Load Balancing. Set up Nginx as LB in front of 2 Spring Boot instances.",
-      sb: "Run 2 Spring Boot instances on ports 8081, 8082. Configure Nginx upstream block."
-    },
-    {
-      day: 16,
-      phase: 2,
-      title: "Consistent Hashing",
-      topic: "Why consistent hashing? Virtual nodes. How it solves load balancer rebalancing.",
-      task: "Read: 'Consistent Hashing' — System Design Primer. Implement a simple consistent hash ring in Java.",
-      sb: "This is how Redis Cluster and Kafka partition assignment work under the hood."
-    },
-    {
-      day: 17,
-      phase: 2,
-      title: "API Gateway",
-      topic: "API Gateway pattern. Rate limiting, auth, routing, protocol translation. Kong vs AWS API GW.",
-      task: "Set up Spring Cloud Gateway. Add rate limiting filter. Route 2 downstream services.",
-      sb: "spring-cloud-starter-gateway. Add RequestRateLimiter with Redis backend."
-    },
-    {
-      day: 18,
-      phase: 2,
-      title: "Rate Limiting",
-      topic: "Token bucket, leaky bucket, sliding window, fixed window algorithms. When to use each.",
-      task: "Implement token bucket algorithm from scratch in Java. Compare with Bucket4j library.",
-      sb: "Add Bucket4j to Spring Boot. Limit an endpoint to 100 req/min per user."
-    },
-    {
-      day: 19,
-      phase: 2,
-      title: "Message Queues — Part 1",
-      topic: "Why async? Producer-consumer pattern. Point-to-point vs pub-sub. Kafka vs RabbitMQ.",
-      task: "Watch: ByteByteGo — Message Queues. Draw: how would you decouple order service from notification service?",
-      sb: "Add spring-kafka. Produce a message on order creation. Consume in notification service."
-    },
-    {
-      day: 20,
-      phase: 2,
-      title: "Message Queues — Part 2",
-      topic: "Kafka deep dive: topics, partitions, consumer groups, offsets, retention. At-least-once delivery.",
-      task: "Set up Kafka with Docker. Create a topic with 3 partitions. Run 3 consumers in a group.",
-      sb: "Use @KafkaListener with groupId. Test: kill one consumer — does the group rebalance?"
-    },
-    {
-      day: 21,
-      phase: 2,
-      title: "Week 3 Review",
-      topic: "Load balancers, API gateway, rate limiting, message queues.",
-      task: "System design: design an order processing system using LB + API GW + Kafka + Spring Boot.",
-      sb: "Draw the full architecture. Identify single points of failure. How would you fix them?",
-      review: true
-    },
-    {
-      day: 22,
-      phase: 2,
-      title: "CDN (Content Delivery Network)",
-      topic: "Push vs pull CDN. Edge caching. Cache invalidation. When not to use CDN.",
-      task: "Read: CloudFront documentation. Design: how would you serve images for 10M users?",
-      sb: "Static assets in Spring Boot → serve from S3 + CloudFront. Configure CORS."
-    },
-    {
-      day: 23,
-      phase: 2,
-      title: "DNS & Networking Basics",
-      topic: "How DNS works. A record, CNAME, TTL. TCP vs UDP. HTTP/1.1 vs HTTP/2 vs HTTP/3.",
-      task: "Trace a request from browser to your Spring Boot app: DNS → LB → service → DB.",
-      sb: "Enable HTTP/2 in Spring Boot (server.http2.enabled=true). Measure the difference."
-    },
-    {
-      day: 24,
-      phase: 2,
-      title: "REST API Design",
-      topic: "RESTful principles. Versioning strategies. Pagination (offset vs cursor). HATEOAS.",
-      task: "Review one of your Spring Boot APIs. Apply proper versioning, pagination, and error responses.",
-      sb: "Implement cursor-based pagination in a Spring Data repository. Compare with offset."
-    },
-    {
-      day: 25,
-      phase: 2,
-      title: "gRPC vs REST",
-      topic: "Protobuf. Streaming (unary, server, client, bidirectional). When gRPC beats REST.",
-      task: "Add gRPC to a Spring Boot service. Implement a simple unary RPC and compare latency with REST.",
-      sb: "grpc-spring-boot-starter. Define .proto file. Generate stubs. Call from another service."
-    },
-    {
-      day: 26,
-      phase: 2,
-      title: "WebSockets & Long Polling",
-      topic: "Real-time communication patterns: polling, long polling, SSE, WebSockets.",
-      task: "Implement a real-time notification feature in Spring Boot using WebSockets (STOMP).",
-      sb: "spring-boot-starter-websocket. Use SimpMessagingTemplate to push events."
-    },
-    {
-      day: 27,
-      phase: 2,
-      title: "Security at Scale",
-      topic: "OAuth2, JWT, API keys. Token revocation. mTLS for service-to-service auth.",
-      task: "Review your Spring Security config. Add JWT auth. Discuss: how would you revoke a JWT?",
-      sb: "spring-security-oauth2-resource-server. Configure JWT decoder. Add token blacklist with Redis."
-    },
-    {
-      day: 28,
-      phase: 2,
-      title: "Week 4 Review",
-      topic: "CDN, DNS, REST, gRPC, WebSockets, security.",
-      task: "Build a mini real-time chat API with Spring Boot: REST for history, WebSocket for live messages, JWT auth.",
-      sb: "Full project: JPA for storage, Redis for presence, WebSocket for push, JWT for auth.",
-      review: true
-    },
+        // ── PHASE 2 ──
+        {
+            day: 15,
+            phase: 2,
+            title: "Load Balancers",
+            topic: "L4 vs L7 load balancing. Algorithms: round-robin, least connections, IP hash, weighted.",
+            task: "Watch: Gaurav Sen — Load Balancing. Set up Nginx as LB in front of 2 Spring Boot instances.",
+            sb: "Run 2 Spring Boot instances on ports 8081, 8082. Configure Nginx upstream block."
+        },
+        {
+            day: 16,
+            phase: 2,
+            title: "Consistent Hashing",
+            topic: "Why consistent hashing? Virtual nodes. How it solves load balancer rebalancing.",
+            task: "Read: 'Consistent Hashing' — System Design Primer. Implement a simple consistent hash ring in Java.",
+            sb: "This is how Redis Cluster and Kafka partition assignment work under the hood."
+        },
+        {
+            day: 17,
+            phase: 2,
+            title: "API Gateway",
+            topic: "API Gateway pattern. Rate limiting, auth, routing, protocol translation. Kong vs AWS API GW.",
+            task: "Set up Spring Cloud Gateway. Add rate limiting filter. Route 2 downstream services.",
+            sb: "spring-cloud-starter-gateway. Add RequestRateLimiter with Redis backend."
+        },
+        {
+            day: 18,
+            phase: 2,
+            title: "Rate Limiting",
+            topic: "Token bucket, leaky bucket, sliding window, fixed window algorithms. When to use each.",
+            task: "Implement token bucket algorithm from scratch in Java. Compare with Bucket4j library.",
+            sb: "Add Bucket4j to Spring Boot. Limit an endpoint to 100 req/min per user."
+        },
+        {
+            day: 19,
+            phase: 2,
+            title: "Message Queues — Part 1",
+            topic: "Why async? Producer-consumer pattern. Point-to-point vs pub-sub. Kafka vs RabbitMQ.",
+            task: "Watch: ByteByteGo — Message Queues. Draw: how would you decouple order service from notification service?",
+            sb: "Add spring-kafka. Produce a message on order creation. Consume in notification service."
+        },
+        {
+            day: 20,
+            phase: 2,
+            title: "Message Queues — Part 2",
+            topic: "Kafka deep dive: topics, partitions, consumer groups, offsets, retention. At-least-once delivery.",
+            task: "Set up Kafka with Docker. Create a topic with 3 partitions. Run 3 consumers in a group.",
+            sb: "Use @KafkaListener with groupId. Test: kill one consumer — does the group rebalance?"
+        },
+        {
+            day: 21,
+            phase: 2,
+            title: "Week 3 Review",
+            topic: "Load balancers, API gateway, rate limiting, message queues.",
+            task: "System design: design an order processing system using LB + API GW + Kafka + Spring Boot.",
+            sb: "Draw the full architecture. Identify single points of failure. How would you fix them?",
+            review: true
+        },
+        {
+            day: 22,
+            phase: 2,
+            title: "CDN (Content Delivery Network)",
+            topic: "Push vs pull CDN. Edge caching. Cache invalidation. When not to use CDN.",
+            task: "Read: CloudFront documentation. Design: how would you serve images for 10M users?",
+            sb: "Static assets in Spring Boot → serve from S3 + CloudFront. Configure CORS."
+        },
+        {
+            day: 23,
+            phase: 2,
+            title: "DNS & Networking Basics",
+            topic: "How DNS works. A record, CNAME, TTL. TCP vs UDP. HTTP/1.1 vs HTTP/2 vs HTTP/3.",
+            task: "Trace a request from browser to your Spring Boot app: DNS → LB → service → DB.",
+            sb: "Enable HTTP/2 in Spring Boot (server.http2.enabled=true). Measure the difference."
+        },
+        {
+            day: 24,
+            phase: 2,
+            title: "REST API Design",
+            topic: "RESTful principles. Versioning strategies. Pagination (offset vs cursor). HATEOAS.",
+            task: "Review one of your Spring Boot APIs. Apply proper versioning, pagination, and error responses.",
+            sb: "Implement cursor-based pagination in a Spring Data repository. Compare with offset."
+        },
+        {
+            day: 25,
+            phase: 2,
+            title: "gRPC vs REST",
+            topic: "Protobuf. Streaming (unary, server, client, bidirectional). When gRPC beats REST.",
+            task: "Add gRPC to a Spring Boot service. Implement a simple unary RPC and compare latency with REST.",
+            sb: "grpc-spring-boot-starter. Define .proto file. Generate stubs. Call from another service."
+        },
+        {
+            day: 26,
+            phase: 2,
+            title: "WebSockets & Long Polling",
+            topic: "Real-time communication patterns: polling, long polling, SSE, WebSockets.",
+            task: "Implement a real-time notification feature in Spring Boot using WebSockets (STOMP).",
+            sb: "spring-boot-starter-websocket. Use SimpMessagingTemplate to push events."
+        },
+        {
+            day: 27,
+            phase: 2,
+            title: "Security at Scale",
+            topic: "OAuth2, JWT, API keys. Token revocation. mTLS for service-to-service auth.",
+            task: "Review your Spring Security config. Add JWT auth. Discuss: how would you revoke a JWT?",
+            sb: "spring-security-oauth2-resource-server. Configure JWT decoder. Add token blacklist with Redis."
+        },
+        {
+            day: 28,
+            phase: 2,
+            title: "Week 4 Review",
+            topic: "CDN, DNS, REST, gRPC, WebSockets, security.",
+            task: "Build a mini real-time chat API with Spring Boot: REST for history, WebSocket for live messages, JWT auth.",
+            sb: "Full project: JPA for storage, Redis for presence, WebSocket for push, JWT for auth.",
+            review: true
+        },
 
-    // ── PHASE 3 ──
-    {
-      day: 29,
-      phase: 3,
-      title: "Database Replication",
-      topic: "Leader-follower (master-slave) replication. Sync vs async. Read replicas. Failover.",
-      task: "Set up MySQL with leader-follower replication using Docker. Route reads to follower in Spring Boot.",
-      sb: "Spring AbstractRoutingDataSource to split reads (replica) vs writes (primary)."
-    },
-    {
-      day: 30,
-      phase: 3,
-      title: "Database Sharding",
-      topic: "Horizontal partitioning. Shard key selection. Range, hash, directory-based sharding.",
-      task: "Read: DDIA Chapter 6. Design: how would you shard a users table with 1B rows?",
-      sb: "Explore ShardingSphere-JDBC. Route to shard based on userId % N."
-    },
-    {
-      day: 31,
-      phase: 3,
-      title: "Sharding Challenges",
-      topic: "Cross-shard queries. Resharding. Hotspots. Celebrity problem. Shard rebalancing.",
-      task: "Scenario: your shard on user_id 0–1M is hot (all celebrities). How do you fix it?",
-      sb: "Discuss: what queries break when you shard? JOINs across shards, global aggregates."
-    },
-    {
-      day: 32,
-      phase: 3,
-      title: "Cassandra",
-      topic: "Wide-column store. Partition key, clustering key. Eventual consistency. Tunable consistency.",
-      task: "Set up Cassandra with Docker. Model a time-series events table. Query by partition key.",
-      sb: "spring-data-cassandra. Model a UserActivity table. Understand read repair."
-    },
-    {
-      day: 33,
-      phase: 3,
-      title: "MongoDB",
-      topic: "Document model. Aggregation pipeline. Indexes in MongoDB. Schema-less trade-offs.",
-      task: "Model a product catalog in MongoDB. Use aggregation to compute category stats.",
-      sb: "spring-data-mongodb. Use MongoTemplate for complex aggregations. Add text index."
-    },
-    {
-      day: 34,
-      phase: 3,
-      title: "Search — Elasticsearch",
-      topic: "Inverted index. Full-text search. Relevance scoring (TF-IDF, BM25). Sync with DB.",
-      task: "Set up Elasticsearch. Index a products collection. Run full-text search with filters.",
-      sb: "spring-data-elasticsearch. Sync from MySQL using Kafka CDC (Debezium intro)."
-    },
-    {
-      day: 35,
-      phase: 3,
-      title: "Week 5 Review",
-      topic: "Replication, sharding, Cassandra, MongoDB, Elasticsearch.",
-      task: "Design the storage layer for a product search platform: MySQL + Elasticsearch + Redis. Draw the sync flow.",
-      sb: "Build: product saved in MySQL → Kafka event → Elasticsearch indexed → Redis cache warmed.",
-      review: true
-    },
-    {
-      day: 36,
-      phase: 3,
-      title: "Time-Series Databases",
-      topic: "Why time-series? InfluxDB, TimescaleDB. Downsampling, retention policies. Metrics storage.",
-      task: "Set up InfluxDB. Write Spring Boot metrics to it via Micrometer. Query and visualize.",
-      sb: "Micrometer + InfluxDB registry. Push custom business metrics (orders/sec, revenue/min)."
-    },
-    {
-      day: 37,
-      phase: 3,
-      title: "Data Warehousing Basics",
-      topic: "OLTP vs OLAP. Star schema, snowflake schema. ETL pipelines. Data lakes.",
-      task: "Read: DDIA Chapter 3 (Storage and Retrieval, column-oriented storage section).",
-      sb: "Identify: which of your queries are OLAP-like? Those belong in a warehouse, not prod DB."
-    },
-    {
-      day: 38,
-      phase: 3,
-      title: "Blob Storage",
-      topic: "Object storage (S3). Presigned URLs. Multipart uploads. Lifecycle policies.",
-      task: "Set up MinIO (S3-compatible). Build file upload/download in Spring Boot using presigned URLs.",
-      sb: "AWS SDK v2 + Spring Boot. Generate presigned URL. Never proxy file through your service."
-    },
-    {
-      day: 39,
-      phase: 3,
-      title: "Data Modeling for Scale",
-      topic: "Denormalization. Materialized views. Pre-computing aggregates. Read vs write optimization.",
-      task: "Take your Twitter schema from Day 11. Denormalize it for read-heavy feed access. Compare trade-offs.",
-      sb: "Spring scheduled job to pre-compute user stats. Store in Redis. Serve from cache."
-    },
-    {
-      day: 40,
-      phase: 3,
-      title: "Database Connection Pooling",
-      topic: "HikariCP internals. Pool sizing formula. Thundering herd on pool exhaustion.",
-      task: "Load test your Spring Boot app. Watch HikariCP metrics under high load. Tune pool size.",
-      sb: "spring.datasource.hikari.maximum-pool-size. Formula: (core_count * 2) + disk_spindles."
-    },
-    {
-      day: 41,
-      phase: 3,
-      title: "Transactions in Distributed Systems",
-      topic: "Two-phase commit (2PC). Problems with distributed transactions. Alternatives.",
-      task: "Read: DDIA Chapter 9 (Consistency and Consensus). Explain why 2PC is rarely used in practice.",
-      sb: "Spring @Transactional does NOT work across services. This is why Saga pattern exists."
-    },
-    {
-      day: 42,
-      phase: 3,
-      title: "Week 6 Review",
-      topic: "Time-series, blob storage, data modeling, transactions.",
-      task: "Design the complete data layer of an e-commerce app: products (MySQL), search (ES), files (S3), metrics (InfluxDB).",
-      sb: "Document which Spring starter handles each layer. Identify the hardest cross-cutting concern.",
-      review: true
-    },
+        // ── PHASE 3 ──
+        {
+            day: 29,
+            phase: 3,
+            title: "Database Replication",
+            topic: "Leader-follower (master-slave) replication. Sync vs async. Read replicas. Failover.",
+            task: "Set up MySQL with leader-follower replication using Docker. Route reads to follower in Spring Boot.",
+            sb: "Spring AbstractRoutingDataSource to split reads (replica) vs writes (primary)."
+        },
+        {
+            day: 30,
+            phase: 3,
+            title: "Database Sharding",
+            topic: "Horizontal partitioning. Shard key selection. Range, hash, directory-based sharding.",
+            task: "Read: DDIA Chapter 6. Design: how would you shard a users table with 1B rows?",
+            sb: "Explore ShardingSphere-JDBC. Route to shard based on userId % N."
+        },
+        {
+            day: 31,
+            phase: 3,
+            title: "Sharding Challenges",
+            topic: "Cross-shard queries. Resharding. Hotspots. Celebrity problem. Shard rebalancing.",
+            task: "Scenario: your shard on user_id 0–1M is hot (all celebrities). How do you fix it?",
+            sb: "Discuss: what queries break when you shard? JOINs across shards, global aggregates."
+        },
+        {
+            day: 32,
+            phase: 3,
+            title: "Cassandra",
+            topic: "Wide-column store. Partition key, clustering key. Eventual consistency. Tunable consistency.",
+            task: "Set up Cassandra with Docker. Model a time-series events table. Query by partition key.",
+            sb: "spring-data-cassandra. Model a UserActivity table. Understand read repair."
+        },
+        {
+            day: 33,
+            phase: 3,
+            title: "MongoDB",
+            topic: "Document model. Aggregation pipeline. Indexes in MongoDB. Schema-less trade-offs.",
+            task: "Model a product catalog in MongoDB. Use aggregation to compute category stats.",
+            sb: "spring-data-mongodb. Use MongoTemplate for complex aggregations. Add text index."
+        },
+        {
+            day: 34,
+            phase: 3,
+            title: "Search — Elasticsearch",
+            topic: "Inverted index. Full-text search. Relevance scoring (TF-IDF, BM25). Sync with DB.",
+            task: "Set up Elasticsearch. Index a products collection. Run full-text search with filters.",
+            sb: "spring-data-elasticsearch. Sync from MySQL using Kafka CDC (Debezium intro)."
+        },
+        {
+            day: 35,
+            phase: 3,
+            title: "Week 5 Review",
+            topic: "Replication, sharding, Cassandra, MongoDB, Elasticsearch.",
+            task: "Design the storage layer for a product search platform: MySQL + Elasticsearch + Redis. Draw the sync flow.",
+            sb: "Build: product saved in MySQL → Kafka event → Elasticsearch indexed → Redis cache warmed.",
+            review: true
+        },
+        {
+            day: 36,
+            phase: 3,
+            title: "Time-Series Databases",
+            topic: "Why time-series? InfluxDB, TimescaleDB. Downsampling, retention policies. Metrics storage.",
+            task: "Set up InfluxDB. Write Spring Boot metrics to it via Micrometer. Query and visualize.",
+            sb: "Micrometer + InfluxDB registry. Push custom business metrics (orders/sec, revenue/min)."
+        },
+        {
+            day: 37,
+            phase: 3,
+            title: "Data Warehousing Basics",
+            topic: "OLTP vs OLAP. Star schema, snowflake schema. ETL pipelines. Data lakes.",
+            task: "Read: DDIA Chapter 3 (Storage and Retrieval, column-oriented storage section).",
+            sb: "Identify: which of your queries are OLAP-like? Those belong in a warehouse, not prod DB."
+        },
+        {
+            day: 38,
+            phase: 3,
+            title: "Blob Storage",
+            topic: "Object storage (S3). Presigned URLs. Multipart uploads. Lifecycle policies.",
+            task: "Set up MinIO (S3-compatible). Build file upload/download in Spring Boot using presigned URLs.",
+            sb: "AWS SDK v2 + Spring Boot. Generate presigned URL. Never proxy file through your service."
+        },
+        {
+            day: 39,
+            phase: 3,
+            title: "Data Modeling for Scale",
+            topic: "Denormalization. Materialized views. Pre-computing aggregates. Read vs write optimization.",
+            task: "Take your Twitter schema from Day 11. Denormalize it for read-heavy feed access. Compare trade-offs.",
+            sb: "Spring scheduled job to pre-compute user stats. Store in Redis. Serve from cache."
+        },
+        {
+            day: 40,
+            phase: 3,
+            title: "Database Connection Pooling",
+            topic: "HikariCP internals. Pool sizing formula. Thundering herd on pool exhaustion.",
+            task: "Load test your Spring Boot app. Watch HikariCP metrics under high load. Tune pool size.",
+            sb: "spring.datasource.hikari.maximum-pool-size. Formula: (core_count * 2) + disk_spindles."
+        },
+        {
+            day: 41,
+            phase: 3,
+            title: "Transactions in Distributed Systems",
+            topic: "Two-phase commit (2PC). Problems with distributed transactions. Alternatives.",
+            task: "Read: DDIA Chapter 9 (Consistency and Consensus). Explain why 2PC is rarely used in practice.",
+            sb: "Spring @Transactional does NOT work across services. This is why Saga pattern exists."
+        },
+        {
+            day: 42,
+            phase: 3,
+            title: "Week 6 Review",
+            topic: "Time-series, blob storage, data modeling, transactions.",
+            task: "Design the complete data layer of an e-commerce app: products (MySQL), search (ES), files (S3), metrics (InfluxDB).",
+            sb: "Document which Spring starter handles each layer. Identify the hardest cross-cutting concern.",
+            review: true
+        },
 
-    // ── PHASE 4 ──
-    {
-      day: 43,
-      phase: 4,
-      title: "Microservices — Why & When",
-      topic: "Monolith vs microservices. Conway's Law. When NOT to use microservices.",
-      task: "Read: Martin Fowler — 'Microservice Trade-offs'. List 5 reasons NOT to split your monolith.",
-      sb: "Audit your current app: is it a modular monolith? That might be good enough."
-    },
-    {
-      day: 44,
-      phase: 4,
-      title: "Service Decomposition",
-      topic: "Domain-Driven Design (DDD) basics. Bounded contexts. How to split a monolith.",
-      task: "Take an e-commerce app. Identify bounded contexts: catalog, orders, payments, shipping, users.",
-      sb: "Split a monolith Spring Boot app into packages by domain first (modular monolith)."
-    },
-    {
-      day: 45,
-      phase: 4,
-      title: "Service Discovery",
-      topic: "Client-side vs server-side discovery. Eureka, Consul, Kubernetes DNS.",
-      task: "Set up Spring Cloud Eureka. Register 2 services. Use FeignClient with load-balanced discovery.",
-      sb: "spring-cloud-starter-netflix-eureka-server + client. @EnableEurekaServer, @FeignClient."
-    },
-    {
-      day: 46,
-      phase: 4,
-      title: "Inter-Service Communication",
-      topic: "Sync (REST, gRPC) vs async (Kafka, RabbitMQ). Trade-offs. Choosing the right pattern.",
-      task: "Design: Order service needs inventory check (sync) and sends notification (async). Draw the flow.",
-      sb: "Use FeignClient for sync calls. Use KafkaTemplate for async events."
-    },
-    {
-      day: 47,
-      phase: 4,
-      title: "Circuit Breaker Pattern",
-      topic: "Closed, Open, Half-Open states. Fallback strategies. Resilience4j internals.",
-      task: "Add Resilience4j circuit breaker to a FeignClient call. Test it: stop the downstream service.",
-      sb: "resilience4j-spring-boot2. @CircuitBreaker(name='inventory', fallbackMethod='fallback')."
-    },
-    {
-      day: 48,
-      phase: 4,
-      title: "Retry, Timeout, Bulkhead",
-      topic: "Retry with exponential backoff + jitter. Timeout configuration. Bulkhead (thread pool isolation).",
-      task: "Configure retry + timeout + bulkhead for all external calls in your Spring Boot service.",
-      sb: "@Retry, @TimeLimiter, @Bulkhead from Resilience4j. Combine all three on one method."
-    },
-    {
-      day: 49,
-      phase: 4,
-      title: "Week 7 Review",
-      topic: "Microservices, service discovery, communication, resilience patterns.",
-      task: "Build: 2 Spring Boot microservices with Eureka, Feign + circuit breaker, and async Kafka event flow.",
-      sb: "Full stack: order-service → feign → inventory-service (CB) → kafka → notification-service.",
-      review: true
-    },
-    {
-      day: 50,
-      phase: 4,
-      title: "Saga Pattern",
-      topic: "Choreography vs orchestration saga. Compensating transactions. Handling partial failures.",
-      task: "Design a saga for: place order → reserve inventory → charge payment → confirm order.",
-      sb: "Implement choreography saga with Kafka: each step produces an event, failures trigger compensation."
-    },
-    {
-      day: 51,
-      phase: 4,
-      title: "Event-Driven Architecture",
-      topic: "Event sourcing. Domain events. Event-driven vs request-driven. Eventual consistency.",
-      task: "Read: Chris Richardson — Event Sourcing pattern. Identify 3 domain events in your current project.",
-      sb: "Publish ApplicationEvent in Spring. Or use Kafka for cross-service domain events."
-    },
-    {
-      day: 52,
-      phase: 4,
-      title: "CQRS Pattern",
-      topic: "Command Query Responsibility Segregation. Write model vs read model. Sync strategies.",
-      task: "Design CQRS for a social feed: writes go to MySQL, reads from Cassandra (pre-built feed).",
-      sb: "Separate @Service classes for commands and queries. Sync via Kafka events."
-    },
-    {
-      day: 53,
-      phase: 4,
-      title: "Outbox Pattern",
-      topic: "Dual-write problem. Transactional outbox. Debezium CDC for reliable event publishing.",
-      task: "Implement outbox: save order + outbox event in one transaction. Poll and publish to Kafka.",
-      sb: "Create an outbox table in your DB. @Scheduled job to poll and publish unprocessed events."
-    },
-    {
-      day: 54,
-      phase: 4,
-      title: "Idempotency",
-      topic: "Idempotency keys. At-least-once vs exactly-once delivery. Deduplication strategies.",
-      task: "Add idempotency to your payment endpoint: same request_id = same response, no double charge.",
-      sb: "Store idempotency_key + response in Redis with TTL. Check before processing."
-    },
-    {
-      day: 55,
-      phase: 4,
-      title: "Distributed Tracing",
-      topic: "Trace, span, context propagation. OpenTelemetry. Zipkin, Jaeger, Grafana Tempo.",
-      task: "Add Micrometer Tracing + Zipkin to 2 Spring Boot services. Trace a request end-to-end.",
-      sb: "micrometer-tracing-bridge-otel + zipkin-reporter. See traces in Zipkin UI."
-    },
-    {
-      day: 56,
-      phase: 4,
-      title: "Week 8 Review",
-      topic: "Saga, event sourcing, CQRS, outbox, idempotency, tracing.",
-      task: "Design the order management system with saga, outbox, and tracing. Draw complete flow.",
-      sb: "Implement the outbox pattern in an existing project. Add distributed tracing.",
-      review: true
-    },
-    {
-      day: 57,
-      phase: 4,
-      title: "Service Mesh",
-      topic: "What is a service mesh? Istio, Linkerd. Sidecar pattern. mTLS, traffic management.",
-      task: "Read: Istio concepts documentation. Identify what problems it solves vs Resilience4j.",
-      sb: "In Kubernetes: Istio handles retries/CB at infra level. Less code in Spring Boot needed."
-    },
-    {
-      day: 58,
-      phase: 4,
-      title: "Kubernetes Basics for HLD",
-      topic: "Pods, Services, Deployments, ConfigMaps, Secrets, Ingress. How HLD decisions change with K8s.",
-      task: "Deploy a Spring Boot app to minikube. Add HPA (Horizontal Pod Autoscaler) based on CPU.",
-      sb: "K8s replaces Eureka (DNS-based discovery) and some LB concerns. Simplifies scaling."
-    },
-    {
-      day: 59,
-      phase: 4,
-      title: "Observability: Metrics",
-      topic: "Four Golden Signals: latency, traffic, errors, saturation. Prometheus + Grafana.",
-      task: "Set up Prometheus + Grafana. Add Spring Boot Actuator metrics. Build a dashboard.",
-      sb: "micrometer-registry-prometheus. Expose /actuator/prometheus. Grafana Spring Boot dashboard."
-    },
-    {
-      day: 60,
-      phase: 4,
-      title: "Observability: Logging",
-      topic: "Structured logging (JSON). Log aggregation. ELK stack (Elasticsearch, Logstash, Kibana).",
-      task: "Add Logback JSON encoder to Spring Boot. Ship logs to local ELK stack. Create a Kibana dashboard.",
-      sb: "logstash-logback-encoder. Add correlation IDs (traceId) to every log line."
-    },
-    {
-      day: 61,
-      phase: 4,
-      title: "Alerting & SLOs",
-      topic: "Alertmanager. SLO-based alerting. Error budgets. On-call runbooks.",
-      task: "Define SLOs for your service: 99.9% uptime, p99 < 500ms. Set up Alertmanager rules.",
-      sb: "Create custom Micrometer counters for business errors. Alert when error rate > 1%."
-    },
-    {
-      day: 62,
-      phase: 4,
-      title: "Configuration Management",
-      topic: "Externalized config. Spring Cloud Config. Feature flags. Secret management (Vault).",
-      task: "Set up Spring Cloud Config Server. Move all properties there. Add a feature flag.",
-      sb: "spring-cloud-config-server. @RefreshScope for hot reloads. HashiCorp Vault for secrets."
-    },
-    {
-      day: 63,
-      phase: 4,
-      title: "Week 9 Review",
-      topic: "Service mesh, Kubernetes, full observability stack.",
-      task: "Add Prometheus + Grafana + Zipkin + ELK to your microservices project. Full observability.",
-      sb: "Your project now has: tracing, metrics, structured logs, alerts. You're production-ready.",
-      review: true
-    },
+        // ── PHASE 4 ──
+        {
+            day: 43,
+            phase: 4,
+            title: "Microservices — Why & When",
+            topic: "Monolith vs microservices. Conway's Law. When NOT to use microservices.",
+            task: "Read: Martin Fowler — 'Microservice Trade-offs'. List 5 reasons NOT to split your monolith.",
+            sb: "Audit your current app: is it a modular monolith? That might be good enough."
+        },
+        {
+            day: 44,
+            phase: 4,
+            title: "Service Decomposition",
+            topic: "Domain-Driven Design (DDD) basics. Bounded contexts. How to split a monolith.",
+            task: "Take an e-commerce app. Identify bounded contexts: catalog, orders, payments, shipping, users.",
+            sb: "Split a monolith Spring Boot app into packages by domain first (modular monolith)."
+        },
+        {
+            day: 45,
+            phase: 4,
+            title: "Service Discovery",
+            topic: "Client-side vs server-side discovery. Eureka, Consul, Kubernetes DNS.",
+            task: "Set up Spring Cloud Eureka. Register 2 services. Use FeignClient with load-balanced discovery.",
+            sb: "spring-cloud-starter-netflix-eureka-server + client. @EnableEurekaServer, @FeignClient."
+        },
+        {
+            day: 46,
+            phase: 4,
+            title: "Inter-Service Communication",
+            topic: "Sync (REST, gRPC) vs async (Kafka, RabbitMQ). Trade-offs. Choosing the right pattern.",
+            task: "Design: Order service needs inventory check (sync) and sends notification (async). Draw the flow.",
+            sb: "Use FeignClient for sync calls. Use KafkaTemplate for async events."
+        },
+        {
+            day: 47,
+            phase: 4,
+            title: "Circuit Breaker Pattern",
+            topic: "Closed, Open, Half-Open states. Fallback strategies. Resilience4j internals.",
+            task: "Add Resilience4j circuit breaker to a FeignClient call. Test it: stop the downstream service.",
+            sb: "resilience4j-spring-boot2. @CircuitBreaker(name='inventory', fallbackMethod='fallback')."
+        },
+        {
+            day: 48,
+            phase: 4,
+            title: "Retry, Timeout, Bulkhead",
+            topic: "Retry with exponential backoff + jitter. Timeout configuration. Bulkhead (thread pool isolation).",
+            task: "Configure retry + timeout + bulkhead for all external calls in your Spring Boot service.",
+            sb: "@Retry, @TimeLimiter, @Bulkhead from Resilience4j. Combine all three on one method."
+        },
+        {
+            day: 49,
+            phase: 4,
+            title: "Week 7 Review",
+            topic: "Microservices, service discovery, communication, resilience patterns.",
+            task: "Build: 2 Spring Boot microservices with Eureka, Feign + circuit breaker, and async Kafka event flow.",
+            sb: "Full stack: order-service → feign → inventory-service (CB) → kafka → notification-service.",
+            review: true
+        },
+        {
+            day: 50,
+            phase: 4,
+            title: "Saga Pattern",
+            topic: "Choreography vs orchestration saga. Compensating transactions. Handling partial failures.",
+            task: "Design a saga for: place order → reserve inventory → charge payment → confirm order.",
+            sb: "Implement choreography saga with Kafka: each step produces an event, failures trigger compensation."
+        },
+        {
+            day: 51,
+            phase: 4,
+            title: "Event-Driven Architecture",
+            topic: "Event sourcing. Domain events. Event-driven vs request-driven. Eventual consistency.",
+            task: "Read: Chris Richardson — Event Sourcing pattern. Identify 3 domain events in your current project.",
+            sb: "Publish ApplicationEvent in Spring. Or use Kafka for cross-service domain events."
+        },
+        {
+            day: 52,
+            phase: 4,
+            title: "CQRS Pattern",
+            topic: "Command Query Responsibility Segregation. Write model vs read model. Sync strategies.",
+            task: "Design CQRS for a social feed: writes go to MySQL, reads from Cassandra (pre-built feed).",
+            sb: "Separate @Service classes for commands and queries. Sync via Kafka events."
+        },
+        {
+            day: 53,
+            phase: 4,
+            title: "Outbox Pattern",
+            topic: "Dual-write problem. Transactional outbox. Debezium CDC for reliable event publishing.",
+            task: "Implement outbox: save order + outbox event in one transaction. Poll and publish to Kafka.",
+            sb: "Create an outbox table in your DB. @Scheduled job to poll and publish unprocessed events."
+        },
+        {
+            day: 54,
+            phase: 4,
+            title: "Idempotency",
+            topic: "Idempotency keys. At-least-once vs exactly-once delivery. Deduplication strategies.",
+            task: "Add idempotency to your payment endpoint: same request_id = same response, no double charge.",
+            sb: "Store idempotency_key + response in Redis with TTL. Check before processing."
+        },
+        {
+            day: 55,
+            phase: 4,
+            title: "Distributed Tracing",
+            topic: "Trace, span, context propagation. OpenTelemetry. Zipkin, Jaeger, Grafana Tempo.",
+            task: "Add Micrometer Tracing + Zipkin to 2 Spring Boot services. Trace a request end-to-end.",
+            sb: "micrometer-tracing-bridge-otel + zipkin-reporter. See traces in Zipkin UI."
+        },
+        {
+            day: 56,
+            phase: 4,
+            title: "Week 8 Review",
+            topic: "Saga, event sourcing, CQRS, outbox, idempotency, tracing.",
+            task: "Design the order management system with saga, outbox, and tracing. Draw complete flow.",
+            sb: "Implement the outbox pattern in an existing project. Add distributed tracing.",
+            review: true
+        },
+        {
+            day: 57,
+            phase: 4,
+            title: "Service Mesh",
+            topic: "What is a service mesh? Istio, Linkerd. Sidecar pattern. mTLS, traffic management.",
+            task: "Read: Istio concepts documentation. Identify what problems it solves vs Resilience4j.",
+            sb: "In Kubernetes: Istio handles retries/CB at infra level. Less code in Spring Boot needed."
+        },
+        {
+            day: 58,
+            phase: 4,
+            title: "Kubernetes Basics for HLD",
+            topic: "Pods, Services, Deployments, ConfigMaps, Secrets, Ingress. How HLD decisions change with K8s.",
+            task: "Deploy a Spring Boot app to minikube. Add HPA (Horizontal Pod Autoscaler) based on CPU.",
+            sb: "K8s replaces Eureka (DNS-based discovery) and some LB concerns. Simplifies scaling."
+        },
+        {
+            day: 59,
+            phase: 4,
+            title: "Observability: Metrics",
+            topic: "Four Golden Signals: latency, traffic, errors, saturation. Prometheus + Grafana.",
+            task: "Set up Prometheus + Grafana. Add Spring Boot Actuator metrics. Build a dashboard.",
+            sb: "micrometer-registry-prometheus. Expose /actuator/prometheus. Grafana Spring Boot dashboard."
+        },
+        {
+            day: 60,
+            phase: 4,
+            title: "Observability: Logging",
+            topic: "Structured logging (JSON). Log aggregation. ELK stack (Elasticsearch, Logstash, Kibana).",
+            task: "Add Logback JSON encoder to Spring Boot. Ship logs to local ELK stack. Create a Kibana dashboard.",
+            sb: "logstash-logback-encoder. Add correlation IDs (traceId) to every log line."
+        },
+        {
+            day: 61,
+            phase: 4,
+            title: "Alerting & SLOs",
+            topic: "Alertmanager. SLO-based alerting. Error budgets. On-call runbooks.",
+            task: "Define SLOs for your service: 99.9% uptime, p99 < 500ms. Set up Alertmanager rules.",
+            sb: "Create custom Micrometer counters for business errors. Alert when error rate > 1%."
+        },
+        {
+            day: 62,
+            phase: 4,
+            title: "Configuration Management",
+            topic: "Externalized config. Spring Cloud Config. Feature flags. Secret management (Vault).",
+            task: "Set up Spring Cloud Config Server. Move all properties there. Add a feature flag.",
+            sb: "spring-cloud-config-server. @RefreshScope for hot reloads. HashiCorp Vault for secrets."
+        },
+        {
+            day: 63,
+            phase: 4,
+            title: "Week 9 Review",
+            topic: "Service mesh, Kubernetes, full observability stack.",
+            task: "Add Prometheus + Grafana + Zipkin + ELK to your microservices project. Full observability.",
+            sb: "Your project now has: tracing, metrics, structured logs, alerts. You're production-ready.",
+            review: true
+        },
 
-    // ── PHASE 5 ──
-    {
-      day: 64,
-      phase: 5,
-      title: "Design: URL Shortener",
-      topic: "Requirements, scale estimation, schema, encoding, redirect, analytics.",
-      task: "Spend 45 min solo designing this. Then compare with ByteByteGo's URL shortener chapter.",
-      sb: "Implement it: Spring Boot + MySQL + Redis (redirect cache) + Kafka (analytics events)."
-    },
-    {
-      day: 65,
-      phase: 5,
-      title: "Design: Pastebin",
-      topic: "Blob storage for text, unique ID generation, expiry, search.",
-      task: "Design full system. Focus on: ID generation (Snowflake? UUID? Base62?), content storage.",
-      sb: "Build: Spring Boot + S3/MinIO for paste content + MySQL for metadata + Redis for hot pastes."
-    },
-    {
-      day: 66,
-      phase: 5,
-      title: "Design: Rate Limiter",
-      topic: "Distributed rate limiter. Redis-based token bucket. Per-user vs global limits.",
-      task: "Design a rate limiter service that can handle 1M users. Where does Redis go? How to avoid hotspots?",
-      sb: "Implement distributed rate limiter with Redis INCR + EXPIRE. Expose as Spring filter."
-    },
-    {
-      day: 67,
-      phase: 5,
-      title: "Design: Twitter/X Feed",
-      topic: "Fan-out on write vs fan-out on read. Push model vs pull model. Celebrity problem.",
-      task: "Design the newsfeed system. Handle celebrities (10M followers) differently from regular users.",
-      sb: "Push-based feed: on tweet, publish to Kafka → fan-out worker → write to followers' feed in Redis."
-    },
-    {
-      day: 68,
-      phase: 5,
-      title: "Design: Instagram",
-      topic: "Photo upload, CDN, feed generation, stories, notifications.",
-      task: "Design the photo storage and delivery pipeline. How do you serve 1B images/day efficiently?",
-      sb: "Upload to S3 → trigger Lambda/Kafka → generate thumbnails → invalidate CDN → update feed."
-    },
-    {
-      day: 69,
-      phase: 5,
-      title: "Design: YouTube",
-      topic: "Video upload pipeline, transcoding, adaptive bitrate streaming, recommendations.",
-      task: "Focus on: video ingestion pipeline and how to transcode to multiple formats at scale.",
-      sb: "Presigned URL upload → S3 event → Kafka → transcoding worker → HLS segments → CDN."
-    },
-    {
-      day: 70,
-      phase: 5,
-      title: "Week 10 Review",
-      topic: "URL shortener, Pastebin, rate limiter, feed systems, media storage.",
-      task: "Pick any design you struggled with. Redo it from scratch without notes. Time yourself (45 min).",
-      sb: "Implement whichever design excites you most as a working Spring Boot project.",
-      review: true
-    },
-    {
-      day: 71,
-      phase: 5,
-      title: "Design: Uber / Ride Sharing",
-      topic: "Real-time location tracking, driver matching, surge pricing, trip management.",
-      task: "Focus on: how to efficiently find nearby drivers. Geohash vs quadtree vs PostGIS.",
-      sb: "Store driver locations in Redis with GEO commands. Use GEORADIUS to find nearby drivers."
-    },
-    {
-      day: 72,
-      phase: 5,
-      title: "Design: WhatsApp / Chat App",
-      topic: "Message delivery, end-to-end encryption, offline delivery, group messages.",
-      task: "Design message delivery guarantees. How do you ensure a message is delivered exactly once?",
-      sb: "WebSocket for real-time, Kafka for async delivery, Cassandra for message history."
-    },
-    {
-      day: 73,
-      phase: 5,
-      title: "Design: Distributed Cache",
-      topic: "Design a Redis-like cache. Consistent hashing, eviction, replication, persistence.",
-      task: "Design your own mini distributed cache from scratch. What protocol? How to handle node failure?",
-      sb: "This is a deep dive into Redis internals — helps you use Spring Cache more effectively."
-    },
-    {
-      day: 74,
-      phase: 5,
-      title: "Design: Notification System",
-      topic: "Push, email, SMS channels. Priority queues. Rate limiting. Delivery tracking.",
-      task: "Design for 10M notifications/day across 3 channels. How do you ensure delivery and avoid spam?",
-      sb: "Kafka topic per channel. Spring consumer per channel. Retry with dead-letter topic."
-    },
-    {
-      day: 75,
-      phase: 5,
-      title: "Design: Search Autocomplete",
-      topic: "Trie data structure. Top-K frequent queries. Real-time vs batch updates.",
-      task: "Design autocomplete for a search box serving 1B daily searches. Data structure? Update frequency?",
-      sb: "Store top-K suggestions in Redis Sorted Set. Prefix-based key design. Update via batch job."
-    },
-    {
-      day: 76,
-      phase: 5,
-      title: "Design: Distributed ID Generator",
-      topic: "UUID, auto-increment limits. Twitter Snowflake. Ticket server. Trade-offs.",
-      task: "Implement a Snowflake ID generator in Java. Test uniqueness across 3 threads.",
-      sb: "Use as a @Component. Benchmark: how many IDs/sec can you generate on a single machine?"
-    },
-    {
-      day: 77,
-      phase: 5,
-      title: "Week 11 Review",
-      topic: "Uber, WhatsApp, cache, notifications, autocomplete, ID generation.",
-      task: "Self-assessment: pick 3 designs. Rate yourself 1–5 on: requirements, estimation, components, trade-offs.",
-      sb: "Identify your weakest design area. Spend extra time there this week.",
-      review: true
-    },
+        // ── PHASE 5 ──
+        {
+            day: 64,
+            phase: 5,
+            title: "Design: URL Shortener",
+            topic: "Requirements, scale estimation, schema, encoding, redirect, analytics.",
+            task: "Spend 45 min solo designing this. Then compare with ByteByteGo's URL shortener chapter.",
+            sb: "Implement it: Spring Boot + MySQL + Redis (redirect cache) + Kafka (analytics events)."
+        },
+        {
+            day: 65,
+            phase: 5,
+            title: "Design: Pastebin",
+            topic: "Blob storage for text, unique ID generation, expiry, search.",
+            task: "Design full system. Focus on: ID generation (Snowflake? UUID? Base62?), content storage.",
+            sb: "Build: Spring Boot + S3/MinIO for paste content + MySQL for metadata + Redis for hot pastes."
+        },
+        {
+            day: 66,
+            phase: 5,
+            title: "Design: Rate Limiter",
+            topic: "Distributed rate limiter. Redis-based token bucket. Per-user vs global limits.",
+            task: "Design a rate limiter service that can handle 1M users. Where does Redis go? How to avoid hotspots?",
+            sb: "Implement distributed rate limiter with Redis INCR + EXPIRE. Expose as Spring filter."
+        },
+        {
+            day: 67,
+            phase: 5,
+            title: "Design: Twitter/X Feed",
+            topic: "Fan-out on write vs fan-out on read. Push model vs pull model. Celebrity problem.",
+            task: "Design the newsfeed system. Handle celebrities (10M followers) differently from regular users.",
+            sb: "Push-based feed: on tweet, publish to Kafka → fan-out worker → write to followers' feed in Redis."
+        },
+        {
+            day: 68,
+            phase: 5,
+            title: "Design: Instagram",
+            topic: "Photo upload, CDN, feed generation, stories, notifications.",
+            task: "Design the photo storage and delivery pipeline. How do you serve 1B images/day efficiently?",
+            sb: "Upload to S3 → trigger Lambda/Kafka → generate thumbnails → invalidate CDN → update feed."
+        },
+        {
+            day: 69,
+            phase: 5,
+            title: "Design: YouTube",
+            topic: "Video upload pipeline, transcoding, adaptive bitrate streaming, recommendations.",
+            task: "Focus on: video ingestion pipeline and how to transcode to multiple formats at scale.",
+            sb: "Presigned URL upload → S3 event → Kafka → transcoding worker → HLS segments → CDN."
+        },
+        {
+            day: 70,
+            phase: 5,
+            title: "Week 10 Review",
+            topic: "URL shortener, Pastebin, rate limiter, feed systems, media storage.",
+            task: "Pick any design you struggled with. Redo it from scratch without notes. Time yourself (45 min).",
+            sb: "Implement whichever design excites you most as a working Spring Boot project.",
+            review: true
+        },
+        {
+            day: 71,
+            phase: 5,
+            title: "Design: Uber / Ride Sharing",
+            topic: "Real-time location tracking, driver matching, surge pricing, trip management.",
+            task: "Focus on: how to efficiently find nearby drivers. Geohash vs quadtree vs PostGIS.",
+            sb: "Store driver locations in Redis with GEO commands. Use GEORADIUS to find nearby drivers."
+        },
+        {
+            day: 72,
+            phase: 5,
+            title: "Design: WhatsApp / Chat App",
+            topic: "Message delivery, end-to-end encryption, offline delivery, group messages.",
+            task: "Design message delivery guarantees. How do you ensure a message is delivered exactly once?",
+            sb: "WebSocket for real-time, Kafka for async delivery, Cassandra for message history."
+        },
+        {
+            day: 73,
+            phase: 5,
+            title: "Design: Distributed Cache",
+            topic: "Design a Redis-like cache. Consistent hashing, eviction, replication, persistence.",
+            task: "Design your own mini distributed cache from scratch. What protocol? How to handle node failure?",
+            sb: "This is a deep dive into Redis internals — helps you use Spring Cache more effectively."
+        },
+        {
+            day: 74,
+            phase: 5,
+            title: "Design: Notification System",
+            topic: "Push, email, SMS channels. Priority queues. Rate limiting. Delivery tracking.",
+            task: "Design for 10M notifications/day across 3 channels. How do you ensure delivery and avoid spam?",
+            sb: "Kafka topic per channel. Spring consumer per channel. Retry with dead-letter topic."
+        },
+        {
+            day: 75,
+            phase: 5,
+            title: "Design: Search Autocomplete",
+            topic: "Trie data structure. Top-K frequent queries. Real-time vs batch updates.",
+            task: "Design autocomplete for a search box serving 1B daily searches. Data structure? Update frequency?",
+            sb: "Store top-K suggestions in Redis Sorted Set. Prefix-based key design. Update via batch job."
+        },
+        {
+            day: 76,
+            phase: 5,
+            title: "Design: Distributed ID Generator",
+            topic: "UUID, auto-increment limits. Twitter Snowflake. Ticket server. Trade-offs.",
+            task: "Implement a Snowflake ID generator in Java. Test uniqueness across 3 threads.",
+            sb: "Use as a @Component. Benchmark: how many IDs/sec can you generate on a single machine?"
+        },
+        {
+            day: 77,
+            phase: 5,
+            title: "Week 11 Review",
+            topic: "Uber, WhatsApp, cache, notifications, autocomplete, ID generation.",
+            task: "Self-assessment: pick 3 designs. Rate yourself 1–5 on: requirements, estimation, components, trade-offs.",
+            sb: "Identify your weakest design area. Spend extra time there this week.",
+            review: true
+        },
 
-    // ── PHASE 6 ──
-    {
-      day: 78,
-      phase: 6,
-      title: "Consistent Hashing Deep Dive",
-      topic: "Ring topology, virtual nodes, rebalancing, weighted nodes. Real usage in Kafka, DynamoDB.",
-      task: "Implement a consistent hash ring in Java with virtual nodes. Test adding/removing a node.",
-      sb: "Understand how Kafka assigns partitions to consumers — it's consistent hashing."
-    },
-    {
-      day: 79,
-      phase: 6,
-      title: "Consensus Algorithms (Conceptual)",
-      topic: "Raft algorithm: leader election, log replication, split brain. Paxos overview.",
-      task: "Watch: Diego Ongaro's 'Raft explained' video (30 min). Understand: why do distributed DBs need this?",
-      sb: "Zookeeper (used by Kafka older versions) and etcd (Kubernetes) use consensus. Know the concept."
-    },
-    {
-      day: 80,
-      phase: 6,
-      title: "Advanced Kafka Patterns",
-      topic: "Exactly-once semantics. Compacted topics. Kafka Streams. Schema registry (Avro).",
-      task: "Set up Kafka with Schema Registry. Serialize events with Avro. Use Kafka Streams for a simple aggregation.",
-      sb: "kafka-streams-spring-boot-starter. Build a real-time order count aggregation stream."
-    },
-    {
-      day: 81,
-      phase: 6,
-      title: "Multi-Region Architecture",
-      topic: "Active-active vs active-passive. Data replication across regions. Conflict resolution.",
-      task: "Design: how would you make your Spring Boot app serve users from both India and USA with low latency?",
-      sb: "AWS Route53 latency-based routing → regional clusters. DB replication between regions."
-    },
-    {
-      day: 82,
-      phase: 6,
-      title: "Cost Optimization in System Design",
-      topic: "Spot instances, reserved capacity, data transfer costs. Cost as a design constraint.",
-      task: "Estimate the monthly AWS cost for your URL shortener design. Find 3 ways to cut cost by 30%.",
-      sb: "Use Spring Boot async (@Async) to batch DB writes — reduces DB cost significantly."
-    },
-    {
-      day: 83,
-      phase: 6,
-      title: "System Design Interview Framework",
-      topic: "RESHADED method. Time management (45 min interview). What interviewers look for.",
-      task: "Write out the RESHADED framework from memory. Practice on 'Design Dropbox' using only the framework.",
-      sb: "Bring up Spring Boot / Spring Cloud naturally in interviews — shows practical experience."
-    },
-    {
-      day: 84,
-      phase: 6,
-      title: "Mock Interview #1",
-      topic: "Design: Twitter Feed (45 min timed).",
-      task: "Set a 45-min timer. Design Twitter feed. Follow RESHADED. Record yourself if possible.",
-      sb: "Review after: did you mention caching, async processing, DB choice? Any blind spots?",
-      review: true
-    },
-    {
-      day: 85,
-      phase: 6,
-      title: "Mock Interview #2",
-      topic: "Design: Uber (45 min timed).",
-      task: "Set a 45-min timer. Design Uber. Focus on: real-time location, matching, surge pricing.",
-      sb: "Review: did you handle the geospatial problem clearly? Did you discuss trade-offs?",
-      review: true
-    },
-    {
-      day: 86,
-      phase: 6,
-      title: "Mock Interview #3",
-      topic: "Design: WhatsApp (45 min timed).",
-      task: "Set a 45-min timer. Design WhatsApp. Focus on: message delivery guarantees, group chat scale.",
-      sb: "Review: was your estimation reasonable? Did you evolve the design iteratively?",
-      review: true
-    },
-    {
-      day: 87,
-      phase: 6,
-      title: "Weak Areas Deep Dive",
-      topic: "Based on your mock interviews: identify the 2 areas where you're weakest.",
-      task: "Revisit notes and resources for your weak areas. Do a focused 2-hour deep dive session.",
-      sb: "Build a small proof-of-concept for your weakest concept. Code > reading for retention."
-    },
-    {
-      day: 88,
-      phase: 6,
-      title: "End-to-End System Design",
-      topic: "Design a complete food delivery app (Swiggy/Zomato clone): all components.",
-      task: "90-minute session: design the entire system. Restaurant catalog, search, ordering, delivery tracking, payments.",
-      sb: "Document which Spring Boot services, starters, and patterns you'd use for each component."
-    },
-    {
-      day: 89,
-      phase: 6,
-      title: "Revision — Core Concepts",
-      topic: "Speed revision of all 6 phases. Flashcard-style.",
-      task: "Write one sentence definition for: CAP, ACID, sharding, replication, circuit breaker, saga, CQRS, outbox, idempotency, consistent hashing.",
-      sb: "For each concept: name the Spring Boot library or pattern that implements it."
-    },
-    {
-      day: 90,
-      phase: 6,
-      title: "Graduation Day 🎉",
-      topic: "You've completed the 90-day HLD learning plan!",
-      task: "Design ANY system of your choice from scratch. Compare with Day 1. See how far you've come.",
-      sb: "Build something real: a portfolio project combining microservices, Kafka, Redis, observability — showcase your skills.",
-      review: true
-    },
-  ];
+        // ── PHASE 6 ──
+        {
+            day: 78,
+            phase: 6,
+            title: "Consistent Hashing Deep Dive",
+            topic: "Ring topology, virtual nodes, rebalancing, weighted nodes. Real usage in Kafka, DynamoDB.",
+            task: "Implement a consistent hash ring in Java with virtual nodes. Test adding/removing a node.",
+            sb: "Understand how Kafka assigns partitions to consumers — it's consistent hashing."
+        },
+        {
+            day: 79,
+            phase: 6,
+            title: "Consensus Algorithms (Conceptual)",
+            topic: "Raft algorithm: leader election, log replication, split brain. Paxos overview.",
+            task: "Watch: Diego Ongaro's 'Raft explained' video (30 min). Understand: why do distributed DBs need this?",
+            sb: "Zookeeper (used by Kafka older versions) and etcd (Kubernetes) use consensus. Know the concept."
+        },
+        {
+            day: 80,
+            phase: 6,
+            title: "Advanced Kafka Patterns",
+            topic: "Exactly-once semantics. Compacted topics. Kafka Streams. Schema registry (Avro).",
+            task: "Set up Kafka with Schema Registry. Serialize events with Avro. Use Kafka Streams for a simple aggregation.",
+            sb: "kafka-streams-spring-boot-starter. Build a real-time order count aggregation stream."
+        },
+        {
+            day: 81,
+            phase: 6,
+            title: "Multi-Region Architecture",
+            topic: "Active-active vs active-passive. Data replication across regions. Conflict resolution.",
+            task: "Design: how would you make your Spring Boot app serve users from both India and USA with low latency?",
+            sb: "AWS Route53 latency-based routing → regional clusters. DB replication between regions."
+        },
+        {
+            day: 82,
+            phase: 6,
+            title: "Cost Optimization in System Design",
+            topic: "Spot instances, reserved capacity, data transfer costs. Cost as a design constraint.",
+            task: "Estimate the monthly AWS cost for your URL shortener design. Find 3 ways to cut cost by 30%.",
+            sb: "Use Spring Boot async (@Async) to batch DB writes — reduces DB cost significantly."
+        },
+        {
+            day: 83,
+            phase: 6,
+            title: "System Design Interview Framework",
+            topic: "RESHADED method. Time management (45 min interview). What interviewers look for.",
+            task: "Write out the RESHADED framework from memory. Practice on 'Design Dropbox' using only the framework.",
+            sb: "Bring up Spring Boot / Spring Cloud naturally in interviews — shows practical experience."
+        },
+        {
+            day: 84,
+            phase: 6,
+            title: "Mock Interview #1",
+            topic: "Design: Twitter Feed (45 min timed).",
+            task: "Set a 45-min timer. Design Twitter feed. Follow RESHADED. Record yourself if possible.",
+            sb: "Review after: did you mention caching, async processing, DB choice? Any blind spots?",
+            review: true
+        },
+        {
+            day: 85,
+            phase: 6,
+            title: "Mock Interview #2",
+            topic: "Design: Uber (45 min timed).",
+            task: "Set a 45-min timer. Design Uber. Focus on: real-time location, matching, surge pricing.",
+            sb: "Review: did you handle the geospatial problem clearly? Did you discuss trade-offs?",
+            review: true
+        },
+        {
+            day: 86,
+            phase: 6,
+            title: "Mock Interview #3",
+            topic: "Design: WhatsApp (45 min timed).",
+            task: "Set a 45-min timer. Design WhatsApp. Focus on: message delivery guarantees, group chat scale.",
+            sb: "Review: was your estimation reasonable? Did you evolve the design iteratively?",
+            review: true
+        },
+        {
+            day: 87,
+            phase: 6,
+            title: "Weak Areas Deep Dive",
+            topic: "Based on your mock interviews: identify the 2 areas where you're weakest.",
+            task: "Revisit notes and resources for your weak areas. Do a focused 2-hour deep dive session.",
+            sb: "Build a small proof-of-concept for your weakest concept. Code > reading for retention."
+        },
+        {
+            day: 88,
+            phase: 6,
+            title: "End-to-End System Design",
+            topic: "Design a complete food delivery app (Swiggy/Zomato clone): all components.",
+            task: "90-minute session: design the entire system. Restaurant catalog, search, ordering, delivery tracking, payments.",
+            sb: "Document which Spring Boot services, starters, and patterns you'd use for each component."
+        },
+        {
+            day: 89,
+            phase: 6,
+            title: "Revision — Core Concepts",
+            topic: "Speed revision of all 6 phases. Flashcard-style.",
+            task: "Write one sentence definition for: CAP, ACID, sharding, replication, circuit breaker, saga, CQRS, outbox, idempotency, consistent hashing.",
+            sb: "For each concept: name the Spring Boot library or pattern that implements it."
+        },
+        {
+            day: 90,
+            phase: 6,
+            title: "Graduation Day 🎉",
+            topic: "You've completed the 90-day HLD learning plan!",
+            task: "Design ANY system of your choice from scratch. Compare with Day 1. See how far you've come.",
+            sb: "Build something real: a portfolio project combining microservices, Kafka, Redis, observability — showcase your skills.",
+            review: true
+        },
+    ];
 
-  const TIPS = [
-    ["Consistency beats intensity", "30 minutes daily beats a weekend marathon. Protect your daily slot."],
-    ["Build, don't just read", "Every concept should touch code at least once. Spring Boot is your lab."],
-    ["Review days are not optional", "Day 7, 14, 21... are the most important days. Don't skip consolidation."],
-    ["Teach to learn", "Explain each concept out loud or write it down as if teaching a colleague."],
-    ["Track your designs", "Keep a folder of all your architecture diagrams. Review them monthly."],
-    ["Read engineering blogs", "Netflix, Uber, Airbnb, Shopify tech blogs — real systems = real learning."],
-    ["Mock interviews weekly", "From Week 8 onwards, do at least one timed mock design session per week."],
-  ];
+    const TIPS = [
+        ["Consistency beats intensity", "30 minutes daily beats a weekend marathon. Protect your daily slot."],
+        ["Build, don't just read", "Every concept should touch code at least once. Spring Boot is your lab."],
+        ["Review days are not optional", "Day 7, 14, 21... are the most important days. Don't skip consolidation."],
+        ["Teach to learn", "Explain each concept out loud or write it down as if teaching a colleague."],
+        ["Track your designs", "Keep a folder of all your architecture diagrams. Review them monthly."],
+        ["Read engineering blogs", "Netflix, Uber, Airbnb, Shopify tech blogs — real systems = real learning."],
+        ["Mock interviews weekly", "From Week 8 onwards, do at least one timed mock design session per week."],
+    ];
 
-  // ── Render nav dots ──
-  const navDots = document.getElementById('nav-dots');
-  const phaseColors = ['var(--p1)', 'var(--p2)', 'var(--p3)', 'var(--p4)', 'var(--p5)', 'var(--p6)'];
-  PHASES.forEach((p, i) => {
-    const d = document.createElement('div');
-    d.className = 'nav-phase-dot';
-    d.style.background = phaseColors[i];
-    d.title = p.title;
-    d.onclick = () => document.getElementById('phase-' + p.id).scrollIntoView({behavior: 'smooth'});
-    navDots.appendChild(d);
-  });
+    // ── Render nav dots ──
+    const navDots = document.getElementById('nav-dots');
+    const phaseColors = ['var(--p1)', 'var(--p2)', 'var(--p3)', 'var(--p4)', 'var(--p5)', 'var(--p6)'];
+    PHASES.forEach((p, i) => {
+        const d = document.createElement('div');
+        d.className = 'nav-phase-dot';
+        d.style.background = phaseColors[i];
+        d.title = p.title;
+        d.onclick = () => document.getElementById('phase-' + p.id).scrollIntoView({behavior: 'smooth'});
+        navDots.appendChild(d);
+    });
 
-  // ── Render overview ──
-  const overviewEl = document.getElementById('phase-overview');
-  PHASES.forEach(p => {
-    const el = document.createElement('a');
-    el.href = '#phase-' + p.id;
-    el.setAttribute('data-phase', p.id);
-    el.className = 'phase-card';
-    el.innerHTML = `
+    // ── Render overview ──
+    const overviewEl = document.getElementById('phase-overview');
+    PHASES.forEach(p => {
+        const el = document.createElement('a');
+        el.href = '#phase-' + p.id;
+        el.setAttribute('data-phase', p.id);
+        el.className = 'phase-card';
+        el.innerHTML = `
     <div class="phase-card-header">
       <span class="phase-pill">${p.phase}</span>
       <span class="phase-weeks">${p.weeks}</span>
@@ -1774,49 +1775,49 @@
     <p class="phase-desc">${p.desc}</p>
     <div class="phase-count">${p.days} · ${p.count} days</div>
   `;
-    overviewEl.appendChild(el);
-  });
+        overviewEl.appendChild(el);
+    });
 
-  // ── Render phases + days ──
-  const container = document.getElementById('phases-container');
-  PHASES.forEach(p => {
-    const section = document.createElement('div');
-    section.className = 'phase-section';
-    section.id = 'phase-' + p.id;
-    section.setAttribute('data-phase', p.id);
+    // ── Render phases + days ──
+    const container = document.getElementById('phases-container');
+    PHASES.forEach(p => {
+        const section = document.createElement('div');
+        section.className = 'phase-section';
+        section.id = 'phase-' + p.id;
+        section.setAttribute('data-phase', p.id);
 
-    const headerBar = document.createElement('div');
-    headerBar.className = 'phase-header-bar';
-    headerBar.innerHTML = `
+        const headerBar = document.createElement('div');
+        headerBar.className = 'phase-header-bar';
+        headerBar.innerHTML = `
     <span class="phase-number">${p.phase}</span>
     <h2>${p.title}</h2>
     <span class="phase-meta">${p.days}</span>
     <span class="chevron">▼</span>
   `;
 
-    const daysGrid = document.createElement('div');
-    daysGrid.className = 'days-grid';
+        const daysGrid = document.createElement('div');
+        daysGrid.className = 'days-grid';
 
-    // default: open first phase
-    if (p.id === 1) {
-      headerBar.classList.add('open');
-      daysGrid.classList.add('open');
-    }
+        // default: open first phase
+        if (p.id === 1) {
+            headerBar.classList.add('open');
+            daysGrid.classList.add('open');
+        }
 
-    headerBar.addEventListener('click', () => {
-      headerBar.classList.toggle('open');
-      daysGrid.classList.toggle('open');
-    });
+        headerBar.addEventListener('click', () => {
+            headerBar.classList.toggle('open');
+            daysGrid.classList.toggle('open');
+        });
 
-    // days for this phase
-    DAYS.filter(d => d.phase === p.id).forEach(d => {
-      const item = document.createElement('div');
-      item.className = 'day-item';
-      item.setAttribute('data-title', d.title.toLowerCase());
-      item.setAttribute('data-topic', d.topic.toLowerCase());
-      item.setAttribute('data-sb', d.sb.toLowerCase());
+        // days for this phase
+        DAYS.filter(d => d.phase === p.id).forEach(d => {
+            const item = document.createElement('div');
+            item.className = 'day-item';
+            item.setAttribute('data-title', d.title.toLowerCase());
+            item.setAttribute('data-topic', d.topic.toLowerCase());
+            item.setAttribute('data-sb', d.sb.toLowerCase());
 
-      item.innerHTML = `
+            item.innerHTML = `
       <div class="day-header">
         <div class="day-num">
           <span class="day-label">Day</span>
@@ -1847,58 +1848,58 @@
       </div>
     `;
 
-      item.querySelector('.day-header').addEventListener('click', () => {
-        item.classList.toggle('open');
-      });
+            item.querySelector('.day-header').addEventListener('click', () => {
+                item.classList.toggle('open');
+            });
 
-      daysGrid.appendChild(item);
+            daysGrid.appendChild(item);
+        });
+
+        section.appendChild(headerBar);
+        section.appendChild(daysGrid);
+        container.appendChild(section);
     });
 
-    section.appendChild(headerBar);
-    section.appendChild(daysGrid);
-    container.appendChild(section);
-  });
-
-  // ── Render tips ──
-  const tipsGrid = document.getElementById('tips-grid');
-  TIPS.forEach(([title, desc]) => {
-    const el = document.createElement('div');
-    el.className = 'tip-card';
-    el.innerHTML = `<div class="tip-title">${title}</div><div class="tip-desc">${desc}</div>`;
-    tipsGrid.appendChild(el);
-  });
-
-  // ── Progress bar ──
-  const progressBar = document.getElementById('progress-bar');
-  window.addEventListener('scroll', () => {
-    const total = document.body.scrollHeight - window.innerHeight;
-    progressBar.style.width = (window.scrollY / total * 100) + '%';
-  });
-
-  // ── Search ──
-  const searchInput = document.getElementById('search');
-  searchInput.addEventListener('input', () => {
-    const q = searchInput.value.toLowerCase().trim();
-    // open all phases when searching
-    document.querySelectorAll('.days-grid').forEach(g => {
-      g.classList.toggle('open', q.length > 0 || g.parentElement.id === 'phase-1');
-    });
-    document.querySelectorAll('.phase-header-bar').forEach(h => {
-      h.classList.toggle('open', q.length > 0 || h.parentElement.id === 'phase-1');
+    // ── Render tips ──
+    const tipsGrid = document.getElementById('tips-grid');
+    TIPS.forEach(([title, desc]) => {
+        const el = document.createElement('div');
+        el.className = 'tip-card';
+        el.innerHTML = `<div class="tip-title">${title}</div><div class="tip-desc">${desc}</div>`;
+        tipsGrid.appendChild(el);
     });
 
-    document.querySelectorAll('.day-item').forEach(item => {
-      if (!q) {
-        item.style.display = '';
-        return;
-      }
-      const text = (item.getAttribute('data-title') || '') + ' ' + (item.getAttribute('data-topic') || '') + ' ' + (item.getAttribute('data-sb') || '');
-      const matches = text.includes(q);
-      item.style.display = matches ? '' : 'none';
-      if (matches) item.classList.add('open');
-      else item.classList.remove('open');
+    // ── Progress bar ──
+    const progressBar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+        const total = document.body.scrollHeight - window.innerHeight;
+        progressBar.style.width = (window.scrollY / total * 100) + '%';
     });
-  });
+
+    // ── Search ──
+    const searchInput = document.getElementById('search');
+    searchInput.addEventListener('input', () => {
+        const q = searchInput.value.toLowerCase().trim();
+        // open all phases when searching
+        document.querySelectorAll('.days-grid').forEach(g => {
+            g.classList.toggle('open', q.length > 0 || g.parentElement.id === 'phase-1');
+        });
+        document.querySelectorAll('.phase-header-bar').forEach(h => {
+            h.classList.toggle('open', q.length > 0 || h.parentElement.id === 'phase-1');
+        });
+
+        document.querySelectorAll('.day-item').forEach(item => {
+            if (!q) {
+                item.style.display = '';
+                return;
+            }
+            const text = (item.getAttribute('data-title') || '') + ' ' + (item.getAttribute('data-topic') || '') + ' ' + (item.getAttribute('data-sb') || '');
+            const matches = text.includes(q);
+            item.style.display = matches ? '' : 'none';
+            if (matches) item.classList.add('open');
+            else item.classList.remove('open');
+        });
+    });
 </script>
 </body>
 </html>

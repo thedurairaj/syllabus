@@ -1,458 +1,574 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DSA & Problem Solving Roadmap — Java Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0d0f14;
-    --surface: #13161e;
-    --surface2: #1a1e29;
-    --border: #252a38;
-    --border2: #2e3547;
-    --text: #e8eaf0;
-    --text2: #8b92a8;
-    --text3: #555e75;
-    --accent: #4f8aff;
-    --accent2: #7c5cfc;
-    --green: #34d399;
-    --amber: #fbbf24;
-    --coral: #fb7185;
-    --teal: #2dd4bf;
-    --purple: #a78bfa;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA & Problem Solving Roadmap — Java Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0f14;
+            --surface: #13161e;
+            --surface2: #1a1e29;
+            --border: #252a38;
+            --border2: #2e3547;
+            --text: #e8eaf0;
+            --text2: #8b92a8;
+            --text3: #555e75;
+            --accent: #4f8aff;
+            --accent2: #7c5cfc;
+            --green: #34d399;
+            --amber: #fbbf24;
+            --coral: #fb7185;
+            --teal: #2dd4bf;
+            --purple: #a78bfa;
+        }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Sora', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Sora', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-  /* HERO */
-  .hero {
-    background: linear-gradient(135deg, #0d0f14 0%, #111420 50%, #0d1220 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 60px 40px 50px;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -80px; right: -80px;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(79,138,255,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: -60px; left: 20%;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(124,92,252,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #0d0f14 0%, #111420 50%, #0d1220 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 60px 40px 50px;
+            position: relative;
+            overflow: hidden;
+        }
 
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(79,138,255,0.12);
-    border: 1px solid rgba(79,138,255,0.25);
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-  }
-  .hero-tag::before { content: '⬡'; font-size: 10px; }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(79, 138, 255, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
 
-  .hero h1 {
-    font-size: clamp(28px, 5vw, 44px);
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.15;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-  }
-  .hero h1 span {
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: 20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(124, 92, 252, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
 
-  .hero-sub {
-    color: var(--text2);
-    font-size: 15px;
-    font-weight: 300;
-    max-width: 520px;
-    margin-bottom: 28px;
-  }
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(79, 138, 255, 0.12);
+            border: 1px solid rgba(79, 138, 255, 0.25);
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
 
-  .hero-stats {
-    display: flex;
-    gap: 28px;
-    flex-wrap: wrap;
-  }
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .stat-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .stat-label {
-    font-size: 11px;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
+        .hero-tag::before {
+            content: '⬡';
+            font-size: 10px;
+        }
 
-  /* PROGRESS BAR */
-  .progress-bar-wrap {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 40px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(12px);
-  }
-  .progress-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .progress-label {
-    font-size: 12px;
-    color: var(--text3);
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .progress-count {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--accent);
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .progress-track {
-    width: 100%;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 2px;
-    transition: width 0.4s ease;
-    width: 0%;
-  }
+        .hero h1 {
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.15;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
 
-  /* LAYOUT */
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 24px;
-  }
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-  /* PHASE SECTION */
-  .phase {
-    margin-bottom: 48px;
-  }
+        .hero-sub {
+            color: var(--text2);
+            font-size: 15px;
+            font-weight: 300;
+            max-width: 520px;
+            margin-bottom: 28px;
+        }
 
-  .phase-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 20px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-  }
+        .hero-stats {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
 
-  .phase-num {
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    font-weight: 600;
-  }
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
 
-  .phase-meta { flex: 1; }
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text);
+        }
 
-  .phase-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 3px;
-  }
+        .stat-label {
+            font-size: 11px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-  .phase-desc {
-    font-size: 13px;
-    color: var(--text2);
-    font-weight: 300;
-  }
+        /* PROGRESS BAR */
+        .progress-bar-wrap {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
 
-  .phase-duration {
-    flex-shrink: 0;
-    font-size: 11px;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--text3);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    border-radius: 6px;
-    white-space: nowrap;
-    align-self: center;
-  }
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
 
-  /* TOPIC GROUPS */
-  .topics-grid {
-    display: grid;
-    gap: 12px;
-  }
+        .progress-label {
+            font-size: 12px;
+            color: var(--text3);
+            font-family: 'JetBrains Mono', monospace;
+        }
 
-  .topic-group {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
+        .progress-count {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
 
-  .group-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 18px;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.15s;
-  }
-  .group-header:hover { background: var(--surface2); }
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
 
-  .group-icon {
-    font-size: 16px;
-    width: 20px;
-    text-align: center;
-  }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border-radius: 2px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
 
-  .group-title {
-    flex: 1;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-  }
+        /* LAYOUT */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
 
-  .group-badge {
-    font-size: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-weight: 600;
-  }
+        /* PHASE SECTION */
+        .phase {
+            margin-bottom: 48px;
+        }
 
-  .group-progress-mini {
-    font-size: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--text3);
-    min-width: 32px;
-    text-align: right;
-  }
+        .phase-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
 
-  .group-arrow {
-    font-size: 12px;
-    color: var(--text3);
-    transition: transform 0.2s;
-    margin-left: 4px;
-  }
-  .topic-group.open .group-arrow { transform: rotate(90deg); }
+        .phase-num {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+        }
 
-  .items-list {
-    display: none;
-    padding: 0 18px 14px;
-    border-top: 1px solid var(--border);
-  }
-  .topic-group.open .items-list { display: block; }
+        .phase-meta {
+            flex: 1;
+        }
 
-  /* CHECKLIST ITEMS */
-  .checklist-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-  .checklist-item:last-child { border-bottom: none; }
-  .checklist-item:hover { opacity: 0.85; }
+        .phase-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 3px;
+        }
 
-  .check-box {
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    border: 1.5px solid var(--border2);
-    border-radius: 4px;
-    margin-top: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-  .checklist-item.done .check-box {
-    background: var(--green);
-    border-color: var(--green);
-  }
-  .check-box::after {
-    content: '';
-    display: none;
-    width: 5px;
-    height: 9px;
-    border: 2px solid #0d0f14;
-    border-top: none;
-    border-left: none;
-    transform: rotate(45deg) translate(-1px, -1px);
-  }
-  .checklist-item.done .check-box::after { display: block; }
+        .phase-desc {
+            font-size: 13px;
+            color: var(--text2);
+            font-weight: 300;
+        }
 
-  .item-content { flex: 1; }
+        .phase-duration {
+            flex-shrink: 0;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text3);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+            align-self: center;
+        }
 
-  .item-name {
-    font-size: 13.5px;
-    font-weight: 400;
-    color: var(--text);
-    transition: color 0.2s;
-  }
-  .checklist-item.done .item-name {
-    color: var(--text3);
-    text-decoration: line-through;
-  }
+        /* TOPIC GROUPS */
+        .topics-grid {
+            display: grid;
+            gap: 12px;
+        }
 
-  .item-hint {
-    font-size: 12px;
-    color: var(--text3);
-    font-weight: 300;
-    margin-top: 2px;
-  }
+        .topic-group {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
 
-  .item-tags {
-    display: flex;
-    gap: 5px;
-    margin-top: 5px;
-    flex-wrap: wrap;
-  }
+        .group-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s;
+        }
 
-  .tag {
-    font-size: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    padding: 1px 7px;
-    border-radius: 3px;
-    font-weight: 600;
-  }
+        .group-header:hover {
+            background: var(--surface2);
+        }
 
-  .tag-easy { background: rgba(52,211,153,0.12); color: var(--green); }
-  .tag-medium { background: rgba(251,191,36,0.12); color: var(--amber); }
-  .tag-hard { background: rgba(251,113,133,0.12); color: var(--coral); }
-  .tag-java { background: rgba(79,138,255,0.12); color: var(--accent); }
-  .tag-must { background: rgba(167,139,250,0.12); color: var(--purple); }
+        .group-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
 
-  /* DIFFICULTY COLORS for phases */
-  .p1 .phase-num { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
-  .p2 .phase-num { background: rgba(79,138,255,0.1); color: var(--accent); border: 1px solid rgba(79,138,255,0.2); }
-  .p3 .phase-num { background: rgba(251,191,36,0.1); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
-  .p4 .phase-num { background: rgba(251,113,133,0.1); color: var(--coral); border: 1px solid rgba(251,113,133,0.2); }
-  .p5 .phase-num { background: rgba(167,139,250,0.1); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
-  .p6 .phase-num { background: rgba(45,212,191,0.1); color: var(--teal); border: 1px solid rgba(45,212,191,0.2); }
+        .group-title {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
 
-  /* RESET BTN */
-  .reset-btn {
-    background: none;
-    border: 1px solid var(--border2);
-    color: var(--text3);
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-family: 'Sora', sans-serif;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .reset-btn:hover { border-color: var(--coral); color: var(--coral); }
+        .group-badge {
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
 
-  /* FOOTER */
-  footer {
-    text-align: center;
-    padding: 40px;
-    color: var(--text3);
-    font-size: 12px;
-    border-top: 1px solid var(--border);
-    font-family: 'JetBrains Mono', monospace;
-  }
+        .group-progress-mini {
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text3);
+            min-width: 32px;
+            text-align: right;
+        }
 
-  @media (max-width: 600px) {
-    .hero { padding: 40px 20px 36px; }
-    .progress-bar-wrap { padding: 14px 20px; }
-    .container { padding: 28px 16px; }
-    .hero-stats { gap: 20px; }
-    .phase-duration { display: none; }
-  }
-</style>
+        .group-arrow {
+            font-size: 12px;
+            color: var(--text3);
+            transition: transform 0.2s;
+            margin-left: 4px;
+        }
+
+        .topic-group.open .group-arrow {
+            transform: rotate(90deg);
+        }
+
+        .items-list {
+            display: none;
+            padding: 0 18px 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .topic-group.open .items-list {
+            display: block;
+        }
+
+        /* CHECKLIST ITEMS */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item:hover {
+            opacity: 0.85;
+        }
+
+        .check-box {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--border2);
+            border-radius: 4px;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .checklist-item.done .check-box {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .check-box::after {
+            content: '';
+            display: none;
+            width: 5px;
+            height: 9px;
+            border: 2px solid #0d0f14;
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg) translate(-1px, -1px);
+        }
+
+        .checklist-item.done .check-box::after {
+            display: block;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 13.5px;
+            font-weight: 400;
+            color: var(--text);
+            transition: color 0.2s;
+        }
+
+        .checklist-item.done .item-name {
+            color: var(--text3);
+            text-decoration: line-through;
+        }
+
+        .item-hint {
+            font-size: 12px;
+            color: var(--text3);
+            font-weight: 300;
+            margin-top: 2px;
+        }
+
+        .item-tags {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 1px 7px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .tag-easy {
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--green);
+        }
+
+        .tag-medium {
+            background: rgba(251, 191, 36, 0.12);
+            color: var(--amber);
+        }
+
+        .tag-hard {
+            background: rgba(251, 113, 133, 0.12);
+            color: var(--coral);
+        }
+
+        .tag-java {
+            background: rgba(79, 138, 255, 0.12);
+            color: var(--accent);
+        }
+
+        .tag-must {
+            background: rgba(167, 139, 250, 0.12);
+            color: var(--purple);
+        }
+
+        /* DIFFICULTY COLORS for phases */
+        .p1 .phase-num {
+            background: rgba(52, 211, 153, 0.1);
+            color: var(--green);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .p2 .phase-num {
+            background: rgba(79, 138, 255, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(79, 138, 255, 0.2);
+        }
+
+        .p3 .phase-num {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--amber);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .p4 .phase-num {
+            background: rgba(251, 113, 133, 0.1);
+            color: var(--coral);
+            border: 1px solid rgba(251, 113, 133, 0.2);
+        }
+
+        .p5 .phase-num {
+            background: rgba(167, 139, 250, 0.1);
+            color: var(--purple);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        .p6 .phase-num {
+            background: rgba(45, 212, 191, 0.1);
+            color: var(--teal);
+            border: 1px solid rgba(45, 212, 191, 0.2);
+        }
+
+        /* RESET BTN */
+        .reset-btn {
+            background: none;
+            border: 1px solid var(--border2);
+            color: var(--text3);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: 'Sora', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .reset-btn:hover {
+            border-color: var(--coral);
+            color: var(--coral);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text3);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding: 40px 20px 36px;
+            }
+
+            .progress-bar-wrap {
+                padding: 14px 20px;
+            }
+
+            .container {
+                padding: 28px 16px;
+            }
+
+            .hero-stats {
+                gap: 20px;
+            }
+
+            .phase-duration {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <div class="hero">
-  <div class="hero-tag">Java Developer Edition</div>
-  <h1>Problem Solving<br><span>Mastery Roadmap</span></h1>
-  <p class="hero-sub">Structured DSA & algorithmic thinking curriculum for developers with 4+ years of Spring Boot / Microservices experience.</p>
-  <div class="hero-stats">
-    <div class="stat">
-      <span class="stat-num" id="total-topics">0</span>
-      <span class="stat-label">Total Topics</span>
+    <div class="hero-tag">Java Developer Edition</div>
+    <h1>Problem Solving<br><span>Mastery Roadmap</span></h1>
+    <p class="hero-sub">Structured DSA & algorithmic thinking curriculum for developers with 4+ years of Spring Boot /
+        Microservices experience.</p>
+    <div class="hero-stats">
+        <div class="stat">
+            <span class="stat-num" id="total-topics">0</span>
+            <span class="stat-label">Total Topics</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num" id="completed-count">0</span>
+            <span class="stat-label">Completed</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">6</span>
+            <span class="stat-label">Phases</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">~6mo</span>
+            <span class="stat-label">Duration</span>
+        </div>
     </div>
-    <div class="stat">
-      <span class="stat-num" id="completed-count">0</span>
-      <span class="stat-label">Completed</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">6</span>
-      <span class="stat-label">Phases</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">~6mo</span>
-      <span class="stat-label">Duration</span>
-    </div>
-  </div>
 </div>
 
 <div class="progress-bar-wrap">
-  <div class="progress-top">
-    <span class="progress-label">overall progress</span>
-    <span class="progress-count" id="progress-text">0 / 0</span>
-  </div>
-  <div class="progress-track">
-    <div class="progress-fill" id="progress-fill"></div>
-  </div>
+    <div class="progress-top">
+        <span class="progress-label">overall progress</span>
+        <span class="progress-count" id="progress-text">0 / 0</span>
+    </div>
+    <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
 </div>
 
 <div class="container" id="app"></div>
@@ -460,429 +576,903 @@
 <footer>built for java developers · track your progress locally · data saved in localStorage</footer>
 
 <script>
-const PHASES = [
-  {
-    id: "p1",
-    phase: "01",
-    title: "Java Problem Solving Foundation",
-    desc: "Set up Java environment for competitive coding, master I/O, complexity analysis",
-    duration: "Week 1–2",
-    topics: [
-      {
-        name: "Environment Setup",
-        icon: "⚙️",
-        badge: "SETUP",
-        badgeClass: "tag-java",
-        items: [
-          { name: "Configure IntelliJ / VS Code for fast coding", hint: "Enable live templates, shortcut customization", tags: ["java"] },
-          { name: "Learn Scanner, BufferedReader for fast I/O", hint: "BufferedReader is 10x faster than Scanner", tags: ["java", "must"] },
-          { name: "Learn PrintWriter for output", hint: "Use System.out.flush() or PrintWriter with flush", tags: ["java"] },
-          { name: "Setup LeetCode with Java — solve 2 easy problems", hint: "Just get familiar with submission format", tags: ["easy", "java"] },
-        ]
-      },
-      {
-        name: "Time & Space Complexity",
-        icon: "📊",
-        badge: "CORE",
-        badgeClass: "tag-must",
-        items: [
-          { name: "Understand Big O notation — O(1), O(n), O(log n), O(n²)", hint: "Know how to read and write complexity", tags: ["must"] },
-          { name: "Analyze complexity of loops and nested loops", hint: "Practice: write a nested loop, calculate Big O", tags: ["must"] },
-          { name: "Understand space complexity vs time complexity", hint: "Recursion uses O(n) stack space", tags: ["must"] },
-          { name: "Recognize which complexity is acceptable for given input size", hint: "n=10^6 → O(n log n) OK, O(n²) not OK", tags: ["must"] },
-        ]
-      },
-      {
-        name: "Java Collections Mastery",
-        icon: "📦",
-        badge: "JAVA",
-        badgeClass: "tag-java",
-        items: [
-          { name: "ArrayList, LinkedList — time complexity of each operation", hint: "get, add, remove at index differences", tags: ["java", "must"] },
-          { name: "HashMap, LinkedHashMap, TreeMap — when to use which", hint: "O(1) vs O(log n) lookup tradeoffs", tags: ["java", "must"] },
-          { name: "HashSet, TreeSet — uniqueness & ordering", hint: "TreeSet keeps sorted order automatically", tags: ["java"] },
-          { name: "PriorityQueue (min/max heap in Java)", hint: "new PriorityQueue<>(Collections.reverseOrder()) for max heap", tags: ["java", "must"] },
-          { name: "ArrayDeque as Stack and Queue", hint: "Faster than Stack class, use Deque interface", tags: ["java"] },
-          { name: "Sorting: Arrays.sort(), Collections.sort(), lambda comparators", hint: "arrays.sort(arr, (a,b) -> b-a) for reverse sort", tags: ["java"] },
-        ]
-      }
-    ]
-  },
-  {
-    id: "p2",
-    phase: "02",
-    title: "Core Data Structures",
-    desc: "Arrays, Strings, Linked Lists, Stacks, Queues — implement and solve problems",
-    duration: "Week 3–6",
-    topics: [
-      {
-        name: "Arrays & Strings",
-        icon: "🔢",
-        badge: "EASY→MED",
-        badgeClass: "tag-easy",
-        items: [
-          { name: "Two Pointer technique — opposite ends", hint: "Two Sum (sorted), reverse array, valid palindrome", tags: ["easy", "must"] },
-          { name: "Two Pointer — same direction (fast/slow)", hint: "Remove duplicates, move zeros, container with most water", tags: ["medium", "must"] },
-          { name: "Sliding Window — fixed size", hint: "Max sum of subarray of size k", tags: ["easy", "must"] },
-          { name: "Sliding Window — variable size", hint: "Longest substring without repeating characters", tags: ["medium", "must"] },
-          { name: "Prefix Sum array", hint: "Range sum queries in O(1) after O(n) preprocessing", tags: ["medium", "must"] },
-          { name: "Kadane's Algorithm — maximum subarray sum", hint: "Classic DP but think of it as greedy first", tags: ["medium", "must"] },
-          { name: "String manipulation in Java", hint: "StringBuilder vs String, charAt, substring, split", tags: ["java"] },
-          { name: "Character frequency using int[26] or HashMap", hint: "Anagram detection, character counting", tags: ["easy"] },
-          { name: "Matrix/2D array traversal patterns", hint: "Spiral, diagonal, boundary traversal", tags: ["medium"] },
-        ]
-      },
-      {
-        name: "Linked Lists",
-        icon: "🔗",
-        badge: "MEDIUM",
-        badgeClass: "tag-medium",
-        items: [
-          { name: "Implement singly linked list from scratch in Java", hint: "Node class with val and next pointer", tags: ["java", "must"] },
-          { name: "Reverse a linked list — iterative and recursive", hint: "Most asked interview question", tags: ["easy", "must"] },
-          { name: "Detect cycle — Floyd's tortoise and hare", hint: "Two pointer with fast/slow pointers", tags: ["medium", "must"] },
-          { name: "Find middle node using slow/fast pointers", hint: "Used in merge sort of linked list", tags: ["easy", "must"] },
-          { name: "Merge two sorted linked lists", hint: "Foundation for merge k sorted lists", tags: ["easy"] },
-          { name: "Remove Nth node from end", hint: "Two pointer with offset trick", tags: ["medium"] },
-          { name: "Intersection of two linked lists", hint: "Length difference trick or HashSet approach", tags: ["medium"] },
-        ]
-      },
-      {
-        name: "Stack & Queue",
-        icon: "📚",
-        badge: "MEDIUM",
-        badgeClass: "tag-medium",
-        items: [
-          { name: "Valid parentheses using Stack", hint: "Classic stack application — learn by heart", tags: ["easy", "must"] },
-          { name: "Implement Queue using two Stacks", hint: "Amortized O(1) push and pop", tags: ["medium"] },
-          { name: "Monotonic Stack — next greater element", hint: "Stack that keeps elements in increasing/decreasing order", tags: ["medium", "must"] },
-          { name: "Daily Temperatures using monotonic stack", hint: "Pattern: for each element, pop all smaller from stack", tags: ["medium"] },
-          { name: "Min Stack — O(1) getMin()", hint: "Store pairs (val, currentMin) or use auxiliary stack", tags: ["medium"] },
-          { name: "BFS using Queue — level order traversal", hint: "Foundation for all BFS graph problems", tags: ["medium", "must"] },
-        ]
-      }
-    ]
-  },
-  {
-    id: "p3",
-    phase: "03",
-    title: "Trees & Recursion",
-    desc: "Binary trees, BST, recursion patterns — the most common interview domain",
-    duration: "Week 7–10",
-    topics: [
-      {
-        name: "Recursion Fundamentals",
-        icon: "🔄",
-        badge: "CRITICAL",
-        badgeClass: "tag-must",
-        items: [
-          { name: "Understand call stack — trace recursion manually", hint: "Draw every function call for fibonacci(4)", tags: ["must"] },
-          { name: "Base case and recursive case pattern", hint: "Every recursive function needs both", tags: ["must"] },
-          { name: "Factorial, Fibonacci, Power — classic recursion", hint: "Solve iteratively first, then recursively", tags: ["easy", "must"] },
-          { name: "Recursion with backtracking mindset", hint: "Make a choice → recurse → undo choice", tags: ["medium", "must"] },
-          { name: "Memoization — top-down DP with recursion", hint: "Add HashMap<Integer,Integer> memo to any recursive solution", tags: ["medium", "must"] },
-        ]
-      },
-      {
-        name: "Binary Trees",
-        icon: "🌳",
-        badge: "HIGH FREQ",
-        badgeClass: "tag-must",
-        items: [
-          { name: "DFS traversals: inorder, preorder, postorder", hint: "Know recursive AND iterative versions", tags: ["easy", "must"] },
-          { name: "BFS / Level order traversal", hint: "Queue-based, return List<List<Integer>>", tags: ["medium", "must"] },
-          { name: "Height / max depth of binary tree", hint: "Return 1 + max(left, right)", tags: ["easy", "must"] },
-          { name: "Diameter of binary tree", hint: "For each node: left height + right height", tags: ["medium", "must"] },
-          { name: "Check if tree is balanced", hint: "Return -1 for invalid from recursive helper", tags: ["medium"] },
-          { name: "Lowest Common Ancestor (LCA)", hint: "Fundamental — used in many other problems", tags: ["medium", "must"] },
-          { name: "Path sum problems", hint: "hasPathSum, all paths, path sum = target", tags: ["medium"] },
-          { name: "Invert / mirror a binary tree", hint: "Swap left and right recursively", tags: ["easy"] },
-          { name: "Serialize and deserialize binary tree", hint: "Preorder + null markers or BFS-based", tags: ["hard"] },
-        ]
-      },
-      {
-        name: "Binary Search Tree",
-        icon: "🔍",
-        badge: "MEDIUM",
-        badgeClass: "tag-medium",
-        items: [
-          { name: "BST property: left < root < right, inorder = sorted", hint: "Inorder traversal gives sorted array", tags: ["easy", "must"] },
-          { name: "Search, Insert, Delete in BST", hint: "Delete is trickiest — find inorder successor", tags: ["medium", "must"] },
-          { name: "Validate BST using min/max bounds", hint: "Pass min and max to each recursive call", tags: ["medium", "must"] },
-          { name: "Kth smallest element in BST", hint: "Inorder traversal, count nodes", tags: ["medium"] },
-          { name: "Convert sorted array to balanced BST", hint: "Mid element = root, recurse left and right", tags: ["easy"] },
-        ]
-      }
-    ]
-  },
-  {
-    id: "p4",
-    phase: "04",
-    title: "Graphs & Advanced Structures",
-    desc: "Graph traversal, shortest paths, heap problems, tries",
-    duration: "Week 11–15",
-    topics: [
-      {
-        name: "Graph Fundamentals",
-        icon: "🕸️",
-        badge: "HIGH FREQ",
-        badgeClass: "tag-must",
-        items: [
-          { name: "Graph representations: adjacency list in Java", hint: "Map<Integer, List<Integer>> or int[][]", tags: ["java", "must"] },
-          { name: "DFS on graph — visited array or set", hint: "Detect cycle, connected components, path finding", tags: ["medium", "must"] },
-          { name: "BFS on graph — shortest path (unweighted)", hint: "Level-by-level expansion using Queue", tags: ["medium", "must"] },
-          { name: "Detect cycle — undirected graph (DFS)", hint: "Pass parent node to avoid false positive", tags: ["medium", "must"] },
-          { name: "Detect cycle — directed graph (DFS + color/state)", hint: "0=unvisited, 1=in-progress, 2=done", tags: ["medium", "must"] },
-          { name: "Connected components count", hint: "Outer for loop + DFS inner for each node", tags: ["medium"] },
-          { name: "Number of Islands (matrix BFS/DFS)", hint: "Most asked graph problem — must know cold", tags: ["medium", "must"] },
-          { name: "Clone Graph", hint: "HashMap to map original → clone nodes", tags: ["medium"] },
-        ]
-      },
-      {
-        name: "Advanced Graph Algorithms",
-        icon: "🗺️",
-        badge: "ADVANCED",
-        badgeClass: "tag-hard",
-        items: [
-          { name: "Topological Sort — DFS-based", hint: "Push to stack after visiting all children", tags: ["medium", "must"] },
-          { name: "Topological Sort — BFS / Kahn's algorithm", hint: "In-degree array + Queue — use for cycle detection", tags: ["medium", "must"] },
-          { name: "Dijkstra's Shortest Path", hint: "PriorityQueue<int[]> ordered by distance", tags: ["hard", "must"] },
-          { name: "Union-Find (Disjoint Set Union)", hint: "Path compression + union by rank — O(α(n)) amortized", tags: ["medium", "must"] },
-          { name: "Minimum Spanning Tree — Kruskal's", hint: "Sort edges by weight + Union-Find", tags: ["hard"] },
-          { name: "Bellman-Ford algorithm", hint: "Handles negative edges, detects negative cycles", tags: ["hard"] },
-        ]
-      },
-      {
-        name: "Heap / Priority Queue",
-        icon: "⛰️",
-        badge: "MEDIUM",
-        badgeClass: "tag-medium",
-        items: [
-          { name: "Top K frequent elements", hint: "HashMap + min-heap of size k", tags: ["medium", "must"] },
-          { name: "K closest points to origin", hint: "Max-heap of size k, keep k smallest", tags: ["medium"] },
-          { name: "Merge K sorted lists", hint: "PriorityQueue comparing node values", tags: ["hard", "must"] },
-          { name: "Find median from data stream", hint: "Two heaps: max-heap (left) + min-heap (right)", tags: ["hard", "must"] },
-          { name: "Task Scheduler", hint: "Frequency array + greedy with max-heap", tags: ["medium"] },
-        ]
-      },
-      {
-        name: "Trie (Prefix Tree)",
-        icon: "🌐",
-        badge: "MEDIUM",
-        badgeClass: "tag-medium",
-        items: [
-          { name: "Implement Trie — insert, search, startsWith", hint: "TrieNode with children[26] and isEnd boolean", tags: ["medium", "must"] },
-          { name: "Word Search II — Trie + DFS backtracking", hint: "Hard but teaches deep Trie mastery", tags: ["hard"] },
-          { name: "Design Add and Search Words data structure", hint: "Trie with wildcard '.' support in DFS", tags: ["medium"] },
-        ]
-      }
-    ]
-  },
-  {
-    id: "p5",
-    phase: "05",
-    title: "Dynamic Programming",
-    desc: "The most feared topic — systematically conquered pattern by pattern",
-    duration: "Week 16–20",
-    topics: [
-      {
-        name: "DP Thinking Framework",
-        icon: "🧠",
-        badge: "MINDSET",
-        badgeClass: "tag-must",
-        items: [
-          { name: "Identify if problem has optimal substructure", hint: "Can I use answer of smaller subproblem?", tags: ["must"] },
-          { name: "Identify overlapping subproblems", hint: "Am I computing same thing multiple times?", tags: ["must"] },
-          { name: "Master top-down (memoization) approach first", hint: "Recursion + HashMap memo — easier to think", tags: ["must"] },
-          { name: "Convert top-down to bottom-up (tabulation)", hint: "Fill dp[] table from base cases forward", tags: ["must"] },
-          { name: "Optimize space — rolling array trick", hint: "2D DP often reducible to 1D or O(1)", tags: ["medium"] },
-        ]
-      },
-      {
-        name: "1D DP Patterns",
-        icon: "📈",
-        badge: "CORE",
-        badgeClass: "tag-medium",
-        items: [
-          { name: "Climbing Stairs / Fibonacci variants", hint: "dp[i] = dp[i-1] + dp[i-2]", tags: ["easy", "must"] },
-          { name: "House Robber I and II", hint: "dp[i] = max(dp[i-1], dp[i-2] + nums[i])", tags: ["medium", "must"] },
-          { name: "Coin Change — minimum coins", hint: "Classic unbounded knapsack DP", tags: ["medium", "must"] },
-          { name: "Coin Change II — number of ways", hint: "dp[amount] += dp[amount - coin]", tags: ["medium"] },
-          { name: "Word Break", hint: "dp[i] = true if any valid split ending at i", tags: ["medium", "must"] },
-          { name: "Decode Ways", hint: "1-digit and 2-digit combinations", tags: ["medium"] },
-          { name: "Longest Increasing Subsequence (LIS)", hint: "O(n²) DP then O(n log n) with binary search", tags: ["medium", "must"] },
-        ]
-      },
-      {
-        name: "2D DP Patterns",
-        icon: "📐",
-        badge: "MEDIUM→HARD",
-        badgeClass: "tag-hard",
-        items: [
-          { name: "0/1 Knapsack", hint: "dp[i][w] = max value with i items and weight limit w", tags: ["medium", "must"] },
-          { name: "Longest Common Subsequence (LCS)", hint: "dp[i][j] — if match: 1+dp[i-1][j-1], else max of adjacent", tags: ["medium", "must"] },
-          { name: "Edit Distance (Levenshtein)", hint: "Insert, delete, replace — min of 3 operations", tags: ["hard", "must"] },
-          { name: "Unique Paths in grid", hint: "dp[i][j] = dp[i-1][j] + dp[i][j-1]", tags: ["medium"] },
-          { name: "Minimum Path Sum in grid", hint: "Same recurrence, different base case", tags: ["medium"] },
-          { name: "Palindromic Substrings / Longest Palindromic Substring", hint: "Expand around center OR dp[i][j] = is palindrome", tags: ["medium", "must"] },
-          { name: "Burst Balloons — interval DP", hint: "dp[i][j] = max coins from bursting all between i and j", tags: ["hard"] },
-        ]
-      },
-      {
-        name: "DP on Trees & Strings",
-        icon: "🌿",
-        badge: "ADVANCED",
-        badgeClass: "tag-hard",
-        items: [
-          { name: "Distinct Subsequences", hint: "Count ways string s contains t as subsequence", tags: ["hard"] },
-          { name: "Interleaving String", hint: "3D state: dp[i][j] = can form s3[0..i+j] from s1[0..i], s2[0..j]", tags: ["hard"] },
-          { name: "Binary Tree Maximum Path Sum", hint: "DP on tree — at each node choose to extend or start fresh", tags: ["hard", "must"] },
-          { name: "House Robber III — DP on tree", hint: "Return pair (robbed, not-robbed) from each node", tags: ["medium"] },
-        ]
-      }
-    ]
-  },
-  {
-    id: "p6",
-    phase: "06",
-    title: "Interview Patterns & System Design DSA",
-    desc: "Binary search on answer, backtracking, greedy, and coding interview strategy",
-    duration: "Week 21–24",
-    topics: [
-      {
-        name: "Binary Search Mastery",
-        icon: "✂️",
-        badge: "MUST KNOW",
-        badgeClass: "tag-must",
-        items: [
-          { name: "Classic binary search on sorted array", hint: "left + (right - left) / 2 to avoid overflow", tags: ["easy", "must"] },
-          { name: "Find first / last position of element", hint: "Two binary searches — one biased left, one right", tags: ["medium", "must"] },
-          { name: "Binary search on answer — minimum/maximum feasibility", hint: "Ask: can I do this with mid as parameter?", tags: ["medium", "must"] },
-          { name: "Koko Eating Bananas — binary search on rate", hint: "Binary search on speed, simulate to verify", tags: ["medium"] },
-          { name: "Find minimum in rotated sorted array", hint: "Pivot-finding binary search pattern", tags: ["medium", "must"] },
-          { name: "Search in Rotated Sorted Array", hint: "Determine which half is sorted first", tags: ["medium", "must"] },
-          { name: "Median of Two Sorted Arrays", hint: "Binary search on partition — hard but classic", tags: ["hard"] },
-        ]
-      },
-      {
-        name: "Backtracking",
-        icon: "↩️",
-        badge: "HIGH FREQ",
-        badgeClass: "tag-medium",
-        items: [
-          { name: "Subsets / Power Set", hint: "At each index: include or exclude", tags: ["medium", "must"] },
-          { name: "Permutations of array", hint: "Swap elements and recurse, then swap back", tags: ["medium", "must"] },
-          { name: "Combinations sum — unlimited use", hint: "Can reuse elements, so don't advance index", tags: ["medium", "must"] },
-          { name: "Combination Sum II — no duplicates", hint: "Sort + skip same element at same level", tags: ["medium"] },
-          { name: "N-Queens", hint: "Check row, column, diagonals for conflicts", tags: ["hard", "must"] },
-          { name: "Sudoku Solver", hint: "Place digit, recurse, backtrack on failure", tags: ["hard"] },
-          { name: "Word Search in grid — DFS backtrack", hint: "Mark visited, unmark on backtrack", tags: ["medium", "must"] },
-          { name: "Palindrome Partitioning", hint: "Backtrack all ways to split string into palindromes", tags: ["medium"] },
-        ]
-      },
-      {
-        name: "Greedy Algorithms",
-        icon: "💡",
-        badge: "MEDIUM",
-        badgeClass: "tag-medium",
-        items: [
-          { name: "Activity selection / Meeting Rooms", hint: "Sort by end time — classic greedy proof", tags: ["medium", "must"] },
-          { name: "Jump Game I and II", hint: "Track max reachable index at each step", tags: ["medium", "must"] },
-          { name: "Gas Station — circular route", hint: "If total gas >= total cost, solution exists", tags: ["medium"] },
-          { name: "Interval merge and overlap problems", hint: "Sort by start, merge overlapping intervals", tags: ["medium", "must"] },
-          { name: "Candy distribution", hint: "Two-pass greedy — left to right then right to left", tags: ["hard"] },
-        ]
-      },
-      {
-        name: "Interview Strategy & Practice",
-        icon: "🏆",
-        badge: "META",
-        badgeClass: "tag-must",
-        items: [
-          { name: "Clarify problem before coding — practice this habit", hint: "Ask: edge cases? input size? return type?", tags: ["must"] },
-          { name: "Talk while coding — explain every decision", hint: "Interviewers want to hear your thought process", tags: ["must"] },
-          { name: "Brute force first, then optimize", hint: "Never jump to optimal — show progression", tags: ["must"] },
-          { name: "Complete 150 LeetCode problems across all topics", hint: "NeetCode 150 list is the best curated set", tags: ["must"] },
-          { name: "Do 20 mock interviews (Pramp, Interviewing.io)", hint: "Pressure makes performance — practice with timer", tags: ["must"] },
-          { name: "Java-specific: know Stream API, Optional, Collections utility methods", hint: "Bonus points for idiomatic Java in interviews", tags: ["java"] },
-          { name: "Review your Spring Boot strengths as system design leverage", hint: "You have an edge — use microservices knowledge", tags: ["must"] },
-        ]
-      }
-    ]
-  }
-];
+    const PHASES = [
+        {
+            id: "p1",
+            phase: "01",
+            title: "Java Problem Solving Foundation",
+            desc: "Set up Java environment for competitive coding, master I/O, complexity analysis",
+            duration: "Week 1–2",
+            topics: [
+                {
+                    name: "Environment Setup",
+                    icon: "⚙️",
+                    badge: "SETUP",
+                    badgeClass: "tag-java",
+                    items: [
+                        {
+                            name: "Configure IntelliJ / VS Code for fast coding",
+                            hint: "Enable live templates, shortcut customization",
+                            tags: ["java"]
+                        },
+                        {
+                            name: "Learn Scanner, BufferedReader for fast I/O",
+                            hint: "BufferedReader is 10x faster than Scanner",
+                            tags: ["java", "must"]
+                        },
+                        {
+                            name: "Learn PrintWriter for output",
+                            hint: "Use System.out.flush() or PrintWriter with flush",
+                            tags: ["java"]
+                        },
+                        {
+                            name: "Setup LeetCode with Java — solve 2 easy problems",
+                            hint: "Just get familiar with submission format",
+                            tags: ["easy", "java"]
+                        },
+                    ]
+                },
+                {
+                    name: "Time & Space Complexity",
+                    icon: "📊",
+                    badge: "CORE",
+                    badgeClass: "tag-must",
+                    items: [
+                        {
+                            name: "Understand Big O notation — O(1), O(n), O(log n), O(n²)",
+                            hint: "Know how to read and write complexity",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Analyze complexity of loops and nested loops",
+                            hint: "Practice: write a nested loop, calculate Big O",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Understand space complexity vs time complexity",
+                            hint: "Recursion uses O(n) stack space",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Recognize which complexity is acceptable for given input size",
+                            hint: "n=10^6 → O(n log n) OK, O(n²) not OK",
+                            tags: ["must"]
+                        },
+                    ]
+                },
+                {
+                    name: "Java Collections Mastery",
+                    icon: "📦",
+                    badge: "JAVA",
+                    badgeClass: "tag-java",
+                    items: [
+                        {
+                            name: "ArrayList, LinkedList — time complexity of each operation",
+                            hint: "get, add, remove at index differences",
+                            tags: ["java", "must"]
+                        },
+                        {
+                            name: "HashMap, LinkedHashMap, TreeMap — when to use which",
+                            hint: "O(1) vs O(log n) lookup tradeoffs",
+                            tags: ["java", "must"]
+                        },
+                        {
+                            name: "HashSet, TreeSet — uniqueness & ordering",
+                            hint: "TreeSet keeps sorted order automatically",
+                            tags: ["java"]
+                        },
+                        {
+                            name: "PriorityQueue (min/max heap in Java)",
+                            hint: "new PriorityQueue<>(Collections.reverseOrder()) for max heap",
+                            tags: ["java", "must"]
+                        },
+                        {
+                            name: "ArrayDeque as Stack and Queue",
+                            hint: "Faster than Stack class, use Deque interface",
+                            tags: ["java"]
+                        },
+                        {
+                            name: "Sorting: Arrays.sort(), Collections.sort(), lambda comparators",
+                            hint: "arrays.sort(arr, (a,b) -> b-a) for reverse sort",
+                            tags: ["java"]
+                        },
+                    ]
+                }
+            ]
+        },
+        {
+            id: "p2",
+            phase: "02",
+            title: "Core Data Structures",
+            desc: "Arrays, Strings, Linked Lists, Stacks, Queues — implement and solve problems",
+            duration: "Week 3–6",
+            topics: [
+                {
+                    name: "Arrays & Strings",
+                    icon: "🔢",
+                    badge: "EASY→MED",
+                    badgeClass: "tag-easy",
+                    items: [
+                        {
+                            name: "Two Pointer technique — opposite ends",
+                            hint: "Two Sum (sorted), reverse array, valid palindrome",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "Two Pointer — same direction (fast/slow)",
+                            hint: "Remove duplicates, move zeros, container with most water",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Sliding Window — fixed size",
+                            hint: "Max sum of subarray of size k",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "Sliding Window — variable size",
+                            hint: "Longest substring without repeating characters",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Prefix Sum array",
+                            hint: "Range sum queries in O(1) after O(n) preprocessing",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Kadane's Algorithm — maximum subarray sum",
+                            hint: "Classic DP but think of it as greedy first",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "String manipulation in Java",
+                            hint: "StringBuilder vs String, charAt, substring, split",
+                            tags: ["java"]
+                        },
+                        {
+                            name: "Character frequency using int[26] or HashMap",
+                            hint: "Anagram detection, character counting",
+                            tags: ["easy"]
+                        },
+                        {
+                            name: "Matrix/2D array traversal patterns",
+                            hint: "Spiral, diagonal, boundary traversal",
+                            tags: ["medium"]
+                        },
+                    ]
+                },
+                {
+                    name: "Linked Lists",
+                    icon: "🔗",
+                    badge: "MEDIUM",
+                    badgeClass: "tag-medium",
+                    items: [
+                        {
+                            name: "Implement singly linked list from scratch in Java",
+                            hint: "Node class with val and next pointer",
+                            tags: ["java", "must"]
+                        },
+                        {
+                            name: "Reverse a linked list — iterative and recursive",
+                            hint: "Most asked interview question",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "Detect cycle — Floyd's tortoise and hare",
+                            hint: "Two pointer with fast/slow pointers",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Find middle node using slow/fast pointers",
+                            hint: "Used in merge sort of linked list",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "Merge two sorted linked lists",
+                            hint: "Foundation for merge k sorted lists",
+                            tags: ["easy"]
+                        },
+                        {name: "Remove Nth node from end", hint: "Two pointer with offset trick", tags: ["medium"]},
+                        {
+                            name: "Intersection of two linked lists",
+                            hint: "Length difference trick or HashSet approach",
+                            tags: ["medium"]
+                        },
+                    ]
+                },
+                {
+                    name: "Stack & Queue",
+                    icon: "📚",
+                    badge: "MEDIUM",
+                    badgeClass: "tag-medium",
+                    items: [
+                        {
+                            name: "Valid parentheses using Stack",
+                            hint: "Classic stack application — learn by heart",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "Implement Queue using two Stacks",
+                            hint: "Amortized O(1) push and pop",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "Monotonic Stack — next greater element",
+                            hint: "Stack that keeps elements in increasing/decreasing order",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Daily Temperatures using monotonic stack",
+                            hint: "Pattern: for each element, pop all smaller from stack",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "Min Stack — O(1) getMin()",
+                            hint: "Store pairs (val, currentMin) or use auxiliary stack",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "BFS using Queue — level order traversal",
+                            hint: "Foundation for all BFS graph problems",
+                            tags: ["medium", "must"]
+                        },
+                    ]
+                }
+            ]
+        },
+        {
+            id: "p3",
+            phase: "03",
+            title: "Trees & Recursion",
+            desc: "Binary trees, BST, recursion patterns — the most common interview domain",
+            duration: "Week 7–10",
+            topics: [
+                {
+                    name: "Recursion Fundamentals",
+                    icon: "🔄",
+                    badge: "CRITICAL",
+                    badgeClass: "tag-must",
+                    items: [
+                        {
+                            name: "Understand call stack — trace recursion manually",
+                            hint: "Draw every function call for fibonacci(4)",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Base case and recursive case pattern",
+                            hint: "Every recursive function needs both",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Factorial, Fibonacci, Power — classic recursion",
+                            hint: "Solve iteratively first, then recursively",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "Recursion with backtracking mindset",
+                            hint: "Make a choice → recurse → undo choice",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Memoization — top-down DP with recursion",
+                            hint: "Add HashMap<Integer,Integer> memo to any recursive solution",
+                            tags: ["medium", "must"]
+                        },
+                    ]
+                },
+                {
+                    name: "Binary Trees",
+                    icon: "🌳",
+                    badge: "HIGH FREQ",
+                    badgeClass: "tag-must",
+                    items: [
+                        {
+                            name: "DFS traversals: inorder, preorder, postorder",
+                            hint: "Know recursive AND iterative versions",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "BFS / Level order traversal",
+                            hint: "Queue-based, return List<List<Integer>>",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Height / max depth of binary tree",
+                            hint: "Return 1 + max(left, right)",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "Diameter of binary tree",
+                            hint: "For each node: left height + right height",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Check if tree is balanced",
+                            hint: "Return -1 for invalid from recursive helper",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "Lowest Common Ancestor (LCA)",
+                            hint: "Fundamental — used in many other problems",
+                            tags: ["medium", "must"]
+                        },
+                        {name: "Path sum problems", hint: "hasPathSum, all paths, path sum = target", tags: ["medium"]},
+                        {
+                            name: "Invert / mirror a binary tree",
+                            hint: "Swap left and right recursively",
+                            tags: ["easy"]
+                        },
+                        {
+                            name: "Serialize and deserialize binary tree",
+                            hint: "Preorder + null markers or BFS-based",
+                            tags: ["hard"]
+                        },
+                    ]
+                },
+                {
+                    name: "Binary Search Tree",
+                    icon: "🔍",
+                    badge: "MEDIUM",
+                    badgeClass: "tag-medium",
+                    items: [
+                        {
+                            name: "BST property: left < root < right, inorder = sorted",
+                            hint: "Inorder traversal gives sorted array",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "Search, Insert, Delete in BST",
+                            hint: "Delete is trickiest — find inorder successor",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Validate BST using min/max bounds",
+                            hint: "Pass min and max to each recursive call",
+                            tags: ["medium", "must"]
+                        },
+                        {name: "Kth smallest element in BST", hint: "Inorder traversal, count nodes", tags: ["medium"]},
+                        {
+                            name: "Convert sorted array to balanced BST",
+                            hint: "Mid element = root, recurse left and right",
+                            tags: ["easy"]
+                        },
+                    ]
+                }
+            ]
+        },
+        {
+            id: "p4",
+            phase: "04",
+            title: "Graphs & Advanced Structures",
+            desc: "Graph traversal, shortest paths, heap problems, tries",
+            duration: "Week 11–15",
+            topics: [
+                {
+                    name: "Graph Fundamentals",
+                    icon: "🕸️",
+                    badge: "HIGH FREQ",
+                    badgeClass: "tag-must",
+                    items: [
+                        {
+                            name: "Graph representations: adjacency list in Java",
+                            hint: "Map<Integer, List<Integer>> or int[][]",
+                            tags: ["java", "must"]
+                        },
+                        {
+                            name: "DFS on graph — visited array or set",
+                            hint: "Detect cycle, connected components, path finding",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "BFS on graph — shortest path (unweighted)",
+                            hint: "Level-by-level expansion using Queue",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Detect cycle — undirected graph (DFS)",
+                            hint: "Pass parent node to avoid false positive",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Detect cycle — directed graph (DFS + color/state)",
+                            hint: "0=unvisited, 1=in-progress, 2=done",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Connected components count",
+                            hint: "Outer for loop + DFS inner for each node",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "Number of Islands (matrix BFS/DFS)",
+                            hint: "Most asked graph problem — must know cold",
+                            tags: ["medium", "must"]
+                        },
+                        {name: "Clone Graph", hint: "HashMap to map original → clone nodes", tags: ["medium"]},
+                    ]
+                },
+                {
+                    name: "Advanced Graph Algorithms",
+                    icon: "🗺️",
+                    badge: "ADVANCED",
+                    badgeClass: "tag-hard",
+                    items: [
+                        {
+                            name: "Topological Sort — DFS-based",
+                            hint: "Push to stack after visiting all children",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Topological Sort — BFS / Kahn's algorithm",
+                            hint: "In-degree array + Queue — use for cycle detection",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Dijkstra's Shortest Path",
+                            hint: "PriorityQueue<int[]> ordered by distance",
+                            tags: ["hard", "must"]
+                        },
+                        {
+                            name: "Union-Find (Disjoint Set Union)",
+                            hint: "Path compression + union by rank — O(α(n)) amortized",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Minimum Spanning Tree — Kruskal's",
+                            hint: "Sort edges by weight + Union-Find",
+                            tags: ["hard"]
+                        },
+                        {
+                            name: "Bellman-Ford algorithm",
+                            hint: "Handles negative edges, detects negative cycles",
+                            tags: ["hard"]
+                        },
+                    ]
+                },
+                {
+                    name: "Heap / Priority Queue",
+                    icon: "⛰️",
+                    badge: "MEDIUM",
+                    badgeClass: "tag-medium",
+                    items: [
+                        {
+                            name: "Top K frequent elements",
+                            hint: "HashMap + min-heap of size k",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "K closest points to origin",
+                            hint: "Max-heap of size k, keep k smallest",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "Merge K sorted lists",
+                            hint: "PriorityQueue comparing node values",
+                            tags: ["hard", "must"]
+                        },
+                        {
+                            name: "Find median from data stream",
+                            hint: "Two heaps: max-heap (left) + min-heap (right)",
+                            tags: ["hard", "must"]
+                        },
+                        {name: "Task Scheduler", hint: "Frequency array + greedy with max-heap", tags: ["medium"]},
+                    ]
+                },
+                {
+                    name: "Trie (Prefix Tree)",
+                    icon: "🌐",
+                    badge: "MEDIUM",
+                    badgeClass: "tag-medium",
+                    items: [
+                        {
+                            name: "Implement Trie — insert, search, startsWith",
+                            hint: "TrieNode with children[26] and isEnd boolean",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Word Search II — Trie + DFS backtracking",
+                            hint: "Hard but teaches deep Trie mastery",
+                            tags: ["hard"]
+                        },
+                        {
+                            name: "Design Add and Search Words data structure",
+                            hint: "Trie with wildcard '.' support in DFS",
+                            tags: ["medium"]
+                        },
+                    ]
+                }
+            ]
+        },
+        {
+            id: "p5",
+            phase: "05",
+            title: "Dynamic Programming",
+            desc: "The most feared topic — systematically conquered pattern by pattern",
+            duration: "Week 16–20",
+            topics: [
+                {
+                    name: "DP Thinking Framework",
+                    icon: "🧠",
+                    badge: "MINDSET",
+                    badgeClass: "tag-must",
+                    items: [
+                        {
+                            name: "Identify if problem has optimal substructure",
+                            hint: "Can I use answer of smaller subproblem?",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Identify overlapping subproblems",
+                            hint: "Am I computing same thing multiple times?",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Master top-down (memoization) approach first",
+                            hint: "Recursion + HashMap memo — easier to think",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Convert top-down to bottom-up (tabulation)",
+                            hint: "Fill dp[] table from base cases forward",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Optimize space — rolling array trick",
+                            hint: "2D DP often reducible to 1D or O(1)",
+                            tags: ["medium"]
+                        },
+                    ]
+                },
+                {
+                    name: "1D DP Patterns",
+                    icon: "📈",
+                    badge: "CORE",
+                    badgeClass: "tag-medium",
+                    items: [
+                        {
+                            name: "Climbing Stairs / Fibonacci variants",
+                            hint: "dp[i] = dp[i-1] + dp[i-2]",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "House Robber I and II",
+                            hint: "dp[i] = max(dp[i-1], dp[i-2] + nums[i])",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Coin Change — minimum coins",
+                            hint: "Classic unbounded knapsack DP",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Coin Change II — number of ways",
+                            hint: "dp[amount] += dp[amount - coin]",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "Word Break",
+                            hint: "dp[i] = true if any valid split ending at i",
+                            tags: ["medium", "must"]
+                        },
+                        {name: "Decode Ways", hint: "1-digit and 2-digit combinations", tags: ["medium"]},
+                        {
+                            name: "Longest Increasing Subsequence (LIS)",
+                            hint: "O(n²) DP then O(n log n) with binary search",
+                            tags: ["medium", "must"]
+                        },
+                    ]
+                },
+                {
+                    name: "2D DP Patterns",
+                    icon: "📐",
+                    badge: "MEDIUM→HARD",
+                    badgeClass: "tag-hard",
+                    items: [
+                        {
+                            name: "0/1 Knapsack",
+                            hint: "dp[i][w] = max value with i items and weight limit w",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Longest Common Subsequence (LCS)",
+                            hint: "dp[i][j] — if match: 1+dp[i-1][j-1], else max of adjacent",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Edit Distance (Levenshtein)",
+                            hint: "Insert, delete, replace — min of 3 operations",
+                            tags: ["hard", "must"]
+                        },
+                        {name: "Unique Paths in grid", hint: "dp[i][j] = dp[i-1][j] + dp[i][j-1]", tags: ["medium"]},
+                        {
+                            name: "Minimum Path Sum in grid",
+                            hint: "Same recurrence, different base case",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "Palindromic Substrings / Longest Palindromic Substring",
+                            hint: "Expand around center OR dp[i][j] = is palindrome",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Burst Balloons — interval DP",
+                            hint: "dp[i][j] = max coins from bursting all between i and j",
+                            tags: ["hard"]
+                        },
+                    ]
+                },
+                {
+                    name: "DP on Trees & Strings",
+                    icon: "🌿",
+                    badge: "ADVANCED",
+                    badgeClass: "tag-hard",
+                    items: [
+                        {
+                            name: "Distinct Subsequences",
+                            hint: "Count ways string s contains t as subsequence",
+                            tags: ["hard"]
+                        },
+                        {
+                            name: "Interleaving String",
+                            hint: "3D state: dp[i][j] = can form s3[0..i+j] from s1[0..i], s2[0..j]",
+                            tags: ["hard"]
+                        },
+                        {
+                            name: "Binary Tree Maximum Path Sum",
+                            hint: "DP on tree — at each node choose to extend or start fresh",
+                            tags: ["hard", "must"]
+                        },
+                        {
+                            name: "House Robber III — DP on tree",
+                            hint: "Return pair (robbed, not-robbed) from each node",
+                            tags: ["medium"]
+                        },
+                    ]
+                }
+            ]
+        },
+        {
+            id: "p6",
+            phase: "06",
+            title: "Interview Patterns & System Design DSA",
+            desc: "Binary search on answer, backtracking, greedy, and coding interview strategy",
+            duration: "Week 21–24",
+            topics: [
+                {
+                    name: "Binary Search Mastery",
+                    icon: "✂️",
+                    badge: "MUST KNOW",
+                    badgeClass: "tag-must",
+                    items: [
+                        {
+                            name: "Classic binary search on sorted array",
+                            hint: "left + (right - left) / 2 to avoid overflow",
+                            tags: ["easy", "must"]
+                        },
+                        {
+                            name: "Find first / last position of element",
+                            hint: "Two binary searches — one biased left, one right",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Binary search on answer — minimum/maximum feasibility",
+                            hint: "Ask: can I do this with mid as parameter?",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Koko Eating Bananas — binary search on rate",
+                            hint: "Binary search on speed, simulate to verify",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "Find minimum in rotated sorted array",
+                            hint: "Pivot-finding binary search pattern",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Search in Rotated Sorted Array",
+                            hint: "Determine which half is sorted first",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Median of Two Sorted Arrays",
+                            hint: "Binary search on partition — hard but classic",
+                            tags: ["hard"]
+                        },
+                    ]
+                },
+                {
+                    name: "Backtracking",
+                    icon: "↩️",
+                    badge: "HIGH FREQ",
+                    badgeClass: "tag-medium",
+                    items: [
+                        {
+                            name: "Subsets / Power Set",
+                            hint: "At each index: include or exclude",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Permutations of array",
+                            hint: "Swap elements and recurse, then swap back",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Combinations sum — unlimited use",
+                            hint: "Can reuse elements, so don't advance index",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Combination Sum II — no duplicates",
+                            hint: "Sort + skip same element at same level",
+                            tags: ["medium"]
+                        },
+                        {name: "N-Queens", hint: "Check row, column, diagonals for conflicts", tags: ["hard", "must"]},
+                        {name: "Sudoku Solver", hint: "Place digit, recurse, backtrack on failure", tags: ["hard"]},
+                        {
+                            name: "Word Search in grid — DFS backtrack",
+                            hint: "Mark visited, unmark on backtrack",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Palindrome Partitioning",
+                            hint: "Backtrack all ways to split string into palindromes",
+                            tags: ["medium"]
+                        },
+                    ]
+                },
+                {
+                    name: "Greedy Algorithms",
+                    icon: "💡",
+                    badge: "MEDIUM",
+                    badgeClass: "tag-medium",
+                    items: [
+                        {
+                            name: "Activity selection / Meeting Rooms",
+                            hint: "Sort by end time — classic greedy proof",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Jump Game I and II",
+                            hint: "Track max reachable index at each step",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Gas Station — circular route",
+                            hint: "If total gas >= total cost, solution exists",
+                            tags: ["medium"]
+                        },
+                        {
+                            name: "Interval merge and overlap problems",
+                            hint: "Sort by start, merge overlapping intervals",
+                            tags: ["medium", "must"]
+                        },
+                        {
+                            name: "Candy distribution",
+                            hint: "Two-pass greedy — left to right then right to left",
+                            tags: ["hard"]
+                        },
+                    ]
+                },
+                {
+                    name: "Interview Strategy & Practice",
+                    icon: "🏆",
+                    badge: "META",
+                    badgeClass: "tag-must",
+                    items: [
+                        {
+                            name: "Clarify problem before coding — practice this habit",
+                            hint: "Ask: edge cases? input size? return type?",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Talk while coding — explain every decision",
+                            hint: "Interviewers want to hear your thought process",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Brute force first, then optimize",
+                            hint: "Never jump to optimal — show progression",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Complete 150 LeetCode problems across all topics",
+                            hint: "NeetCode 150 list is the best curated set",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Do 20 mock interviews (Pramp, Interviewing.io)",
+                            hint: "Pressure makes performance — practice with timer",
+                            tags: ["must"]
+                        },
+                        {
+                            name: "Java-specific: know Stream API, Optional, Collections utility methods",
+                            hint: "Bonus points for idiomatic Java in interviews",
+                            tags: ["java"]
+                        },
+                        {
+                            name: "Review your Spring Boot strengths as system design leverage",
+                            hint: "You have an edge — use microservices knowledge",
+                            tags: ["must"]
+                        },
+                    ]
+                }
+            ]
+        }
+    ];
 
-const STORAGE_KEY = 'ps-checklist-v1';
+    const STORAGE_KEY = 'ps-checklist-v1';
 
-function loadState() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-  } catch { return {}; }
-}
+    function loadState() {
+        try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        } catch {
+            return {};
+        }
+    }
 
-function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
+    function saveState(state) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
 
-let state = loadState();
+    let state = loadState();
 
-function toggleItem(phaseId, topicIdx, itemIdx) {
-  const key = `${phaseId}-${topicIdx}-${itemIdx}`;
-  state[key] = !state[key];
-  saveState(state);
-  render();
-}
+    function toggleItem(phaseId, topicIdx, itemIdx) {
+        const key = `${phaseId}-${topicIdx}-${itemIdx}`;
+        state[key] = !state[key];
+        saveState(state);
+        render();
+    }
 
-function resetAll() {
-  if (confirm('Reset all progress? This cannot be undone.')) {
-    state = {};
-    saveState(state);
-    render();
-  }
-}
+    function resetAll() {
+        if (confirm('Reset all progress? This cannot be undone.')) {
+            state = {};
+            saveState(state);
+            render();
+        }
+    }
 
-function isChecked(phaseId, topicIdx, itemIdx) {
-  return !!state[`${phaseId}-${topicIdx}-${itemIdx}`];
-}
+    function isChecked(phaseId, topicIdx, itemIdx) {
+        return !!state[`${phaseId}-${topicIdx}-${itemIdx}`];
+    }
 
-function countItems() {
-  let total = 0, done = 0;
-  PHASES.forEach(p => p.topics.forEach(t => {
-    t.items.forEach((_, i) => {
-      const idx = p.topics.indexOf(t);
-      total++;
-      if (isChecked(p.id, idx, i)) done++;
-    });
-  }));
-  return { total, done };
-}
+    function countItems() {
+        let total = 0, done = 0;
+        PHASES.forEach(p => p.topics.forEach(t => {
+            t.items.forEach((_, i) => {
+                const idx = p.topics.indexOf(t);
+                total++;
+                if (isChecked(p.id, idx, i)) done++;
+            });
+        }));
+        return {total, done};
+    }
 
-function render() {
-  const app = document.getElementById('app');
-  const { total, done } = countItems();
+    function render() {
+        const app = document.getElementById('app');
+        const {total, done} = countItems();
 
-  document.getElementById('total-topics').textContent = total;
-  document.getElementById('completed-count').textContent = done;
-  document.getElementById('progress-text').textContent = `${done} / ${total}`;
-  const pct = total ? Math.round((done / total) * 100) : 0;
-  document.getElementById('progress-fill').style.width = pct + '%';
+        document.getElementById('total-topics').textContent = total;
+        document.getElementById('completed-count').textContent = done;
+        document.getElementById('progress-text').textContent = `${done} / ${total}`;
+        const pct = total ? Math.round((done / total) * 100) : 0;
+        document.getElementById('progress-fill').style.width = pct + '%';
 
-  app.innerHTML = `
+        app.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
       <div style="font-size:13px;color:var(--text3);font-family:'JetBrains Mono',monospace;">${pct}% complete</div>
       <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
     </div>
     ${PHASES.map(phase => renderPhase(phase)).join('')}
   `;
-}
+    }
 
-function renderPhase(phase) {
-  const phaseTotal = phase.topics.reduce((a, t) => a + t.items.length, 0);
-  const phaseDone = phase.topics.reduce((a, t, ti) => {
-    return a + t.items.filter((_, ii) => isChecked(phase.id, ti, ii)).length;
-  }, 0);
+    function renderPhase(phase) {
+        const phaseTotal = phase.topics.reduce((a, t) => a + t.items.length, 0);
+        const phaseDone = phase.topics.reduce((a, t, ti) => {
+            return a + t.items.filter((_, ii) => isChecked(phase.id, ti, ii)).length;
+        }, 0);
 
-  return `
+        return `
     <div class="phase ${phase.id}">
       <div class="phase-header">
         <div class="phase-num">${phase.phase}</div>
@@ -897,14 +1487,14 @@ function renderPhase(phase) {
       </div>
     </div>
   `;
-}
+    }
 
-function renderTopic(phase, topic, topicIdx) {
-  const topicDone = topic.items.filter((_, ii) => isChecked(phase.id, topicIdx, ii)).length;
-  const topicTotal = topic.items.length;
-  const groupId = `group-${phase.id}-${topicIdx}`;
+    function renderTopic(phase, topic, topicIdx) {
+        const topicDone = topic.items.filter((_, ii) => isChecked(phase.id, topicIdx, ii)).length;
+        const topicTotal = topic.items.length;
+        const groupId = `group-${phase.id}-${topicIdx}`;
 
-  return `
+        return `
     <div class="topic-group" id="${groupId}">
       <div class="group-header" onclick="toggleGroup('${groupId}')">
         <span class="group-icon">${topic.icon}</span>
@@ -918,11 +1508,11 @@ function renderTopic(phase, topic, topicIdx) {
       </div>
     </div>
   `;
-}
+    }
 
-function renderItem(phase, topicIdx, item, itemIdx) {
-  const done = isChecked(phase.id, topicIdx, itemIdx);
-  return `
+    function renderItem(phase, topicIdx, item, itemIdx) {
+        const done = isChecked(phase.id, topicIdx, itemIdx);
+        return `
     <div class="checklist-item ${done ? 'done' : ''}"
          onclick="toggleItem('${phase.id}', ${topicIdx}, ${itemIdx})">
       <div class="check-box"></div>
@@ -935,22 +1525,22 @@ function renderItem(phase, topicIdx, item, itemIdx) {
       </div>
     </div>
   `;
-}
+    }
 
-function toggleGroup(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle('open');
-}
+    function toggleGroup(id) {
+        const el = document.getElementById(id);
+        el.classList.toggle('open');
+    }
 
-render();
+    render();
 
-// Auto-open first topic of each phase
-setTimeout(() => {
-  PHASES.forEach((p, pi) => {
-    const el = document.getElementById(`group-${p.id}-0`);
-    if (el && pi === 0) el.classList.add('open');
-  });
-}, 100);
+    // Auto-open first topic of each phase
+    setTimeout(() => {
+        PHASES.forEach((p, pi) => {
+            const el = document.getElementById(`group-${p.id}-0`);
+            if (el && pi === 0) el.classList.add('open');
+        });
+    }, 100);
 </script>
 </body>
 </html>

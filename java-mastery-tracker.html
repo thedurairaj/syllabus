@@ -1,1219 +1,1599 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Java Mastery Tracker</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap');
-
-  :root {
-    --bg:        #0a0c0f;
-    --surface:   #111318;
-    --surface2:  #181c23;
-    --border:    #1e242f;
-    --accent:    #f97316;
-    --accent2:   #fb923c;
-    --green:     #22c55e;
-    --red:       #ef4444;
-    --muted:     #4b5563;
-    --text:      #e2e8f0;
-    --textdim:   #94a3b8;
-    --mono:      'JetBrains Mono', monospace;
-    --sans:      'Syne', sans-serif;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ── NOISE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ── HEADER ── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,12,15,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logo {
-    font-family: var(--sans);
-    font-weight: 800;
-    font-size: 1.1rem;
-    letter-spacing: -0.02em;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-
-  .logo-badge {
-    background: var(--accent);
-    color: #000;
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 3px;
-    letter-spacing: 0.08em;
-    font-family: var(--mono);
-  }
-
-  .header-meta {
-    font-size: 0.72rem;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  .live-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--green);
-    display: inline-block;
-    box-shadow: 0 0 8px var(--green);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%,100% { opacity:1; transform: scale(1); }
-    50% { opacity:0.5; transform: scale(0.85); }
-  }
-
-  /* ── LAYOUT ── */
-  .wrapper {
-    position: relative;
-    z-index: 1;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem 2rem 4rem;
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 1.5rem;
-    align-items: start;
-  }
-
-  /* ── SIDEBAR ── */
-  .sidebar {
-    position: sticky;
-    top: 80px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  /* ── STAT CARD ── */
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.4rem 1.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), transparent);
-  }
-
-  .stat-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
-  }
-
-  .stat-value {
-    font-family: var(--sans);
-    font-size: 2.4rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    line-height: 1;
-  }
-
-  .stat-value span { color: var(--accent); }
-
-  .stat-sub {
-    font-size: 0.7rem;
-    color: var(--muted);
-    margin-top: 0.4rem;
-  }
-
-  /* ── PROGRESS CARD ── */
-  .progress-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.4rem 1.5rem;
-  }
-
-  .progress-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-
-  .progress-title {
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .progress-pct {
-    font-family: var(--sans);
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: var(--accent);
-  }
-
-  .progress-track {
-    height: 6px;
-    background: var(--border);
-    border-radius: 99px;
-    overflow: hidden;
-    margin-bottom: 0.8rem;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 99px;
-    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
-    box-shadow: 0 0 12px rgba(249,115,22,0.4);
-  }
-
-  .phase-bars { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.8rem; }
-
-  .phase-row { display: flex; flex-direction: column; gap: 0.25rem; }
-
-  .phase-meta { display: flex; justify-content: space-between; }
-
-  .phase-name { font-size: 0.65rem; color: var(--textdim); }
-  .phase-stat { font-size: 0.65rem; color: var(--muted); }
-
-  .phase-track { height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .phase-fill  { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
-  .p1 { background: #6366f1; }
-  .p2 { background: #0ea5e9; }
-  .p3 { background: #22c55e; }
-  .p4 { background: #f97316; }
-
-  /* ── TODAY'S TASK CARD ── */
-  .today-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .today-header {
-    background: var(--accent);
-    color: #000;
-    padding: 0.6rem 1.2rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .today-body { padding: 1.2rem; }
-
-  .today-day {
-    font-family: var(--sans);
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 0.3rem;
-    letter-spacing: 0.05em;
-  }
-
-  .today-topic {
-    font-family: var(--sans);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-    line-height: 1.3;
-  }
-
-  .today-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-
-  .tag {
-    font-size: 0.6rem;
-    padding: 2px 8px;
-    border-radius: 3px;
-    letter-spacing: 0.06em;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-
-  .tag-theory  { background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); }
-  .tag-code    { background: rgba(34,197,94,0.12);  color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
-  .tag-problem { background: rgba(249,115,22,0.12); color: #fb923c; border: 1px solid rgba(249,115,22,0.25); }
-
-  .mark-done-btn {
-    margin-top: 1rem;
-    width: 100%;
-    padding: 0.65rem;
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 600;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .mark-done-btn:hover { background: var(--accent); color: #000; }
-  .mark-done-btn.done  { background: var(--green); border-color: var(--green); color: #000; }
-
-  /* ── RESET BTN ── */
-  .reset-btn {
-    width: 100%;
-    padding: 0.5rem;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .reset-btn:hover { border-color: var(--red); color: var(--red); }
-
-  /* ── MAIN PANEL ── */
-  .main-panel { display: flex; flex-direction: column; gap: 1.5rem; }
-
-  /* ── FILTER BAR ── */
-  .filter-bar {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .filter-btn {
-    padding: 0.35rem 0.9rem;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--muted);
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .filter-btn:hover, .filter-btn.active {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(249,115,22,0.08);
-  }
-
-  .search-box {
-    margin-left: auto;
-    padding: 0.35rem 0.9rem;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 200px;
-  }
-
-  .search-box::placeholder { color: var(--muted); }
-  .search-box:focus { border-color: var(--accent); }
-
-  /* ── PHASE SECTION ── */
-  .phase-section { }
-
-  .phase-label {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .phase-tag {
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 3px;
-  }
-
-  .ph1 { background: rgba(99,102,241,0.15); color: #818cf8; }
-  .ph2 { background: rgba(14,165,233,0.15); color: #38bdf8; }
-  .ph3 { background: rgba(34,197,94,0.12);  color: #4ade80; }
-  .ph4 { background: rgba(249,115,22,0.12); color: #fb923c; }
-
-  .phase-divider {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .phase-count {
-    font-size: 0.65rem;
-    color: var(--muted);
-  }
-
-  /* ── DAY GRID ── */
-  .day-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.6rem;
-  }
-
-  /* ── DAY CARD ── */
-  .day-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.9rem 1rem;
-    cursor: pointer;
-    transition: all 0.18s;
-    position: relative;
-    overflow: hidden;
-    user-select: none;
-  }
-
-  .day-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(249,115,22,0.04), transparent);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .day-card:hover { border-color: var(--accent); transform: translateY(-1px); }
-  .day-card:hover::after { opacity: 1; }
-
-  .day-card.completed {
-    border-color: rgba(34,197,94,0.4);
-    background: rgba(34,197,94,0.04);
-  }
-
-  .day-card.completed::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--green);
-  }
-
-  .day-card.today-highlight {
-    border-color: var(--accent);
-    background: rgba(249,115,22,0.05);
-  }
-
-  .day-card.today-highlight::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent);
-  }
-
-  .day-card.hidden { display: none; }
-
-  .dc-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.5rem;
-  }
-
-  .dc-num {
-    font-family: var(--sans);
-    font-size: 0.7rem;
-    font-weight: 800;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  .day-card.completed  .dc-num { color: var(--green); }
-  .day-card.today-highlight .dc-num { color: var(--accent); }
-
-  .dc-check {
-    width: 18px; height: 18px;
-    border: 1.5px solid var(--border);
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-
-  .day-card.completed .dc-check {
-    background: var(--green);
-    border-color: var(--green);
-  }
-
-  .dc-check svg { display: none; }
-  .day-card.completed .dc-check svg { display: block; }
-
-  .dc-topic {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--textdim);
-    line-height: 1.4;
-    margin-bottom: 0.5rem;
-  }
-
-  .day-card.completed .dc-topic { color: var(--text); }
-
-  .dc-pills { display: flex; gap: 0.3rem; flex-wrap: wrap; }
-
-  .dc-pill {
-    font-size: 0.55rem;
-    padding: 1px 6px;
-    border-radius: 2px;
-    letter-spacing: 0.05em;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-
-  /* ── COMPLETION RING ── */
-  .ring-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem 0;
-  }
-
-  .ring-svg { transform: rotate(-90deg); }
-
-  .ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
-
-  .ring-fg {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 8;
-    stroke-linecap: round;
-    stroke-dasharray: 251.2;
-    transition: stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1);
-    filter: drop-shadow(0 0 6px rgba(249,115,22,0.5));
-  }
-
-  .ring-text {
-    font-family: var(--sans);
-    font-size: 1.1rem;
-    font-weight: 800;
-    fill: var(--text);
-    dominant-baseline: middle;
-    text-anchor: middle;
-  }
-
-  .ring-sub {
-    font-size: 0.55rem;
-    fill: var(--muted);
-    dominant-baseline: middle;
-    text-anchor: middle;
-    font-family: var(--mono);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  /* ── STREAK CARD ── */
-  .streak-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.2rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .streak-icon {
-    font-size: 1.8rem;
-    line-height: 1;
-  }
-
-  .streak-info { flex: 1; }
-  .streak-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-
-  .streak-val {
-    font-family: var(--sans);
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .streak-sub { font-size: 0.65rem; color: var(--muted); margin-top: 0.1rem; }
-
-  /* ── MODAL ── */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(4px);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s;
-  }
-
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-
-  .modal {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    width: 90%;
-    max-width: 560px;
-    max-height: 80vh;
-    overflow-y: auto;
-    transform: translateY(16px);
-    transition: transform 0.25s;
-  }
-
-  .modal-overlay.open .modal { transform: translateY(0); }
-
-  .modal-head {
-    padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    background: var(--surface2);
-  }
-
-  .modal-title {
-    font-family: var(--sans);
-    font-size: 1rem;
-    font-weight: 800;
-    color: var(--text);
-  }
-
-  .modal-close {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    width: 28px; height: 28px;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-  }
-
-  .modal-close:hover { border-color: var(--red); color: var(--red); }
-
-  .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-
-  .modal-section { }
-
-  .modal-section-title {
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.4rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .modal-topic {
-    font-family: var(--sans);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.8rem;
-  }
-
-  .checklist { display: flex; flex-direction: column; gap: 0.4rem; }
-
-  .check-item {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 0.75rem;
-    color: var(--textdim);
-    cursor: pointer;
-    padding: 0.3rem 0;
-    transition: color 0.15s;
-  }
-
-  .check-item:hover { color: var(--text); }
-
-  .check-item input { display: none; }
-
-  .check-box {
-    width: 16px; height: 16px;
-    border: 1.5px solid var(--border);
-    border-radius: 3px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-  }
-
-  .check-item.checked .check-box {
-    background: var(--green);
-    border-color: var(--green);
-  }
-
-  .check-item.checked .check-box::after {
-    content: '✓';
-    color: #000;
-    font-size: 0.65rem;
-    font-weight: 900;
-  }
-
-  .check-item.checked { color: var(--muted); text-decoration: line-through; }
-
-  .modal-actions {
-    display: flex;
-    gap: 0.6rem;
-    margin-top: 0.5rem;
-  }
-
-  .btn-complete {
-    flex: 1;
-    padding: 0.7rem;
-    border-radius: 5px;
-    border: none;
-    background: var(--green);
-    color: #000;
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-
-  .btn-complete:hover { opacity: 0.85; }
-
-  .btn-undo {
-    padding: 0.7rem 1rem;
-    border-radius: 5px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--muted);
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-undo:hover { border-color: var(--red); color: var(--red); }
-
-  /* ── MINI HEATMAP ── */
-  .heatmap-grid {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 3px;
-    margin-top: 0.5rem;
-  }
-
-  .hm-cell {
-    aspect-ratio: 1;
-    border-radius: 2px;
-    background: var(--border);
-    transition: background 0.2s;
-    cursor: pointer;
-    position: relative;
-  }
-
-  .hm-cell.done { background: var(--green); }
-  .hm-cell.today { background: var(--accent); box-shadow: 0 0 6px rgba(249,115,22,0.5); }
-  .hm-cell.future { opacity: 0.3; }
-
-  .hm-cell:hover::after {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: calc(100% + 5px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-size: 0.6rem;
-    padding: 3px 7px;
-    border-radius: 3px;
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 10;
-  }
-
-  /* ── CONFETTI ── */
-  .confetti-piece {
-    position: fixed;
-    width: 8px;
-    height: 8px;
-    border-radius: 2px;
-    pointer-events: none;
-    z-index: 999;
-    animation: confetti-fall 1.2s ease-out forwards;
-  }
-
-  @keyframes confetti-fall {
-    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
-  }
-
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.8rem 1.2rem;
-    font-size: 0.75rem;
-    color: var(--text);
-    z-index: 300;
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.3s;
-    pointer-events: none;
-    max-width: 280px;
-  }
-
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast-accent { border-left: 3px solid var(--accent); }
-  .toast-green  { border-left: 3px solid var(--green); }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    .wrapper { grid-template-columns: 1fr; }
-    .sidebar { position: static; }
-    .day-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-  }
-
-  @media (max-width: 480px) {
-    .wrapper { padding: 1rem; }
-    header { padding: 0 1rem; }
-    .day-grid { grid-template-columns: 1fr 1fr; }
-    .search-box { width: 140px; }
-  }
-</style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Java Mastery Tracker</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #0a0c0f;
+            --surface: #111318;
+            --surface2: #181c23;
+            --border: #1e242f;
+            --accent: #f97316;
+            --accent2: #fb923c;
+            --green: #22c55e;
+            --red: #ef4444;
+            --muted: #4b5563;
+            --text: #e2e8f0;
+            --textdim: #94a3b8;
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Syne', sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--mono);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── NOISE OVERLAY ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 12, 15, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: var(--sans);
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .logo-badge {
+            background: var(--accent);
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 3px;
+            letter-spacing: 0.08em;
+            font-family: var(--mono);
+        }
+
+        .header-meta {
+            font-size: 0.72rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            display: inline-block;
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(0.85);
+            }
+        }
+
+        /* ── LAYOUT ── */
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* ── STAT CARD ── */
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.4rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-value {
+            font-family: var(--sans);
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .stat-value span {
+            color: var(--accent);
+        }
+
+        .stat-sub {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 0.4rem;
+        }
+
+        /* ── PROGRESS CARD ── */
+        .progress-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.4rem 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .progress-title {
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .progress-pct {
+            font-family: var(--sans);
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .progress-track {
+            height: 6px;
+            background: var(--border);
+            border-radius: 99px;
+            overflow: hidden;
+            margin-bottom: 0.8rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border-radius: 99px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 12px rgba(249, 115, 22, 0.4);
+        }
+
+        .phase-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .phase-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .phase-meta {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .phase-name {
+            font-size: 0.65rem;
+            color: var(--textdim);
+        }
+
+        .phase-stat {
+            font-size: 0.65rem;
+            color: var(--muted);
+        }
+
+        .phase-track {
+            height: 3px;
+            background: var(--border);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .phase-fill {
+            height: 100%;
+            border-radius: 99px;
+            transition: width 0.5s ease;
+        }
+
+        .p1 {
+            background: #6366f1;
+        }
+
+        .p2 {
+            background: #0ea5e9;
+        }
+
+        .p3 {
+            background: #22c55e;
+        }
+
+        .p4 {
+            background: #f97316;
+        }
+
+        /* ── TODAY'S TASK CARD ── */
+        .today-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .today-header {
+            background: var(--accent);
+            color: #000;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .today-body {
+            padding: 1.2rem;
+        }
+
+        .today-day {
+            font-family: var(--sans);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.05em;
+        }
+
+        .today-topic {
+            font-family: var(--sans);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .today-tags {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            border-radius: 3px;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tag-theory {
+            background: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .tag-code {
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .tag-problem {
+            background: rgba(249, 115, 22, 0.12);
+            color: #fb923c;
+            border: 1px solid rgba(249, 115, 22, 0.25);
+        }
+
+        .mark-done-btn {
+            margin-top: 1rem;
+            width: 100%;
+            padding: 0.65rem;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mark-done-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .mark-done-btn.done {
+            background: var(--green);
+            border-color: var(--green);
+            color: #000;
+        }
+
+        /* ── RESET BTN ── */
+        .reset-btn {
+            width: 100%;
+            padding: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reset-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        /* ── MAIN PANEL ── */
+        .main-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* ── FILTER BAR ── */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 0.35rem 0.9rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(249, 115, 22, 0.08);
+        }
+
+        .search-box {
+            margin-left: auto;
+            padding: 0.35rem 0.9rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 200px;
+        }
+
+        .search-box::placeholder {
+            color: var(--muted);
+        }
+
+        .search-box:focus {
+            border-color: var(--accent);
+        }
+
+        /* ── PHASE SECTION ── */
+        .phase-section {
+        }
+
+        .phase-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .phase-tag {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 3px;
+        }
+
+        .ph1 {
+            background: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+        }
+
+        .ph2 {
+            background: rgba(14, 165, 233, 0.15);
+            color: #38bdf8;
+        }
+
+        .ph3 {
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ade80;
+        }
+
+        .ph4 {
+            background: rgba(249, 115, 22, 0.12);
+            color: #fb923c;
+        }
+
+        .phase-divider {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .phase-count {
+            font-size: 0.65rem;
+            color: var(--muted);
+        }
+
+        /* ── DAY GRID ── */
+        .day-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.6rem;
+        }
+
+        /* ── DAY CARD ── */
+        .day-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.9rem 1rem;
+            cursor: pointer;
+            transition: all 0.18s;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .day-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.04), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .day-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .day-card:hover::after {
+            opacity: 1;
+        }
+
+        .day-card.completed {
+            border-color: rgba(34, 197, 94, 0.4);
+            background: rgba(34, 197, 94, 0.04);
+        }
+
+        .day-card.completed::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--green);
+        }
+
+        .day-card.today-highlight {
+            border-color: var(--accent);
+            background: rgba(249, 115, 22, 0.05);
+        }
+
+        .day-card.today-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .day-card.hidden {
+            display: none;
+        }
+
+        .dc-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .dc-num {
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        .day-card.completed .dc-num {
+            color: var(--green);
+        }
+
+        .day-card.today-highlight .dc-num {
+            color: var(--accent);
+        }
+
+        .dc-check {
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--border);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .day-card.completed .dc-check {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .dc-check svg {
+            display: none;
+        }
+
+        .day-card.completed .dc-check svg {
+            display: block;
+        }
+
+        .dc-topic {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--textdim);
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+
+        .day-card.completed .dc-topic {
+            color: var(--text);
+        }
+
+        .dc-pills {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .dc-pill {
+            font-size: 0.55rem;
+            padding: 1px 6px;
+            border-radius: 2px;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* ── COMPLETION RING ── */
+        .ring-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+
+        .ring-svg {
+            transform: rotate(-90deg);
+        }
+
+        .ring-bg {
+            fill: none;
+            stroke: var(--border);
+            stroke-width: 8;
+        }
+
+        .ring-fg {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 251.2;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.5));
+        }
+
+        .ring-text {
+            font-family: var(--sans);
+            font-size: 1.1rem;
+            font-weight: 800;
+            fill: var(--text);
+            dominant-baseline: middle;
+            text-anchor: middle;
+        }
+
+        .ring-sub {
+            font-size: 0.55rem;
+            fill: var(--muted);
+            dominant-baseline: middle;
+            text-anchor: middle;
+            font-family: var(--mono);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* ── STREAK CARD ── */
+        .streak-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .streak-icon {
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .streak-info {
+            flex: 1;
+        }
+
+        .streak-label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+        }
+
+        .streak-val {
+            font-family: var(--sans);
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .streak-sub {
+            font-size: 0.65rem;
+            color: var(--muted);
+            margin-top: 0.1rem;
+        }
+
+        /* ── MODAL ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 560px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: translateY(16px);
+            transition: transform 0.25s;
+        }
+
+        .modal-overlay.open .modal {
+            transform: translateY(0);
+        }
+
+        .modal-head {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--surface2);
+        }
+
+        .modal-title {
+            font-family: var(--sans);
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .modal-close {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .modal-close:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-section {
+        }
+
+        .modal-section-title {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-topic {
+            font-family: var(--sans);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.8rem;
+        }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.75rem;
+            color: var(--textdim);
+            cursor: pointer;
+            padding: 0.3rem 0;
+            transition: color 0.15s;
+        }
+
+        .check-item:hover {
+            color: var(--text);
+        }
+
+        .check-item input {
+            display: none;
+        }
+
+        .check-box {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 3px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .check-item.checked .check-box {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .check-item.checked .check-box::after {
+            content: '✓';
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 900;
+        }
+
+        .check-item.checked {
+            color: var(--muted);
+            text-decoration: line-through;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-complete {
+            flex: 1;
+            padding: 0.7rem;
+            border-radius: 5px;
+            border: none;
+            background: var(--green);
+            color: #000;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-complete:hover {
+            opacity: 0.85;
+        }
+
+        .btn-undo {
+            padding: 0.7rem 1rem;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-undo:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        /* ── MINI HEATMAP ── */
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 3px;
+            margin-top: 0.5rem;
+        }
+
+        .hm-cell {
+            aspect-ratio: 1;
+            border-radius: 2px;
+            background: var(--border);
+            transition: background 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .hm-cell.done {
+            background: var(--green);
+        }
+
+        .hm-cell.today {
+            background: var(--accent);
+            box-shadow: 0 0 6px rgba(249, 115, 22, 0.5);
+        }
+
+        .hm-cell.future {
+            opacity: 0.3;
+        }
+
+        .hm-cell:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: calc(100% + 5px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 0.6rem;
+            padding: 3px 7px;
+            border-radius: 3px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* ── CONFETTI ── */
+        .confetti-piece {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 999;
+            animation: confetti-fall 1.2s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(400px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.8rem 1.2rem;
+            font-size: 0.75rem;
+            color: var(--text);
+            z-index: 300;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            max-width: 280px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-accent {
+            border-left: 3px solid var(--accent);
+        }
+
+        .toast-green {
+            border-left: 3px solid var(--green);
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 99px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--muted);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .day-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .wrapper {
+                padding: 1rem;
+            }
+
+            header {
+                padding: 0 1rem;
+            }
+
+            .day-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-box {
+                width: 140px;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header>
-  <div class="logo">
-    <span>Java Mastery</span>
-    <span class="logo-badge">TRACKER</span>
-  </div>
-  <div class="header-meta">
-    <span><span class="live-dot"></span> &nbsp;Active</span>
-    <span id="hdr-date" style="display:none;"></span>
-  </div>
+    <div class="logo">
+        <span>Java Mastery</span>
+        <span class="logo-badge">TRACKER</span>
+    </div>
+    <div class="header-meta">
+        <span><span class="live-dot"></span> &nbsp;Active</span>
+        <span id="hdr-date" style="display:none;"></span>
+    </div>
 </header>
 
 <!-- MAIN LAYOUT -->
 <div class="wrapper">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-    <!-- Ring + stats -->
-    <div class="stat-card">
-      <div class="stat-label">Overall Progress</div>
-      <div class="ring-wrap">
-        <svg class="ring-svg" width="110" height="110" viewBox="0 0 110 110">
-          <circle class="ring-bg" cx="55" cy="55" r="40"/>
-          <circle class="ring-fg" id="ring-fg" cx="55" cy="55" r="40" stroke-dashoffset="251.2"/>
-          <text class="ring-text" x="55" y="52" id="ring-pct-text">0%</text>
-          <text class="ring-sub" x="55" y="66">complete</text>
-        </svg>
-      </div>
-      <div style="display:flex; gap:0.8rem; justify-content:center; margin-top:0.2rem;">
-        <div style="text-align:center;">
-          <div class="stat-label">Done</div>
-          <div style="font-family:var(--sans);font-weight:800;font-size:1.2rem;color:var(--green);" id="count-done">0</div>
+        <!-- Ring + stats -->
+        <div class="stat-card">
+            <div class="stat-label">Overall Progress</div>
+            <div class="ring-wrap">
+                <svg class="ring-svg" width="110" height="110" viewBox="0 0 110 110">
+                    <circle class="ring-bg" cx="55" cy="55" r="40"/>
+                    <circle class="ring-fg" id="ring-fg" cx="55" cy="55" r="40" stroke-dashoffset="251.2"/>
+                    <text class="ring-text" x="55" y="52" id="ring-pct-text">0%</text>
+                    <text class="ring-sub" x="55" y="66">complete</text>
+                </svg>
+            </div>
+            <div style="display:flex; gap:0.8rem; justify-content:center; margin-top:0.2rem;">
+                <div style="text-align:center;">
+                    <div class="stat-label">Done</div>
+                    <div style="font-family:var(--sans);font-weight:800;font-size:1.2rem;color:var(--green);"
+                         id="count-done">0
+                    </div>
+                </div>
+                <div style="width:1px;background:var(--border);"></div>
+                <div style="text-align:center;">
+                    <div class="stat-label">Left</div>
+                    <div style="font-family:var(--sans);font-weight:800;font-size:1.2rem;color:var(--muted);"
+                         id="count-left">90
+                    </div>
+                </div>
+                <div style="width:1px;background:var(--border);"></div>
+                <div style="text-align:center;">
+                    <div class="stat-label">Today</div>
+                    <div style="font-family:var(--sans);font-weight:800;font-size:1.2rem;color:var(--accent);"
+                         id="count-today">—
+                    </div>
+                </div>
+            </div>
         </div>
-        <div style="width:1px;background:var(--border);"></div>
-        <div style="text-align:center;">
-          <div class="stat-label">Left</div>
-          <div style="font-family:var(--sans);font-weight:800;font-size:1.2rem;color:var(--muted);" id="count-left">90</div>
+
+        <!-- Streak -->
+        <div class="streak-card">
+            <div class="streak-icon">🔥</div>
+            <div class="streak-info">
+                <div class="streak-label">Current Streak</div>
+                <div class="streak-val" id="streak-val">0</div>
+                <div class="streak-sub">consecutive days</div>
+            </div>
+            <div style="text-align:right;">
+                <div class="streak-label">Best</div>
+                <div style="font-family:var(--sans);font-weight:700;font-size:1rem;color:var(--textdim);"
+                     id="best-streak">0
+                </div>
+            </div>
         </div>
-        <div style="width:1px;background:var(--border);"></div>
-        <div style="text-align:center;">
-          <div class="stat-label">Today</div>
-          <div style="font-family:var(--sans);font-weight:800;font-size:1.2rem;color:var(--accent);" id="count-today">—</div>
+
+        <!-- Phase Progress -->
+        <div class="progress-card">
+            <div class="progress-header">
+                <span class="progress-title">Phase Progress</span>
+                <span class="progress-pct" id="prog-pct">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+            </div>
+            <div class="phase-bars" id="phase-bars"></div>
         </div>
-      </div>
-    </div>
 
-    <!-- Streak -->
-    <div class="streak-card">
-      <div class="streak-icon">🔥</div>
-      <div class="streak-info">
-        <div class="streak-label">Current Streak</div>
-        <div class="streak-val" id="streak-val">0</div>
-        <div class="streak-sub">consecutive days</div>
-      </div>
-      <div style="text-align:right;">
-        <div class="streak-label">Best</div>
-        <div style="font-family:var(--sans);font-weight:700;font-size:1rem;color:var(--textdim);" id="best-streak">0</div>
-      </div>
-    </div>
+        <!-- Today's Task -->
+        <div class="today-card" id="today-card">
+            <div class="today-header">
+                <span>📌 Today's Mission</span>
+                <span id="today-day-num" style="font-size:0.65rem;"></span>
+            </div>
+            <div class="today-body">
+                <div class="today-day" id="today-day-label">—</div>
+                <div class="today-topic" id="today-topic">No active day found</div>
+                <div class="today-tags" id="today-tags"></div>
+                <button class="mark-done-btn" id="mark-done-btn" onclick="markTodayDone()">✓ Mark Complete</button>
+            </div>
+        </div>
 
-    <!-- Phase Progress -->
-    <div class="progress-card">
-      <div class="progress-header">
-        <span class="progress-title">Phase Progress</span>
-        <span class="progress-pct" id="prog-pct">0%</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
-      </div>
-      <div class="phase-bars" id="phase-bars"></div>
-    </div>
+        <!-- Reset -->
+        <button class="reset-btn" onclick="confirmReset()">⚠ Reset All Progress</button>
 
-    <!-- Today's Task -->
-    <div class="today-card" id="today-card">
-      <div class="today-header">
-        <span>📌 Today's Mission</span>
-        <span id="today-day-num" style="font-size:0.65rem;"></span>
-      </div>
-      <div class="today-body">
-        <div class="today-day" id="today-day-label">—</div>
-        <div class="today-topic" id="today-topic">No active day found</div>
-        <div class="today-tags" id="today-tags"></div>
-        <button class="mark-done-btn" id="mark-done-btn" onclick="markTodayDone()">✓ Mark Complete</button>
-      </div>
-    </div>
+    </aside>
 
-    <!-- Reset -->
-    <button class="reset-btn" onclick="confirmReset()">⚠ Reset All Progress</button>
+    <!-- MAIN PANEL -->
+    <main class="main-panel">
 
-  </aside>
+        <!-- Heatmap -->
+        <div class="stat-card" style="padding:1.2rem 1.5rem;">
+            <div class="stat-label" style="margin-bottom:0.7rem;">Completion Heatmap — 90 Days</div>
+            <div class="heatmap-grid" id="heatmap"></div>
+        </div>
 
-  <!-- MAIN PANEL -->
-  <main class="main-panel">
+        <!-- Filter -->
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
+            <button class="filter-btn" data-filter="done" onclick="setFilter('done',this)">✓ Done</button>
+            <button class="filter-btn" data-filter="pending" onclick="setFilter('pending',this)">◌ Pending</button>
+            <button class="filter-btn" data-filter="today" onclick="setFilter('today',this)">Today</button>
+            <button class="filter-btn" data-filter="p1" onclick="setFilter('p1',this)">Phase 1</button>
+            <button class="filter-btn" data-filter="p2" onclick="setFilter('p2',this)">Phase 2</button>
+            <button class="filter-btn" data-filter="p3" onclick="setFilter('p3',this)">Phase 3</button>
+            <button class="filter-btn" data-filter="p4" onclick="setFilter('p4',this)">Phase 4</button>
+            <input class="search-box" id="search-box" placeholder="Search topic..." oninput="applyFilter()"/>
+        </div>
 
-    <!-- Heatmap -->
-    <div class="stat-card" style="padding:1.2rem 1.5rem;">
-      <div class="stat-label" style="margin-bottom:0.7rem;">Completion Heatmap — 90 Days</div>
-      <div class="heatmap-grid" id="heatmap"></div>
-    </div>
+        <!-- Day Grid (phases) -->
+        <div id="phase-sections"></div>
 
-    <!-- Filter -->
-    <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
-      <button class="filter-btn" data-filter="done" onclick="setFilter('done',this)">✓ Done</button>
-      <button class="filter-btn" data-filter="pending" onclick="setFilter('pending',this)">◌ Pending</button>
-      <button class="filter-btn" data-filter="today" onclick="setFilter('today',this)">Today</button>
-      <button class="filter-btn" data-filter="p1" onclick="setFilter('p1',this)">Phase 1</button>
-      <button class="filter-btn" data-filter="p2" onclick="setFilter('p2',this)">Phase 2</button>
-      <button class="filter-btn" data-filter="p3" onclick="setFilter('p3',this)">Phase 3</button>
-      <button class="filter-btn" data-filter="p4" onclick="setFilter('p4',this)">Phase 4</button>
-      <input class="search-box" id="search-box" placeholder="Search topic..." oninput="applyFilter()" />
-    </div>
-
-    <!-- Day Grid (phases) -->
-    <div id="phase-sections"></div>
-
-  </main>
+    </main>
 </div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
-  <div class="modal" id="modal">
-    <div class="modal-head">
-      <div class="modal-title" id="modal-title">Day Detail</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal" id="modal">
+        <div class="modal-head">
+            <div class="modal-title" id="modal-title">Day Detail</div>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body" id="modal-body"></div>
     </div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
 </div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════════════
-//  DATA — 90 Day Java Mastery Curriculum
-// ══════════════════════════════════════════════════════
-const PHASES = [
-  {
-    id: 'p1',
-    name: 'Phase 1 — Java Foundations',
-    cls: 'ph1',
-    fillCls: 'p1',
-    days: [1,30]
-  },
-  {
-    id: 'p2',
-    name: 'Phase 2 — OOP & Core APIs',
-    cls: 'ph2',
-    fillCls: 'p2',
-    days: [31,55]
-  },
-  {
-    id: 'p3',
-    name: 'Phase 3 — Advanced Java',
-    cls: 'ph3',
-    fillCls: 'p3',
-    days: [56,75]
-  },
-  {
-    id: 'p4',
-    name: 'Phase 4 — Backend & Systems',
-    cls: 'ph4',
-    fillCls: 'p4',
-    days: [76,90]
-  }
-];
+    // ══════════════════════════════════════════════════════
+    //  DATA — 90 Day Java Mastery Curriculum
+    // ══════════════════════════════════════════════════════
+    const PHASES = [
+        {
+            id: 'p1',
+            name: 'Phase 1 — Java Foundations',
+            cls: 'ph1',
+            fillCls: 'p1',
+            days: [1, 30]
+        },
+        {
+            id: 'p2',
+            name: 'Phase 2 — OOP & Core APIs',
+            cls: 'ph2',
+            fillCls: 'p2',
+            days: [31, 55]
+        },
+        {
+            id: 'p3',
+            name: 'Phase 3 — Advanced Java',
+            cls: 'ph3',
+            fillCls: 'p3',
+            days: [56, 75]
+        },
+        {
+            id: 'p4',
+            name: 'Phase 4 — Backend & Systems',
+            cls: 'ph4',
+            fillCls: 'p4',
+            days: [76, 90]
+        }
+    ];
 
-const CURRICULUM = [
-  // ── PHASE 1: FOUNDATIONS (Days 1–30) ──
-  { day:1,  topic:'Java Environment Setup & First Program',       phase:'p1', tags:['setup','theory','code'] },
-  { day:2,  topic:'Data Types, Variables & Type Casting',         phase:'p1', tags:['theory','code','problem'] },
-  { day:3,  topic:'Operators: Arithmetic, Relational & Logical',  phase:'p1', tags:['theory','problem'] },
-  { day:4,  topic:'Control Flow — if/else, switch Statements',    phase:'p1', tags:['theory','code','problem'] },
-  { day:5,  topic:'Loops — for, while, do-while & Nested Loops',  phase:'p1', tags:['theory','code','problem'] },
-  { day:6,  topic:'Arrays — 1D & 2D, Traversal & Manipulation',  phase:'p1', tags:['theory','code','problem'] },
-  { day:7,  topic:'Methods — Declaration, Parameters & Return',   phase:'p1', tags:['theory','code','problem'] },
-  { day:8,  topic:'Recursion — Base Cases & Call Stack',          phase:'p1', tags:['theory','code','challenge'] },
-  { day:9,  topic:'Strings — Immutability, StringBuilder, APIs',  phase:'p1', tags:['theory','code','problem'] },
-  { day:10, topic:'String Manipulation Problems & Algorithms',    phase:'p1', tags:['problem','challenge'] },
-  { day:11, topic:'Math Class & Number Formatting',               phase:'p1', tags:['theory','code'] },
-  { day:12, topic:'Scanner & Console I/O Patterns',               phase:'p1', tags:['code','problem'] },
-  { day:13, topic:'Varargs, Method Overloading & Signatures',     phase:'p1', tags:['theory','code'] },
-  { day:14, topic:'Bitwise Operators & Bit Manipulation',         phase:'p1', tags:['theory','problem','challenge'] },
-  { day:15, topic:'Revision Day — Week 1–2 Consolidated',         phase:'p1', tags:['revision'] },
-  { day:16, topic:'Classes & Objects — Blueprint & Instance',     phase:'p1', tags:['theory','code'] },
-  { day:17, topic:'Constructors — Default, Parameterized, Copy',  phase:'p1', tags:['theory','code','problem'] },
-  { day:18, topic:'this Keyword — References & Chaining',         phase:'p1', tags:['theory','code'] },
-  { day:19, topic:'static — Variables, Methods & Blocks',         phase:'p1', tags:['theory','code','problem'] },
-  { day:20, topic:'Access Modifiers & Encapsulation',             phase:'p1', tags:['theory','code','problem'] },
-  { day:21, topic:'Packages & Import Statements',                 phase:'p1', tags:['theory','code'] },
-  { day:22, topic:'Enums — Ordinal, Values & Methods',            phase:'p1', tags:['theory','code','problem'] },
-  { day:23, topic:'Records (Java 16+) — Immutable Data Classes',  phase:'p1', tags:['theory','code'] },
-  { day:24, topic:'Wrapper Classes — Autoboxing & Unboxing',      phase:'p1', tags:['theory','problem'] },
-  { day:25, topic:'Exception Handling — try/catch/finally',       phase:'p1', tags:['theory','code','problem'] },
-  { day:26, topic:'Custom Exceptions & Exception Hierarchy',      phase:'p1', tags:['theory','code','challenge'] },
-  { day:27, topic:'File I/O — FileReader, BufferedReader, Paths', phase:'p1', tags:['theory','code'] },
-  { day:28, topic:'Mini Project — Student Grade System',          phase:'p1', tags:['project','challenge'] },
-  { day:29, topic:'Mini Project — File-based Contact Book',       phase:'p1', tags:['project','challenge'] },
-  { day:30, topic:'Phase 1 Revision & Self-Assessment',           phase:'p1', tags:['revision','problem'] },
+    const CURRICULUM = [
+        // ── PHASE 1: FOUNDATIONS (Days 1–30) ──
+        {day: 1, topic: 'Java Environment Setup & First Program', phase: 'p1', tags: ['setup', 'theory', 'code']},
+        {day: 2, topic: 'Data Types, Variables & Type Casting', phase: 'p1', tags: ['theory', 'code', 'problem']},
+        {day: 3, topic: 'Operators: Arithmetic, Relational & Logical', phase: 'p1', tags: ['theory', 'problem']},
+        {day: 4, topic: 'Control Flow — if/else, switch Statements', phase: 'p1', tags: ['theory', 'code', 'problem']},
+        {
+            day: 5,
+            topic: 'Loops — for, while, do-while & Nested Loops',
+            phase: 'p1',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 6, topic: 'Arrays — 1D & 2D, Traversal & Manipulation', phase: 'p1', tags: ['theory', 'code', 'problem']},
+        {day: 7, topic: 'Methods — Declaration, Parameters & Return', phase: 'p1', tags: ['theory', 'code', 'problem']},
+        {day: 8, topic: 'Recursion — Base Cases & Call Stack', phase: 'p1', tags: ['theory', 'code', 'challenge']},
+        {
+            day: 9,
+            topic: 'Strings — Immutability, StringBuilder, APIs',
+            phase: 'p1',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 10, topic: 'String Manipulation Problems & Algorithms', phase: 'p1', tags: ['problem', 'challenge']},
+        {day: 11, topic: 'Math Class & Number Formatting', phase: 'p1', tags: ['theory', 'code']},
+        {day: 12, topic: 'Scanner & Console I/O Patterns', phase: 'p1', tags: ['code', 'problem']},
+        {day: 13, topic: 'Varargs, Method Overloading & Signatures', phase: 'p1', tags: ['theory', 'code']},
+        {day: 14, topic: 'Bitwise Operators & Bit Manipulation', phase: 'p1', tags: ['theory', 'problem', 'challenge']},
+        {day: 15, topic: 'Revision Day — Week 1–2 Consolidated', phase: 'p1', tags: ['revision']},
+        {day: 16, topic: 'Classes & Objects — Blueprint & Instance', phase: 'p1', tags: ['theory', 'code']},
+        {
+            day: 17,
+            topic: 'Constructors — Default, Parameterized, Copy',
+            phase: 'p1',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 18, topic: 'this Keyword — References & Chaining', phase: 'p1', tags: ['theory', 'code']},
+        {day: 19, topic: 'static — Variables, Methods & Blocks', phase: 'p1', tags: ['theory', 'code', 'problem']},
+        {day: 20, topic: 'Access Modifiers & Encapsulation', phase: 'p1', tags: ['theory', 'code', 'problem']},
+        {day: 21, topic: 'Packages & Import Statements', phase: 'p1', tags: ['theory', 'code']},
+        {day: 22, topic: 'Enums — Ordinal, Values & Methods', phase: 'p1', tags: ['theory', 'code', 'problem']},
+        {day: 23, topic: 'Records (Java 16+) — Immutable Data Classes', phase: 'p1', tags: ['theory', 'code']},
+        {day: 24, topic: 'Wrapper Classes — Autoboxing & Unboxing', phase: 'p1', tags: ['theory', 'problem']},
+        {day: 25, topic: 'Exception Handling — try/catch/finally', phase: 'p1', tags: ['theory', 'code', 'problem']},
+        {day: 26, topic: 'Custom Exceptions & Exception Hierarchy', phase: 'p1', tags: ['theory', 'code', 'challenge']},
+        {day: 27, topic: 'File I/O — FileReader, BufferedReader, Paths', phase: 'p1', tags: ['theory', 'code']},
+        {day: 28, topic: 'Mini Project — Student Grade System', phase: 'p1', tags: ['project', 'challenge']},
+        {day: 29, topic: 'Mini Project — File-based Contact Book', phase: 'p1', tags: ['project', 'challenge']},
+        {day: 30, topic: 'Phase 1 Revision & Self-Assessment', phase: 'p1', tags: ['revision', 'problem']},
 
-  // ── PHASE 2: OOP & CORE APIs (Days 31–55) ──
-  { day:31, topic:'Inheritance — extends, super, Method Override', phase:'p2', tags:['theory','code','problem'] },
-  { day:32, topic:'Abstract Classes vs Concrete Classes',          phase:'p2', tags:['theory','code'] },
-  { day:33, topic:'Interfaces — Default & Static Methods',         phase:'p2', tags:['theory','code','problem'] },
-  { day:34, topic:'Polymorphism — Runtime & Compile-time',         phase:'p2', tags:['theory','code','challenge'] },
-  { day:35, topic:'instanceof & Pattern Matching (Java 16+)',      phase:'p2', tags:['theory','code'] },
-  { day:36, topic:'Sealed Classes & Permits (Java 17)',            phase:'p2', tags:['theory','code'] },
-  { day:37, topic:'Collections — List, Set, Queue Overview',       phase:'p2', tags:['theory','code'] },
-  { day:38, topic:'ArrayList & LinkedList — Deep Dive',            phase:'p2', tags:['theory','code','problem'] },
-  { day:39, topic:'HashMap & LinkedHashMap — Internal Mechanics',  phase:'p2', tags:['theory','code','problem'] },
-  { day:40, topic:'HashSet & TreeSet — Unique Collections',        phase:'p2', tags:['theory','code','problem'] },
-  { day:41, topic:'Iterator & ListIterator — Traversal Patterns',  phase:'p2', tags:['theory','code'] },
-  { day:42, topic:'Comparable & Comparator — Custom Sorting',      phase:'p2', tags:['theory','code','challenge'] },
-  { day:43, topic:'Generics — Type Parameters, Bounds & Wildcards',phase:'p2', tags:['theory','code','problem'] },
-  { day:44, topic:'Collections Utility Class — sort, shuffle, min',phase:'p2', tags:['theory','code','problem'] },
-  { day:45, topic:'Stack, Queue, Deque — Interview Patterns',      phase:'p2', tags:['theory','code','problem'] },
-  { day:46, topic:'Revision — OOP & Collections Deep Dive',        phase:'p2', tags:['revision','problem'] },
-  { day:47, topic:'Functional Interfaces — Predicate, Function…',  phase:'p2', tags:['theory','code'] },
-  { day:48, topic:'Lambda Expressions — Syntax & Use Cases',       phase:'p2', tags:['theory','code','problem'] },
-  { day:49, topic:'Stream API — filter, map, reduce, collect',     phase:'p2', tags:['theory','code','challenge'] },
-  { day:50, topic:'Stream API — flatMap, groupingBy, partitioning',phase:'p2', tags:['theory','code','problem'] },
-  { day:51, topic:'Optional — Null Safety & Chaining',             phase:'p2', tags:['theory','code','problem'] },
-  { day:52, topic:'Method References — 4 Types & Use Cases',       phase:'p2', tags:['theory','code'] },
-  { day:53, topic:'Date & Time API — LocalDate, ZonedDateTime',    phase:'p2', tags:['theory','code','problem'] },
-  { day:54, topic:'Mini Project — Employee Payroll with Streams',  phase:'p2', tags:['project','challenge'] },
-  { day:55, topic:'Phase 2 Revision & Mock Assessment',            phase:'p2', tags:['revision','problem'] },
+        // ── PHASE 2: OOP & CORE APIs (Days 31–55) ──
+        {
+            day: 31,
+            topic: 'Inheritance — extends, super, Method Override',
+            phase: 'p2',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 32, topic: 'Abstract Classes vs Concrete Classes', phase: 'p2', tags: ['theory', 'code']},
+        {day: 33, topic: 'Interfaces — Default & Static Methods', phase: 'p2', tags: ['theory', 'code', 'problem']},
+        {day: 34, topic: 'Polymorphism — Runtime & Compile-time', phase: 'p2', tags: ['theory', 'code', 'challenge']},
+        {day: 35, topic: 'instanceof & Pattern Matching (Java 16+)', phase: 'p2', tags: ['theory', 'code']},
+        {day: 36, topic: 'Sealed Classes & Permits (Java 17)', phase: 'p2', tags: ['theory', 'code']},
+        {day: 37, topic: 'Collections — List, Set, Queue Overview', phase: 'p2', tags: ['theory', 'code']},
+        {day: 38, topic: 'ArrayList & LinkedList — Deep Dive', phase: 'p2', tags: ['theory', 'code', 'problem']},
+        {
+            day: 39,
+            topic: 'HashMap & LinkedHashMap — Internal Mechanics',
+            phase: 'p2',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 40, topic: 'HashSet & TreeSet — Unique Collections', phase: 'p2', tags: ['theory', 'code', 'problem']},
+        {day: 41, topic: 'Iterator & ListIterator — Traversal Patterns', phase: 'p2', tags: ['theory', 'code']},
+        {
+            day: 42,
+            topic: 'Comparable & Comparator — Custom Sorting',
+            phase: 'p2',
+            tags: ['theory', 'code', 'challenge']
+        },
+        {
+            day: 43,
+            topic: 'Generics — Type Parameters, Bounds & Wildcards',
+            phase: 'p2',
+            tags: ['theory', 'code', 'problem']
+        },
+        {
+            day: 44,
+            topic: 'Collections Utility Class — sort, shuffle, min',
+            phase: 'p2',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 45, topic: 'Stack, Queue, Deque — Interview Patterns', phase: 'p2', tags: ['theory', 'code', 'problem']},
+        {day: 46, topic: 'Revision — OOP & Collections Deep Dive', phase: 'p2', tags: ['revision', 'problem']},
+        {day: 47, topic: 'Functional Interfaces — Predicate, Function…', phase: 'p2', tags: ['theory', 'code']},
+        {day: 48, topic: 'Lambda Expressions — Syntax & Use Cases', phase: 'p2', tags: ['theory', 'code', 'problem']},
+        {
+            day: 49,
+            topic: 'Stream API — filter, map, reduce, collect',
+            phase: 'p2',
+            tags: ['theory', 'code', 'challenge']
+        },
+        {
+            day: 50,
+            topic: 'Stream API — flatMap, groupingBy, partitioning',
+            phase: 'p2',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 51, topic: 'Optional — Null Safety & Chaining', phase: 'p2', tags: ['theory', 'code', 'problem']},
+        {day: 52, topic: 'Method References — 4 Types & Use Cases', phase: 'p2', tags: ['theory', 'code']},
+        {
+            day: 53,
+            topic: 'Date & Time API — LocalDate, ZonedDateTime',
+            phase: 'p2',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 54, topic: 'Mini Project — Employee Payroll with Streams', phase: 'p2', tags: ['project', 'challenge']},
+        {day: 55, topic: 'Phase 2 Revision & Mock Assessment', phase: 'p2', tags: ['revision', 'problem']},
 
-  // ── PHASE 3: ADVANCED JAVA (Days 56–75) ──
-  { day:56, topic:'Threads — Creation, Lifecycle & States',       phase:'p3', tags:['theory','code'] },
-  { day:57, topic:'Synchronization — synchronized, volatile',     phase:'p3', tags:['theory','code','problem'] },
-  { day:58, topic:'Executors & Thread Pools — Best Practices',    phase:'p3', tags:['theory','code','challenge'] },
-  { day:59, topic:'CompletableFuture — Async Programming',        phase:'p3', tags:['theory','code','problem'] },
-  { day:60, topic:'Concurrent Collections — ConcurrentHashMap…',  phase:'p3', tags:['theory','code'] },
-  { day:61, topic:'Design Patterns — Singleton & Factory',        phase:'p3', tags:['theory','code','problem'] },
-  { day:62, topic:'Design Patterns — Builder, Prototype, Adapter',phase:'p3', tags:['theory','code','challenge'] },
-  { day:63, topic:'Design Patterns — Observer, Strategy, Facade', phase:'p3', tags:['theory','code','problem'] },
-  { day:64, topic:'SOLID Principles — S, O, L',                   phase:'p3', tags:['theory','code'] },
-  { day:65, topic:'SOLID Principles — I, D & Refactoring Lab',    phase:'p3', tags:['theory','code','challenge'] },
-  { day:66, topic:'JVM Internals — ClassLoader, JIT, GC Basics',  phase:'p3', tags:['theory'] },
-  { day:67, topic:'Memory Model — Stack, Heap, Metaspace',        phase:'p3', tags:['theory','problem'] },
-  { day:68, topic:'Garbage Collection — G1, ZGC, Tuning Flags',   phase:'p3', tags:['theory'] },
-  { day:69, topic:'Reflection API — Class, Method, Field',        phase:'p3', tags:['theory','code','problem'] },
-  { day:70, topic:'Annotations — Custom, Retention & Processing', phase:'p3', tags:['theory','code'] },
-  { day:71, topic:'Serialization — ObjectStream, JSON (manual)',  phase:'p3', tags:['theory','code','problem'] },
-  { day:72, topic:'Networking — Sockets, ServerSocket, HTTP',     phase:'p3', tags:['theory','code'] },
-  { day:73, topic:'Unit Testing — JUnit 5, Assertions, Lifecycle',phase:'p3', tags:['theory','code','problem'] },
-  { day:74, topic:'Mini Project — Multi-threaded File Downloader', phase:'p3', tags:['project','challenge'] },
-  { day:75, topic:'Phase 3 Revision — Advanced Java Assessment',  phase:'p3', tags:['revision','problem'] },
+        // ── PHASE 3: ADVANCED JAVA (Days 56–75) ──
+        {day: 56, topic: 'Threads — Creation, Lifecycle & States', phase: 'p3', tags: ['theory', 'code']},
+        {day: 57, topic: 'Synchronization — synchronized, volatile', phase: 'p3', tags: ['theory', 'code', 'problem']},
+        {
+            day: 58,
+            topic: 'Executors & Thread Pools — Best Practices',
+            phase: 'p3',
+            tags: ['theory', 'code', 'challenge']
+        },
+        {day: 59, topic: 'CompletableFuture — Async Programming', phase: 'p3', tags: ['theory', 'code', 'problem']},
+        {day: 60, topic: 'Concurrent Collections — ConcurrentHashMap…', phase: 'p3', tags: ['theory', 'code']},
+        {day: 61, topic: 'Design Patterns — Singleton & Factory', phase: 'p3', tags: ['theory', 'code', 'problem']},
+        {
+            day: 62,
+            topic: 'Design Patterns — Builder, Prototype, Adapter',
+            phase: 'p3',
+            tags: ['theory', 'code', 'challenge']
+        },
+        {
+            day: 63,
+            topic: 'Design Patterns — Observer, Strategy, Facade',
+            phase: 'p3',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 64, topic: 'SOLID Principles — S, O, L', phase: 'p3', tags: ['theory', 'code']},
+        {
+            day: 65,
+            topic: 'SOLID Principles — I, D & Refactoring Lab',
+            phase: 'p3',
+            tags: ['theory', 'code', 'challenge']
+        },
+        {day: 66, topic: 'JVM Internals — ClassLoader, JIT, GC Basics', phase: 'p3', tags: ['theory']},
+        {day: 67, topic: 'Memory Model — Stack, Heap, Metaspace', phase: 'p3', tags: ['theory', 'problem']},
+        {day: 68, topic: 'Garbage Collection — G1, ZGC, Tuning Flags', phase: 'p3', tags: ['theory']},
+        {day: 69, topic: 'Reflection API — Class, Method, Field', phase: 'p3', tags: ['theory', 'code', 'problem']},
+        {day: 70, topic: 'Annotations — Custom, Retention & Processing', phase: 'p3', tags: ['theory', 'code']},
+        {
+            day: 71,
+            topic: 'Serialization — ObjectStream, JSON (manual)',
+            phase: 'p3',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 72, topic: 'Networking — Sockets, ServerSocket, HTTP', phase: 'p3', tags: ['theory', 'code']},
+        {
+            day: 73,
+            topic: 'Unit Testing — JUnit 5, Assertions, Lifecycle',
+            phase: 'p3',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 74, topic: 'Mini Project — Multi-threaded File Downloader', phase: 'p3', tags: ['project', 'challenge']},
+        {day: 75, topic: 'Phase 3 Revision — Advanced Java Assessment', phase: 'p3', tags: ['revision', 'problem']},
 
-  // ── PHASE 4: BACKEND & SYSTEMS (Days 76–90) ──
-  { day:76, topic:'JDBC — Connection, PreparedStatement, ResultSet',phase:'p4', tags:['theory','code','problem'] },
-  { day:77, topic:'Connection Pooling — HikariCP & Best Practices', phase:'p4', tags:['theory','code'] },
-  { day:78, topic:'SQL Revision — Joins, Indexes, Transactions',    phase:'p4', tags:['theory','problem','challenge'] },
-  { day:79, topic:'HTTP Fundamentals — REST Principles & Verbs',    phase:'p4', tags:['theory'] },
-  { day:80, topic:'Build Tools — Maven, pom.xml, Lifecycle',        phase:'p4', tags:['theory','code'] },
-  { day:81, topic:'Logging — SLF4J, Logback, Log Levels',           phase:'p4', tags:['theory','code'] },
-  { day:82, topic:'JSON Handling — Jackson, ObjectMapper, Nodes',   phase:'p4', tags:['theory','code','problem'] },
-  { day:83, topic:'Git Workflow — Branching, PRs, Conventional Commits',phase:'p4',tags:['theory','code'] },
-  { day:84, topic:'Data Structures — LinkedList, BST, Trie (impl)',  phase:'p4', tags:['theory','code','challenge'] },
-  { day:85, topic:'Algorithms — Sorting: Quick, Merge, Heap',        phase:'p4', tags:['theory','code','problem'] },
-  { day:86, topic:'Algorithms — Binary Search & Sliding Window',     phase:'p4', tags:['theory','code','problem'] },
-  { day:87, topic:'Algorithms — Graph BFS & DFS (Java impl)',        phase:'p4', tags:['theory','code','challenge'] },
-  { day:88, topic:'Final Project — REST-style CLI CRUD Backend',     phase:'p4', tags:['project','challenge'] },
-  { day:89, topic:'Code Review & Refactor — Apply SOLID + Patterns', phase:'p4', tags:['revision','challenge'] },
-  { day:90, topic:'🎓 Graduation Day — Full Assessment & Roadmap',   phase:'p4', tags:['revision','milestone'] }
-];
+        // ── PHASE 4: BACKEND & SYSTEMS (Days 76–90) ──
+        {
+            day: 76,
+            topic: 'JDBC — Connection, PreparedStatement, ResultSet',
+            phase: 'p4',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 77, topic: 'Connection Pooling — HikariCP & Best Practices', phase: 'p4', tags: ['theory', 'code']},
+        {
+            day: 78,
+            topic: 'SQL Revision — Joins, Indexes, Transactions',
+            phase: 'p4',
+            tags: ['theory', 'problem', 'challenge']
+        },
+        {day: 79, topic: 'HTTP Fundamentals — REST Principles & Verbs', phase: 'p4', tags: ['theory']},
+        {day: 80, topic: 'Build Tools — Maven, pom.xml, Lifecycle', phase: 'p4', tags: ['theory', 'code']},
+        {day: 81, topic: 'Logging — SLF4J, Logback, Log Levels', phase: 'p4', tags: ['theory', 'code']},
+        {
+            day: 82,
+            topic: 'JSON Handling — Jackson, ObjectMapper, Nodes',
+            phase: 'p4',
+            tags: ['theory', 'code', 'problem']
+        },
+        {day: 83, topic: 'Git Workflow — Branching, PRs, Conventional Commits', phase: 'p4', tags: ['theory', 'code']},
+        {
+            day: 84,
+            topic: 'Data Structures — LinkedList, BST, Trie (impl)',
+            phase: 'p4',
+            tags: ['theory', 'code', 'challenge']
+        },
+        {day: 85, topic: 'Algorithms — Sorting: Quick, Merge, Heap', phase: 'p4', tags: ['theory', 'code', 'problem']},
+        {
+            day: 86,
+            topic: 'Algorithms — Binary Search & Sliding Window',
+            phase: 'p4',
+            tags: ['theory', 'code', 'problem']
+        },
+        {
+            day: 87,
+            topic: 'Algorithms — Graph BFS & DFS (Java impl)',
+            phase: 'p4',
+            tags: ['theory', 'code', 'challenge']
+        },
+        {day: 88, topic: 'Final Project — REST-style CLI CRUD Backend', phase: 'p4', tags: ['project', 'challenge']},
+        {
+            day: 89,
+            topic: 'Code Review & Refactor — Apply SOLID + Patterns',
+            phase: 'p4',
+            tags: ['revision', 'challenge']
+        },
+        {day: 90, topic: '🎓 Graduation Day — Full Assessment & Roadmap', phase: 'p4', tags: ['revision', 'milestone']}
+    ];
 
-const CHECKLISTS = {
-  theory:  ['Read the concept carefully', 'Write summary in your notes', 'Draw a diagram if applicable'],
-  code:    ['Type out all code examples (no copy-paste)', 'Run and observe output', 'Modify code and experiment'],
-  problem: ['Solve without looking at hints first', 'Analyse time & space complexity', 'Review edge cases'],
-  challenge:['Complete the mini challenge', 'Add error handling', 'Refactor for clarity'],
-  project: ['Plan before coding (15 min)', 'Commit code to GitHub', 'Write a README entry'],
-  revision: ['Review all topics from the phase', 'Re-solve 2 problems from memory', 'Update your notes'],
-  milestone:['Celebrate 🎉','Share progress with a peer','Plan your next learning goal']
-};
+    const CHECKLISTS = {
+        theory: ['Read the concept carefully', 'Write summary in your notes', 'Draw a diagram if applicable'],
+        code: ['Type out all code examples (no copy-paste)', 'Run and observe output', 'Modify code and experiment'],
+        problem: ['Solve without looking at hints first', 'Analyse time & space complexity', 'Review edge cases'],
+        challenge: ['Complete the mini challenge', 'Add error handling', 'Refactor for clarity'],
+        project: ['Plan before coding (15 min)', 'Commit code to GitHub', 'Write a README entry'],
+        revision: ['Review all topics from the phase', 'Re-solve 2 problems from memory', 'Update your notes'],
+        milestone: ['Celebrate 🎉', 'Share progress with a peer', 'Plan your next learning goal']
+    };
 
-// ══════════════════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════════════════
-const SK = 'java-mastery-v2';
-let state = { completed: {}, startDay: null };
+    // ══════════════════════════════════════════════════════
+    //  STATE
+    // ══════════════════════════════════════════════════════
+    const SK = 'java-mastery-v2';
+    let state = {completed: {}, startDay: null};
 
-function loadState() {
-  try {
-    const raw = localStorage.getItem(SK);
-    if (raw) state = JSON.parse(raw);
-    if (!state.startDay) state.startDay = getTodayStr();
-  } catch(e) { state = { completed:{}, startDay: getTodayStr() }; }
-}
+    function loadState() {
+        try {
+            const raw = localStorage.getItem(SK);
+            if (raw) state = JSON.parse(raw);
+            if (!state.startDay) state.startDay = getTodayStr();
+        } catch (e) {
+            state = {completed: {}, startDay: getTodayStr()};
+        }
+    }
 
-function saveState() {
-  localStorage.setItem(SK, JSON.stringify(state));
-}
+    function saveState() {
+        localStorage.setItem(SK, JSON.stringify(state));
+    }
 
-function getTodayStr() {
-  return new Date().toISOString().slice(0,10);
-}
+    function getTodayStr() {
+        return new Date().toISOString().slice(0, 10);
+    }
 
-function isCompleted(day) { return !!state.completed[day]; }
+    function isCompleted(day) {
+        return !!state.completed[day];
+    }
 
-function getTodayDay() {
-  const start = new Date(state.startDay);
-  const today = new Date(getTodayStr());
-  const diff = Math.floor((today - start) / 86400000) + 1;
-  return Math.min(Math.max(diff, 1), 90);
-}
+    function getTodayDay() {
+        const start = new Date(state.startDay);
+        const today = new Date(getTodayStr());
+        const diff = Math.floor((today - start) / 86400000) + 1;
+        return Math.min(Math.max(diff, 1), 90);
+    }
 
-// ══════════════════════════════════════════════════════
-//  RENDER
-// ══════════════════════════════════════════════════════
-function render() {
-  renderSidebar();
-  renderHeatmap();
-  renderPhases();
-  applyFilter();
-}
+    // ══════════════════════════════════════════════════════
+    //  RENDER
+    // ══════════════════════════════════════════════════════
+    function render() {
+        renderSidebar();
+        renderHeatmap();
+        renderPhases();
+        applyFilter();
+    }
 
-function renderSidebar() {
-  const total = 90;
-  const done  = Object.keys(state.completed).length;
-  const pct   = Math.round((done / total) * 100);
-  const todayDay = getTodayDay();
+    function renderSidebar() {
+        const total = 90;
+        const done = Object.keys(state.completed).length;
+        const pct = Math.round((done / total) * 100);
+        const todayDay = getTodayDay();
 
-  // Ring
-  const circumference = 251.2;
-  const offset = circumference - (pct / 100) * circumference;
-  document.getElementById('ring-fg').style.strokeDashoffset = offset;
-  document.getElementById('ring-pct-text').textContent = pct + '%';
+        // Ring
+        const circumference = 251.2;
+        const offset = circumference - (pct / 100) * circumference;
+        document.getElementById('ring-fg').style.strokeDashoffset = offset;
+        document.getElementById('ring-pct-text').textContent = pct + '%';
 
-  document.getElementById('count-done').textContent  = done;
-  document.getElementById('count-left').textContent  = total - done;
-  document.getElementById('count-today').textContent = 'D' + todayDay;
-  document.getElementById('prog-pct').textContent    = pct + '%';
-  document.getElementById('prog-fill').style.width   = pct + '%';
+        document.getElementById('count-done').textContent = done;
+        document.getElementById('count-left').textContent = total - done;
+        document.getElementById('count-today').textContent = 'D' + todayDay;
+        document.getElementById('prog-pct').textContent = pct + '%';
+        document.getElementById('prog-fill').style.width = pct + '%';
 
-  // Header date
-  const hdrDate = document.getElementById('hdr-date');
-  hdrDate.textContent = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-  hdrDate.style.display = 'inline';
+        // Header date
+        const hdrDate = document.getElementById('hdr-date');
+        hdrDate.textContent = new Date().toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'});
+        hdrDate.style.display = 'inline';
 
-  // Phase bars
-  const pb = document.getElementById('phase-bars');
-  pb.innerHTML = PHASES.map(ph => {
-    const [s,e] = ph.days;
-    const total  = e - s + 1;
-    const phDone = CURRICULUM.filter(c => c.day >= s && c.day <= e && isCompleted(c.day)).length;
-    const phPct  = Math.round((phDone/total)*100);
-    return `<div class="phase-row">
+        // Phase bars
+        const pb = document.getElementById('phase-bars');
+        pb.innerHTML = PHASES.map(ph => {
+            const [s, e] = ph.days;
+            const total = e - s + 1;
+            const phDone = CURRICULUM.filter(c => c.day >= s && c.day <= e && isCompleted(c.day)).length;
+            const phPct = Math.round((phDone / total) * 100);
+            return `<div class="phase-row">
       <div class="phase-meta">
         <span class="phase-name">${ph.name.split('—')[1].trim()}</span>
         <span class="phase-stat">${phDone}/${total}</span>
@@ -1222,64 +1602,78 @@ function renderSidebar() {
         <div class="phase-fill ${ph.fillCls}" style="width:${phPct}%"></div>
       </div>
     </div>`;
-  }).join('');
+        }).join('');
 
-  // Streak
-  let streak = 0, best = parseInt(localStorage.getItem('java-best-streak')||'0');
-  let d = new Date();
-  while(true) {
-    const ds = d.toISOString().slice(0,10);
-    const dayN = Math.floor((new Date(ds) - new Date(state.startDay)) / 86400000) + 1;
-    if (dayN < 1 || dayN > 90) break;
-    if (!state.completed[dayN]) { if (ds === getTodayStr()) { d.setDate(d.getDate()-1); continue; } break; }
-    streak++;
-    d.setDate(d.getDate() - 1);
-  }
-  if (streak > best) { best = streak; localStorage.setItem('java-best-streak', best); }
-  document.getElementById('streak-val').textContent  = streak;
-  document.getElementById('best-streak').textContent = best;
+        // Streak
+        let streak = 0, best = parseInt(localStorage.getItem('java-best-streak') || '0');
+        let d = new Date();
+        while (true) {
+            const ds = d.toISOString().slice(0, 10);
+            const dayN = Math.floor((new Date(ds) - new Date(state.startDay)) / 86400000) + 1;
+            if (dayN < 1 || dayN > 90) break;
+            if (!state.completed[dayN]) {
+                if (ds === getTodayStr()) {
+                    d.setDate(d.getDate() - 1);
+                    continue;
+                }
+                break;
+            }
+            streak++;
+            d.setDate(d.getDate() - 1);
+        }
+        if (streak > best) {
+            best = streak;
+            localStorage.setItem('java-best-streak', best);
+        }
+        document.getElementById('streak-val').textContent = streak;
+        document.getElementById('best-streak').textContent = best;
 
-  // Today card
-  const cur = CURRICULUM.find(c => c.day === todayDay);
-  if (cur) {
-    document.getElementById('today-day-label').textContent = `Day ${cur.day}`;
-    document.getElementById('today-day-num').textContent   = `Day ${cur.day} / 90`;
-    document.getElementById('today-topic').textContent     = cur.topic;
-    const tagsEl = document.getElementById('today-tags');
-    tagsEl.innerHTML = cur.tags.map(t => `<span class="tag tag-${t==='theory'?'theory':t==='code'?'code':'problem'}">${t}</span>`).join('');
-    const btn = document.getElementById('mark-done-btn');
-    if (isCompleted(cur.day)) { btn.textContent = '✓ Completed'; btn.classList.add('done'); }
-    else { btn.textContent = '✓ Mark Complete'; btn.classList.remove('done'); }
-  }
-}
+        // Today card
+        const cur = CURRICULUM.find(c => c.day === todayDay);
+        if (cur) {
+            document.getElementById('today-day-label').textContent = `Day ${cur.day}`;
+            document.getElementById('today-day-num').textContent = `Day ${cur.day} / 90`;
+            document.getElementById('today-topic').textContent = cur.topic;
+            const tagsEl = document.getElementById('today-tags');
+            tagsEl.innerHTML = cur.tags.map(t => `<span class="tag tag-${t === 'theory' ? 'theory' : t === 'code' ? 'code' : 'problem'}">${t}</span>`).join('');
+            const btn = document.getElementById('mark-done-btn');
+            if (isCompleted(cur.day)) {
+                btn.textContent = '✓ Completed';
+                btn.classList.add('done');
+            } else {
+                btn.textContent = '✓ Mark Complete';
+                btn.classList.remove('done');
+            }
+        }
+    }
 
-function renderHeatmap() {
-  const hm = document.getElementById('heatmap');
-  const todayDay = getTodayDay();
-  hm.innerHTML = CURRICULUM.map(c => {
-    let cls = 'hm-cell';
-    if (isCompleted(c.day)) cls += ' done';
-    else if (c.day === todayDay) cls += ' today';
-    else if (c.day > todayDay) cls += ' future';
-    return `<div class="${cls}" data-tip="D${c.day}" onclick="openModal(${c.day})"></div>`;
-  }).join('');
-}
+    function renderHeatmap() {
+        const hm = document.getElementById('heatmap');
+        const todayDay = getTodayDay();
+        hm.innerHTML = CURRICULUM.map(c => {
+            let cls = 'hm-cell';
+            if (isCompleted(c.day)) cls += ' done';
+            else if (c.day === todayDay) cls += ' today';
+            else if (c.day > todayDay) cls += ' future';
+            return `<div class="${cls}" data-tip="D${c.day}" onclick="openModal(${c.day})"></div>`;
+        }).join('');
+    }
 
-let currentFilter = 'all';
+    let currentFilter = 'all';
 
-function renderPhases() {
-  const container = document.getElementById('phase-sections');
-  container.innerHTML = '';
-  PHASES.forEach(ph => {
-    const [s, e] = ph.days;
-    const days = CURRICULUM.filter(c => c.day >= s && c.day <= e);
-    const done  = days.filter(c => isCompleted(c.day)).length;
+    function renderPhases() {
+        const container = document.getElementById('phase-sections');
+        container.innerHTML = '';
+        PHASES.forEach(ph => {
+            const [s, e] = ph.days;
+            const days = CURRICULUM.filter(c => c.day >= s && c.day <= e);
+            const done = days.filter(c => isCompleted(c.day)).length;
 
-    const section = document.createElement('div');
-    section.className = 'phase-section';
-    section.dataset.phase = ph.id;
+            const section = document.createElement('div');
+            section.className = 'phase-section';
+            section.dataset.phase = ph.id;
 
-    section.innerHTML = `
+            section.innerHTML = `
       <div class="phase-label">
         <span class="phase-tag ${ph.cls}">${ph.name}</span>
         <div class="phase-divider"></div>
@@ -1288,23 +1682,23 @@ function renderPhases() {
       <div class="day-grid" id="grid-${ph.id}">
         ${days.map(c => buildDayCard(c)).join('')}
       </div>`;
-    container.appendChild(section);
-  });
-}
+            container.appendChild(section);
+        });
+    }
 
-function buildDayCard(c) {
-  const todayDay = getTodayDay();
-  const done = isCompleted(c.day);
-  let cls = 'day-card';
-  if (done) cls += ' completed';
-  else if (c.day === todayDay) cls += ' today-highlight';
+    function buildDayCard(c) {
+        const todayDay = getTodayDay();
+        const done = isCompleted(c.day);
+        let cls = 'day-card';
+        if (done) cls += ' completed';
+        else if (c.day === todayDay) cls += ' today-highlight';
 
-  const tagHtml = c.tags.slice(0,2).map(t => {
-    const col = t==='theory'?'#818cf8':t==='code'?'#4ade80':t==='revision'?'#fb923c':t==='project'?'#f59e0b':'#94a3b8';
-    return `<span class="dc-pill" style="background:${col}22;color:${col};border:1px solid ${col}44">${t}</span>`;
-  }).join('');
+        const tagHtml = c.tags.slice(0, 2).map(t => {
+            const col = t === 'theory' ? '#818cf8' : t === 'code' ? '#4ade80' : t === 'revision' ? '#fb923c' : t === 'project' ? '#f59e0b' : '#94a3b8';
+            return `<span class="dc-pill" style="background:${col}22;color:${col};border:1px solid ${col}44">${t}</span>`;
+        }).join('');
 
-  return `<div class="${cls}" id="dc-${c.day}" data-day="${c.day}" data-phase="${c.phase}"
+        return `<div class="${cls}" id="dc-${c.day}" data-day="${c.day}" data-phase="${c.phase}"
     data-topic="${c.topic.toLowerCase()}"
     onclick="openModal(${c.day})">
     <div class="dc-top">
@@ -1318,81 +1712,81 @@ function buildDayCard(c) {
     <div class="dc-topic">${c.topic}</div>
     <div class="dc-pills">${tagHtml}</div>
   </div>`;
-}
+    }
 
-// ══════════════════════════════════════════════════════
-//  FILTER
-// ══════════════════════════════════════════════════════
-function setFilter(f, el) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  if (el) el.classList.add('active');
-  applyFilter();
-}
+    // ══════════════════════════════════════════════════════
+    //  FILTER
+    // ══════════════════════════════════════════════════════
+    function setFilter(f, el) {
+        currentFilter = f;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        if (el) el.classList.add('active');
+        applyFilter();
+    }
 
-function applyFilter() {
-  const q   = document.getElementById('search-box').value.toLowerCase().trim();
-  const f   = currentFilter;
-  const todayDay = getTodayDay();
+    function applyFilter() {
+        const q = document.getElementById('search-box').value.toLowerCase().trim();
+        const f = currentFilter;
+        const todayDay = getTodayDay();
 
-  document.querySelectorAll('.day-card').forEach(card => {
-    const day   = parseInt(card.dataset.day);
-    const phase = card.dataset.phase;
-    const topic = card.dataset.topic || '';
-    const done  = isCompleted(day);
-    const isToday = day === todayDay;
+        document.querySelectorAll('.day-card').forEach(card => {
+            const day = parseInt(card.dataset.day);
+            const phase = card.dataset.phase;
+            const topic = card.dataset.topic || '';
+            const done = isCompleted(day);
+            const isToday = day === todayDay;
 
-    let show = true;
-    if (f === 'done')    show = done;
-    if (f === 'pending') show = !done;
-    if (f === 'today')   show = isToday;
-    if (f === 'p1')      show = phase === 'p1';
-    if (f === 'p2')      show = phase === 'p2';
-    if (f === 'p3')      show = phase === 'p3';
-    if (f === 'p4')      show = phase === 'p4';
+            let show = true;
+            if (f === 'done') show = done;
+            if (f === 'pending') show = !done;
+            if (f === 'today') show = isToday;
+            if (f === 'p1') show = phase === 'p1';
+            if (f === 'p2') show = phase === 'p2';
+            if (f === 'p3') show = phase === 'p3';
+            if (f === 'p4') show = phase === 'p4';
 
-    if (q && !topic.includes(q)) show = false;
-    card.classList.toggle('hidden', !show);
-  });
+            if (q && !topic.includes(q)) show = false;
+            card.classList.toggle('hidden', !show);
+        });
 
-  // Hide phase sections if all cards hidden
-  document.querySelectorAll('.phase-section').forEach(sec => {
-    const visible = [...sec.querySelectorAll('.day-card')].some(c => !c.classList.contains('hidden'));
-    sec.style.display = visible ? '' : 'none';
-  });
-}
+        // Hide phase sections if all cards hidden
+        document.querySelectorAll('.phase-section').forEach(sec => {
+            const visible = [...sec.querySelectorAll('.day-card')].some(c => !c.classList.contains('hidden'));
+            sec.style.display = visible ? '' : 'none';
+        });
+    }
 
-// ══════════════════════════════════════════════════════
-//  MODAL
-// ══════════════════════════════════════════════════════
-function openModal(dayNum) {
-  const c = CURRICULUM.find(x => x.day === dayNum);
-  if (!c) return;
+    // ══════════════════════════════════════════════════════
+    //  MODAL
+    // ══════════════════════════════════════════════════════
+    function openModal(dayNum) {
+        const c = CURRICULUM.find(x => x.day === dayNum);
+        if (!c) return;
 
-  const done = isCompleted(dayNum);
-  const todayDay = getTodayDay();
+        const done = isCompleted(dayNum);
+        const todayDay = getTodayDay();
 
-  document.getElementById('modal-title').textContent = `Day ${dayNum} / 90`;
+        document.getElementById('modal-title').textContent = `Day ${dayNum} / 90`;
 
-  const checkKeys = c.tags.filter(t => CHECKLISTS[t]);
-  const checkItems = checkKeys.flatMap(k => CHECKLISTS[k].map(item => ({item, key:`${dayNum}-${item}`})));
+        const checkKeys = c.tags.filter(t => CHECKLISTS[t]);
+        const checkItems = checkKeys.flatMap(k => CHECKLISTS[k].map(item => ({item, key: `${dayNum}-${item}`})));
 
-  const savedChecks = JSON.parse(localStorage.getItem(`java-checks-${dayNum}`) || '{}');
+        const savedChecks = JSON.parse(localStorage.getItem(`java-checks-${dayNum}`) || '{}');
 
-  const checkHtml = checkItems.map(({item, key}) => {
-    const checked = savedChecks[key] ? 'checked' : '';
-    return `<label class="check-item ${checked}" id="ci-${key.replace(/[^a-z0-9]/gi,'_')}" onclick="toggleCheck('${key}', this)">
+        const checkHtml = checkItems.map(({item, key}) => {
+            const checked = savedChecks[key] ? 'checked' : '';
+            return `<label class="check-item ${checked}" id="ci-${key.replace(/[^a-z0-9]/gi, '_')}" onclick="toggleCheck('${key}', this)">
       <div class="check-box"></div>
       <span>${item}</span>
     </label>`;
-  }).join('');
+        }).join('');
 
-  document.getElementById('modal-body').innerHTML = `
+        document.getElementById('modal-body').innerHTML = `
     <div class="modal-section">
       <div class="modal-section-title">Topic</div>
       <div class="modal-topic">${c.topic}</div>
       <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.5rem;">
-        ${c.tags.map(t=>`<span class="tag tag-${t==='theory'?'theory':t==='code'?'code':'problem'}">${t}</span>`).join('')}
+        ${c.tags.map(t => `<span class="tag tag-${t === 'theory' ? 'theory' : t === 'code' ? 'code' : 'problem'}">${t}</span>`).join('')}
       </div>
     </div>
     ${checkHtml.length ? `
@@ -1405,120 +1799,127 @@ function openModal(dayNum) {
       <textarea id="day-notes-${dayNum}"
         style="width:100%;min-height:70px;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:0.7rem;color:var(--text);font-family:var(--mono);font-size:0.72rem;resize:vertical;outline:none;"
         placeholder="Your notes for this day…"
-        oninput="saveNotes(${dayNum}, this.value)">${localStorage.getItem('java-notes-'+dayNum)||''}</textarea>
+        oninput="saveNotes(${dayNum}, this.value)">${localStorage.getItem('java-notes-' + dayNum) || ''}</textarea>
     </div>
     <div class="modal-actions">
       <button class="btn-complete" onclick="toggleDayComplete(${dayNum})">${done ? '✓ Mark Incomplete' : '✓ Mark Complete'}</button>
       <button class="btn-undo" onclick="closeModal()">Close</button>
     </div>`;
 
-  document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+        document.getElementById('modal-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
 
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
+    function closeModal() {
+        document.getElementById('modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
 
-function closeModalOutside(e) {
-  if (e.target === document.getElementById('modal-overlay')) closeModal();
-}
+    function closeModalOutside(e) {
+        if (e.target === document.getElementById('modal-overlay')) closeModal();
+    }
 
-function toggleCheck(key, el) {
-  const dayNum = parseInt(key.split('-')[0]);
-  const saved = JSON.parse(localStorage.getItem(`java-checks-${dayNum}`) || '{}');
-  saved[key] = !saved[key];
-  localStorage.setItem(`java-checks-${dayNum}`, JSON.stringify(saved));
-  el.classList.toggle('checked', !!saved[key]);
-}
+    function toggleCheck(key, el) {
+        const dayNum = parseInt(key.split('-')[0]);
+        const saved = JSON.parse(localStorage.getItem(`java-checks-${dayNum}`) || '{}');
+        saved[key] = !saved[key];
+        localStorage.setItem(`java-checks-${dayNum}`, JSON.stringify(saved));
+        el.classList.toggle('checked', !!saved[key]);
+    }
 
-function saveNotes(dayNum, val) {
-  localStorage.setItem('java-notes-' + dayNum, val);
-}
+    function saveNotes(dayNum, val) {
+        localStorage.setItem('java-notes-' + dayNum, val);
+    }
 
-// ══════════════════════════════════════════════════════
-//  COMPLETE / UNDO
-// ══════════════════════════════════════════════════════
-function toggleDayComplete(dayNum) {
-  if (isCompleted(dayNum)) {
-    delete state.completed[dayNum];
-    showToast('Day ' + dayNum + ' marked incomplete.', 'accent');
-  } else {
-    state.completed[dayNum] = getTodayStr();
-    showToast('🎉 Day ' + dayNum + ' complete!', 'green');
-    firework();
-  }
-  saveState();
-  closeModal();
-  renderPhases();
-  renderSidebar();
-  renderHeatmap();
-  applyFilter();
-}
+    // ══════════════════════════════════════════════════════
+    //  COMPLETE / UNDO
+    // ══════════════════════════════════════════════════════
+    function toggleDayComplete(dayNum) {
+        if (isCompleted(dayNum)) {
+            delete state.completed[dayNum];
+            showToast('Day ' + dayNum + ' marked incomplete.', 'accent');
+        } else {
+            state.completed[dayNum] = getTodayStr();
+            showToast('🎉 Day ' + dayNum + ' complete!', 'green');
+            firework();
+        }
+        saveState();
+        closeModal();
+        renderPhases();
+        renderSidebar();
+        renderHeatmap();
+        applyFilter();
+    }
 
-function markTodayDone() {
-  const todayDay = getTodayDay();
-  if (isCompleted(todayDay)) { showToast('Already marked done!', 'accent'); return; }
-  state.completed[todayDay] = getTodayStr();
-  saveState();
-  showToast('🎉 Day ' + todayDay + ' complete! Keep going!', 'green');
-  firework();
-  renderPhases();
-  renderSidebar();
-  renderHeatmap();
-  applyFilter();
-}
+    function markTodayDone() {
+        const todayDay = getTodayDay();
+        if (isCompleted(todayDay)) {
+            showToast('Already marked done!', 'accent');
+            return;
+        }
+        state.completed[todayDay] = getTodayStr();
+        saveState();
+        showToast('🎉 Day ' + todayDay + ' complete! Keep going!', 'green');
+        firework();
+        renderPhases();
+        renderSidebar();
+        renderHeatmap();
+        applyFilter();
+    }
 
-function confirmReset() {
-  if (confirm('⚠ Reset ALL progress? This cannot be undone.')) {
-    state = { completed:{}, startDay: getTodayStr() };
-    localStorage.removeItem('java-best-streak');
-    saveState();
-    renderPhases();
-    renderSidebar();
-    renderHeatmap();
-    applyFilter();
-    showToast('Progress reset. Day 1 starts now!', 'accent');
-  }
-}
+    function confirmReset() {
+        if (confirm('⚠ Reset ALL progress? This cannot be undone.')) {
+            state = {completed: {}, startDay: getTodayStr()};
+            localStorage.removeItem('java-best-streak');
+            saveState();
+            renderPhases();
+            renderSidebar();
+            renderHeatmap();
+            applyFilter();
+            showToast('Progress reset. Day 1 starts now!', 'accent');
+        }
+    }
 
-// ══════════════════════════════════════════════════════
-//  ANIMATIONS
-// ══════════════════════════════════════════════════════
-function firework() {
-  const colors = ['#f97316','#22c55e','#6366f1','#f59e0b','#38bdf8','#fb923c'];
-  for (let i = 0; i < 20; i++) {
-    const el = document.createElement('div');
-    el.className = 'confetti-piece';
-    el.style.cssText = `left:${20+Math.random()*60}%;top:${10+Math.random()*30}%;background:${colors[i%colors.length]};animation-delay:${Math.random()*0.4}s;transform:rotate(${Math.random()*360}deg)`;
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 1800);
-  }
-}
+    // ══════════════════════════════════════════════════════
+    //  ANIMATIONS
+    // ══════════════════════════════════════════════════════
+    function firework() {
+        const colors = ['#f97316', '#22c55e', '#6366f1', '#f59e0b', '#38bdf8', '#fb923c'];
+        for (let i = 0; i < 20; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti-piece';
+            el.style.cssText = `left:${20 + Math.random() * 60}%;top:${10 + Math.random() * 30}%;background:${colors[i % colors.length]};animation-delay:${Math.random() * 0.4}s;transform:rotate(${Math.random() * 360}deg)`;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 1800);
+        }
+    }
 
-function showToast(msg, type='accent') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast toast-${type} show`;
-  setTimeout(() => { t.classList.remove('show'); }, 2800);
-}
+    function showToast(msg, type = 'accent') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = `toast toast-${type} show`;
+        setTimeout(() => {
+            t.classList.remove('show');
+        }, 2800);
+    }
 
-// ══════════════════════════════════════════════════════
-//  KEYBOARD
-// ══════════════════════════════════════════════════════
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
-});
+    // ══════════════════════════════════════════════════════
+    //  KEYBOARD
+    // ══════════════════════════════════════════════════════
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeModal();
+    });
 
-// ══════════════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════════════
-loadState();
-render();
+    // ══════════════════════════════════════════════════════
+    //  INIT
+    // ══════════════════════════════════════════════════════
+    loadState();
+    render();
 
-// Re-render clock every minute
-setInterval(() => { renderSidebar(); }, 60000);
+    // Re-render clock every minute
+    setInterval(() => {
+        renderSidebar();
+    }, 60000);
 </script>
 </body>
 </html>

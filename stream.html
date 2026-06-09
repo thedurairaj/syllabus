@@ -1,166 +1,658 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Java 8+ Stream API — Complete Syllabus</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ed; --border2:#d0d5de;
-  --text:#1a1d27; --text2:#5a6175; --text3:#9aa0b4;
-  --green:#16a34a; --green-bg:#f0fdf4; --green-border:#bbf7d0;
-  --accent:#2563eb; --accent-bg:#eff6ff;
-  --amber:#d97706; --red:#dc2626; --purple:#7c3aed; --teal:#0891b2;
-  --orange:#ea580c;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 8+ Stream API — Complete Syllabus</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f7f8fa;
+            --white: #ffffff;
+            --border: #e4e7ed;
+            --border2: #d0d5de;
+            --text: #1a1d27;
+            --text2: #5a6175;
+            --text3: #9aa0b4;
+            --green: #16a34a;
+            --green-bg: #f0fdf4;
+            --green-border: #bbf7d0;
+            --accent: #2563eb;
+            --accent-bg: #eff6ff;
+            --amber: #d97706;
+            --red: #dc2626;
+            --purple: #7c3aed;
+            --teal: #0891b2;
+            --orange: #ea580c;
+        }
 
-.header{background:var(--white);border-bottom:1px solid var(--border);padding:36px 40px 28px;}
-.header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;}
-.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
-.badge{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:20px;border:1px solid var(--green-border);background:var(--green-bg);color:var(--green);}
-.badge.blue{border-color:#bfdbfe;background:#eff6ff;color:var(--accent);}
-.badge.amber{border-color:#fde68a;background:#fffbeb;color:var(--amber);}
-h1{font-size:clamp(22px,4vw,34px);font-weight:600;color:var(--text);letter-spacing:-.3px;margin-bottom:6px;}
-.subtitle{font-size:14px;color:var(--text2);font-weight:300;margin-bottom:24px;}
-.stats-row{display:flex;gap:24px;flex-wrap:wrap;}
-.stat{text-align:center;}
-.stat-n{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;color:var(--text);}
-.stat-l{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-top:1px;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.sticky-bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);border-bottom:1px solid var(--border);padding:12px 40px;backdrop-filter:blur(8px);display:flex;align-items:center;gap:16px;}
-.sticky-label{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace;white-space:nowrap;}
-.track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
-.fill{height:100%;background:linear-gradient(90deg,#f59e0b,#2563eb);border-radius:3px;transition:width .4s;width:0;}
-.pct{font-size:12px;font-weight:600;color:var(--accent);font-family:'JetBrains Mono',monospace;white-space:nowrap;min-width:48px;text-align:right;}
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.6;
+        }
 
-.container{max-width:860px;margin:0 auto;padding:36px 24px;}
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 36px 40px 28px;
+        }
 
-/* PHASE */
-.phase-block{margin-bottom:36px;}
-.phase-label{
-  display:flex;align-items:center;gap:12px;
-  margin-bottom:14px;padding:14px 18px;
-  border-radius:10px;cursor:pointer;
-  user-select:none;transition:opacity .15s;
-}
-.phase-label:hover{opacity:.85;}
-.phase-pill{
-  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;
-  padding:4px 12px;border-radius:20px;white-space:nowrap;
-}
-.phase-title-text{font-size:15px;font-weight:600;flex:1;}
-.phase-sub{font-size:12px;font-weight:300;margin-top:1px;}
-.phase-stats{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text3);white-space:nowrap;}
-.phase-mini-track{width:50px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
-.phase-mini-fill{height:100%;border-radius:2px;transition:width .3s;}
-.phase-arrow{font-size:11px;color:var(--text3);transition:transform .2s;margin-left:4px;}
-.phase-block.open .phase-arrow{transform:rotate(90deg);}
-.phase-modules{display:none;}
-.phase-block.open .phase-modules{display:block;}
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
 
-/* MODULE CARD */
-.mod-card{background:var(--white);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden;}
-.mod-head{display:flex;align-items:center;gap:10px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;}
-.mod-head:hover{background:var(--bg);}
-.mod-icon{font-size:15px;width:20px;text-align:center;}
-.mod-name{flex:1;font-size:14px;font-weight:500;color:var(--text);}
-.mod-prog{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3);min-width:28px;text-align:right;}
-.mod-arrow{font-size:10px;color:var(--text3);transition:transform .2s;margin-left:4px;}
-.mod-card.open .mod-arrow{transform:rotate(90deg);}
-.mod-body{display:none;border-top:1px solid var(--border);padding:4px 18px 12px;}
-.mod-card.open .mod-body{display:block;}
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
 
-/* ITEMS */
-.check-item{display:flex;align-items:flex-start;gap:11px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s;}
-.check-item:last-child{border-bottom:none;}
-.check-item:hover{opacity:.8;}
-.box{flex-shrink:0;width:18px;height:18px;border:1.5px solid var(--border2);border-radius:4px;margin-top:3px;display:flex;align-items:center;justify-content:center;transition:all .18s;}
-.check-item.done .box{background:var(--green);border-color:var(--green);}
-.box::after{content:'';display:none;width:4px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);}
-.check-item.done .box::after{display:block;}
-.item-text{font-size:13.5px;font-weight:400;color:var(--text);transition:color .18s;padding-top:1px;}
-.check-item.done .item-text{color:var(--text3);text-decoration:line-through;}
+        .badge {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--green-border);
+            background: var(--green-bg);
+            color: var(--green);
+        }
 
-/* SUB-ITEMS (nested) */
-.sub-group{margin-left:0;margin-top:0;}
-.sub-label{font-size:12px;font-weight:600;color:var(--text2);padding:8px 0 4px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.7px;}
-.sub-label::before{content:'';display:inline-block;width:10px;height:1.5px;background:var(--border2);border-radius:1px;}
-.sub-check-item{display:flex;align-items:flex-start;gap:11px;padding:7px 0 7px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s;}
-.sub-check-item:last-child{border-bottom:none;}
-.sub-check-item:hover{opacity:.8;}
-.sub-box{flex-shrink:0;width:15px;height:15px;border:1.5px solid var(--border);border-radius:3px;margin-top:3px;display:flex;align-items:center;justify-content:center;transition:all .18s;}
-.sub-check-item.done .sub-box{background:var(--green);border-color:var(--green);}
-.sub-box::after{content:'';display:none;width:3px;height:7px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);}
-.sub-check-item.done .sub-box::after{display:block;}
-.sub-item-text{font-size:13px;font-weight:300;color:var(--text2);transition:color .18s;padding-top:1px;}
-.sub-check-item.done .sub-item-text{color:var(--text3);text-decoration:line-through;}
+        .badge.blue {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+            color: var(--accent);
+        }
 
-/* PHASE COLORS */
-.ph1 .phase-label{background:#fdf4ff;}
-.ph1 .phase-pill{background:#fae8ff;color:#86198f;border:1px solid #f0abfc;}
-.ph1 .phase-mini-fill{background:var(--purple);}
+        .badge.amber {
+            border-color: #fde68a;
+            background: #fffbeb;
+            color: var(--amber);
+        }
 
-.ph2 .phase-label{background:#eff6ff;}
-.ph2 .phase-pill{background:#dbeafe;color:#1d4ed8;border:1px solid #93c5fd;}
-.ph2 .phase-mini-fill{background:var(--accent);}
+        h1 {
+            font-size: clamp(22px, 4vw, 34px);
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -.3px;
+            margin-bottom: 6px;
+        }
 
-.ph3 .phase-label{background:#f0fdf4;}
-.ph3 .phase-pill{background:#dcfce7;color:#15803d;border:1px solid #86efac;}
-.ph3 .phase-mini-fill{background:var(--green);}
+        .subtitle {
+            font-size: 14px;
+            color: var(--text2);
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
 
-.ph4 .phase-label{background:#fff7ed;}
-.ph4 .phase-pill{background:#ffedd5;color:#c2410c;border:1px solid #fdba74;}
-.ph4 .phase-mini-fill{background:var(--orange);}
+        .stats-row {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
 
-.ph5 .phase-label{background:#f0fdfa;}
-.ph5 .phase-pill{background:#ccfbf1;color:#0f766e;border:1px solid #5eead4;}
-.ph5 .phase-mini-fill{background:var(--teal);}
+        .stat {
+            text-align: center;
+        }
 
-.done-banner{margin-bottom:8px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:9px 14px;font-size:12px;color:var(--green);display:flex;align-items:center;gap:6px;}
+        .stat-n {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text);
+        }
 
-.reset-btn{background:none;border:1px solid var(--border2);color:var(--text3);padding:7px 14px;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;}
-.reset-btn:hover{border-color:var(--red);color:var(--red);}
+        .stat-l {
+            font-size: 11px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            margin-top: 1px;
+        }
 
-footer{text-align:center;padding:40px;color:var(--text3);font-size:12px;font-family:'JetBrains Mono',monospace;border-top:1px solid var(--border);}
+        .sticky-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 40px;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
 
-@media(max-width:600px){
-  .header{padding:28px 20px 22px;}
-  .sticky-bar{padding:10px 20px;}
-  .container{padding:24px 14px;}
-  .phase-stats{display:none;}
-}
-</style>
+        .sticky-label {
+            font-size: 12px;
+            color: var(--text3);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+
+        .track {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f59e0b, #2563eb);
+            border-radius: 3px;
+            transition: width .4s;
+            width: 0;
+        }
+
+        .pct {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+            min-width: 48px;
+            text-align: right;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 36px 24px;
+        }
+
+        /* PHASE */
+        .phase-block {
+            margin-bottom: 36px;
+        }
+
+        .phase-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            user-select: none;
+            transition: opacity .15s;
+        }
+
+        .phase-label:hover {
+            opacity: .85;
+        }
+
+        .phase-pill {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .phase-title-text {
+            font-size: 15px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .phase-sub {
+            font-size: 12px;
+            font-weight: 300;
+            margin-top: 1px;
+        }
+
+        .phase-stats {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text3);
+            white-space: nowrap;
+        }
+
+        .phase-mini-track {
+            width: 50px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .phase-mini-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width .3s;
+        }
+
+        .phase-arrow {
+            font-size: 11px;
+            color: var(--text3);
+            transition: transform .2s;
+            margin-left: 4px;
+        }
+
+        .phase-block.open .phase-arrow {
+            transform: rotate(90deg);
+        }
+
+        .phase-modules {
+            display: none;
+        }
+
+        .phase-block.open .phase-modules {
+            display: block;
+        }
+
+        /* MODULE CARD */
+        .mod-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .mod-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            cursor: pointer;
+            user-select: none;
+            transition: background .15s;
+        }
+
+        .mod-head:hover {
+            background: var(--bg);
+        }
+
+        .mod-icon {
+            font-size: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .mod-name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .mod-prog {
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text3);
+            min-width: 28px;
+            text-align: right;
+        }
+
+        .mod-arrow {
+            font-size: 10px;
+            color: var(--text3);
+            transition: transform .2s;
+            margin-left: 4px;
+        }
+
+        .mod-card.open .mod-arrow {
+            transform: rotate(90deg);
+        }
+
+        .mod-body {
+            display: none;
+            border-top: 1px solid var(--border);
+            padding: 4px 18px 12px;
+        }
+
+        .mod-card.open .mod-body {
+            display: block;
+        }
+
+        /* ITEMS */
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: opacity .15s;
+        }
+
+        .check-item:last-child {
+            border-bottom: none;
+        }
+
+        .check-item:hover {
+            opacity: .8;
+        }
+
+        .box {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--border2);
+            border-radius: 4px;
+            margin-top: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .18s;
+        }
+
+        .check-item.done .box {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .box::after {
+            content: '';
+            display: none;
+            width: 4px;
+            height: 8px;
+            border: 2px solid #fff;
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg) translate(-1px, -1px);
+        }
+
+        .check-item.done .box::after {
+            display: block;
+        }
+
+        .item-text {
+            font-size: 13.5px;
+            font-weight: 400;
+            color: var(--text);
+            transition: color .18s;
+            padding-top: 1px;
+        }
+
+        .check-item.done .item-text {
+            color: var(--text3);
+            text-decoration: line-through;
+        }
+
+        /* SUB-ITEMS (nested) */
+        .sub-group {
+            margin-left: 0;
+            margin-top: 0;
+        }
+
+        .sub-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+            padding: 8px 0 4px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+        }
+
+        .sub-label::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 1.5px;
+            background: var(--border2);
+            border-radius: 1px;
+        }
+
+        .sub-check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            padding: 7px 0 7px 16px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: opacity .15s;
+        }
+
+        .sub-check-item:last-child {
+            border-bottom: none;
+        }
+
+        .sub-check-item:hover {
+            opacity: .8;
+        }
+
+        .sub-box {
+            flex-shrink: 0;
+            width: 15px;
+            height: 15px;
+            border: 1.5px solid var(--border);
+            border-radius: 3px;
+            margin-top: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .18s;
+        }
+
+        .sub-check-item.done .sub-box {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .sub-box::after {
+            content: '';
+            display: none;
+            width: 3px;
+            height: 7px;
+            border: 2px solid #fff;
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg) translate(-1px, -1px);
+        }
+
+        .sub-check-item.done .sub-box::after {
+            display: block;
+        }
+
+        .sub-item-text {
+            font-size: 13px;
+            font-weight: 300;
+            color: var(--text2);
+            transition: color .18s;
+            padding-top: 1px;
+        }
+
+        .sub-check-item.done .sub-item-text {
+            color: var(--text3);
+            text-decoration: line-through;
+        }
+
+        /* PHASE COLORS */
+        .ph1 .phase-label {
+            background: #fdf4ff;
+        }
+
+        .ph1 .phase-pill {
+            background: #fae8ff;
+            color: #86198f;
+            border: 1px solid #f0abfc;
+        }
+
+        .ph1 .phase-mini-fill {
+            background: var(--purple);
+        }
+
+        .ph2 .phase-label {
+            background: #eff6ff;
+        }
+
+        .ph2 .phase-pill {
+            background: #dbeafe;
+            color: #1d4ed8;
+            border: 1px solid #93c5fd;
+        }
+
+        .ph2 .phase-mini-fill {
+            background: var(--accent);
+        }
+
+        .ph3 .phase-label {
+            background: #f0fdf4;
+        }
+
+        .ph3 .phase-pill {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        .ph3 .phase-mini-fill {
+            background: var(--green);
+        }
+
+        .ph4 .phase-label {
+            background: #fff7ed;
+        }
+
+        .ph4 .phase-pill {
+            background: #ffedd5;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+        }
+
+        .ph4 .phase-mini-fill {
+            background: var(--orange);
+        }
+
+        .ph5 .phase-label {
+            background: #f0fdfa;
+        }
+
+        .ph5 .phase-pill {
+            background: #ccfbf1;
+            color: #0f766e;
+            border: 1px solid #5eead4;
+        }
+
+        .ph5 .phase-mini-fill {
+            background: var(--teal);
+        }
+
+        .done-banner {
+            margin-bottom: 8px;
+            background: var(--green-bg);
+            border: 1px solid var(--green-border);
+            border-radius: 8px;
+            padding: 9px 14px;
+            font-size: 12px;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .reset-btn {
+            background: none;
+            border: 1px solid var(--border2);
+            color: var(--text3);
+            padding: 7px 14px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .reset-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text3);
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 28px 20px 22px;
+            }
+
+            .sticky-bar {
+                padding: 10px 20px;
+            }
+
+            .container {
+                padding: 24px 14px;
+            }
+
+            .phase-stats {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-top">
-    <div>
-      <div class="badge-row">
-        <span class="badge">☕ Java 8+</span>
-        <span class="badge blue">5 Phases</span>
-        <span class="badge amber">Stream API</span>
-      </div>
-      <h1>Java 8+ Stream API</h1>
-      <p class="subtitle">Complete Syllabus — Foundations to Interview Mastery</p>
+    <div class="header-top">
+        <div>
+            <div class="badge-row">
+                <span class="badge">☕ Java 8+</span>
+                <span class="badge blue">5 Phases</span>
+                <span class="badge amber">Stream API</span>
+            </div>
+            <h1>Java 8+ Stream API</h1>
+            <p class="subtitle">Complete Syllabus — Foundations to Interview Mastery</p>
+        </div>
+        <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
     </div>
-    <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
-  </div>
-  <div class="stats-row">
-    <div class="stat"><div class="stat-n" id="s-done">0</div><div class="stat-l">Completed</div></div>
-    <div class="stat"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total Topics</div></div>
-    <div class="stat"><div class="stat-n">5</div><div class="stat-l">Phases</div></div>
-    <div class="stat"><div class="stat-n">20+</div><div class="stat-l">Modules</div></div>
-  </div>
+    <div class="stats-row">
+        <div class="stat">
+            <div class="stat-n" id="s-done">0</div>
+            <div class="stat-l">Completed</div>
+        </div>
+        <div class="stat">
+            <div class="stat-n" id="s-total">0</div>
+            <div class="stat-l">Total Topics</div>
+        </div>
+        <div class="stat">
+            <div class="stat-n">5</div>
+            <div class="stat-l">Phases</div>
+        </div>
+        <div class="stat">
+            <div class="stat-n">20+</div>
+            <div class="stat-l">Modules</div>
+        </div>
+    </div>
 </div>
 
 <div class="sticky-bar">
-  <span class="sticky-label">progress</span>
-  <div class="track"><div class="fill" id="fill"></div></div>
-  <span class="pct" id="pct-text">0 / 0</span>
+    <span class="sticky-label">progress</span>
+    <div class="track">
+        <div class="fill" id="fill"></div>
+    </div>
+    <span class="pct" id="pct-text">0 / 0</span>
 </div>
 
 <div class="container" id="app"></div>
@@ -168,339 +660,463 @@ footer{text-align:center;padding:40px;color:var(--text3);font-size:12px;font-fam
 <footer>✅ Tick what you complete · Consistency beats talent · thedurairaj.github.io</footer>
 
 <script>
-// Each item is either a string (simple), or {label, sub:[...]} (group with sub-items)
-const PHASES = [
-  {
-    id:"P1", cls:"ph1",
-    pill:"PHASE 1",
-    title:"Foundations",
-    sub:"0 → Confident",
-    modules:[
-      { id:"P1M0", icon:"📋", name:"MODULE 0 — Prerequisites Refresher (Must-Know)", items:[
-        "External iteration vs Internal iteration",
-        "for loop vs enhanced for loop",
-        "Iterable vs Iterator",
-        "Anonymous class vs Lambda (why change happened)",
-        "Imperative vs Declarative programming mindset",
-      ]},
-      { id:"P1M1", icon:"💧", name:"MODULE 1 — What Is a Stream? (Core Concept)", items:[
-        "What exactly is a Stream",
-        "Stream ≠ Collection (CRITICAL)",
-        {label:"Stream lifecycle", sub:["Source","Operations","Consumption"]},
-        "One-time use rule (why stream cannot be reused)",
-        "Lazy evaluation (nothing runs immediately)",
-      ]},
-      { id:"P1M2", icon:"🏗️", name:"MODULE 2 — Stream Creation (All Ways)", items:[
-        {label:"From Collections", sub:["collection.stream()","collection.parallelStream()"]},
-        {label:"From Arrays", sub:["Arrays.stream()"]},
-        "Using Stream.of()",
-        "Empty Streams",
-        {label:"Infinite Streams (intro)", sub:["Stream.generate()","Stream.iterate()"]},
-        {label:"Primitive Streams", sub:["IntStream","LongStream","DoubleStream"]},
-      ]},
-      { id:"P1M3", icon:"⚡", name:"MODULE 3 — Lambda Expressions (Fuel of Streams)", items:[
-        "What a lambda really is",
-        "Lambda syntax breakdown",
-        "Lambda vs Anonymous class",
-        "Effectively final variables",
-        "Method references (::)",
-      ]},
-      { id:"P1M4", icon:"🔗", name:"MODULE 4 — Stream Pipeline Anatomy", items:[
-        "Stream pipeline structure",
-        "Source → Intermediate → Terminal",
-        "Why intermediate ops don't execute immediately",
-        "Execution order inside pipeline",
-        "Why terminal operation is mandatory",
-      ]},
-      { id:"P1M5", icon:"🔧", name:"MODULE 5 — Intermediate Operations (Core Set)", items:[
-        "filter()","map()","flatMap() (basic only)","distinct()","sorted()","limit()","skip()","peek() (rules & warnings)",
-        "Stateless operations (intro)","Stateful operations (basic idea)",
-      ]},
-      { id:"P1M6", icon:"🏁", name:"MODULE 6 — Terminal Operations (Core Set)", items:[
-        "forEach()","toArray()","count()","min() / max()","findFirst() / findAny()",
-        "anyMatch()","allMatch()","noneMatch()","collect() (basic usage only)",
-      ]},
-      { id:"P1M7", icon:"➕", name:"MODULE 7 — reduce() (Thinking Like Streams)", items:[
-        "What reduce() actually does",
-        "Identity, Accumulator, Combiner",
-        "Reduce with numbers","Reduce with strings","Reduce with objects",
-        "Common beginner mistakes",
-      ]},
-      { id:"P1M8", icon:"🧱", name:"MODULE 8 — Streams with Custom Objects (Real Use)", items:[
-        "Filtering POJOs","Mapping object fields","Sorting by properties",
-        "Chaining multiple operations","Null-safe stream handling",
-      ]},
-      { id:"P1M9", icon:"⚖️", name:"MODULE 9 — Imperative vs Declarative Programming", items:[
-        "Traditional loops approach","Stream API approach",
-        "Readability comparison","Maintainability comparison","When NOT to use streams",
-      ]},
-      { id:"P1M10", icon:"⚠️", name:"MODULE 10 — Common Mistakes & Interview Traps", items:[
-        "Using streams for side effects","Misusing peek()","Modifying source collection",
-        "Nested streams misuse","Overusing streams where loops are better",
-      ]},
-    ]
-  },
-  {
-    id:"P2", cls:"ph2",
-    pill:"PHASE 2",
-    title:"Advanced Stream Operations",
-    sub:"Going deeper",
-    modules:[
-      { id:"P2M1", icon:"🗺️", name:"MODULE 1 — flatMap() Deep Dive (Critical Module)", items:[
-        "Why map() is not enough",
-        "One-to-many transformation problem",
-        "map() vs flatMap() (visual thinking)",
-        {label:"Flattening", sub:["List<List<T>>","Arrays inside objects","Optional streams"]},
-        "Real project use cases","Common mistakes with flatMap()",
-      ]},
-      { id:"P2M2", icon:"⚡", name:"MODULE 2 — Short-Circuiting Operations", items:[
-        "What 'short-circuiting' means",
-        {label:"Operations that stop the stream early", sub:["findFirst()","findAny()","anyMatch()","allMatch()","noneMatch()","limit()"]},
-        "Execution order with short-circuiting","Performance implications","Interview-level trick questions",
-      ]},
-      { id:"P2M3", icon:"📐", name:"MODULE 3 — Ordering & Encounter Order", items:[
-        "What is encounter order","Ordered vs unordered streams",
-        {label:"How source affects order", sub:["List","Set","Map"]},
-        "forEach() vs forEachOrdered()","How sorted() really works","Order behavior in parallel streams (intro)",
-      ]},
-      { id:"P2M4", icon:"🔒", name:"MODULE 4 — Stateful vs Stateless Operations (Deep)", items:[
-        {label:"Stateless operations", sub:["map()","filter()"]},
-        {label:"Stateful operations", sub:["distinct()","sorted()","limit() (sometimes)"]},
-        "Why stateful ops are dangerous","Impact on performance",
-        "Why stateful lambdas are a big NO","Interview traps around state",
-      ]},
-      { id:"P2M5", icon:"♾️", name:"MODULE 5 — Infinite Streams (Advanced Usage)", items:[
-        {label:"Revisiting infinite streams", sub:["Stream.generate()","Stream.iterate()"]},
-        {label:"Controlling infinite streams", sub:["limit()","takeWhile()"]},
-        "When infinite streams are useful","When they are a bad idea","Memory & performance concerns",
-      ]},
-      { id:"P2M6", icon:"🆕", name:"MODULE 6 — Java 9+ Stream Enhancements", items:[
-        "takeWhile()","dropWhile()","iterate(seed, predicate, next)","Stream.ofNullable()",
-        "Differences from Java 8 behavior","Backward-compatibility considerations",
-      ]},
-    ]
-  },
-  {
-    id:"P3", cls:"ph3",
-    pill:"PHASE 3",
-    title:"Collectors & Real Business Logic",
-    sub:"Real-world usage",
-    modules:[
-      { id:"P3M1", icon:"🧺", name:"MODULE 1 — Collectors Basics (Foundation)", items:[
-        "What is a Collector","Why collect() exists","Collector vs reduce()",
-        {label:"Common collectors", sub:["Collectors.toList()","Collectors.toSet()","Collectors.toCollection()"]},
-        "Mutability vs immutability discussion",
-      ]},
-      { id:"P3M2", icon:"🗂️", name:"MODULE 2 — toMap() (Most Error-Prone Collector)", items:[
-        "Basic toMap(keyMapper, valueMapper)","Handling duplicate keys (merge function)",
-        "Custom map suppliers","HashMap vs LinkedHashMap",
-        {label:"Common runtime exceptions", sub:["Duplicate key exception"]},
-        "Real-world examples (ID → Object mapping)",
-      ]},
-      { id:"P3M3", icon:"📊", name:"MODULE 3 — groupingBy() (Single Level)", items:[
-        "Why grouping is needed in business logic",
-        "groupingBy(classifier)","groupingBy(classifier, collector)",
-        {label:"Grouping by", sub:["Field","Derived value"]},
-        "Difference between groupingBy and toMap",
-      ]},
-      { id:"P3M4", icon:"📦", name:"MODULE 4 — groupingBy() (Multi-Level / Nested)", items:[
-        "Nested grouping","Map inside Map","Grouping with downstream collectors",
-        {label:"Real examples", sub:["Dept → Role → Employees"]},
-        "Performance & readability concerns",
-      ]},
-      { id:"P3M5", icon:"✂️", name:"MODULE 5 — partitioningBy()", items:[
-        "What partitioning means","partitioningBy(predicate)",
-        "Difference between partitioningBy and groupingBy","Boolean-based splitting",
-        {label:"Real use cases", sub:["Active / Inactive","Pass / Fail"]},
-      ]},
-      { id:"P3M6", icon:"🔨", name:"MODULE 6 — Downstream Collectors (Power Tools)", items:[
-        "What is a downstream collector",
-        {label:"Common downstream collectors", sub:["counting()","mapping()","summingInt()","averagingDouble()","maxBy() / minBy()"]},
-        "Combining collectors","Real reporting-style queries",
-      ]},
-      { id:"P3M7", icon:"🛠️", name:"MODULE 7 — Custom Collectors (Advanced but Important)", items:[
-        "Why custom collectors exist",
-        {label:"Collector components", sub:["Supplier","Accumulator","Combiner","Finisher"]},
-        "When NOT to write a custom collector","Simple custom collector examples","Parallel stream compatibility",
-      ]},
-    ]
-  },
-  {
-    id:"P4", cls:"ph4",
-    pill:"PHASE 4",
-    title:"Performance, Internals & Parallel Streams",
-    sub:"Under the hood",
-    modules:[
-      { id:"P4M1", icon:"⚙️", name:"MODULE 1 — Stream Internals (How Streams Really Work)", items:[
-        "Internal iteration model","Pull vs Push model",
-        "How streams process elements one by one","Pipeline fusion (why multiple ops don't mean multiple loops)",
-        "Why streams are not data structures","Role of Spliterator",
-      ]},
-      { id:"P4M2", icon:"😴", name:"MODULE 2 — Lazy Evaluation (Deep Dive)", items:[
-        "Why streams are lazy","When intermediate operations execute","Element-by-element processing",
-        {label:"Effect of operation order", sub:["filter → map","map → filter"]},
-        "Short-circuiting + laziness","Debugging lazy pipelines",
-      ]},
-      { id:"P4M3", icon:"📦", name:"MODULE 3 — Boxing vs Primitive Streams", items:[
-        "What boxing / unboxing really costs","Stream<Integer> vs IntStream","Performance differences",
-        {label:"Conversion methods", sub:["mapToInt()","boxed()"]},
-        "When primitive streams matter","When they don't",
-      ]},
-      { id:"P4M4", icon:"⚡", name:"MODULE 4 — Parallel Streams (Truth & Myths)", items:[
-        "What parallel streams are","ForkJoinPool basics","How data is split",
-        "When parallel streams help","When they make things worse",
-        "Thread-safety rules","forEach() vs forEachOrdered()",
-      ]},
-      { id:"P4M5", icon:"🚫", name:"MODULE 5 — Performance Anti-Patterns & Best Practices", items:[
-        "Using streams in hot loops","Heavy lambdas","Stateful lambdas","Excessive boxing","Misusing parallel streams",
-        "Streams vs traditional loops (real comparison)",
-        {label:"When to choose", sub:["for-loop","stream","parallel stream"]},
-      ]},
-    ]
-  },
-  {
-    id:"P5", cls:"ph5",
-    pill:"PHASE 5",
-    title:"Interview Mastery & Real-World Usage",
-    sub:"Job-ready skills",
-    modules:[
-      { id:"P5M1", icon:"🧩", name:"MODULE 1 — Stream Problem-Solving Patterns", items:[
-        "Filter → Map → Collect","Group → Aggregate → Transform","Flatten → Filter → Reduce",
-        "Match → Short-circuit","Sort → Limit → Extract",
-        {label:"Apply patterns to", sub:["Arrays","Lists","Maps","Nested objects"]},
-      ]},
-      { id:"P5M2", icon:"♻️", name:"MODULE 2 — Loop → Stream Refactoring (Real Code)", items:[
-        "Identifying loop patterns","Refactoring nested loops","Replacing flags & counters",
-        "When refactoring is a bad idea","Readability vs cleverness",
-      ]},
-      { id:"P5M3", icon:"🎯", name:"MODULE 3 — Tricky Interview Questions", items:[
-        "Stream reuse errors","Order-dependent behavior","findFirst() vs findAny()",
-        "forEach() vs forEachOrdered()","map() vs flatMap()","reduce() vs collect()","Parallel stream pitfalls",
-      ]},
-      { id:"P5M4", icon:"🌱", name:"MODULE 4 — Streams in Spring Boot Services", items:[
-        "Streams in service layer","Entity → DTO mapping",
-        {label:"Stream usage with", sub:["JPA results","Repositories"]},
-        "Transaction & lazy-loading considerations","When streams hide performance issues",
-      ]},
-      { id:"P5M5", icon:"🔍", name:"MODULE 5 — Debugging, Testing & Maintainability", items:[
-        "Debugging stream pipelines","Using peek() responsibly","Unit testing stream logic",
-        "Breaking complex streams for readability","Code review best practices",
-      ]},
-      { id:"P5M6", icon:"🌍", name:"MODULE 6 — Real-World Mini Scenarios", items:[
-        "Reporting logic (grouping + aggregation)","Filtering & transformation pipelines",
-        "Data cleanup & validation","API response shaping","Performance-sensitive scenarios",
-      ]},
-    ]
-  }
-];
+    // Each item is either a string (simple), or {label, sub:[...]} (group with sub-items)
+    const PHASES = [
+        {
+            id: "P1", cls: "ph1",
+            pill: "PHASE 1",
+            title: "Foundations",
+            sub: "0 → Confident",
+            modules: [
+                {
+                    id: "P1M0", icon: "📋", name: "MODULE 0 — Prerequisites Refresher (Must-Know)", items: [
+                        "External iteration vs Internal iteration",
+                        "for loop vs enhanced for loop",
+                        "Iterable vs Iterator",
+                        "Anonymous class vs Lambda (why change happened)",
+                        "Imperative vs Declarative programming mindset",
+                    ]
+                },
+                {
+                    id: "P1M1", icon: "💧", name: "MODULE 1 — What Is a Stream? (Core Concept)", items: [
+                        "What exactly is a Stream",
+                        "Stream ≠ Collection (CRITICAL)",
+                        {label: "Stream lifecycle", sub: ["Source", "Operations", "Consumption"]},
+                        "One-time use rule (why stream cannot be reused)",
+                        "Lazy evaluation (nothing runs immediately)",
+                    ]
+                },
+                {
+                    id: "P1M2", icon: "🏗️", name: "MODULE 2 — Stream Creation (All Ways)", items: [
+                        {label: "From Collections", sub: ["collection.stream()", "collection.parallelStream()"]},
+                        {label: "From Arrays", sub: ["Arrays.stream()"]},
+                        "Using Stream.of()",
+                        "Empty Streams",
+                        {label: "Infinite Streams (intro)", sub: ["Stream.generate()", "Stream.iterate()"]},
+                        {label: "Primitive Streams", sub: ["IntStream", "LongStream", "DoubleStream"]},
+                    ]
+                },
+                {
+                    id: "P1M3", icon: "⚡", name: "MODULE 3 — Lambda Expressions (Fuel of Streams)", items: [
+                        "What a lambda really is",
+                        "Lambda syntax breakdown",
+                        "Lambda vs Anonymous class",
+                        "Effectively final variables",
+                        "Method references (::)",
+                    ]
+                },
+                {
+                    id: "P1M4", icon: "🔗", name: "MODULE 4 — Stream Pipeline Anatomy", items: [
+                        "Stream pipeline structure",
+                        "Source → Intermediate → Terminal",
+                        "Why intermediate ops don't execute immediately",
+                        "Execution order inside pipeline",
+                        "Why terminal operation is mandatory",
+                    ]
+                },
+                {
+                    id: "P1M5", icon: "🔧", name: "MODULE 5 — Intermediate Operations (Core Set)", items: [
+                        "filter()", "map()", "flatMap() (basic only)", "distinct()", "sorted()", "limit()", "skip()", "peek() (rules & warnings)",
+                        "Stateless operations (intro)", "Stateful operations (basic idea)",
+                    ]
+                },
+                {
+                    id: "P1M6", icon: "🏁", name: "MODULE 6 — Terminal Operations (Core Set)", items: [
+                        "forEach()", "toArray()", "count()", "min() / max()", "findFirst() / findAny()",
+                        "anyMatch()", "allMatch()", "noneMatch()", "collect() (basic usage only)",
+                    ]
+                },
+                {
+                    id: "P1M7", icon: "➕", name: "MODULE 7 — reduce() (Thinking Like Streams)", items: [
+                        "What reduce() actually does",
+                        "Identity, Accumulator, Combiner",
+                        "Reduce with numbers", "Reduce with strings", "Reduce with objects",
+                        "Common beginner mistakes",
+                    ]
+                },
+                {
+                    id: "P1M8", icon: "🧱", name: "MODULE 8 — Streams with Custom Objects (Real Use)", items: [
+                        "Filtering POJOs", "Mapping object fields", "Sorting by properties",
+                        "Chaining multiple operations", "Null-safe stream handling",
+                    ]
+                },
+                {
+                    id: "P1M9", icon: "⚖️", name: "MODULE 9 — Imperative vs Declarative Programming", items: [
+                        "Traditional loops approach", "Stream API approach",
+                        "Readability comparison", "Maintainability comparison", "When NOT to use streams",
+                    ]
+                },
+                {
+                    id: "P1M10", icon: "⚠️", name: "MODULE 10 — Common Mistakes & Interview Traps", items: [
+                        "Using streams for side effects", "Misusing peek()", "Modifying source collection",
+                        "Nested streams misuse", "Overusing streams where loops are better",
+                    ]
+                },
+            ]
+        },
+        {
+            id: "P2", cls: "ph2",
+            pill: "PHASE 2",
+            title: "Advanced Stream Operations",
+            sub: "Going deeper",
+            modules: [
+                {
+                    id: "P2M1", icon: "🗺️", name: "MODULE 1 — flatMap() Deep Dive (Critical Module)", items: [
+                        "Why map() is not enough",
+                        "One-to-many transformation problem",
+                        "map() vs flatMap() (visual thinking)",
+                        {label: "Flattening", sub: ["List<List<T>>", "Arrays inside objects", "Optional streams"]},
+                        "Real project use cases", "Common mistakes with flatMap()",
+                    ]
+                },
+                {
+                    id: "P2M2", icon: "⚡", name: "MODULE 2 — Short-Circuiting Operations", items: [
+                        "What 'short-circuiting' means",
+                        {
+                            label: "Operations that stop the stream early",
+                            sub: ["findFirst()", "findAny()", "anyMatch()", "allMatch()", "noneMatch()", "limit()"]
+                        },
+                        "Execution order with short-circuiting", "Performance implications", "Interview-level trick questions",
+                    ]
+                },
+                {
+                    id: "P2M3", icon: "📐", name: "MODULE 3 — Ordering & Encounter Order", items: [
+                        "What is encounter order", "Ordered vs unordered streams",
+                        {label: "How source affects order", sub: ["List", "Set", "Map"]},
+                        "forEach() vs forEachOrdered()", "How sorted() really works", "Order behavior in parallel streams (intro)",
+                    ]
+                },
+                {
+                    id: "P2M4", icon: "🔒", name: "MODULE 4 — Stateful vs Stateless Operations (Deep)", items: [
+                        {label: "Stateless operations", sub: ["map()", "filter()"]},
+                        {label: "Stateful operations", sub: ["distinct()", "sorted()", "limit() (sometimes)"]},
+                        "Why stateful ops are dangerous", "Impact on performance",
+                        "Why stateful lambdas are a big NO", "Interview traps around state",
+                    ]
+                },
+                {
+                    id: "P2M5", icon: "♾️", name: "MODULE 5 — Infinite Streams (Advanced Usage)", items: [
+                        {label: "Revisiting infinite streams", sub: ["Stream.generate()", "Stream.iterate()"]},
+                        {label: "Controlling infinite streams", sub: ["limit()", "takeWhile()"]},
+                        "When infinite streams are useful", "When they are a bad idea", "Memory & performance concerns",
+                    ]
+                },
+                {
+                    id: "P2M6", icon: "🆕", name: "MODULE 6 — Java 9+ Stream Enhancements", items: [
+                        "takeWhile()", "dropWhile()", "iterate(seed, predicate, next)", "Stream.ofNullable()",
+                        "Differences from Java 8 behavior", "Backward-compatibility considerations",
+                    ]
+                },
+            ]
+        },
+        {
+            id: "P3", cls: "ph3",
+            pill: "PHASE 3",
+            title: "Collectors & Real Business Logic",
+            sub: "Real-world usage",
+            modules: [
+                {
+                    id: "P3M1", icon: "🧺", name: "MODULE 1 — Collectors Basics (Foundation)", items: [
+                        "What is a Collector", "Why collect() exists", "Collector vs reduce()",
+                        {
+                            label: "Common collectors",
+                            sub: ["Collectors.toList()", "Collectors.toSet()", "Collectors.toCollection()"]
+                        },
+                        "Mutability vs immutability discussion",
+                    ]
+                },
+                {
+                    id: "P3M2", icon: "🗂️", name: "MODULE 2 — toMap() (Most Error-Prone Collector)", items: [
+                        "Basic toMap(keyMapper, valueMapper)", "Handling duplicate keys (merge function)",
+                        "Custom map suppliers", "HashMap vs LinkedHashMap",
+                        {label: "Common runtime exceptions", sub: ["Duplicate key exception"]},
+                        "Real-world examples (ID → Object mapping)",
+                    ]
+                },
+                {
+                    id: "P3M3", icon: "📊", name: "MODULE 3 — groupingBy() (Single Level)", items: [
+                        "Why grouping is needed in business logic",
+                        "groupingBy(classifier)", "groupingBy(classifier, collector)",
+                        {label: "Grouping by", sub: ["Field", "Derived value"]},
+                        "Difference between groupingBy and toMap",
+                    ]
+                },
+                {
+                    id: "P3M4", icon: "📦", name: "MODULE 4 — groupingBy() (Multi-Level / Nested)", items: [
+                        "Nested grouping", "Map inside Map", "Grouping with downstream collectors",
+                        {label: "Real examples", sub: ["Dept → Role → Employees"]},
+                        "Performance & readability concerns",
+                    ]
+                },
+                {
+                    id: "P3M5", icon: "✂️", name: "MODULE 5 — partitioningBy()", items: [
+                        "What partitioning means", "partitioningBy(predicate)",
+                        "Difference between partitioningBy and groupingBy", "Boolean-based splitting",
+                        {label: "Real use cases", sub: ["Active / Inactive", "Pass / Fail"]},
+                    ]
+                },
+                {
+                    id: "P3M6", icon: "🔨", name: "MODULE 6 — Downstream Collectors (Power Tools)", items: [
+                        "What is a downstream collector",
+                        {
+                            label: "Common downstream collectors",
+                            sub: ["counting()", "mapping()", "summingInt()", "averagingDouble()", "maxBy() / minBy()"]
+                        },
+                        "Combining collectors", "Real reporting-style queries",
+                    ]
+                },
+                {
+                    id: "P3M7", icon: "🛠️", name: "MODULE 7 — Custom Collectors (Advanced but Important)", items: [
+                        "Why custom collectors exist",
+                        {label: "Collector components", sub: ["Supplier", "Accumulator", "Combiner", "Finisher"]},
+                        "When NOT to write a custom collector", "Simple custom collector examples", "Parallel stream compatibility",
+                    ]
+                },
+            ]
+        },
+        {
+            id: "P4", cls: "ph4",
+            pill: "PHASE 4",
+            title: "Performance, Internals & Parallel Streams",
+            sub: "Under the hood",
+            modules: [
+                {
+                    id: "P4M1", icon: "⚙️", name: "MODULE 1 — Stream Internals (How Streams Really Work)", items: [
+                        "Internal iteration model", "Pull vs Push model",
+                        "How streams process elements one by one", "Pipeline fusion (why multiple ops don't mean multiple loops)",
+                        "Why streams are not data structures", "Role of Spliterator",
+                    ]
+                },
+                {
+                    id: "P4M2", icon: "😴", name: "MODULE 2 — Lazy Evaluation (Deep Dive)", items: [
+                        "Why streams are lazy", "When intermediate operations execute", "Element-by-element processing",
+                        {label: "Effect of operation order", sub: ["filter → map", "map → filter"]},
+                        "Short-circuiting + laziness", "Debugging lazy pipelines",
+                    ]
+                },
+                {
+                    id: "P4M3", icon: "📦", name: "MODULE 3 — Boxing vs Primitive Streams", items: [
+                        "What boxing / unboxing really costs", "Stream<Integer> vs IntStream", "Performance differences",
+                        {label: "Conversion methods", sub: ["mapToInt()", "boxed()"]},
+                        "When primitive streams matter", "When they don't",
+                    ]
+                },
+                {
+                    id: "P4M4", icon: "⚡", name: "MODULE 4 — Parallel Streams (Truth & Myths)", items: [
+                        "What parallel streams are", "ForkJoinPool basics", "How data is split",
+                        "When parallel streams help", "When they make things worse",
+                        "Thread-safety rules", "forEach() vs forEachOrdered()",
+                    ]
+                },
+                {
+                    id: "P4M5", icon: "🚫", name: "MODULE 5 — Performance Anti-Patterns & Best Practices", items: [
+                        "Using streams in hot loops", "Heavy lambdas", "Stateful lambdas", "Excessive boxing", "Misusing parallel streams",
+                        "Streams vs traditional loops (real comparison)",
+                        {label: "When to choose", sub: ["for-loop", "stream", "parallel stream"]},
+                    ]
+                },
+            ]
+        },
+        {
+            id: "P5", cls: "ph5",
+            pill: "PHASE 5",
+            title: "Interview Mastery & Real-World Usage",
+            sub: "Job-ready skills",
+            modules: [
+                {
+                    id: "P5M1", icon: "🧩", name: "MODULE 1 — Stream Problem-Solving Patterns", items: [
+                        "Filter → Map → Collect", "Group → Aggregate → Transform", "Flatten → Filter → Reduce",
+                        "Match → Short-circuit", "Sort → Limit → Extract",
+                        {label: "Apply patterns to", sub: ["Arrays", "Lists", "Maps", "Nested objects"]},
+                    ]
+                },
+                {
+                    id: "P5M2", icon: "♻️", name: "MODULE 2 — Loop → Stream Refactoring (Real Code)", items: [
+                        "Identifying loop patterns", "Refactoring nested loops", "Replacing flags & counters",
+                        "When refactoring is a bad idea", "Readability vs cleverness",
+                    ]
+                },
+                {
+                    id: "P5M3", icon: "🎯", name: "MODULE 3 — Tricky Interview Questions", items: [
+                        "Stream reuse errors", "Order-dependent behavior", "findFirst() vs findAny()",
+                        "forEach() vs forEachOrdered()", "map() vs flatMap()", "reduce() vs collect()", "Parallel stream pitfalls",
+                    ]
+                },
+                {
+                    id: "P5M4", icon: "🌱", name: "MODULE 4 — Streams in Spring Boot Services", items: [
+                        "Streams in service layer", "Entity → DTO mapping",
+                        {label: "Stream usage with", sub: ["JPA results", "Repositories"]},
+                        "Transaction & lazy-loading considerations", "When streams hide performance issues",
+                    ]
+                },
+                {
+                    id: "P5M5", icon: "🔍", name: "MODULE 5 — Debugging, Testing & Maintainability", items: [
+                        "Debugging stream pipelines", "Using peek() responsibly", "Unit testing stream logic",
+                        "Breaking complex streams for readability", "Code review best practices",
+                    ]
+                },
+                {
+                    id: "P5M6", icon: "🌍", name: "MODULE 6 — Real-World Mini Scenarios", items: [
+                        "Reporting logic (grouping + aggregation)", "Filtering & transformation pipelines",
+                        "Data cleanup & validation", "API response shaping", "Performance-sensitive scenarios",
+                    ]
+                },
+            ]
+        }
+    ];
 
-const KEY='stream-syllabus-v1';
-let state={};
-try{state=JSON.parse(localStorage.getItem(KEY)||'{}');}catch{}
-function save(){localStorage.setItem(KEY,JSON.stringify(state));}
-
-// Flat lookup: mid -> module object, built once from PHASES data
-const MOD_MAP={};
-PHASES.forEach(p=>p.modules.forEach(m=>{MOD_MAP[m.id]=m;}));
-
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-
-function itemKey(mid,ii,si){return si===undefined?`${mid}-${ii}`:`${mid}-${ii}-s${si}`;}
-function isDone(mid,ii,si){return !!state[itemKey(mid,ii,si)];}
-function toggle(mid,ii,si){
-  const k=itemKey(mid,ii,si);
-  state[k]=!state[k];
-  // If parent toggled, also cascade to all sub-items using MOD_MAP (never touches DOM)
-  if(si===undefined){
-    const mod=MOD_MAP[mid];
-    if(mod){
-      const item=mod.items[ii];
-      if(item && Array.isArray(item.sub)){
-        item.sub.forEach((_,si2)=>{state[itemKey(mid,ii,si2)]=state[k];});
-      }
+    const KEY = 'stream-syllabus-v1';
+    let state = {};
+    try {
+        state = JSON.parse(localStorage.getItem(KEY) || '{}');
+    } catch {
     }
-  } else {
-    const mod=MOD_MAP[mid];
-    if(mod){
-      const item=mod.items[ii];
-      if(item && Array.isArray(item.sub)){
-        const allChecked=item.sub.every((_,si2)=>state[itemKey(mid,ii,si2)]);
-        state[itemKey(mid,ii)]=allChecked;
-      }
+
+    function save() {
+        localStorage.setItem(KEY, JSON.stringify(state));
     }
-  }
-  save();render();
-}
 
-function countAll(){
-  let total=0,done=0;
-  PHASES.forEach(p=>p.modules.forEach(m=>m.items.forEach((item,ii)=>{
-    total++;if(isDone(m.id,ii))done++;
-    if(item && typeof item==='object' && Array.isArray(item.sub))item.sub.forEach((_,si)=>{total++;if(isDone(m.id,ii,si))done++;});
-  })));
-  return{total,done};
-}
-function countPhase(p){
-  let total=0,done=0;
-  p.modules.forEach(m=>m.items.forEach((item,ii)=>{
-    total++;if(isDone(m.id,ii))done++;
-    if(item && typeof item==='object' && Array.isArray(item.sub))item.sub.forEach((_,si)=>{total++;if(isDone(m.id,ii,si))done++;});
-  }));
-  return{total,done};
-}
-function countMod(m){
-  let total=0,done=0;
-  m.items.forEach((item,ii)=>{
-    total++;if(isDone(m.id,ii))done++;
-    if(item && typeof item==='object' && Array.isArray(item.sub))item.sub.forEach((_,si)=>{total++;if(isDone(m.id,ii,si))done++;});
-  });
-  return{total,done};
-}
+    // Flat lookup: mid -> module object, built once from PHASES data
+    const MOD_MAP = {};
+    PHASES.forEach(p => p.modules.forEach(m => {
+        MOD_MAP[m.id] = m;
+    }));
 
-function resetAll(){if(confirm('Reset all progress?')){state={};save();render();}}
-function togglePhase(id){document.getElementById('pb-'+id).classList.toggle('open');}
-function toggleMod(id){document.getElementById('mc-'+id).classList.toggle('open');}
-
-function render(){
-  const openPhases = new Set();
-  const openMods = new Set();
-  const appEl = document.getElementById('app');
-  const hasExistingDOM = appEl && appEl.querySelector('.phase-block');
-  
-  if (hasExistingDOM) {
-    appEl.querySelectorAll('.phase-block.open').forEach(el => {
-      openPhases.add(el.id);
-    });
-    appEl.querySelectorAll('.mod-card.open').forEach(el => {
-      openMods.add(el.id);
-    });
-  } else {
-    let opened = false;
-    PHASES.forEach(p => {
-      const pt = countPhase(p);
-      if (!opened && pt.done < pt.total) {
-        openPhases.add('pb-' + p.id);
-        opened = true;
-      }
-    });
-    if (!opened && PHASES.length > 0) {
-      openPhases.add('pb-' + PHASES[PHASES.length - 1].id);
+    function esc(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
-  }
 
-  const{total,done}=countAll();
-  document.getElementById('s-done').textContent=done;
-  document.getElementById('s-total').textContent=total;
-  document.getElementById('pct-text').textContent=`${done} / ${total}`;
-  const pct=total?Math.round(done/total*100):0;
-  document.getElementById('fill').style.width=pct+'%';
+    function itemKey(mid, ii, si) {
+        return si === undefined ? `${mid}-${ii}` : `${mid}-${ii}-s${si}`;
+    }
 
-  document.getElementById('app').innerHTML=PHASES.map(p=>{
-    const pt=countPhase(p);
-    const ppct=pt.total?Math.round(pt.done/pt.total*100):0;
-    const allDone=pt.done===pt.total&&pt.total>0;
-    const isPhaseOpen = openPhases.has('pb-' + p.id) ? 'open' : '';
-    return `
+    function isDone(mid, ii, si) {
+        return !!state[itemKey(mid, ii, si)];
+    }
+
+    function toggle(mid, ii, si) {
+        const k = itemKey(mid, ii, si);
+        state[k] = !state[k];
+        // If parent toggled, also cascade to all sub-items using MOD_MAP (never touches DOM)
+        if (si === undefined) {
+            const mod = MOD_MAP[mid];
+            if (mod) {
+                const item = mod.items[ii];
+                if (item && Array.isArray(item.sub)) {
+                    item.sub.forEach((_, si2) => {
+                        state[itemKey(mid, ii, si2)] = state[k];
+                    });
+                }
+            }
+        } else {
+            const mod = MOD_MAP[mid];
+            if (mod) {
+                const item = mod.items[ii];
+                if (item && Array.isArray(item.sub)) {
+                    const allChecked = item.sub.every((_, si2) => state[itemKey(mid, ii, si2)]);
+                    state[itemKey(mid, ii)] = allChecked;
+                }
+            }
+        }
+        save();
+        render();
+    }
+
+    function countAll() {
+        let total = 0, done = 0;
+        PHASES.forEach(p => p.modules.forEach(m => m.items.forEach((item, ii) => {
+            total++;
+            if (isDone(m.id, ii)) done++;
+            if (item && typeof item === 'object' && Array.isArray(item.sub)) item.sub.forEach((_, si) => {
+                total++;
+                if (isDone(m.id, ii, si)) done++;
+            });
+        })));
+        return {total, done};
+    }
+
+    function countPhase(p) {
+        let total = 0, done = 0;
+        p.modules.forEach(m => m.items.forEach((item, ii) => {
+            total++;
+            if (isDone(m.id, ii)) done++;
+            if (item && typeof item === 'object' && Array.isArray(item.sub)) item.sub.forEach((_, si) => {
+                total++;
+                if (isDone(m.id, ii, si)) done++;
+            });
+        }));
+        return {total, done};
+    }
+
+    function countMod(m) {
+        let total = 0, done = 0;
+        m.items.forEach((item, ii) => {
+            total++;
+            if (isDone(m.id, ii)) done++;
+            if (item && typeof item === 'object' && Array.isArray(item.sub)) item.sub.forEach((_, si) => {
+                total++;
+                if (isDone(m.id, ii, si)) done++;
+            });
+        });
+        return {total, done};
+    }
+
+    function resetAll() {
+        if (confirm('Reset all progress?')) {
+            state = {};
+            save();
+            render();
+        }
+    }
+
+    function togglePhase(id) {
+        document.getElementById('pb-' + id).classList.toggle('open');
+    }
+
+    function toggleMod(id) {
+        document.getElementById('mc-' + id).classList.toggle('open');
+    }
+
+    function render() {
+        const openPhases = new Set();
+        const openMods = new Set();
+        const appEl = document.getElementById('app');
+        const hasExistingDOM = appEl && appEl.querySelector('.phase-block');
+
+        if (hasExistingDOM) {
+            appEl.querySelectorAll('.phase-block.open').forEach(el => {
+                openPhases.add(el.id);
+            });
+            appEl.querySelectorAll('.mod-card.open').forEach(el => {
+                openMods.add(el.id);
+            });
+        } else {
+            let opened = false;
+            PHASES.forEach(p => {
+                const pt = countPhase(p);
+                if (!opened && pt.done < pt.total) {
+                    openPhases.add('pb-' + p.id);
+                    opened = true;
+                }
+            });
+            if (!opened && PHASES.length > 0) {
+                openPhases.add('pb-' + PHASES[PHASES.length - 1].id);
+            }
+        }
+
+        const {total, done} = countAll();
+        document.getElementById('s-done').textContent = done;
+        document.getElementById('s-total').textContent = total;
+        document.getElementById('pct-text').textContent = `${done} / ${total}`;
+        const pct = total ? Math.round(done / total * 100) : 0;
+        document.getElementById('fill').style.width = pct + '%';
+
+        document.getElementById('app').innerHTML = PHASES.map(p => {
+            const pt = countPhase(p);
+            const ppct = pt.total ? Math.round(pt.done / pt.total * 100) : 0;
+            const allDone = pt.done === pt.total && pt.total > 0;
+            const isPhaseOpen = openPhases.has('pb-' + p.id) ? 'open' : '';
+            return `
     <div class="phase-block ${p.cls} ${isPhaseOpen}" id="pb-${p.id}">
       <div class="phase-label" onclick="togglePhase('${p.id}')">
         <span class="phase-pill">${p.pill}</span>
@@ -513,11 +1129,11 @@ function render(){
         <span class="phase-arrow">▶</span>
       </div>
       <div class="phase-modules">
-        ${allDone?`<div class="done-banner">✅ Phase Complete! Move to the next phase.</div>`:''}
-        ${p.modules.map(m=>{
-          const mt=countMod(m);
-          const isModOpen = openMods.has('mc-' + m.id) ? 'open' : '';
-          return `
+        ${allDone ? `<div class="done-banner">✅ Phase Complete! Move to the next phase.</div>` : ''}
+        ${p.modules.map(m => {
+                const mt = countMod(m);
+                const isModOpen = openMods.has('mc-' + m.id) ? 'open' : '';
+                return `
           <div class="mod-card ${isModOpen}" id="mc-${m.id}">
             <div class="mod-head" onclick="toggleMod('${m.id}')">
               <span class="mod-icon">${m.icon}</span>
@@ -526,34 +1142,34 @@ function render(){
               <span class="mod-arrow">▶</span>
             </div>
             <div class="mod-body">
-              ${m.items.map((item,ii)=>{
-                if(typeof item==='string'){
-                  return `<div class="check-item ${isDone(m.id,ii)?'done':''}" onclick="toggle('${m.id}',${ii})">
+              ${m.items.map((item, ii) => {
+                    if (typeof item === 'string') {
+                        return `<div class="check-item ${isDone(m.id, ii) ? 'done' : ''}" onclick="toggle('${m.id}',${ii})">
                     <div class="box"></div><div class="item-text">${esc(item)}</div>
                   </div>`;
-                } else {
-                  const parentDone=isDone(m.id,ii);
-                  return `
-                  <div class="check-item ${parentDone?'done':''}" onclick="toggle('${m.id}',${ii})">
+                    } else {
+                        const parentDone = isDone(m.id, ii);
+                        return `
+                  <div class="check-item ${parentDone ? 'done' : ''}" onclick="toggle('${m.id}',${ii})">
                     <div class="box"></div><div class="item-text">${esc(item.label)}</div>
                   </div>
                   <div class="sub-group">
-                    ${item.sub.map((s,si)=>`
-                    <div class="sub-check-item ${isDone(m.id,ii,si)?'done':''}" onclick="event.stopPropagation();toggle('${m.id}',${ii},${si})">
+                    ${item.sub.map((s, si) => `
+                    <div class="sub-check-item ${isDone(m.id, ii, si) ? 'done' : ''}" onclick="event.stopPropagation();toggle('${m.id}',${ii},${si})">
                       <div class="sub-box"></div><div class="sub-item-text">${esc(s)}</div>
                     </div>`).join('')}
                   </div>`;
-                }
-              }).join('')}
+                    }
+                }).join('')}
             </div>
           </div>`;
-        }).join('')}
+            }).join('')}
       </div>
     </div>`;
-  }).join('');
-}
+        }).join('');
+    }
 
-render();
+    render();
 </script>
 </body>
 </html>

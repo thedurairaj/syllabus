@@ -1,124 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hibernate & JPA — Complete Syllabus</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#f7f8fa;--white:#ffffff;--border:#e4e7ed;--border2:#d0d5de;
-  --text:#1a1d27;--text2:#5a6175;--text3:#9aa0b4;
-  --green:#16a34a;--green-bg:#f0fdf4;--green-border:#bbf7d0;
-  --accent:#2563eb;--amber:#d97706;--red:#dc2626;--purple:#7c3aed;--teal:#0891b2;--orange:#ea580c;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hibernate & JPA — Complete Syllabus</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f7f8fa;
+            --white: #ffffff;
+            --border: #e4e7ed;
+            --border2: #d0d5de;
+            --text: #1a1d27;
+            --text2: #5a6175;
+            --text3: #9aa0b4;
+            --green: #16a34a;
+            --green-bg: #f0fdf4;
+            --green-border: #bbf7d0;
+            --accent: #2563eb;
+            --amber: #d97706;
+            --red: #dc2626;
+            --purple: #7c3aed;
+            --teal: #0891b2;
+            --orange: #ea580c;
+        }
 
-.header{background:var(--white);border-bottom:1px solid var(--border);padding:36px 40px 28px;}
-.header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;}
-.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
-.badge{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:20px;border:1px solid var(--green-border);background:var(--green-bg);color:var(--green);}
-.badge.blue{border-color:#bfdbfe;background:#eff6ff;color:var(--accent);}
-.badge.amber{border-color:#fde68a;background:#fffbeb;color:var(--amber);}
-h1{font-size:clamp(22px,4vw,34px);font-weight:600;color:var(--text);letter-spacing:-.3px;margin-bottom:6px;}
-.subtitle{font-size:14px;color:var(--text2);font-weight:300;margin-bottom:24px;}
-.stats-row{display:flex;gap:24px;flex-wrap:wrap;}
-.stat{text-align:center;}
-.stat-n{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;color:var(--text);}
-.stat-l{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-top:1px;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.sticky-bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);border-bottom:1px solid var(--border);padding:12px 40px;backdrop-filter:blur(8px);display:flex;align-items:center;gap:16px;}
-.sticky-label{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace;white-space:nowrap;}
-.track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
-.fill{height:100%;background:linear-gradient(90deg,#7c3aed,#2563eb);border-radius:3px;transition:width .4s;width:0;}
-.pct{font-size:12px;font-weight:600;color:var(--accent);font-family:'JetBrains Mono',monospace;white-space:nowrap;min-width:48px;text-align:right;}
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.6;
+        }
 
-.container{max-width:860px;margin:0 auto;padding:36px 24px;}
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 36px 40px 28px;
+        }
 
-/* GROUPS — 5 colour bands */
-.group-block{margin-bottom:10px;}
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
 
-/* PHASE CARD */
-.phase-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px;}
-.phase-head{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;}
-.phase-head:hover{background:var(--bg);}
-.phase-num{flex-shrink:0;width:34px;height:34px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;}
-.phase-meta{flex:1;}
-.phase-title{font-size:14px;font-weight:500;color:var(--text);}
-.phase-prog{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3);min-width:32px;text-align:right;}
-.mini-track{width:48px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
-.mini-fill{height:100%;border-radius:2px;transition:width .3s;}
-.ph-arrow{font-size:10px;color:var(--text3);transition:transform .2s;margin-left:4px;}
-.phase-card.open .ph-arrow{transform:rotate(90deg);}
-.phase-body{display:none;border-top:1px solid var(--border);padding:4px 18px 12px;}
-.phase-card.open .phase-body{display:block;}
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
 
-/* CHECKLIST */
-.check-item{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s;}
-.check-item:last-child{border-bottom:none;}
-.check-item:hover{opacity:.8;}
-.box{flex-shrink:0;width:18px;height:18px;border:1.5px solid var(--border2);border-radius:4px;margin-top:3px;display:flex;align-items:center;justify-content:center;transition:all .18s;}
-.check-item.done .box{background:var(--green);border-color:var(--green);}
-.box::after{content:'';display:none;width:4px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);}
-.check-item.done .box::after{display:block;}
-.item-text{font-size:13.5px;color:var(--text);transition:color .18s;padding-top:1px;}
-.check-item.done .item-text{color:var(--text3);text-decoration:line-through;}
+        .badge {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--green-border);
+            background: var(--green-bg);
+            color: var(--green);
+        }
 
-/* done banner */
-.done-banner{margin-bottom:4px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:8px 14px;font-size:12px;color:var(--green);display:flex;align-items:center;gap:6px;}
+        .badge.blue {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+            color: var(--accent);
+        }
 
-/* colour bands — 6 rotating colours for 31 phases */
-.c0 .phase-num{background:#fdf4ff;color:#86198f;border:1px solid #f0abfc;}
-.c0 .mini-fill{background:var(--purple);}
-.c1 .phase-num{background:#eff6ff;color:#1d4ed8;border:1px solid #93c5fd;}
-.c1 .mini-fill{background:var(--accent);}
-.c2 .phase-num{background:#f0fdf4;color:#15803d;border:1px solid #86efac;}
-.c2 .mini-fill{background:var(--green);}
-.c3 .phase-num{background:#fff7ed;color:#c2410c;border:1px solid #fdba74;}
-.c3 .mini-fill{background:var(--orange);}
-.c4 .phase-num{background:#f0fdfa;color:#0f766e;border:1px solid #5eead4;}
-.c4 .mini-fill{background:var(--teal);}
-.c5 .phase-num{background:#fef2f2;color:#b91c1c;border:1px solid #fca5a5;}
-.c5 .mini-fill{background:var(--red);}
+        .badge.amber {
+            border-color: #fde68a;
+            background: #fffbeb;
+            color: var(--amber);
+        }
 
-.reset-btn{background:none;border:1px solid var(--border2);color:var(--text3);padding:7px 14px;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;}
-.reset-btn:hover{border-color:var(--red);color:var(--red);}
+        h1 {
+            font-size: clamp(22px, 4vw, 34px);
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -.3px;
+            margin-bottom: 6px;
+        }
 
-footer{text-align:center;padding:40px;color:var(--text3);font-size:12px;font-family:'JetBrains Mono',monospace;border-top:1px solid var(--border);}
-@media(max-width:600px){
-  .header{padding:28px 20px 22px;}
-  .sticky-bar{padding:10px 20px;}
-  .container{padding:24px 14px;}
-}
-</style>
+        .subtitle {
+            font-size: 14px;
+            color: var(--text2);
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-n {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .stat-l {
+            font-size: 11px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            margin-top: 1px;
+        }
+
+        .sticky-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 40px;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sticky-label {
+            font-size: 12px;
+            color: var(--text3);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+
+        .track {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7c3aed, #2563eb);
+            border-radius: 3px;
+            transition: width .4s;
+            width: 0;
+        }
+
+        .pct {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+            min-width: 48px;
+            text-align: right;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 36px 24px;
+        }
+
+        /* GROUPS — 5 colour bands */
+        .group-block {
+            margin-bottom: 10px;
+        }
+
+        /* PHASE CARD */
+        .phase-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .phase-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            cursor: pointer;
+            user-select: none;
+            transition: background .15s;
+        }
+
+        .phase-head:hover {
+            background: var(--bg);
+        }
+
+        .phase-num {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phase-meta {
+            flex: 1;
+        }
+
+        .phase-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .phase-prog {
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text3);
+            min-width: 32px;
+            text-align: right;
+        }
+
+        .mini-track {
+            width: 48px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .mini-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width .3s;
+        }
+
+        .ph-arrow {
+            font-size: 10px;
+            color: var(--text3);
+            transition: transform .2s;
+            margin-left: 4px;
+        }
+
+        .phase-card.open .ph-arrow {
+            transform: rotate(90deg);
+        }
+
+        .phase-body {
+            display: none;
+            border-top: 1px solid var(--border);
+            padding: 4px 18px 12px;
+        }
+
+        .phase-card.open .phase-body {
+            display: block;
+        }
+
+        /* CHECKLIST */
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: opacity .15s;
+        }
+
+        .check-item:last-child {
+            border-bottom: none;
+        }
+
+        .check-item:hover {
+            opacity: .8;
+        }
+
+        .box {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--border2);
+            border-radius: 4px;
+            margin-top: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .18s;
+        }
+
+        .check-item.done .box {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .box::after {
+            content: '';
+            display: none;
+            width: 4px;
+            height: 8px;
+            border: 2px solid #fff;
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg) translate(-1px, -1px);
+        }
+
+        .check-item.done .box::after {
+            display: block;
+        }
+
+        .item-text {
+            font-size: 13.5px;
+            color: var(--text);
+            transition: color .18s;
+            padding-top: 1px;
+        }
+
+        .check-item.done .item-text {
+            color: var(--text3);
+            text-decoration: line-through;
+        }
+
+        /* done banner */
+        .done-banner {
+            margin-bottom: 4px;
+            background: var(--green-bg);
+            border: 1px solid var(--green-border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* colour bands — 6 rotating colours for 31 phases */
+        .c0 .phase-num {
+            background: #fdf4ff;
+            color: #86198f;
+            border: 1px solid #f0abfc;
+        }
+
+        .c0 .mini-fill {
+            background: var(--purple);
+        }
+
+        .c1 .phase-num {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #93c5fd;
+        }
+
+        .c1 .mini-fill {
+            background: var(--accent);
+        }
+
+        .c2 .phase-num {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        .c2 .mini-fill {
+            background: var(--green);
+        }
+
+        .c3 .phase-num {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+        }
+
+        .c3 .mini-fill {
+            background: var(--orange);
+        }
+
+        .c4 .phase-num {
+            background: #f0fdfa;
+            color: #0f766e;
+            border: 1px solid #5eead4;
+        }
+
+        .c4 .mini-fill {
+            background: var(--teal);
+        }
+
+        .c5 .phase-num {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+        }
+
+        .c5 .mini-fill {
+            background: var(--red);
+        }
+
+        .reset-btn {
+            background: none;
+            border: 1px solid var(--border2);
+            color: var(--text3);
+            padding: 7px 14px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .reset-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text3);
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 28px 20px 22px;
+            }
+
+            .sticky-bar {
+                padding: 10px 20px;
+            }
+
+            .container {
+                padding: 24px 14px;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-top">
-    <div>
-      <div class="badge-row">
-        <span class="badge">📘 Hibernate & JPA</span>
-        <span class="badge blue">31 Phases</span>
-        <span class="badge amber">ORM Mastery</span>
-      </div>
-      <h1>Hibernate & JPA</h1>
-      <p class="subtitle">Complete Syllabus — Data Persistence to Best Practices</p>
+    <div class="header-top">
+        <div>
+            <div class="badge-row">
+                <span class="badge">📘 Hibernate & JPA</span>
+                <span class="badge blue">31 Phases</span>
+                <span class="badge amber">ORM Mastery</span>
+            </div>
+            <h1>Hibernate & JPA</h1>
+            <p class="subtitle">Complete Syllabus — Data Persistence to Best Practices</p>
+        </div>
+        <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
     </div>
-    <button class="reset-btn" onclick="resetAll()">↺ Reset All</button>
-  </div>
-  <div class="stats-row">
-    <div class="stat"><div class="stat-n" id="s-done">0</div><div class="stat-l">Completed</div></div>
-    <div class="stat"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total Topics</div></div>
-    <div class="stat"><div class="stat-n">31</div><div class="stat-l">Phases</div></div>
-  </div>
+    <div class="stats-row">
+        <div class="stat">
+            <div class="stat-n" id="s-done">0</div>
+            <div class="stat-l">Completed</div>
+        </div>
+        <div class="stat">
+            <div class="stat-n" id="s-total">0</div>
+            <div class="stat-l">Total Topics</div>
+        </div>
+        <div class="stat">
+            <div class="stat-n">31</div>
+            <div class="stat-l">Phases</div>
+        </div>
+    </div>
 </div>
 
 <div class="sticky-bar">
-  <span class="sticky-label">progress</span>
-  <div class="track"><div class="fill" id="fill"></div></div>
-  <span class="pct" id="pct-text">0 / 0</span>
+    <span class="sticky-label">progress</span>
+    <div class="track">
+        <div class="fill" id="fill"></div>
+    </div>
+    <span class="pct" id="pct-text">0 / 0</span>
 </div>
 
 <div class="container" id="app"></div>
@@ -126,77 +495,225 @@ footer{text-align:center;padding:40px;color:var(--text3);font-size:12px;font-fam
 <footer>✅ Tick what you complete · Hibernate rewards patience · thedurairaj.github.io</footer>
 
 <script>
-const PHASES=[
-  {id:"P01",title:"Data Persistence Fundamentals",items:["Data Persistence concept","Data, Medium, Storage","File System vs Database","Problems with File Storage","Database Advantages","JDBC Overview","JDBC Limitations","Object–Relational Mismatch","Need for ORM"]},
-  {id:"P02",title:"ORM & Hibernate Introduction",items:["ORM concept","ORM tools overview","Introduction to Hibernate","Hibernate advantages","Hibernate vs JDBC"]},
-  {id:"P03",title:"JPA Overview",items:["JPA introduction","JPA as specification","JPA providers","Hibernate as JPA provider","JPA vs Hibernate"]},
-  {id:"P04",title:"Hibernate Architecture & Core Objects",items:["Hibernate architecture","SessionFactory","Session","Transaction","Hibernate execution flow"]},
-  {id:"P05",title:"Entity Lifecycle",items:["Transient state","Persistent state","Detached state","State transitions"]},
-  {id:"P06",title:"Hibernate Configuration",items:["hibernate.cfg.xml","Database connection properties","Hibernate properties","Dialect","show_sql","hbm2ddl.auto"]},
-  {id:"P07",title:"ORM Mapping (XML)",items:["Mapping concept","Mapping file (.hbm.xml)","Class mapping","Table mapping","Column mapping","Primary key mapping"]},
-  {id:"P08",title:"JPA Annotations (Basic Mapping)",items:["@Entity","@Table","@Id","@Column","@Transient"]},
-  {id:"P09",title:"CRUD Operations",items:["Insert operation","Select operation","Update operation","Delete operation","get() vs load()","find() vs getReference()"]},
-  {id:"P10",title:"DAO Layer Design",items:["DAO pattern","DAO interface","DAO implementation","Hibernate DAO","JPA DAO"]},
-  {id:"P11",title:"Primary Key Generation",items:["@GeneratedValue","GenerationType.AUTO","GenerationType.IDENTITY","GenerationType.SEQUENCE","GenerationType.TABLE"]},
-  {id:"P12",title:"Sequence Generator",items:["@SequenceGenerator","Default sequence","Custom sequence","Allocation size"]},
-  {id:"P13",title:"Hibernate Cache – Level 1",items:["Cache concept","Level 1 Cache","Cache lookup flow","Cache eviction","Cache refresh"]},
-  {id:"P14",title:"Hibernate Cache – Level 2",items:["Level 2 cache concept","Cache providers","EHCache","Cache regions"]},
-  {id:"P15",title:"Query Cache",items:["Query cache concept","Enabling query cache","Cacheable queries"]},
-  {id:"P16",title:"JPQL Basics",items:["JPQL introduction","JPQL vs SQL","Select queries","Where clause","Parameters"]},
-  {id:"P17",title:"JPQL Advanced",items:["Update queries","Delete queries","TypedQuery","Partial select","Result handling"]},
-  {id:"P18",title:"Native SQL Queries",items:["Native query concept","createNativeQuery()","Result mapping","NamedQuery","NamedNativeQuery"]},
-  {id:"P19",title:"Criteria API",items:["Criteria API overview","CriteriaBuilder","CriteriaQuery","Root","Predicates","Dynamic queries"]},
-  {id:"P20",title:"Stored Procedures",items:["Stored procedure concept","Calling stored procedures in JPA","@NamedStoredProcedureQuery","IN / OUT parameters"]},
-  {id:"P21",title:"Relationships – Basics",items:["Relationship concept","Cascade types","Fetch types"]},
-  {id:"P22",title:"One-to-Many Relationship",items:["One-to-Many concept","@OneToMany","@JoinColumn","Cascade & Fetch","Practical mapping"]},
-  {id:"P23",title:"Many-to-One Relationship",items:["Many-to-One concept","@ManyToOne","Cascade behavior","Fetch behavior"]},
-  {id:"P24",title:"Bidirectional Mapping",items:["Bidirectional relationship","mappedBy","Owning side","Inverse side"]},
-  {id:"P25",title:"Many-to-Many Relationship",items:["Many-to-Many concept","Join table","@ManyToMany","@JoinTable","Bidirectional mapping"]},
-  {id:"P26",title:"Many-to-Many CRUD",items:["Save operation","Fetch operation","Remove operation","Cascade issues","Best practices"]},
-  {id:"P27",title:"One-to-One Relationship",items:["One-to-One concept","@OneToOne","Foreign key strategy","Shared primary key"]},
-  {id:"P28",title:"JPQL JOIN Queries",items:["JOIN concept","JOIN with collections","JOIN with target entity","Partial select with JOIN"]},
-  {id:"P29",title:"Locking",items:["Locking concept","Optimistic locking","Pessimistic locking"]},
-  {id:"P30",title:"Lazy Loading & Proxies",items:["Lazy loading","Proxy objects","LazyInitializationException"]},
-  {id:"P31",title:"Hibernate Best Practices",items:["Wrapper vs primitive types","Transaction management","Performance optimization","Real-time project guidelines"]},
-];
+    const PHASES = [
+        {
+            id: "P01",
+            title: "Data Persistence Fundamentals",
+            items: ["Data Persistence concept", "Data, Medium, Storage", "File System vs Database", "Problems with File Storage", "Database Advantages", "JDBC Overview", "JDBC Limitations", "Object–Relational Mismatch", "Need for ORM"]
+        },
+        {
+            id: "P02",
+            title: "ORM & Hibernate Introduction",
+            items: ["ORM concept", "ORM tools overview", "Introduction to Hibernate", "Hibernate advantages", "Hibernate vs JDBC"]
+        },
+        {
+            id: "P03",
+            title: "JPA Overview",
+            items: ["JPA introduction", "JPA as specification", "JPA providers", "Hibernate as JPA provider", "JPA vs Hibernate"]
+        },
+        {
+            id: "P04",
+            title: "Hibernate Architecture & Core Objects",
+            items: ["Hibernate architecture", "SessionFactory", "Session", "Transaction", "Hibernate execution flow"]
+        },
+        {
+            id: "P05",
+            title: "Entity Lifecycle",
+            items: ["Transient state", "Persistent state", "Detached state", "State transitions"]
+        },
+        {
+            id: "P06",
+            title: "Hibernate Configuration",
+            items: ["hibernate.cfg.xml", "Database connection properties", "Hibernate properties", "Dialect", "show_sql", "hbm2ddl.auto"]
+        },
+        {
+            id: "P07",
+            title: "ORM Mapping (XML)",
+            items: ["Mapping concept", "Mapping file (.hbm.xml)", "Class mapping", "Table mapping", "Column mapping", "Primary key mapping"]
+        },
+        {
+            id: "P08",
+            title: "JPA Annotations (Basic Mapping)",
+            items: ["@Entity", "@Table", "@Id", "@Column", "@Transient"]
+        },
+        {
+            id: "P09",
+            title: "CRUD Operations",
+            items: ["Insert operation", "Select operation", "Update operation", "Delete operation", "get() vs load()", "find() vs getReference()"]
+        },
+        {
+            id: "P10",
+            title: "DAO Layer Design",
+            items: ["DAO pattern", "DAO interface", "DAO implementation", "Hibernate DAO", "JPA DAO"]
+        },
+        {
+            id: "P11",
+            title: "Primary Key Generation",
+            items: ["@GeneratedValue", "GenerationType.AUTO", "GenerationType.IDENTITY", "GenerationType.SEQUENCE", "GenerationType.TABLE"]
+        },
+        {
+            id: "P12",
+            title: "Sequence Generator",
+            items: ["@SequenceGenerator", "Default sequence", "Custom sequence", "Allocation size"]
+        },
+        {
+            id: "P13",
+            title: "Hibernate Cache – Level 1",
+            items: ["Cache concept", "Level 1 Cache", "Cache lookup flow", "Cache eviction", "Cache refresh"]
+        },
+        {
+            id: "P14",
+            title: "Hibernate Cache – Level 2",
+            items: ["Level 2 cache concept", "Cache providers", "EHCache", "Cache regions"]
+        },
+        {id: "P15", title: "Query Cache", items: ["Query cache concept", "Enabling query cache", "Cacheable queries"]},
+        {
+            id: "P16",
+            title: "JPQL Basics",
+            items: ["JPQL introduction", "JPQL vs SQL", "Select queries", "Where clause", "Parameters"]
+        },
+        {
+            id: "P17",
+            title: "JPQL Advanced",
+            items: ["Update queries", "Delete queries", "TypedQuery", "Partial select", "Result handling"]
+        },
+        {
+            id: "P18",
+            title: "Native SQL Queries",
+            items: ["Native query concept", "createNativeQuery()", "Result mapping", "NamedQuery", "NamedNativeQuery"]
+        },
+        {
+            id: "P19",
+            title: "Criteria API",
+            items: ["Criteria API overview", "CriteriaBuilder", "CriteriaQuery", "Root", "Predicates", "Dynamic queries"]
+        },
+        {
+            id: "P20",
+            title: "Stored Procedures",
+            items: ["Stored procedure concept", "Calling stored procedures in JPA", "@NamedStoredProcedureQuery", "IN / OUT parameters"]
+        },
+        {id: "P21", title: "Relationships – Basics", items: ["Relationship concept", "Cascade types", "Fetch types"]},
+        {
+            id: "P22",
+            title: "One-to-Many Relationship",
+            items: ["One-to-Many concept", "@OneToMany", "@JoinColumn", "Cascade & Fetch", "Practical mapping"]
+        },
+        {
+            id: "P23",
+            title: "Many-to-One Relationship",
+            items: ["Many-to-One concept", "@ManyToOne", "Cascade behavior", "Fetch behavior"]
+        },
+        {
+            id: "P24",
+            title: "Bidirectional Mapping",
+            items: ["Bidirectional relationship", "mappedBy", "Owning side", "Inverse side"]
+        },
+        {
+            id: "P25",
+            title: "Many-to-Many Relationship",
+            items: ["Many-to-Many concept", "Join table", "@ManyToMany", "@JoinTable", "Bidirectional mapping"]
+        },
+        {
+            id: "P26",
+            title: "Many-to-Many CRUD",
+            items: ["Save operation", "Fetch operation", "Remove operation", "Cascade issues", "Best practices"]
+        },
+        {
+            id: "P27",
+            title: "One-to-One Relationship",
+            items: ["One-to-One concept", "@OneToOne", "Foreign key strategy", "Shared primary key"]
+        },
+        {
+            id: "P28",
+            title: "JPQL JOIN Queries",
+            items: ["JOIN concept", "JOIN with collections", "JOIN with target entity", "Partial select with JOIN"]
+        },
+        {id: "P29", title: "Locking", items: ["Locking concept", "Optimistic locking", "Pessimistic locking"]},
+        {
+            id: "P30",
+            title: "Lazy Loading & Proxies",
+            items: ["Lazy loading", "Proxy objects", "LazyInitializationException"]
+        },
+        {
+            id: "P31",
+            title: "Hibernate Best Practices",
+            items: ["Wrapper vs primitive types", "Transaction management", "Performance optimization", "Real-time project guidelines"]
+        },
+    ];
 
-const KEY='hibernate-syllabus-v1';
-let state={};
-try{state=JSON.parse(localStorage.getItem(KEY)||'{}');}catch{}
-function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+    const KEY = 'hibernate-syllabus-v1';
+    let state = {};
+    try {
+        state = JSON.parse(localStorage.getItem(KEY) || '{}');
+    } catch {
+    }
 
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function ikey(pid,ii){return `${pid}-${ii}`;}
-function isDone(pid,ii){return !!state[ikey(pid,ii)];}
-function toggle(pid,ii){state[ikey(pid,ii)]=!state[ikey(pid,ii)];save();render();}
-function resetAll(){if(confirm('Reset all progress?')){state={};save();render();}}
-function togglePhase(id){document.getElementById('pc-'+id).classList.toggle('open');}
+    function save() {
+        localStorage.setItem(KEY, JSON.stringify(state));
+    }
 
-function totals(){
-  let t=0,d=0;
-  PHASES.forEach(p=>p.items.forEach((_,ii)=>{t++;if(isDone(p.id,ii))d++;}));
-  return{total:t,done:d};
-}
-function phaseTotals(p){
-  let t=0,d=0;
-  p.items.forEach((_,ii)=>{t++;if(isDone(p.id,ii))d++;});
-  return{total:t,done:d};
-}
+    function esc(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
-function render(){
-  const{total,done}=totals();
-  document.getElementById('s-done').textContent=done;
-  document.getElementById('s-total').textContent=total;
-  document.getElementById('pct-text').textContent=`${done} / ${total}`;
-  document.getElementById('fill').style.width=(total?Math.round(done/total*100):0)+'%';
+    function ikey(pid, ii) {
+        return `${pid}-${ii}`;
+    }
 
-  document.getElementById('app').innerHTML=PHASES.map((p,pi)=>{
-    const{total:pt,done:pd}=phaseTotals(p);
-    const ppct=pt?Math.round(pd/pt*100):0;
-    const allDone=pd===pt&&pt>0;
-    const col='c'+(pi%6);
-    const num=String(pi+1).padStart(2,'0');
-    return `
+    function isDone(pid, ii) {
+        return !!state[ikey(pid, ii)];
+    }
+
+    function toggle(pid, ii) {
+        state[ikey(pid, ii)] = !state[ikey(pid, ii)];
+        save();
+        render();
+    }
+
+    function resetAll() {
+        if (confirm('Reset all progress?')) {
+            state = {};
+            save();
+            render();
+        }
+    }
+
+    function togglePhase(id) {
+        document.getElementById('pc-' + id).classList.toggle('open');
+    }
+
+    function totals() {
+        let t = 0, d = 0;
+        PHASES.forEach(p => p.items.forEach((_, ii) => {
+            t++;
+            if (isDone(p.id, ii)) d++;
+        }));
+        return {total: t, done: d};
+    }
+
+    function phaseTotals(p) {
+        let t = 0, d = 0;
+        p.items.forEach((_, ii) => {
+            t++;
+            if (isDone(p.id, ii)) d++;
+        });
+        return {total: t, done: d};
+    }
+
+    function render() {
+        const {total, done} = totals();
+        document.getElementById('s-done').textContent = done;
+        document.getElementById('s-total').textContent = total;
+        document.getElementById('pct-text').textContent = `${done} / ${total}`;
+        document.getElementById('fill').style.width = (total ? Math.round(done / total * 100) : 0) + '%';
+
+        document.getElementById('app').innerHTML = PHASES.map((p, pi) => {
+            const {total: pt, done: pd} = phaseTotals(p);
+            const ppct = pt ? Math.round(pd / pt * 100) : 0;
+            const allDone = pd === pt && pt > 0;
+            const col = 'c' + (pi % 6);
+            const num = String(pi + 1).padStart(2, '0');
+            return `
     <div class="phase-card ${col}" id="pc-${p.id}">
       <div class="phase-head" onclick="togglePhase('${p.id}')">
         <div class="phase-num">${num}</div>
@@ -208,26 +725,29 @@ function render(){
         <span class="ph-arrow">▶</span>
       </div>
       <div class="phase-body">
-        ${allDone?`<div class="done-banner">✅ Phase complete!</div>`:''}
-        ${p.items.map((item,ii)=>`
-        <div class="check-item ${isDone(p.id,ii)?'done':''}" onclick="toggle('${p.id}',${ii})">
+        ${allDone ? `<div class="done-banner">✅ Phase complete!</div>` : ''}
+        ${p.items.map((item, ii) => `
+        <div class="check-item ${isDone(p.id, ii) ? 'done' : ''}" onclick="toggle('${p.id}',${ii})">
           <div class="box"></div>
           <div class="item-text">${esc(item)}</div>
         </div>`).join('')}
       </div>
     </div>`;
-  }).join('');
+        }).join('');
 
-  // auto-open first incomplete phase
-  let opened=false;
-  PHASES.forEach(p=>{
-    const{total:pt,done:pd}=phaseTotals(p);
-    if(!opened&&pd<pt){document.getElementById('pc-'+p.id).classList.add('open');opened=true;}
-  });
-  if(!opened) document.getElementById('pc-'+PHASES[PHASES.length-1].id).classList.add('open');
-}
+        // auto-open first incomplete phase
+        let opened = false;
+        PHASES.forEach(p => {
+            const {total: pt, done: pd} = phaseTotals(p);
+            if (!opened && pd < pt) {
+                document.getElementById('pc-' + p.id).classList.add('open');
+                opened = true;
+            }
+        });
+        if (!opened) document.getElementById('pc-' + PHASES[PHASES.length - 1].id).classList.add('open');
+    }
 
-render();
+    render();
 </script>
 </body>
 </html>

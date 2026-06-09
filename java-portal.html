@@ -1,987 +1,1278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Java Mastery — Learning Portal</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap');
-
-:root {
-  --bg:       #f5f2eb;
-  --surface:  #ffffff;
-  --surface2: #f9f7f3;
-  --border:   #e2ddd4;
-  --ink:      #1a1714;
-  --inkdim:   #5a534a;
-  --inkfaint: #9b9189;
-  --accent:   #c94f1e;
-  --accent2:  #e8663a;
-  --blue:     #1d5fa3;
-  --green:    #1e7a44;
-  --gold:     #b8860b;
-  --sidebar-w: 300px;
-  --serif:    'DM Serif Display', serif;
-  --sans:     'Outfit', sans-serif;
-  --mono:     'IBM Plex Mono', monospace;
-}
-
-*,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
-html { scroll-behavior: smooth; font-size: 16px; }
-
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--sans);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* paper texture */
-body::before {
-  content:'';
-  position:fixed;
-  inset:0;
-  background-image:
-    repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(180,170,155,0.08) 28px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  pointer-events:none;
-  z-index:0;
-}
-
-/* ── TOP BAR ── */
-.topbar {
-  position: sticky; top:0; z-index:200;
-  background: var(--ink);
-  color: #f5f2eb;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  padding: 0 1.5rem;
-  gap: 1.2rem;
-  border-bottom: 3px solid var(--accent);
-  flex-shrink: 0;
-}
-
-.topbar-logo {
-  font-family: var(--serif);
-  font-size: 1.15rem;
-  color: #fff;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-}
-
-.topbar-logo em { color: var(--accent2); font-style: italic; }
-
-.topbar-divider { width:1px; height:24px; background: #333; }
-
-.topbar-day {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  color: #888;
-  letter-spacing: 0.06em;
-}
-
-.topbar-progress {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.topbar-track {
-  flex:1; height:3px;
-  background: #333;
-  border-radius:99px;
-  overflow:hidden;
-  max-width:200px;
-}
-
-.topbar-fill {
-  height:100%;
-  background: var(--accent);
-  border-radius:99px;
-  transition: width 0.4s ease;
-}
-
-.topbar-pct { font-family:var(--mono); font-size:0.65rem; color:#888; }
-
-.menu-toggle {
-  display:none;
-  background:none;
-  border:none;
-  color:#fff;
-  font-size:1.2rem;
-  cursor:pointer;
-  padding:0.3rem;
-  margin-left:auto;
-}
-
-/* ── LAYOUT ── */
-.layout {
-  display: flex;
-  flex: 1;
-  position: relative;
-  z-index: 1;
-}
-
-/* ── SIDEBAR ── */
-.sidebar {
-  width: var(--sidebar-w);
-  flex-shrink: 0;
-  background: var(--ink);
-  position: sticky;
-  top: 52px;
-  height: calc(100vh - 52px);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar::-webkit-scrollbar { width:4px; }
-.sidebar::-webkit-scrollbar-track { background:transparent; }
-.sidebar::-webkit-scrollbar-thumb { background:#333; border-radius:99px; }
-
-.sidebar-search {
-  padding: 0.9rem 1rem;
-  border-bottom: 1px solid #222;
-  position:sticky;
-  top:0;
-  background: var(--ink);
-  z-index:10;
-}
-
-.sidebar-search input {
-  width:100%;
-  padding: 0.4rem 0.7rem;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 4px;
-  color: #ccc;
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.sidebar-search input:focus { border-color: var(--accent); }
-.sidebar-search input::placeholder { color: #555; }
-
-.phase-group { }
-
-.phase-header {
-  padding: 0.6rem 1rem;
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #555;
-  border-bottom: 1px solid #1a1a1a;
-  display:flex;
-  align-items:center;
-  gap:0.6rem;
-  position:sticky;
-  top:52px;
-  background:var(--ink);
-  z-index:5;
-}
-
-.phase-dot {
-  width:6px;height:6px;
-  border-radius:50%;
-  flex-shrink:0;
-}
-
-.ph1-dot { background:#6366f1; }
-.ph2-dot { background:#0ea5e9; }
-.ph3-dot { background:#22c55e; }
-.ph4-dot { background:#f97316; }
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.55rem 1rem;
-  cursor: pointer;
-  transition: background 0.15s;
-  border-left: 3px solid transparent;
-  position:relative;
-}
-
-.nav-item:hover { background: #111; }
-
-.nav-item.active {
-  background: #111;
-  border-left-color: var(--accent);
-}
-
-.nav-item.done .nav-num { color: var(--green) !important; }
-
-.nav-item.done::after {
-  content:'✓';
-  position:absolute;
-  right:0.8rem;
-  font-size:0.65rem;
-  color: #22c55e;
-  font-weight:900;
-}
-
-.nav-num {
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  color: #444;
-  min-width: 28px;
-  flex-shrink:0;
-}
-
-.nav-topic {
-  font-size: 0.72rem;
-  color: #aaa;
-  line-height: 1.35;
-  flex:1;
-}
-
-.nav-item.active .nav-topic { color: #fff; }
-.nav-item.hidden-search { display:none; }
-
-/* ── MAIN CONTENT ── */
-.main-content {
-  flex: 1;
-  padding: 2.5rem 3rem;
-  max-width: 860px;
-  min-width: 0;
-}
-
-/* ── LESSON CONTAINER ── */
-.lesson { display:none; animation: fadeIn 0.3s ease; }
-.lesson.active { display:block; }
-
-@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-
-/* ── LESSON HEADER ── */
-.lesson-eyebrow {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.5rem;
-}
-
-.lesson-title {
-  font-family: var(--serif);
-  font-size: 2.2rem;
-  line-height: 1.2;
-  color: var(--ink);
-  margin-bottom: 1rem;
-}
-
-.lesson-meta {
-  display:flex;
-  gap:0.6rem;
-  flex-wrap:wrap;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid var(--border);
-}
-
-.lm-tag {
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  padding: 3px 10px;
-  border-radius: 3px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-weight:600;
-}
-
-.lmt-theory  { background:#e8e4ff; color:#4338ca; }
-.lmt-code    { background:#dcfce7; color:#166534; }
-.lmt-problem { background:#fff3cd; color:#856404; }
-.lmt-project { background:#fde8e8; color:#991b1b; }
-.lmt-revision{ background:#e0f2fe; color:#0c4a6e; }
-
-/* ── SECTIONS ── */
-.section {
-  margin-bottom: 2rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow:hidden;
-  background: var(--surface);
-}
-
-.section-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding: 0.85rem 1.2rem;
-  cursor:pointer;
-  background: var(--surface2);
-  border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
-  user-select:none;
-}
-
-.section-header:hover { background: #f0ece3; }
-
-.section-title {
-  display:flex;
-  align-items:center;
-  gap: 0.7rem;
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--ink);
-}
-
-.section-icon {
-  width: 28px; height:28px;
-  border-radius: 6px;
-  display:flex; align-items:center; justify-content:center;
-  font-size: 0.85rem;
-  flex-shrink:0;
-}
-
-.si-theory  { background:#ede9fe; }
-.si-analogy { background:#fff7ed; }
-.si-code    { background:#dcfce7; }
-.si-tasks   { background:#fef9c3; }
-.si-problems{ background:#fee2e2; }
-.si-challenge{background:#e0f2fe; }
-.si-checklist{background:#f0fdf4;}
-.si-diagram { background:#fce7f3; }
-
-.section-chevron {
-  font-size:0.7rem;
-  color: var(--inkfaint);
-  transition: transform 0.2s;
-}
-
-.section.collapsed .section-chevron { transform: rotate(-90deg); }
-.section.collapsed .section-body { display:none; }
-
-.section-body { padding: 1.2rem 1.4rem; }
-
-/* ── THEORY TEXT ── */
-.theory-text {
-  font-size: 0.9rem;
-  line-height: 1.8;
-  color: var(--inkdim);
-}
-
-.theory-text p { margin-bottom: 1rem; }
-.theory-text p:last-child { margin-bottom:0; }
-
-.theory-text strong { color: var(--ink); font-weight:700; }
-
-.theory-text .keyword {
-  font-family: var(--mono);
-  font-size: 0.82em;
-  background: #f0ece3;
-  border: 1px solid var(--border);
-  padding: 0px 5px;
-  border-radius: 3px;
-  color: var(--accent);
-  font-weight:600;
-}
-
-.tip-box {
-  background: #fffbeb;
-  border: 1px solid #fcd34d;
-  border-left: 4px solid #f59e0b;
-  border-radius: 0 6px 6px 0;
-  padding: 0.8rem 1rem;
-  margin: 1rem 0;
-  font-size: 0.82rem;
-  color: #78350f;
-  line-height:1.6;
-}
-
-.tip-box strong { color:#451a03; }
-
-.warn-box {
-  background: #fff1f2;
-  border: 1px solid #fda4af;
-  border-left: 4px solid #e11d48;
-  border-radius: 0 6px 6px 0;
-  padding: 0.8rem 1rem;
-  margin: 1rem 0;
-  font-size: 0.82rem;
-  color: #881337;
-  line-height:1.6;
-}
-
-/* ── ANALOGY ── */
-.analogy-box {
-  background: linear-gradient(135deg, #fff7ed, #fef3c7);
-  border: 1px solid #fed7aa;
-  border-radius: 6px;
-  padding: 1rem 1.2rem;
-  position:relative;
-}
-
-.analogy-quote {
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  font-style: italic;
-  color: #9a3412;
-  line-height:1.7;
-}
-
-.analogy-label {
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:#c2410c;
-  margin-bottom:0.5rem;
-  font-weight:600;
-}
-
-/* ── CODE BLOCK ── */
-.code-wrap {
-  margin: 0.8rem 0;
-  border-radius: 6px;
-  overflow:hidden;
-  border: 1px solid #1e242f;
-}
-
-.code-toolbar {
-  background: #1a1d24;
-  padding: 0.45rem 0.9rem;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom: 1px solid #252930;
-}
-
-.code-lang {
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color: #4b5563;
-}
-
-.code-filename {
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  color: #888;
-}
-
-.copy-btn {
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  color: #888;
-  background:none;
-  border: 1px solid #333;
-  padding: 2px 8px;
-  border-radius:3px;
-  cursor:pointer;
-  transition: all 0.15s;
-  letter-spacing:0.05em;
-}
-
-.copy-btn:hover { border-color:#888; color:#ccc; }
-.copy-btn.copied { border-color:#22c55e; color:#22c55e; }
-
-pre.code {
-  background: #0f1117;
-  padding: 1.1rem 1.2rem;
-  overflow-x: auto;
-  margin:0;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  line-height: 1.75;
-  color: #e2e8f0;
-}
-
-pre.code::-webkit-scrollbar { height:4px; }
-pre.code::-webkit-scrollbar-track { background:#0f1117; }
-pre.code::-webkit-scrollbar-thumb { background:#333; border-radius:99px; }
-
-/* Syntax colors */
-.kw  { color:#c792ea; } /* keywords */
-.ty  { color:#82aaff; } /* types */
-.st  { color:#c3e88d; } /* strings */
-.cm  { color:#546e7a; font-style:italic; } /* comments */
-.num { color:#f78c6c; } /* numbers */
-.fn  { color:#82aaff; } /* functions */
-.cl  { color:#ffcb6b; } /* classes */
-.an  { color:#c3e88d; } /* annotations */
-
-/* ── TASKS ── */
-.tasks-list { display:flex; flex-direction:column; gap:0.5rem; }
-
-.task-item {
-  display:flex;
-  gap:0.8rem;
-  align-items:flex-start;
-  padding: 0.7rem 0.9rem;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius:5px;
-  cursor:pointer;
-  transition: all 0.15s;
-}
-
-.task-item:hover { border-color: #c7b89e; background:#f0ece3; }
-
-.task-item.done-task {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
-}
-
-.task-check {
-  width:20px; height:20px;
-  border:2px solid var(--border);
-  border-radius:4px;
-  flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-  transition: all 0.15s;
-  margin-top:1px;
-}
-
-.task-item.done-task .task-check {
-  background:#22c55e;
-  border-color:#22c55e;
-}
-
-.task-item.done-task .task-check::after {
-  content:'✓';
-  color:#fff;
-  font-size:0.7rem;
-  font-weight:900;
-}
-
-.task-level {
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  padding: 1px 6px;
-  border-radius:2px;
-  font-weight:700;
-  letter-spacing:0.06em;
-  text-transform:uppercase;
-  flex-shrink:0;
-  margin-top:1px;
-}
-
-.lvl-beginner     { background:#dcfce7; color:#166534; }
-.lvl-intermediate { background:#fef9c3; color:#854d0e; }
-.lvl-advanced     { background:#fee2e2; color:#991b1b; }
-
-.task-text {
-  font-size:0.82rem;
-  color: var(--inkdim);
-  line-height:1.5;
-  flex:1;
-}
-
-.task-item.done-task .task-text { color: var(--inkfaint); text-decoration:line-through; }
-
-/* ── PROBLEMS ── */
-.problems-list { display:flex; flex-direction:column; gap:0.8rem; }
-
-.problem-item {
-  border:1px solid var(--border);
-  border-radius:6px;
-  overflow:hidden;
-}
-
-.problem-header {
-  display:flex;
-  align-items:center;
-  gap:0.8rem;
-  padding:0.7rem 1rem;
-  background:var(--surface2);
-  cursor:pointer;
-  transition:background 0.15s;
-}
-
-.problem-header:hover { background:#f0ece3; }
-
-.problem-num {
-  font-family:var(--mono);
-  font-size:0.65rem;
-  color:var(--accent);
-  font-weight:700;
-  min-width:24px;
-}
-
-.problem-text {
-  font-size:0.82rem;
-  color:var(--ink);
-  flex:1;
-  line-height:1.4;
-}
-
-.problem-diff {
-  font-family:var(--mono);
-  font-size:0.58rem;
-  padding:1px 6px;
-  border-radius:2px;
-  font-weight:700;
-  letter-spacing:0.05em;
-  text-transform:uppercase;
-}
-
-.diff-easy   { background:#dcfce7; color:#166534; }
-.diff-medium { background:#fef9c3; color:#854d0e; }
-.diff-hard   { background:#fee2e2; color:#991b1b; }
-
-.problem-hint {
-  padding: 0.7rem 1rem;
-  background:#fff;
-  border-top:1px solid var(--border);
-  font-size:0.78rem;
-  color:var(--inkdim);
-  line-height:1.6;
-  display:none;
-}
-
-.problem-item.open .problem-hint { display:block; }
-
-.hint-label {
-  font-family:var(--mono);
-  font-size:0.6rem;
-  text-transform:uppercase;
-  letter-spacing:0.1em;
-  color:var(--blue);
-  margin-bottom:0.3rem;
-  font-weight:700;
-}
-
-/* ── CHALLENGE ── */
-.challenge-box {
-  background: linear-gradient(135deg,#1a1714,#1e1a16);
-  border-radius:6px;
-  padding: 1.2rem 1.4rem;
-  color:#e2d9cc;
-}
-
-.challenge-label {
-  font-family:var(--mono);
-  font-size:0.6rem;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  color: var(--accent2);
-  margin-bottom:0.5rem;
-  font-weight:700;
-}
-
-.challenge-title {
-  font-family: var(--serif);
-  font-size:1.1rem;
-  color:#fff;
-  margin-bottom:0.7rem;
-}
-
-.challenge-desc {
-  font-size:0.82rem;
-  line-height:1.7;
-  color:#9b9189;
-}
-
-.challenge-requirements {
-  margin-top:0.8rem;
-  display:flex;
-  flex-direction:column;
-  gap:0.3rem;
-}
-
-.cr-item {
-  font-family:var(--mono);
-  font-size:0.73rem;
-  color:#888;
-  display:flex;
-  gap:0.6rem;
-  align-items:flex-start;
-}
-
-.cr-item::before { content:'▸'; color:var(--accent2); flex-shrink:0; }
-
-/* ── DAILY CHECKLIST ── */
-.daily-checklist { display:flex; flex-direction:column; gap:0.5rem; }
-
-.dcl-item {
-  display:flex;
-  align-items:center;
-  gap:0.8rem;
-  padding: 0.65rem 1rem;
-  border-radius:5px;
-  border:1px solid var(--border);
-  background:var(--surface2);
-  cursor:pointer;
-  transition:all 0.15s;
-  font-size:0.82rem;
-  color:var(--inkdim);
-  user-select:none;
-}
-
-.dcl-item:hover { border-color:#c7b89e; }
-
-.dcl-item.checked {
-  background:#f0fdf4;
-  border-color:#bbf7d0;
-  color:var(--inkfaint);
-  text-decoration:line-through;
-}
-
-.dcl-box {
-  width:20px; height:20px;
-  border:2px solid var(--border);
-  border-radius:4px;
-  flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-  transition:all 0.15s;
-}
-
-.dcl-item.checked .dcl-box {
-  background:#22c55e; border-color:#22c55e;
-}
-
-.dcl-item.checked .dcl-box::after { content:'✓'; color:#fff; font-size:0.7rem; font-weight:900; }
-
-.dcl-icon { font-size:1rem; }
-
-/* ── NOTES AREA ── */
-.notes-section {
-  margin-top: 2rem;
-  border: 1px dashed var(--border);
-  border-radius:8px;
-  padding: 1.2rem;
-  background: rgba(255,255,255,0.5);
-}
-
-.notes-label {
-  font-family:var(--mono);
-  font-size:0.62rem;
-  text-transform:uppercase;
-  letter-spacing:0.1em;
-  color:var(--inkfaint);
-  margin-bottom:0.6rem;
-}
-
-.notes-area {
-  width:100%;
-  min-height:100px;
-  background:transparent;
-  border:none;
-  outline:none;
-  font-family:var(--mono);
-  font-size:0.8rem;
-  color:var(--ink);
-  line-height:1.8;
-  resize:vertical;
-}
-
-.notes-area::placeholder { color:var(--inkfaint); }
-
-/* ── NAV BUTTONS ── */
-.lesson-nav {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:2.5rem;
-  padding-top:1.5rem;
-  border-top:2px solid var(--border);
-}
-
-.nav-btn {
-  display:flex;
-  align-items:center;
-  gap:0.6rem;
-  padding: 0.65rem 1.2rem;
-  border-radius:5px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--inkdim);
-  font-family: var(--mono);
-  font-size:0.72rem;
-  cursor:pointer;
-  transition:all 0.2s;
-  text-decoration:none;
-  letter-spacing:0.04em;
-}
-
-.nav-btn:hover { border-color:var(--ink); color:var(--ink); }
-
-.nav-btn.primary {
-  background: var(--ink);
-  color: #f5f2eb;
-  border-color: var(--ink);
-}
-
-.nav-btn.primary:hover { background:var(--accent); border-color:var(--accent); }
-
-.complete-btn {
-  padding: 0.65rem 1.4rem;
-  border-radius:5px;
-  background:var(--green);
-  color:#fff;
-  border:none;
-  font-family:var(--mono);
-  font-size:0.72rem;
-  font-weight:700;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  cursor:pointer;
-  transition:opacity 0.2s;
-}
-
-.complete-btn:hover { opacity:0.85; }
-.complete-btn.done-btn { background:#888; }
-
-/* ── DIAGRAM ── */
-.diagram-wrap {
-  background: var(--surface);
-  border:1px solid var(--border);
-  border-radius:6px;
-  padding:1.2rem;
-  overflow-x:auto;
-  text-align:center;
-}
-
-.diagram-wrap svg { max-width:100%; }
-
-/* ── WELCOME SCREEN ── */
-.welcome {
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  min-height:60vh;
-  text-align:center;
-  padding:2rem;
-}
-
-.welcome-title {
-  font-family:var(--serif);
-  font-size:3rem;
-  color:var(--ink);
-  margin-bottom:0.8rem;
-  line-height:1.1;
-}
-
-.welcome-title em { color:var(--accent); font-style:italic; }
-
-.welcome-sub {
-  font-size:1rem;
-  color:var(--inkdim);
-  max-width:440px;
-  line-height:1.7;
-  margin-bottom:2rem;
-}
-
-.welcome-start {
-  padding: 0.8rem 2rem;
-  background:var(--ink);
-  color:#f5f2eb;
-  border:none;
-  border-radius:5px;
-  font-family:var(--mono);
-  font-size:0.8rem;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  cursor:pointer;
-  transition:background 0.2s;
-}
-
-.welcome-start:hover { background:var(--accent); }
-
-.welcome-stats {
-  display:flex;
-  gap:2rem;
-  margin-bottom:2rem;
-}
-
-.ws-item { text-align:center; }
-.ws-val {
-  font-family:var(--serif);
-  font-size:2.2rem;
-  color:var(--accent);
-  line-height:1;
-}
-
-.ws-lbl {
-  font-family:var(--mono);
-  font-size:0.62rem;
-  text-transform:uppercase;
-  letter-spacing:0.1em;
-  color:var(--inkfaint);
-  margin-top:0.2rem;
-}
-
-/* ── PROGRESS TOAST ── */
-.progress-toast {
-  position:fixed;
-  bottom:1.5rem;
-  right:1.5rem;
-  background:var(--ink);
-  color:#f5f2eb;
-  border-radius:8px;
-  padding:0.8rem 1.2rem;
-  font-family:var(--mono);
-  font-size:0.72rem;
-  z-index:500;
-  transform:translateY(20px);
-  opacity:0;
-  transition:all 0.3s;
-  pointer-events:none;
-  border-left:3px solid var(--accent);
-  max-width:260px;
-}
-
-.progress-toast.show { transform:translateY(0); opacity:1; }
-
-/* ── MOBILE ── */
-@media(max-width:768px) {
-  .sidebar {
-    position:fixed;
-    top:52px; left:-100%;
-    width:280px;
-    z-index:150;
-    transition:left 0.3s;
-  }
-  .sidebar.open { left:0; }
-  .menu-toggle { display:flex; }
-  .main-content { padding:1.5rem 1rem; }
-  .lesson-title { font-size:1.6rem; }
-  .topbar-progress { display:none; }
-}
-</style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>Java Mastery — Learning Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #f5f2eb;
+            --surface: #ffffff;
+            --surface2: #f9f7f3;
+            --border: #e2ddd4;
+            --ink: #1a1714;
+            --inkdim: #5a534a;
+            --inkfaint: #9b9189;
+            --accent: #c94f1e;
+            --accent2: #e8663a;
+            --blue: #1d5fa3;
+            --green: #1e7a44;
+            --gold: #b8860b;
+            --sidebar-w: 300px;
+            --serif: 'DM Serif Display', serif;
+            --sans: 'Outfit', sans-serif;
+            --mono: 'IBM Plex Mono', monospace;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--sans);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* paper texture */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180, 170, 155, 0.08) 28px),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── TOP BAR ── */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            background: var(--ink);
+            color: #f5f2eb;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            gap: 1.2rem;
+            border-bottom: 3px solid var(--accent);
+            flex-shrink: 0;
+        }
+
+        .topbar-logo {
+            font-family: var(--serif);
+            font-size: 1.15rem;
+            color: #fff;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+        }
+
+        .topbar-logo em {
+            color: var(--accent2);
+            font-style: italic;
+        }
+
+        .topbar-divider {
+            width: 1px;
+            height: 24px;
+            background: #333;
+        }
+
+        .topbar-day {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: #888;
+            letter-spacing: 0.06em;
+        }
+
+        .topbar-progress {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .topbar-track {
+            flex: 1;
+            height: 3px;
+            background: #333;
+            border-radius: 99px;
+            overflow: hidden;
+            max-width: 200px;
+        }
+
+        .topbar-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+
+        .topbar-pct {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: #888;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.3rem;
+            margin-left: auto;
+        }
+
+        /* ── LAYOUT ── */
+        .layout {
+            display: flex;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: var(--sidebar-w);
+            flex-shrink: 0;
+            background: var(--ink);
+            position: sticky;
+            top: 52px;
+            height: calc(100vh - 52px);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 99px;
+        }
+
+        .sidebar-search {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            background: var(--ink);
+            z-index: 10;
+        }
+
+        .sidebar-search input {
+            width: 100%;
+            padding: 0.4rem 0.7rem;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #ccc;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .sidebar-search input:focus {
+            border-color: var(--accent);
+        }
+
+        .sidebar-search input::placeholder {
+            color: #555;
+        }
+
+        .phase-group {
+        }
+
+        .phase-header {
+            padding: 0.6rem 1rem;
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #555;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            position: sticky;
+            top: 52px;
+            background: var(--ink);
+            z-index: 5;
+        }
+
+        .phase-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .ph1-dot {
+            background: #6366f1;
+        }
+
+        .ph2-dot {
+            background: #0ea5e9;
+        }
+
+        .ph3-dot {
+            background: #22c55e;
+        }
+
+        .ph4-dot {
+            background: #f97316;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.55rem 1rem;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: #111;
+        }
+
+        .nav-item.active {
+            background: #111;
+            border-left-color: var(--accent);
+        }
+
+        .nav-item.done .nav-num {
+            color: var(--green) !important;
+        }
+
+        .nav-item.done::after {
+            content: '✓';
+            position: absolute;
+            right: 0.8rem;
+            font-size: 0.65rem;
+            color: #22c55e;
+            font-weight: 900;
+        }
+
+        .nav-num {
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            color: #444;
+            min-width: 28px;
+            flex-shrink: 0;
+        }
+
+        .nav-topic {
+            font-size: 0.72rem;
+            color: #aaa;
+            line-height: 1.35;
+            flex: 1;
+        }
+
+        .nav-item.active .nav-topic {
+            color: #fff;
+        }
+
+        .nav-item.hidden-search {
+            display: none;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main-content {
+            flex: 1;
+            padding: 2.5rem 3rem;
+            max-width: 860px;
+            min-width: 0;
+        }
+
+        /* ── LESSON CONTAINER ── */
+        .lesson {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lesson.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* ── LESSON HEADER ── */
+        .lesson-eyebrow {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-title {
+            font-family: var(--serif);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            color: var(--ink);
+            margin-bottom: 1rem;
+        }
+
+        .lesson-meta {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .lm-tag {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            padding: 3px 10px;
+            border-radius: 3px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .lmt-theory {
+            background: #e8e4ff;
+            color: #4338ca;
+        }
+
+        .lmt-code {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .lmt-problem {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .lmt-project {
+            background: #fde8e8;
+            color: #991b1b;
+        }
+
+        .lmt-revision {
+            background: #e0f2fe;
+            color: #0c4a6e;
+        }
+
+        /* ── SECTIONS ── */
+        .section {
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--surface);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.2rem;
+            cursor: pointer;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+            user-select: none;
+        }
+
+        .section-header:hover {
+            background: #f0ece3;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: var(--sans);
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--ink);
+        }
+
+        .section-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .si-theory {
+            background: #ede9fe;
+        }
+
+        .si-analogy {
+            background: #fff7ed;
+        }
+
+        .si-code {
+            background: #dcfce7;
+        }
+
+        .si-tasks {
+            background: #fef9c3;
+        }
+
+        .si-problems {
+            background: #fee2e2;
+        }
+
+        .si-challenge {
+            background: #e0f2fe;
+        }
+
+        .si-checklist {
+            background: #f0fdf4;
+        }
+
+        .si-diagram {
+            background: #fce7f3;
+        }
+
+        .section-chevron {
+            font-size: 0.7rem;
+            color: var(--inkfaint);
+            transition: transform 0.2s;
+        }
+
+        .section.collapsed .section-chevron {
+            transform: rotate(-90deg);
+        }
+
+        .section.collapsed .section-body {
+            display: none;
+        }
+
+        .section-body {
+            padding: 1.2rem 1.4rem;
+        }
+
+        /* ── THEORY TEXT ── */
+        .theory-text {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--inkdim);
+        }
+
+        .theory-text p {
+            margin-bottom: 1rem;
+        }
+
+        .theory-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .theory-text strong {
+            color: var(--ink);
+            font-weight: 700;
+        }
+
+        .theory-text .keyword {
+            font-family: var(--mono);
+            font-size: 0.82em;
+            background: #f0ece3;
+            border: 1px solid var(--border);
+            padding: 0px 5px;
+            border-radius: 3px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .tip-box {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 0.8rem 1rem;
+            margin: 1rem 0;
+            font-size: 0.82rem;
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .tip-box strong {
+            color: #451a03;
+        }
+
+        .warn-box {
+            background: #fff1f2;
+            border: 1px solid #fda4af;
+            border-left: 4px solid #e11d48;
+            border-radius: 0 6px 6px 0;
+            padding: 0.8rem 1rem;
+            margin: 1rem 0;
+            font-size: 0.82rem;
+            color: #881337;
+            line-height: 1.6;
+        }
+
+        /* ── ANALOGY ── */
+        .analogy-box {
+            background: linear-gradient(135deg, #fff7ed, #fef3c7);
+            border: 1px solid #fed7aa;
+            border-radius: 6px;
+            padding: 1rem 1.2rem;
+            position: relative;
+        }
+
+        .analogy-quote {
+            font-family: var(--serif);
+            font-size: 1.05rem;
+            font-style: italic;
+            color: #9a3412;
+            line-height: 1.7;
+        }
+
+        .analogy-label {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #c2410c;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* ── CODE BLOCK ── */
+        .code-wrap {
+            margin: 0.8rem 0;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #1e242f;
+        }
+
+        .code-toolbar {
+            background: #1a1d24;
+            padding: 0.45rem 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #252930;
+        }
+
+        .code-lang {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #4b5563;
+        }
+
+        .code-filename {
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            color: #888;
+        }
+
+        .copy-btn {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            color: #888;
+            background: none;
+            border: 1px solid #333;
+            padding: 2px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.15s;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn:hover {
+            border-color: #888;
+            color: #ccc;
+        }
+
+        .copy-btn.copied {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        pre.code {
+            background: #0f1117;
+            padding: 1.1rem 1.2rem;
+            overflow-x: auto;
+            margin: 0;
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            line-height: 1.75;
+            color: #e2e8f0;
+        }
+
+        pre.code::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        pre.code::-webkit-scrollbar-track {
+            background: #0f1117;
+        }
+
+        pre.code::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 99px;
+        }
+
+        /* Syntax colors */
+        .kw {
+            color: #c792ea;
+        }
+
+        /* keywords */
+        .ty {
+            color: #82aaff;
+        }
+
+        /* types */
+        .st {
+            color: #c3e88d;
+        }
+
+        /* strings */
+        .cm {
+            color: #546e7a;
+            font-style: italic;
+        }
+
+        /* comments */
+        .num {
+            color: #f78c6c;
+        }
+
+        /* numbers */
+        .fn {
+            color: #82aaff;
+        }
+
+        /* functions */
+        .cl {
+            color: #ffcb6b;
+        }
+
+        /* classes */
+        .an {
+            color: #c3e88d;
+        }
+
+        /* annotations */
+
+        /* ── TASKS ── */
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .task-item {
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-start;
+            padding: 0.7rem 0.9rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .task-item:hover {
+            border-color: #c7b89e;
+            background: #f0ece3;
+        }
+
+        .task-item.done-task {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .task-check {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            margin-top: 1px;
+        }
+
+        .task-item.done-task .task-check {
+            background: #22c55e;
+            border-color: #22c55e;
+        }
+
+        .task-item.done-task .task-check::after {
+            content: '✓';
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 900;
+        }
+
+        .task-level {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            padding: 1px 6px;
+            border-radius: 2px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .lvl-beginner {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .lvl-intermediate {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        .lvl-advanced {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .task-text {
+            font-size: 0.82rem;
+            color: var(--inkdim);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .task-item.done-task .task-text {
+            color: var(--inkfaint);
+            text-decoration: line-through;
+        }
+
+        /* ── PROBLEMS ── */
+        .problems-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .problem-item {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .problem-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1rem;
+            background: var(--surface2);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .problem-header:hover {
+            background: #f0ece3;
+        }
+
+        .problem-num {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: var(--accent);
+            font-weight: 700;
+            min-width: 24px;
+        }
+
+        .problem-text {
+            font-size: 0.82rem;
+            color: var(--ink);
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .problem-diff {
+            font-family: var(--mono);
+            font-size: 0.58rem;
+            padding: 1px 6px;
+            border-radius: 2px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .diff-easy {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .diff-medium {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        .diff-hard {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .problem-hint {
+            padding: 0.7rem 1rem;
+            background: #fff;
+            border-top: 1px solid var(--border);
+            font-size: 0.78rem;
+            color: var(--inkdim);
+            line-height: 1.6;
+            display: none;
+        }
+
+        .problem-item.open .problem-hint {
+            display: block;
+        }
+
+        .hint-label {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--blue);
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+        }
+
+        /* ── CHALLENGE ── */
+        .challenge-box {
+            background: linear-gradient(135deg, #1a1714, #1e1a16);
+            border-radius: 6px;
+            padding: 1.2rem 1.4rem;
+            color: #e2d9cc;
+        }
+
+        .challenge-label {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .challenge-title {
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 0.7rem;
+        }
+
+        .challenge-desc {
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: #9b9189;
+        }
+
+        .challenge-requirements {
+            margin-top: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .cr-item {
+            font-family: var(--mono);
+            font-size: 0.73rem;
+            color: #888;
+            display: flex;
+            gap: 0.6rem;
+            align-items: flex-start;
+        }
+
+        .cr-item::before {
+            content: '▸';
+            color: var(--accent2);
+            flex-shrink: 0;
+        }
+
+        /* ── DAILY CHECKLIST ── */
+        .daily-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .dcl-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.65rem 1rem;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 0.82rem;
+            color: var(--inkdim);
+            user-select: none;
+        }
+
+        .dcl-item:hover {
+            border-color: #c7b89e;
+        }
+
+        .dcl-item.checked {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+            color: var(--inkfaint);
+            text-decoration: line-through;
+        }
+
+        .dcl-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .dcl-item.checked .dcl-box {
+            background: #22c55e;
+            border-color: #22c55e;
+        }
+
+        .dcl-item.checked .dcl-box::after {
+            content: '✓';
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 900;
+        }
+
+        .dcl-icon {
+            font-size: 1rem;
+        }
+
+        /* ── NOTES AREA ── */
+        .notes-section {
+            margin-top: 2rem;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .notes-label {
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--inkfaint);
+            margin-bottom: 0.6rem;
+        }
+
+        .notes-area {
+            width: 100%;
+            min-height: 100px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            color: var(--ink);
+            line-height: 1.8;
+            resize: vertical;
+        }
+
+        .notes-area::placeholder {
+            color: var(--inkfaint);
+        }
+
+        /* ── NAV BUTTONS ── */
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.65rem 1.2rem;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--inkdim);
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--ink);
+            color: var(--ink);
+        }
+
+        .nav-btn.primary {
+            background: var(--ink);
+            color: #f5f2eb;
+            border-color: var(--ink);
+        }
+
+        .nav-btn.primary:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .complete-btn {
+            padding: 0.65rem 1.4rem;
+            border-radius: 5px;
+            background: var(--green);
+            color: #fff;
+            border: none;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .complete-btn:hover {
+            opacity: 0.85;
+        }
+
+        .complete-btn.done-btn {
+            background: #888;
+        }
+
+        /* ── DIAGRAM ── */
+        .diagram-wrap {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.2rem;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        .diagram-wrap svg {
+            max-width: 100%;
+        }
+
+        /* ── WELCOME SCREEN ── */
+        .welcome {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .welcome-title {
+            font-family: var(--serif);
+            font-size: 3rem;
+            color: var(--ink);
+            margin-bottom: 0.8rem;
+            line-height: 1.1;
+        }
+
+        .welcome-title em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .welcome-sub {
+            font-size: 1rem;
+            color: var(--inkdim);
+            max-width: 440px;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-start {
+            padding: 0.8rem 2rem;
+            background: var(--ink);
+            color: #f5f2eb;
+            border: none;
+            border-radius: 5px;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .welcome-start:hover {
+            background: var(--accent);
+        }
+
+        .welcome-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .ws-item {
+            text-align: center;
+        }
+
+        .ws-val {
+            font-family: var(--serif);
+            font-size: 2.2rem;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .ws-lbl {
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--inkfaint);
+            margin-top: 0.2rem;
+        }
+
+        /* ── PROGRESS TOAST ── */
+        .progress-toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--ink);
+            color: #f5f2eb;
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            z-index: 500;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            border-left: 3px solid var(--accent);
+            max-width: 260px;
+        }
+
+        .progress-toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 52px;
+                left: -100%;
+                width: 280px;
+                z-index: 150;
+                transition: left 0.3s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .lesson-title {
+                font-size: 1.6rem;
+            }
+
+            .topbar-progress {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <!-- TOP BAR -->
 <header class="topbar">
-  <div class="topbar-logo">Java <em>Mastery</em></div>
-  <div class="topbar-divider"></div>
-  <span class="topbar-day" id="tb-day">Day 1 / 90</span>
-  <div class="topbar-progress">
-    <div class="topbar-track">
-      <div class="topbar-fill" id="tb-fill" style="width:0%"></div>
+    <div class="topbar-logo">Java <em>Mastery</em></div>
+    <div class="topbar-divider"></div>
+    <span class="topbar-day" id="tb-day">Day 1 / 90</span>
+    <div class="topbar-progress">
+        <div class="topbar-track">
+            <div class="topbar-fill" id="tb-fill" style="width:0%"></div>
+        </div>
+        <span class="topbar-pct" id="tb-pct">0%</span>
     </div>
-    <span class="topbar-pct" id="tb-pct">0%</span>
-  </div>
-  <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
 </header>
 
 <div class="layout">
 
-  <!-- SIDEBAR -->
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-search">
-      <input type="text" id="nav-search" placeholder="Search topics…" oninput="filterNav()" />
-    </div>
-    <div id="nav-list"></div>
-  </nav>
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-search">
+            <input type="text" id="nav-search" placeholder="Search topics…" oninput="filterNav()"/>
+        </div>
+        <div id="nav-list"></div>
+    </nav>
 
-  <!-- CONTENT -->
-  <div class="main-content" id="main-content">
-    <!-- Welcome + lessons injected by JS -->
-  </div>
+    <!-- CONTENT -->
+    <div class="main-content" id="main-content">
+        <!-- Welcome + lessons injected by JS -->
+    </div>
 
 </div>
 
@@ -989,25 +1280,25 @@ pre.code::-webkit-scrollbar-thumb { background:#333; border-radius:99px; }
 <div class="progress-toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════════════════════════
-//  CURRICULUM DATA — All 90 Days
-// ══════════════════════════════════════════════════════════════════
-const PHASES = [
-  { id:'p1', label:'Phase 1 — Java Foundations',   dot:'ph1-dot', days:[1,30] },
-  { id:'p2', label:'Phase 2 — OOP & Core APIs',    dot:'ph2-dot', days:[31,55] },
-  { id:'p3', label:'Phase 3 — Advanced Java',      dot:'ph3-dot', days:[56,75] },
-  { id:'p4', label:'Phase 4 — Backend & Systems',  dot:'ph4-dot', days:[76,90] }
-];
+    // ══════════════════════════════════════════════════════════════════
+    //  CURRICULUM DATA — All 90 Days
+    // ══════════════════════════════════════════════════════════════════
+    const PHASES = [
+        {id: 'p1', label: 'Phase 1 — Java Foundations', dot: 'ph1-dot', days: [1, 30]},
+        {id: 'p2', label: 'Phase 2 — OOP & Core APIs', dot: 'ph2-dot', days: [31, 55]},
+        {id: 'p3', label: 'Phase 3 — Advanced Java', dot: 'ph3-dot', days: [56, 75]},
+        {id: 'p4', label: 'Phase 4 — Backend & Systems', dot: 'ph4-dot', days: [76, 90]}
+    ];
 
-// Full lesson content for Days 1–10 (rich), others as structured stubs
-const LESSONS = [
+    // Full lesson content for Days 1–10 (rich), others as structured stubs
+    const LESSONS = [
 
 // ═══════════════════ DAY 1 ═══════════════════
-{
-  day:1, phase:'p1',
-  topic:'Java Environment Setup & First Program',
-  tags:['theory','code','setup'],
-  theory:`
+        {
+            day: 1, phase: 'p1',
+            topic: 'Java Environment Setup & First Program',
+            tags: ['theory', 'code', 'setup'],
+            theory: `
 <p><strong>Java</strong> is a statically-typed, compiled-then-interpreted, platform-independent programming language created by James Gosling at Sun Microsystems in 1995. The famous promise: <strong>"Write Once, Run Anywhere"</strong> (WORA).</p>
 <p>Here's the magic: When you write Java code, the compiler (<span class="keyword">javac</span>) converts it to <strong>bytecode</strong> — not machine code. This bytecode lives in <span class="keyword">.class</span> files. The <strong>JVM (Java Virtual Machine)</strong> on any operating system reads and executes this bytecode. That's why the same <span class="keyword">.class</span> file runs on Windows, Linux, and Mac.</p>
 <p>Three things you must know:</p>
@@ -1017,8 +1308,8 @@ const LESSONS = [
 <div class="tip-box"><strong>Mentor's Note:</strong> Always install JDK 17 LTS (Long Term Support). It's the industry standard in 2024. Use SDKMAN or adoptium.net for clean installation.</div>
 <p>Every Java program starts execution from a special method: <span class="keyword">public static void main(String[] args)</span>. Think of this as the front door of your program. The JVM knocks on this door first, every time.</p>
   `,
-  analogy:`Think of Java like a universal electrical adapter. You write code once (plug shape), the JVM is the adapter that makes it work in any country (OS). The JDK is the full travel kit — adapter + charger + everything. The JRE is just the adapter.`,
-  diagram:`<svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" style="max-width:560px">
+            analogy: `Think of Java like a universal electrical adapter. You write code once (plug shape), the JVM is the adapter that makes it work in any country (OS). The JDK is the full travel kit — adapter + charger + everything. The JRE is just the adapter.`,
+            diagram: `<svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" style="max-width:560px">
   <rect x="10" y="20" width="160" height="140" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
   <text x="90" y="50" text-anchor="middle" font-family="'Outfit',sans-serif" font-weight="700" font-size="13" fill="#9a3412">Java Source</text>
   <text x="90" y="68" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="#c2410c">HelloWorld.java</text>
@@ -1044,8 +1335,9 @@ const LESSONS = [
   <text x="490" y="121" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="11" fill="#14532d">Mac JVM</text>
   <text x="490" y="140" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="9" fill="#166534">Same .class file!</text>
 </svg>`,
-  code:[
-{label:'HelloWorld.java',lang:'java',src:`<span class="cm">// Every Java program starts here.</span>
+            code: [
+                {
+                    label: 'HelloWorld.java', lang: 'java', src: `<span class="cm">// Every Java program starts here.</span>
 <span class="cm">// Class name MUST match the filename exactly.</span>
 <span class="kw">public class</span> <span class="cl">HelloWorld</span> {
 
@@ -1057,8 +1349,9 @@ const LESSONS = [
         System.out.<span class="fn">println</span>(<span class="st">"Java version: "</span> + System.<span class="fn">getProperty</span>(<span class="st">"java.version"</span>));
     }
 }`
-},
-{label:'Compilation & Run (Terminal)',lang:'bash',src:`<span class="cm"># Step 1: Compile</span>
+                },
+                {
+                    label: 'Compilation & Run (Terminal)', lang: 'bash', src: `<span class="cm"># Step 1: Compile</span>
 javac HelloWorld.java       <span class="cm"># Creates HelloWorld.class</span>
 
 <span class="cm"># Step 2: Run (no .class extension!)</span>
@@ -1068,31 +1361,70 @@ java HelloWorld
 <span class="cm"># Hello, Java World!</span>
 <span class="cm"># My name: yourname</span>
 <span class="cm"># Java version: 17.x.x</span>`
-}
-  ],
-  tasks:[
-    { level:'beginner',     text:'Install JDK 17. Run java -version and javac -version in terminal. Screenshot the output.' },
-    { level:'beginner',     text:'Write HelloWorld.java, compile and run it manually from the terminal (not from an IDE).' },
-    { level:'intermediate', text:'Modify the program to print your full name, today\'s date (hardcoded), and your Java learning goal.' },
-    { level:'intermediate', text:'What happens if you name the file Hello.java but the class is HelloWorld? Try it. Read the error carefully.' },
-    { level:'advanced',     text:'Write a second class in the same file (not public). Compile. What .class files are generated? Why?' }
-  ],
-  problems:[
-    { q:'What is the difference between JDK, JRE, and JVM?', diff:'easy', hint:'JDK ⊃ JRE ⊃ JVM. JDK has compiler. JRE has runtime. JVM is the execution engine.' },
-    { q:'Why does Java produce bytecode instead of machine code directly?', diff:'easy', hint:'Bytecode is platform-independent. The JVM on each OS translates it to native machine code at runtime.' },
-    { q:'What happens if main() is not declared static?', diff:'medium', hint:'The JVM cannot call it without creating an object of your class first. You get: "Main method is not static".' },
-    { q:'Can a Java file have multiple classes? What are the rules?', diff:'medium', hint:'Yes. Only ONE class can be public and it must match the filename. Other classes will be package-private.' },
-    { q:'What does public static void mean in the main signature — explain each word.', diff:'hard', hint:'public=accessible from anywhere, static=no object needed, void=no return value.' }
-  ],
-  challenge:{ title:'JVM Info Reporter', desc:'Write a program that prints a formatted system report using System.getProperty(). Include OS name, OS version, Java version, user home directory, and file separator.', reqs:['Use System.getProperty() for at least 5 properties','Format output neatly with labels (e.g., "OS Name : Windows 11")','Add a separator line between sections'] }
-},
+                }
+            ],
+            tasks: [
+                {
+                    level: 'beginner',
+                    text: 'Install JDK 17. Run java -version and javac -version in terminal. Screenshot the output.'
+                },
+                {
+                    level: 'beginner',
+                    text: 'Write HelloWorld.java, compile and run it manually from the terminal (not from an IDE).'
+                },
+                {
+                    level: 'intermediate',
+                    text: 'Modify the program to print your full name, today\'s date (hardcoded), and your Java learning goal.'
+                },
+                {
+                    level: 'intermediate',
+                    text: 'What happens if you name the file Hello.java but the class is HelloWorld? Try it. Read the error carefully.'
+                },
+                {
+                    level: 'advanced',
+                    text: 'Write a second class in the same file (not public). Compile. What .class files are generated? Why?'
+                }
+            ],
+            problems: [
+                {
+                    q: 'What is the difference between JDK, JRE, and JVM?',
+                    diff: 'easy',
+                    hint: 'JDK ⊃ JRE ⊃ JVM. JDK has compiler. JRE has runtime. JVM is the execution engine.'
+                },
+                {
+                    q: 'Why does Java produce bytecode instead of machine code directly?',
+                    diff: 'easy',
+                    hint: 'Bytecode is platform-independent. The JVM on each OS translates it to native machine code at runtime.'
+                },
+                {
+                    q: 'What happens if main() is not declared static?',
+                    diff: 'medium',
+                    hint: 'The JVM cannot call it without creating an object of your class first. You get: "Main method is not static".'
+                },
+                {
+                    q: 'Can a Java file have multiple classes? What are the rules?',
+                    diff: 'medium',
+                    hint: 'Yes. Only ONE class can be public and it must match the filename. Other classes will be package-private.'
+                },
+                {
+                    q: 'What does public static void mean in the main signature — explain each word.',
+                    diff: 'hard',
+                    hint: 'public=accessible from anywhere, static=no object needed, void=no return value.'
+                }
+            ],
+            challenge: {
+                title: 'JVM Info Reporter',
+                desc: 'Write a program that prints a formatted system report using System.getProperty(). Include OS name, OS version, Java version, user home directory, and file separator.',
+                reqs: ['Use System.getProperty() for at least 5 properties', 'Format output neatly with labels (e.g., "OS Name : Windows 11")', 'Add a separator line between sections']
+            }
+        },
 
 // ═══════════════════ DAY 2 ═══════════════════
-{
-  day:2, phase:'p1',
-  topic:'Data Types, Variables & Type Casting',
-  tags:['theory','code','problem'],
-  theory:`
+        {
+            day: 2, phase: 'p1',
+            topic: 'Data Types, Variables & Type Casting',
+            tags: ['theory', 'code', 'problem'],
+            theory: `
 <p>Java is a <strong>statically-typed</strong> language. That means every variable must declare its type before use, and that type cannot change. This is how Java catches bugs at <em>compile time</em> — before the program even runs.</p>
 <p>Java has <strong>8 primitive data types</strong> — built into the language, not objects:</p>
 <p><span class="keyword">byte</span> (8-bit, -128 to 127) → <span class="keyword">short</span> (16-bit) → <span class="keyword">int</span> (32-bit) → <span class="keyword">long</span> (64-bit, suffix L)</p>
@@ -1102,8 +1434,8 @@ java HelloWorld
 <div class="warn-box"><strong>Common Trap:</strong> int / int = int in Java. So 5/2 = 2, not 2.5. To get 2.5 you must cast: (double)5/2 or use 5.0/2.</div>
 <div class="tip-box"><strong>Industry Rule:</strong> Use <strong>int</strong> for most integers. Use <strong>long</strong> for IDs, timestamps, money-in-cents. Use <strong>double</strong> for math. Never use float for financial calculations — use BigDecimal.</div>
   `,
-  analogy:`Variables are like labelled boxes in a warehouse. The type is the box specification (can only hold certain items). Widening is moving items from a small box to a big one — always works. Narrowing is forcing large items into a small box — you might have to cut something off (data loss).`,
-  diagram:`<svg viewBox="0 0 580 160" xmlns="http://www.w3.org/2000/svg" style="max-width:560px">
+            analogy: `Variables are like labelled boxes in a warehouse. The type is the box specification (can only hold certain items). Widening is moving items from a small box to a big one — always works. Narrowing is forcing large items into a small box — you might have to cut something off (data loss).`,
+            diagram: `<svg viewBox="0 0 580 160" xmlns="http://www.w3.org/2000/svg" style="max-width:560px">
   <rect x="10" y="30" width="60" height="100" rx="4" fill="#fde8d8" stroke="#fb923c" stroke-width="2"/>
   <text x="40" y="55" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#9a3412">byte</text>
   <text x="40" y="72" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#c2410c">8-bit</text>
@@ -1134,8 +1466,9 @@ java HelloWorld
   <text x="532" y="97" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#7c2d12">char</text>
   <text x="532" y="112" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="8" fill="#9a3412">Unicode 16-bit</text>
 </svg>`,
-  code:[
-{label:'DataTypes.java',lang:'java',src:`<span class="kw">public class</span> <span class="cl">DataTypes</span> {
+            code: [
+                {
+                    label: 'DataTypes.java', lang: 'java', src: `<span class="kw">public class</span> <span class="cl">DataTypes</span> {
     <span class="kw">public static void</span> <span class="fn">main</span>(<span class="ty">String</span>[] args) {
 
         <span class="cm">// ── Integers ──</span>
@@ -1167,39 +1500,74 @@ java HelloWorld
         <span class="kw">var</span> message = <span class="st">"Java infers this is a String"</span>;
         System.out.<span class="fn">println</span>(message.<span class="fn">getClass</span>().<span class="fn">getName</span>());
     }
-}`}
-  ],
-  tasks:[
-    { level:'beginner',     text:'Declare one variable of every primitive type. Print each one.' },
-    { level:'beginner',     text:'What is the max value of int? Use Integer.MAX_VALUE to find out.' },
-    { level:'intermediate', text:'Write a program that converts Celsius to Fahrenheit. Formula: F = (C × 9/5) + 32. Avoid integer division!' },
-    { level:'intermediate', text:'Declare a char variable for \'A\'. Cast it to int. Then increment the int and cast back to char. What do you get?' },
-    { level:'advanced',     text:'What happens when byte b = 127; b++; ? Try it. Explain the result (overflow). Try the same with int overflow.' }
-  ],
-  problems:[
-    { q:'What is the output of: System.out.println(1/2 + 0.5)?', diff:'medium', hint:'1/2 is integer division = 0. Then 0 + 0.5 = 0.5. Order matters! int + double = double.' },
-    { q:'Why should you never use float for money calculations?', diff:'easy', hint:'float has precision errors. 0.1 + 0.2 ≠ 0.3 in floating point. Use BigDecimal.' },
-    { q:'What is the output of: char c = \'a\'; System.out.println(c + 1)?', diff:'hard', hint:'char + int promotes char to int. \'a\' is 97. 97 + 1 = 98 (int printed, not char \'b\').' },
-    { q:'Difference between == for primitives vs objects?', diff:'medium', hint:'For primitives, == compares values. For objects, == compares references (memory addresses).' },
-    { q:'What is autoboxing? When does it happen?', diff:'medium', hint:'Automatic conversion between primitive (int) and wrapper class (Integer). Happens with collections.' }
-  ],
-  challenge:{ title:'Unit Converter', desc:'Build a complete unit converter that converts: km→miles, kg→pounds, Celsius→Fahrenheit, and bytes→KB/MB/GB.', reqs:['Use appropriate data types for each conversion','Handle decimal precision correctly','Print results formatted to 2 decimal places using String.format()'] }
-},
+}`
+                }
+            ],
+            tasks: [
+                {level: 'beginner', text: 'Declare one variable of every primitive type. Print each one.'},
+                {level: 'beginner', text: 'What is the max value of int? Use Integer.MAX_VALUE to find out.'},
+                {
+                    level: 'intermediate',
+                    text: 'Write a program that converts Celsius to Fahrenheit. Formula: F = (C × 9/5) + 32. Avoid integer division!'
+                },
+                {
+                    level: 'intermediate',
+                    text: 'Declare a char variable for \'A\'. Cast it to int. Then increment the int and cast back to char. What do you get?'
+                },
+                {
+                    level: 'advanced',
+                    text: 'What happens when byte b = 127; b++; ? Try it. Explain the result (overflow). Try the same with int overflow.'
+                }
+            ],
+            problems: [
+                {
+                    q: 'What is the output of: System.out.println(1/2 + 0.5)?',
+                    diff: 'medium',
+                    hint: '1/2 is integer division = 0. Then 0 + 0.5 = 0.5. Order matters! int + double = double.'
+                },
+                {
+                    q: 'Why should you never use float for money calculations?',
+                    diff: 'easy',
+                    hint: 'float has precision errors. 0.1 + 0.2 ≠ 0.3 in floating point. Use BigDecimal.'
+                },
+                {
+                    q: 'What is the output of: char c = \'a\'; System.out.println(c + 1)?',
+                    diff: 'hard',
+                    hint: 'char + int promotes char to int. \'a\' is 97. 97 + 1 = 98 (int printed, not char \'b\').'
+                },
+                {
+                    q: 'Difference between == for primitives vs objects?',
+                    diff: 'medium',
+                    hint: 'For primitives, == compares values. For objects, == compares references (memory addresses).'
+                },
+                {
+                    q: 'What is autoboxing? When does it happen?',
+                    diff: 'medium',
+                    hint: 'Automatic conversion between primitive (int) and wrapper class (Integer). Happens with collections.'
+                }
+            ],
+            challenge: {
+                title: 'Unit Converter',
+                desc: 'Build a complete unit converter that converts: km→miles, kg→pounds, Celsius→Fahrenheit, and bytes→KB/MB/GB.',
+                reqs: ['Use appropriate data types for each conversion', 'Handle decimal precision correctly', 'Print results formatted to 2 decimal places using String.format()']
+            }
+        },
 
 // ═══════════════════ DAY 3 ═══════════════════
-{
-  day:3, phase:'p1',
-  topic:'Operators: Arithmetic, Relational & Logical',
-  tags:['theory','problem'],
-  theory:`<p>Operators are the verbs of Java. They act on <strong>operands</strong> (values/variables) to produce results. Mastering operator precedence prevents entire classes of bugs.</p>
+        {
+            day: 3, phase: 'p1',
+            topic: 'Operators: Arithmetic, Relational & Logical',
+            tags: ['theory', 'problem'],
+            theory: `<p>Operators are the verbs of Java. They act on <strong>operands</strong> (values/variables) to produce results. Mastering operator precedence prevents entire classes of bugs.</p>
 <p><strong>Arithmetic:</strong> + - * / % (modulo) ++ -- (increment/decrement). Know the difference between <span class="keyword">i++</span> (post-increment, use then add) and <span class="keyword">++i</span> (pre-increment, add then use).</p>
 <p><strong>Relational:</strong> == != &lt; &gt; &lt;= &gt;= — always return boolean. <em>Never</em> use == for String comparison; use <span class="keyword">.equals()</span>.</p>
 <p><strong>Logical:</strong> && (AND), || (OR), ! (NOT). Java uses <strong>short-circuit evaluation</strong> — if the first operand of && is false, the second is never evaluated. Critical for null safety.</p>
 <p><strong>Bitwise:</strong> & | ^ ~ &lt;&lt; &gt;&gt; &gt;&gt;&gt; — operate on individual bits. Used in flags, permissions, and performance-critical code.</p>
 <p><strong>Ternary:</strong> condition ? valueIfTrue : valueIfFalse — concise if-else in one line.</p>
 <div class="tip-box"><strong>Operator Precedence (high→low):</strong> ++ -- → * / % → + - → &lt; &gt; → == != → && → || → ?: → = (assignment). When in doubt, use parentheses.</div>`,
-  analogy:`Operators are like kitchen tools. % (modulo) is like dividing cookies equally and asking "how many are left over?" && short-circuit is like a security checkpoint: if the first guard says NO, you never reach the second guard.`,
-  code:[{label:'Operators.java',lang:'java',src:`<span class="kw">public class</span> <span class="cl">Operators</span> {
+            analogy: `Operators are like kitchen tools. % (modulo) is like dividing cookies equally and asking "how many are left over?" && short-circuit is like a security checkpoint: if the first guard says NO, you never reach the second guard.`,
+            code: [{
+                label: 'Operators.java', lang: 'java', src: `<span class="kw">public class</span> <span class="cl">Operators</span> {
     <span class="kw">public static void</span> <span class="fn">main</span>(<span class="ty">String</span>[] args) {
         <span class="cm">// Arithmetic</span>
         <span class="ty">int</span> a = <span class="num">10</span>, b = <span class="num">3</span>;
@@ -1226,35 +1594,67 @@ java HelloWorld
         System.out.<span class="fn">println</span>((<span class="num">7</span> & <span class="num">1</span>) == <span class="num">1</span>); <span class="cm">// true = odd</span>
         System.out.<span class="fn">println</span>((<span class="num">8</span> & <span class="num">1</span>) == <span class="num">0</span>); <span class="cm">// true = even</span>
     }
-}`}],
-  tasks:[
-    { level:'beginner', text:'Write a program: given int seconds = 3725, print hours, minutes, seconds separately using / and %.' },
-    { level:'intermediate', text:'Write an isEven() check using bitwise AND instead of modulo.' },
-    { level:'advanced', text:'Implement a simple flag system: use bitwise OR to set flags, AND to check them, XOR to toggle. E.g., READ=1, WRITE=2, EXECUTE=4.' }
-  ],
-  problems:[
-    { q:'What is the output? int x=5; System.out.println(x++ + ++x);', diff:'hard', hint:'x++ uses 5 then makes x=6. ++x makes x=7 and uses 7. 5+7=12.' },
-    { q:'Why does "hello" == "hello" sometimes return true in Java?', diff:'hard', hint:'String literals are interned (cached in String pool). But "new String()" creates a new object. Always use .equals().' },
-    { q:'What does the >>> operator do vs >>?', diff:'medium', hint:'>> is signed right shift (preserves sign bit). >>> is unsigned (fills with zeros). Matters for negative numbers.' },
-    { q:'Is (a && b) the same as (b && a)? When does it matter?', diff:'medium', hint:'Logically the same, but short-circuit means if a is false, b is never evaluated. Order matters if b has side effects.' },
-    { q:'What is the result of Integer.MAX_VALUE + 1?', diff:'medium', hint:'Integer overflow wraps around to Integer.MIN_VALUE (-2147483648). Java does NOT throw an exception for this.' }
-  ],
-  challenge:{ title:'Calculator with Operator Precedence', desc:'Build a calculator that evaluates expressions following correct precedence. Given a=10, b=3, c=2, compute and explain: a + b * c, (a + b) * c, a % b + c * b.', reqs:['Print each expression AND its result','Add a comment explaining the order of operations','Handle division by zero with a ternary'] }
-},
+}`
+            }],
+            tasks: [
+                {
+                    level: 'beginner',
+                    text: 'Write a program: given int seconds = 3725, print hours, minutes, seconds separately using / and %.'
+                },
+                {level: 'intermediate', text: 'Write an isEven() check using bitwise AND instead of modulo.'},
+                {
+                    level: 'advanced',
+                    text: 'Implement a simple flag system: use bitwise OR to set flags, AND to check them, XOR to toggle. E.g., READ=1, WRITE=2, EXECUTE=4.'
+                }
+            ],
+            problems: [
+                {
+                    q: 'What is the output? int x=5; System.out.println(x++ + ++x);',
+                    diff: 'hard',
+                    hint: 'x++ uses 5 then makes x=6. ++x makes x=7 and uses 7. 5+7=12.'
+                },
+                {
+                    q: 'Why does "hello" == "hello" sometimes return true in Java?',
+                    diff: 'hard',
+                    hint: 'String literals are interned (cached in String pool). But "new String()" creates a new object. Always use .equals().'
+                },
+                {
+                    q: 'What does the >>> operator do vs >>?',
+                    diff: 'medium',
+                    hint: '>> is signed right shift (preserves sign bit). >>> is unsigned (fills with zeros). Matters for negative numbers.'
+                },
+                {
+                    q: 'Is (a && b) the same as (b && a)? When does it matter?',
+                    diff: 'medium',
+                    hint: 'Logically the same, but short-circuit means if a is false, b is never evaluated. Order matters if b has side effects.'
+                },
+                {
+                    q: 'What is the result of Integer.MAX_VALUE + 1?',
+                    diff: 'medium',
+                    hint: 'Integer overflow wraps around to Integer.MIN_VALUE (-2147483648). Java does NOT throw an exception for this.'
+                }
+            ],
+            challenge: {
+                title: 'Calculator with Operator Precedence',
+                desc: 'Build a calculator that evaluates expressions following correct precedence. Given a=10, b=3, c=2, compute and explain: a + b * c, (a + b) * c, a % b + c * b.',
+                reqs: ['Print each expression AND its result', 'Add a comment explaining the order of operations', 'Handle division by zero with a ternary']
+            }
+        },
 
 // ═══════════════════ DAY 4 ═══════════════════
-{
-  day:4, phase:'p1',
-  topic:'Control Flow — if/else, switch Statements',
-  tags:['theory','code','problem'],
-  theory:`<p>Control flow determines the <em>path</em> your program takes through code. Without it, Java would just execute lines sequentially — top to bottom — and that would be useless for any real application.</p>
+        {
+            day: 4, phase: 'p1',
+            topic: 'Control Flow — if/else, switch Statements',
+            tags: ['theory', 'code', 'problem'],
+            theory: `<p>Control flow determines the <em>path</em> your program takes through code. Without it, Java would just execute lines sequentially — top to bottom — and that would be useless for any real application.</p>
 <p><strong>if/else if/else</strong> — the classic branch. Only one branch executes. Conditions must be boolean (unlike C, Java won't accept an int as a condition).</p>
 <p><strong>switch</strong> — best for matching a single variable against multiple exact values. Much more readable than 10 chained if-else.</p>
 <p>Java 14+ introduced <strong>switch expressions</strong> with arrow syntax (<span class="keyword">-></span>) that can return values and don't fall through. This is the modern way — use it.</p>
 <div class="warn-box"><strong>Classic switch trap:</strong> Without break, execution "falls through" to the next case! This is the source of countless bugs. With arrow syntax (->), there's no fall-through.</div>
 <div class="tip-box"><strong>Best Practice:</strong> Prefer switch expressions (Java 14+) over traditional switch. They're safer, shorter, and can return values directly.</div>`,
-  analogy:`if/else is like a road junction — you take one road, not all. switch is like a train station's platform selector: enter with your destination (value), go directly to the right platform. Old switch forgot to put doors between platforms — trains could slide past (fall-through).`,
-  code:[{label:'ControlFlow.java',lang:'java',src:`<span class="kw">public class</span> <span class="cl">ControlFlow</span> {
+            analogy: `if/else is like a road junction — you take one road, not all. switch is like a train station's platform selector: enter with your destination (value), go directly to the right platform. Old switch forgot to put doors between platforms — trains could slide past (fall-through).`,
+            code: [{
+                label: 'ControlFlow.java', lang: 'java', src: `<span class="kw">public class</span> <span class="cl">ControlFlow</span> {
     <span class="kw">public static void</span> <span class="fn">main</span>(<span class="ty">String</span>[] args) {
         <span class="ty">int</span> score = <span class="num">85</span>;
 
@@ -1294,36 +1694,71 @@ java HelloWorld
         };
         System.out.<span class="fn">println</span>(<span class="st">"Permissions: "</span> + permissions);
     }
-}`}],
-  tasks:[
-    { level:'beginner', text:'Write a BMI calculator. Read weight(kg) and height(m), compute BMI, and print the category: Underweight/Normal/Overweight/Obese.' },
-    { level:'intermediate', text:'Use switch expression to map month number (1-12) to season (Spring/Summer/Autumn/Winter). Group multiple cases.' },
-    { level:'advanced', text:'Write a simple ATM: if balance < 0 → Frozen, if 0-100 → Limited, if 101-1000 → Standard, if > 1000 → Premium. Handle edge cases.' }
-  ],
-  problems:[
-    { q:'What happens in a classic switch if you forget break in case 2 when there are cases 1,2,3?', diff:'easy', hint:'Fall-through: case 2 executes, then case 3 also executes without checking its condition.' },
-    { q:'Can switch work on float or double? Why or why not?', diff:'medium', hint:'No. switch works on byte, short, char, int, String, and enum. Floats have precision issues — equality is unreliable.' },
-    { q:'Rewrite: String s = (x > 0) ? ((x > 100) ? "big" : "small") : "negative"; — What does it do?', diff:'medium', hint:'Nested ternary. Reads right to left. Better written as if/else for clarity. Still valid Java.' },
-    { q:'Is it valid to use switch with a null String? What happens?', diff:'hard', hint:'NullPointerException. switch always calls .hashCode() on the string internally. null throws NPE.' },
-    { q:'What is a "guard clause" and why is it better than nested if-else?', diff:'hard', hint:'Return early for invalid conditions at the top of a method, avoiding deep nesting. Improves readability.' }
-  ],
-  challenge:{ title:'Grade Calculator', desc:'Build a grade reporting system. Input: student name, 5 subject scores. Output: individual grades (A/B/C/D/F), average, final grade, pass/fail, and a personalized message.', reqs:['Use switch expression for grade mapping','Use if/else for pass/fail logic','Handle edge cases: scores < 0 or > 100'] }
-},
+}`
+            }],
+            tasks: [
+                {
+                    level: 'beginner',
+                    text: 'Write a BMI calculator. Read weight(kg) and height(m), compute BMI, and print the category: Underweight/Normal/Overweight/Obese.'
+                },
+                {
+                    level: 'intermediate',
+                    text: 'Use switch expression to map month number (1-12) to season (Spring/Summer/Autumn/Winter). Group multiple cases.'
+                },
+                {
+                    level: 'advanced',
+                    text: 'Write a simple ATM: if balance < 0 → Frozen, if 0-100 → Limited, if 101-1000 → Standard, if > 1000 → Premium. Handle edge cases.'
+                }
+            ],
+            problems: [
+                {
+                    q: 'What happens in a classic switch if you forget break in case 2 when there are cases 1,2,3?',
+                    diff: 'easy',
+                    hint: 'Fall-through: case 2 executes, then case 3 also executes without checking its condition.'
+                },
+                {
+                    q: 'Can switch work on float or double? Why or why not?',
+                    diff: 'medium',
+                    hint: 'No. switch works on byte, short, char, int, String, and enum. Floats have precision issues — equality is unreliable.'
+                },
+                {
+                    q: 'Rewrite: String s = (x > 0) ? ((x > 100) ? "big" : "small") : "negative"; — What does it do?',
+                    diff: 'medium',
+                    hint: 'Nested ternary. Reads right to left. Better written as if/else for clarity. Still valid Java.'
+                },
+                {
+                    q: 'Is it valid to use switch with a null String? What happens?',
+                    diff: 'hard',
+                    hint: 'NullPointerException. switch always calls .hashCode() on the string internally. null throws NPE.'
+                },
+                {
+                    q: 'What is a "guard clause" and why is it better than nested if-else?',
+                    diff: 'hard',
+                    hint: 'Return early for invalid conditions at the top of a method, avoiding deep nesting. Improves readability.'
+                }
+            ],
+            challenge: {
+                title: 'Grade Calculator',
+                desc: 'Build a grade reporting system. Input: student name, 5 subject scores. Output: individual grades (A/B/C/D/F), average, final grade, pass/fail, and a personalized message.',
+                reqs: ['Use switch expression for grade mapping', 'Use if/else for pass/fail logic', 'Handle edge cases: scores < 0 or > 100']
+            }
+        },
 
 // ═══════════════════ DAY 5 ═══════════════════
-{
-  day:5, phase:'p1',
-  topic:'Loops — for, while, do-while & Nested Loops',
-  tags:['theory','code','problem'],
-  theory:`<p>Loops are how computers show their true power — doing repetitive work instantly. A human can't add 1 million numbers; Java can in milliseconds. The trick is knowing <em>which</em> loop to use.</p>
+        {
+            day: 5, phase: 'p1',
+            topic: 'Loops — for, while, do-while & Nested Loops',
+            tags: ['theory', 'code', 'problem'],
+            theory: `<p>Loops are how computers show their true power — doing repetitive work instantly. A human can't add 1 million numbers; Java can in milliseconds. The trick is knowing <em>which</em> loop to use.</p>
 <p><strong>for loop</strong> — use when you know the number of iterations in advance. Three parts: initialization, condition, update. All are optional (infinite loop: <span class="keyword">for(;;)</span>).</p>
 <p><strong>while loop</strong> — use when you don't know how many iterations, but you know the exit condition. Checks condition <em>before</em> entering the body.</p>
 <p><strong>do-while loop</strong> — guarantees at least ONE execution. Checks condition <em>after</em>. Rare but useful for: "ask user for input, validate, repeat if invalid."</p>
 <p><strong>Enhanced for (for-each)</strong> — for arrays and collections. Cleaner, no index. Use when you don't need the index.</p>
 <p><strong>break</strong> exits the loop. <strong>continue</strong> skips the current iteration. Both work on the innermost loop unless you use labels.</p>
 <div class="tip-box"><strong>Loop Performance Rule:</strong> Move invariant computations outside the loop. If you call array.length() on every iteration and it doesn't change, cache it in a variable first.</div>`,
-  analogy:`for loop = reading a 300-page book chapter by chapter (you know there are 300 pages). while loop = eating until you're full (you don't know how many bites). do-while = you eat at least one bite first, then check if still hungry. Enhanced-for = someone hands you pages one by one without you needing a page counter.`,
-  code:[{label:'Loops.java',lang:'java',src:`<span class="kw">public class</span> <span class="cl">Loops</span> {
+            analogy: `for loop = reading a 300-page book chapter by chapter (you know there are 300 pages). while loop = eating until you're full (you don't know how many bites). do-while = you eat at least one bite first, then check if still hungry. Enhanced-for = someone hands you pages one by one without you needing a page counter.`,
+            code: [{
+                label: 'Loops.java', lang: 'java', src: `<span class="kw">public class</span> <span class="cl">Loops</span> {
     <span class="kw">public static void</span> <span class="fn">main</span>(<span class="ty">String</span>[] args) {
 
         <span class="cm">// ── for loop ──</span>
@@ -1362,36 +1797,71 @@ java HelloWorld
             }
         }
     }
-}`}],
-  tasks:[
-    { level:'beginner', text:'Print all even numbers from 2 to 50 using a for loop.' },
-    { level:'intermediate', text:'Print a right-angle triangle of * with n rows (n=5): row 1 has 1 star, row 2 has 2 stars, etc.' },
-    { level:'intermediate', text:'Write a program using while to find the sum of digits of any number (e.g., 1234 → 1+2+3+4 = 10).' },
-    { level:'advanced', text:'Print a hollow diamond of stars. N=5 means 5 rows going out and 5 going back in, hollow in middle.' }
-  ],
-  problems:[
-    { q:'What is an infinite loop? Write one intentionally and identify what\'s missing.', diff:'easy', hint:'A loop whose condition never becomes false. Missing: update to the loop variable.' },
-    { q:'What is the time complexity of nested for loops (outer n, inner n)?', diff:'medium', hint:'O(n²). Each iteration of outer runs full inner loop.' },
-    { q:'When would you choose do-while over while?', diff:'easy', hint:'When the body must run at least once. Classic: menu-driven programs, input validation.' },
-    { q:'What happens with continue in a for loop vs while loop?', diff:'medium', hint:'for: goes to update expression (i++), then checks condition. while: goes directly to condition check. Different!' },
-    { q:'How do you iterate a String character by character using a for loop?', diff:'easy', hint:'for(int i=0; i<str.length(); i++) { char c = str.charAt(i); }  OR for(char c : str.toCharArray())' }
-  ],
-  challenge:{ title:'Pattern Printer', desc:'Write a program that prints 4 patterns: right triangle, inverted triangle, number pyramid, and a diamond. All with a single input N for size.', reqs:['Use nested loops only (no String.repeat)', 'Each pattern in its own method', 'N should be a command-line argument (args[0])'] }
-},
+}`
+            }],
+            tasks: [
+                {level: 'beginner', text: 'Print all even numbers from 2 to 50 using a for loop.'},
+                {
+                    level: 'intermediate',
+                    text: 'Print a right-angle triangle of * with n rows (n=5): row 1 has 1 star, row 2 has 2 stars, etc.'
+                },
+                {
+                    level: 'intermediate',
+                    text: 'Write a program using while to find the sum of digits of any number (e.g., 1234 → 1+2+3+4 = 10).'
+                },
+                {
+                    level: 'advanced',
+                    text: 'Print a hollow diamond of stars. N=5 means 5 rows going out and 5 going back in, hollow in middle.'
+                }
+            ],
+            problems: [
+                {
+                    q: 'What is an infinite loop? Write one intentionally and identify what\'s missing.',
+                    diff: 'easy',
+                    hint: 'A loop whose condition never becomes false. Missing: update to the loop variable.'
+                },
+                {
+                    q: 'What is the time complexity of nested for loops (outer n, inner n)?',
+                    diff: 'medium',
+                    hint: 'O(n²). Each iteration of outer runs full inner loop.'
+                },
+                {
+                    q: 'When would you choose do-while over while?',
+                    diff: 'easy',
+                    hint: 'When the body must run at least once. Classic: menu-driven programs, input validation.'
+                },
+                {
+                    q: 'What happens with continue in a for loop vs while loop?',
+                    diff: 'medium',
+                    hint: 'for: goes to update expression (i++), then checks condition. while: goes directly to condition check. Different!'
+                },
+                {
+                    q: 'How do you iterate a String character by character using a for loop?',
+                    diff: 'easy',
+                    hint: 'for(int i=0; i<str.length(); i++) { char c = str.charAt(i); }  OR for(char c : str.toCharArray())'
+                }
+            ],
+            challenge: {
+                title: 'Pattern Printer',
+                desc: 'Write a program that prints 4 patterns: right triangle, inverted triangle, number pyramid, and a diamond. All with a single input N for size.',
+                reqs: ['Use nested loops only (no String.repeat)', 'Each pattern in its own method', 'N should be a command-line argument (args[0])']
+            }
+        },
 
 // ═══════════════════ DAY 6 ═══════════════════
-{
-  day:6, phase:'p1',
-  topic:'Arrays — 1D & 2D, Traversal & Manipulation',
-  tags:['theory','code','problem'],
-  theory:`<p>An array is a fixed-size, contiguous block of memory holding elements of the <em>same type</em>. "Contiguous" is the key — elements sit next to each other in memory, enabling O(1) random access by index.</p>
+        {
+            day: 6, phase: 'p1',
+            topic: 'Arrays — 1D & 2D, Traversal & Manipulation',
+            tags: ['theory', 'code', 'problem'],
+            theory: `<p>An array is a fixed-size, contiguous block of memory holding elements of the <em>same type</em>. "Contiguous" is the key — elements sit next to each other in memory, enabling O(1) random access by index.</p>
 <p>Declare with type, then size: <span class="keyword">int[] arr = new int[5]</span>. Arrays in Java are <em>zero-indexed</em> — first element is arr[0], last is arr[arr.length-1].</p>
 <p>Arrays are <strong>objects</strong> in Java, even for primitives. This means they're heap-allocated and passed by reference.</p>
 <p><strong>2D arrays</strong> are arrays of arrays. Perfect for grids, matrices, game boards, image pixels.</p>
 <p>For flexible sizing, use <span class="keyword">ArrayList</span> (Collections), not arrays. Arrays shine when size is fixed and performance is critical.</p>
 <div class="warn-box"><strong>ArrayIndexOutOfBoundsException</strong> — the most common Java runtime error. Always check: valid indices are 0 to length-1.</div>`,
-  analogy:`An array is like a numbered parking lot. Each space (index) holds exactly one car (element). You can jump directly to space 47 in O(1) time. But the lot size is fixed when built — you can't add more spaces without building a new lot.`,
-  code:[{label:'Arrays.java',lang:'java',src:`<span class="kw">import</span> java.util.Arrays;
+            analogy: `An array is like a numbered parking lot. Each space (index) holds exactly one car (element). You can jump directly to space 47 in O(1) time. But the lot size is fixed when built — you can't add more spaces without building a new lot.`,
+            code: [{
+                label: 'Arrays.java', lang: 'java', src: `<span class="kw">import</span> java.util.Arrays;
 
 <span class="kw">public class</span> <span class="cl">ArraysDemo</span> {
     <span class="kw">public static void</span> <span class="fn">main</span>(<span class="ty">String</span>[] args) {
@@ -1432,35 +1902,67 @@ java HelloWorld
         }
         System.out.<span class="fn">println</span>(<span class="st">"Diagonal sum: "</span> + diag); <span class="cm">// 15</span>
     }
-}`}],
-  tasks:[
-    { level:'beginner', text:'Create an array of 10 ints. Find and print the max, min, and average.' },
-    { level:'intermediate', text:'Reverse an array in-place without creating a new array. Swap from both ends.' },
-    { level:'intermediate', text:'Write a method to check if an array is sorted in ascending order.' },
-    { level:'advanced', text:'Rotate an array right by k positions in-place. E.g., [1,2,3,4,5], k=2 → [4,5,1,2,3].' }
-  ],
-  problems:[
-    { q:'What is the default value of an int array element? What about Object array?', diff:'easy', hint:'int[] defaults to 0. Object[] (like String[]) defaults to null.' },
-    { q:'How is a 2D array stored in memory in Java?', diff:'medium', hint:'As an array of references to row arrays. Rows can have different lengths! This is called a "jagged array".' },
-    { q:'What is the time complexity of Arrays.sort() for primitives vs objects?', diff:'hard', hint:'Primitives: Dual-Pivot QuickSort O(n log n). Objects: TimSort (merge+insertion) O(n log n) but stable.' },
-    { q:'Difference between shallow copy and deep copy for arrays?', diff:'medium', hint:'Shallow: copies references. For int[] it\'s a "real" copy. For Object[] or 2D arrays, inner objects are still shared.' },
-    { q:'Can you store different types in a single Java array? How?', diff:'medium', hint:'Declare as Object[]. But you lose type safety. Better: use generics or a proper class.' }
-  ],
-  challenge:{ title:'Matrix Calculator', desc:'Build a 2D matrix calculator that can: add two matrices, multiply two matrices, transpose a matrix, and find the trace (sum of diagonal).', reqs:['Validate that matrices are compatible before operations','Print matrices in a formatted grid','Use separate methods for each operation'] }
-},
+}`
+            }],
+            tasks: [
+                {level: 'beginner', text: 'Create an array of 10 ints. Find and print the max, min, and average.'},
+                {
+                    level: 'intermediate',
+                    text: 'Reverse an array in-place without creating a new array. Swap from both ends.'
+                },
+                {level: 'intermediate', text: 'Write a method to check if an array is sorted in ascending order.'},
+                {
+                    level: 'advanced',
+                    text: 'Rotate an array right by k positions in-place. E.g., [1,2,3,4,5], k=2 → [4,5,1,2,3].'
+                }
+            ],
+            problems: [
+                {
+                    q: 'What is the default value of an int array element? What about Object array?',
+                    diff: 'easy',
+                    hint: 'int[] defaults to 0. Object[] (like String[]) defaults to null.'
+                },
+                {
+                    q: 'How is a 2D array stored in memory in Java?',
+                    diff: 'medium',
+                    hint: 'As an array of references to row arrays. Rows can have different lengths! This is called a "jagged array".'
+                },
+                {
+                    q: 'What is the time complexity of Arrays.sort() for primitives vs objects?',
+                    diff: 'hard',
+                    hint: 'Primitives: Dual-Pivot QuickSort O(n log n). Objects: TimSort (merge+insertion) O(n log n) but stable.'
+                },
+                {
+                    q: 'Difference between shallow copy and deep copy for arrays?',
+                    diff: 'medium',
+                    hint: 'Shallow: copies references. For int[] it\'s a "real" copy. For Object[] or 2D arrays, inner objects are still shared.'
+                },
+                {
+                    q: 'Can you store different types in a single Java array? How?',
+                    diff: 'medium',
+                    hint: 'Declare as Object[]. But you lose type safety. Better: use generics or a proper class.'
+                }
+            ],
+            challenge: {
+                title: 'Matrix Calculator',
+                desc: 'Build a 2D matrix calculator that can: add two matrices, multiply two matrices, transpose a matrix, and find the trace (sum of diagonal).',
+                reqs: ['Validate that matrices are compatible before operations', 'Print matrices in a formatted grid', 'Use separate methods for each operation']
+            }
+        },
 
 // ═══════════════════ DAY 7 ═══════════════════
-{
-  day:7, phase:'p1',
-  topic:'Methods — Declaration, Parameters & Return',
-  tags:['theory','code','problem'],
-  theory:`<p>A method is a named block of code that performs a specific task. Methods are Java's unit of <em>reuse</em>. Good backend engineers write methods that do <strong>one thing, and do it well</strong> — this is the Single Responsibility Principle at its smallest scale.</p>
+        {
+            day: 7, phase: 'p1',
+            topic: 'Methods — Declaration, Parameters & Return',
+            tags: ['theory', 'code', 'problem'],
+            theory: `<p>A method is a named block of code that performs a specific task. Methods are Java's unit of <em>reuse</em>. Good backend engineers write methods that do <strong>one thing, and do it well</strong> — this is the Single Responsibility Principle at its smallest scale.</p>
 <p>Method signature = <span class="keyword">returnType methodName(parameterList)</span>. If a method returns nothing, use <span class="keyword">void</span>. The <span class="keyword">return</span> keyword both exits the method and sends back a value.</p>
 <p><strong>Pass by value</strong> — Java ALWAYS passes by value. For primitives, a copy of the value is passed. For objects, a copy of the <em>reference</em> is passed. The object's state can be mutated, but you can't reassign the caller's variable.</p>
 <p><strong>Method overloading</strong> — same name, different parameter lists. The compiler picks the right version at compile time based on argument types and count.</p>
 <div class="tip-box"><strong>Clean Code Rule:</strong> If a method is more than 20 lines, it's doing too much. Break it into smaller methods. If you need a comment to explain what a block does, extract that block into a well-named method.</div>`,
-  analogy:`A method is like a recipe card. You hand it ingredients (parameters), it follows steps, and hands you back a dish (return value). The recipe doesn't change your kitchen (caller's state) — it just uses what you give it. Overloading = having multiple recipe cards with the same name but different ingredient lists.`,
-  code:[{label:'Methods.java',lang:'java',src:`<span class="kw">public class</span> <span class="cl">Methods</span> {
+            analogy: `A method is like a recipe card. You hand it ingredients (parameters), it follows steps, and hands you back a dish (return value). The recipe doesn't change your kitchen (caller's state) — it just uses what you give it. Overloading = having multiple recipe cards with the same name but different ingredient lists.`,
+            code: [{
+                label: 'Methods.java', lang: 'java', src: `<span class="kw">public class</span> <span class="cl">Methods</span> {
 
     <span class="cm">// Static method: belongs to class, not instance</span>
     <span class="kw">public static int</span> <span class="fn">add</span>(<span class="ty">int</span> a, <span class="ty">int</span> b) {
@@ -1500,36 +2002,68 @@ java HelloWorld
         <span class="fn">tryReassign</span>(data);
         System.out.<span class="fn">println</span>(data[<span class="num">0</span>]); <span class="cm">// 999 (mutated), not reassigned</span>
     }
-}`}],
-  tasks:[
-    { level:'beginner', text:'Write isPrime(int n) that returns boolean. Test it for 1, 2, 7, 15, 97.' },
-    { level:'intermediate', text:'Write factorial(int n) using both iteration and recursion. Compare the code.' },
-    { level:'advanced', text:'Write a method that returns multiple "values" using an int[] (min, max, sum, count) from a given array.' }
-  ],
-  problems:[
-    { q:'What is the difference between an argument and a parameter?', diff:'easy', hint:'Parameter: variable in method declaration. Argument: actual value passed when calling the method.' },
-    { q:'Can a method return multiple values in Java?', diff:'medium', hint:'Not directly. Options: return an array, return an object, return a record, or use a collection.' },
-    { q:'When does method overload resolution fail (ambiguous call)?', diff:'hard', hint:'When two overloaded methods equally match the arguments. E.g., add(1, 2) when both add(int,double) and add(double,int) exist.' },
-    { q:'What is the call stack? What causes StackOverflowError?', diff:'medium', hint:'Each method call adds a frame to the stack. Infinite recursion (no base case) fills the stack until overflow.' },
-    { q:'Prove Java is pass-by-value for objects with a clear example.', diff:'hard', hint:'void change(Dog d) { d = new Dog(); } — the caller\'s variable still points to the original Dog.' }
-  ],
-  challenge:{ title:'Math Utility Library', desc:'Build a MathUtils class with: isPrime, fibonacci(n), gcd(a,b), lcm(a,b), power(base,exp) without Math.pow, and digitalRoot(n).', reqs:['Each method must have a Javadoc comment','No method longer than 15 lines','Test every method with at least 3 inputs in main()'] }
-},
+}`
+            }],
+            tasks: [
+                {level: 'beginner', text: 'Write isPrime(int n) that returns boolean. Test it for 1, 2, 7, 15, 97.'},
+                {
+                    level: 'intermediate',
+                    text: 'Write factorial(int n) using both iteration and recursion. Compare the code.'
+                },
+                {
+                    level: 'advanced',
+                    text: 'Write a method that returns multiple "values" using an int[] (min, max, sum, count) from a given array.'
+                }
+            ],
+            problems: [
+                {
+                    q: 'What is the difference between an argument and a parameter?',
+                    diff: 'easy',
+                    hint: 'Parameter: variable in method declaration. Argument: actual value passed when calling the method.'
+                },
+                {
+                    q: 'Can a method return multiple values in Java?',
+                    diff: 'medium',
+                    hint: 'Not directly. Options: return an array, return an object, return a record, or use a collection.'
+                },
+                {
+                    q: 'When does method overload resolution fail (ambiguous call)?',
+                    diff: 'hard',
+                    hint: 'When two overloaded methods equally match the arguments. E.g., add(1, 2) when both add(int,double) and add(double,int) exist.'
+                },
+                {
+                    q: 'What is the call stack? What causes StackOverflowError?',
+                    diff: 'medium',
+                    hint: 'Each method call adds a frame to the stack. Infinite recursion (no base case) fills the stack until overflow.'
+                },
+                {
+                    q: 'Prove Java is pass-by-value for objects with a clear example.',
+                    diff: 'hard',
+                    hint: 'void change(Dog d) { d = new Dog(); } — the caller\'s variable still points to the original Dog.'
+                }
+            ],
+            challenge: {
+                title: 'Math Utility Library',
+                desc: 'Build a MathUtils class with: isPrime, fibonacci(n), gcd(a,b), lcm(a,b), power(base,exp) without Math.pow, and digitalRoot(n).',
+                reqs: ['Each method must have a Javadoc comment', 'No method longer than 15 lines', 'Test every method with at least 3 inputs in main()']
+            }
+        },
 
 // ═══════════════════ DAY 8 ═══════════════════
-{
-  day:8, phase:'p1',
-  topic:'Recursion — Base Cases & Call Stack',
-  tags:['theory','code','challenge'],
-  theory:`<p>Recursion is a method calling <em>itself</em> to solve a smaller version of the same problem. Every recursive solution has exactly two parts:</p>
+        {
+            day: 8, phase: 'p1',
+            topic: 'Recursion — Base Cases & Call Stack',
+            tags: ['theory', 'code', 'challenge'],
+            theory: `<p>Recursion is a method calling <em>itself</em> to solve a smaller version of the same problem. Every recursive solution has exactly two parts:</p>
 <p><strong>1. Base Case</strong> — the stopping condition. Without it, recursion never ends → StackOverflowError.</p>
 <p><strong>2. Recursive Case</strong> — calls itself with a smaller problem, moving toward the base case.</p>
 <p>Think of recursion as <em>trust</em> — you trust that the recursive call will solve the smaller problem correctly, so you only need to worry about combining its result with the current step.</p>
 <p>Every recursive call pushes a new frame onto the call stack. Deep recursion (thousands of calls) can overflow the stack. Iterative solutions avoid this. But some problems (trees, graphs, parsing) are naturally recursive and awkward to write iteratively.</p>
 <p><strong>Tail recursion</strong> — when the recursive call is the <em>last</em> operation. Some languages optimize this. Java does NOT optimize tail recursion, so deep tail-recursive calls still overflow.</p>
 <div class="warn-box"><strong>Recursion Discipline:</strong> Before writing recursive code, identify your base case first. Always verify: does every recursive path eventually reach the base case?</div>`,
-  analogy:`Recursion is like Russian nesting dolls. You open a doll looking for a coin. Inside is another doll. You open that too. Eventually you find the smallest doll with no inside (base case). Then you close dolls back up, collecting results as you go (unwinding the call stack).`,
-  code:[{label:'Recursion.java',lang:'java',src:`<span class="kw">public class</span> <span class="cl">Recursion</span> {
+            analogy: `Recursion is like Russian nesting dolls. You open a doll looking for a coin. Inside is another doll. You open that too. Eventually you find the smallest doll with no inside (base case). Then you close dolls back up, collecting results as you go (unwinding the call stack).`,
+            code: [{
+                label: 'Recursion.java', lang: 'java', src: `<span class="kw">public class</span> <span class="cl">Recursion</span> {
 
     <span class="cm">// Classic: Factorial</span>
     <span class="cm">// factorial(5) = 5 * factorial(4) = 5 * 4 * 3 * 2 * 1 = 120</span>
@@ -1562,34 +2096,63 @@ java HelloWorld
         <span class="ty">int</span>[] sorted = {<span class="num">1</span>,<span class="num">3</span>,<span class="num">5</span>,<span class="num">7</span>,<span class="num">9</span>,<span class="num">11</span>,<span class="num">13</span>};
         System.out.<span class="fn">println</span>(<span class="fn">binarySearch</span>(sorted, <span class="num">7</span>, <span class="num">0</span>, sorted.length-<span class="num">1</span>)); <span class="cm">// 3</span>
     }
-}`}],
-  tasks:[
-    { level:'beginner', text:'Write power(base, exp) recursively. No Math.pow allowed.' },
-    { level:'intermediate', text:'Write sumDigits(int n) recursively. sumDigits(1234) = 10.' },
-    { level:'advanced', text:'Write a recursive method to reverse a String without loops or StringBuilder.' }
-  ],
-  problems:[
-    { q:'What is the time complexity of naive recursive Fibonacci? Why is it so bad?', diff:'medium', hint:'O(2^n). fib(5) calls fib(4) and fib(3). fib(4) calls fib(3) again. Massive redundant work.' },
-    { q:'How would you convert recursive fib to use memoization?', diff:'hard', hint:'Use a HashMap or array to cache results. Before computing, check if already calculated.' },
-    { q:'Why does Java not optimize tail recursion?', diff:'hard', hint:'JVM spec does not require it. Stack traces would also be lost. Use iteration or trampolining patterns instead.' },
-    { q:'What is the maximum recursion depth in Java?', diff:'medium', hint:'Depends on stack size (-Xss JVM flag) and frame size. Default ~500–1000 for simple methods. Use -Xss8m to increase.' },
-    { q:'Write the base cases for a recursive palindrome checker.', diff:'medium', hint:'Base case 1: length 0 or 1 → true. Base case 2: first != last → false. Recursive: check substring without first/last.' }
-  ],
-  challenge:{ title:'Tower of Hanoi', desc:'Implement the Tower of Hanoi solution recursively. Given n discs, print every move: "Move disc X from A to C". Count the total number of moves.', reqs:['Print each move clearly','Count and print total moves','Verify: for n discs, moves = 2^n - 1'] }
-},
+}`
+            }],
+            tasks: [
+                {level: 'beginner', text: 'Write power(base, exp) recursively. No Math.pow allowed.'},
+                {level: 'intermediate', text: 'Write sumDigits(int n) recursively. sumDigits(1234) = 10.'},
+                {
+                    level: 'advanced',
+                    text: 'Write a recursive method to reverse a String without loops or StringBuilder.'
+                }
+            ],
+            problems: [
+                {
+                    q: 'What is the time complexity of naive recursive Fibonacci? Why is it so bad?',
+                    diff: 'medium',
+                    hint: 'O(2^n). fib(5) calls fib(4) and fib(3). fib(4) calls fib(3) again. Massive redundant work.'
+                },
+                {
+                    q: 'How would you convert recursive fib to use memoization?',
+                    diff: 'hard',
+                    hint: 'Use a HashMap or array to cache results. Before computing, check if already calculated.'
+                },
+                {
+                    q: 'Why does Java not optimize tail recursion?',
+                    diff: 'hard',
+                    hint: 'JVM spec does not require it. Stack traces would also be lost. Use iteration or trampolining patterns instead.'
+                },
+                {
+                    q: 'What is the maximum recursion depth in Java?',
+                    diff: 'medium',
+                    hint: 'Depends on stack size (-Xss JVM flag) and frame size. Default ~500–1000 for simple methods. Use -Xss8m to increase.'
+                },
+                {
+                    q: 'Write the base cases for a recursive palindrome checker.',
+                    diff: 'medium',
+                    hint: 'Base case 1: length 0 or 1 → true. Base case 2: first != last → false. Recursive: check substring without first/last.'
+                }
+            ],
+            challenge: {
+                title: 'Tower of Hanoi',
+                desc: 'Implement the Tower of Hanoi solution recursively. Given n discs, print every move: "Move disc X from A to C". Count the total number of moves.',
+                reqs: ['Print each move clearly', 'Count and print total moves', 'Verify: for n discs, moves = 2^n - 1']
+            }
+        },
 
 // ═══════════════════ DAY 9 ═══════════════════
-{
-  day:9, phase:'p1',
-  topic:'Strings — Immutability, StringBuilder, APIs',
-  tags:['theory','code','problem'],
-  theory:`<p>String is one of the most-used classes in Java and one of the most misunderstood. The fundamental rule: <strong>Strings are immutable</strong>. Once created, a String object CANNOT be changed. Every "modification" creates a new String object.</p>
+        {
+            day: 9, phase: 'p1',
+            topic: 'Strings — Immutability, StringBuilder, APIs',
+            tags: ['theory', 'code', 'problem'],
+            theory: `<p>String is one of the most-used classes in Java and one of the most misunderstood. The fundamental rule: <strong>Strings are immutable</strong>. Once created, a String object CANNOT be changed. Every "modification" creates a new String object.</p>
 <p>Java maintains a <strong>String Pool</strong> (part of heap). When you write <span class="keyword">"hello"</span>, Java checks the pool first. If "hello" exists, it reuses it. This saves memory but causes the == trap.</p>
 <p><strong>String concatenation in a loop</strong> is a classic performance mistake. Each + creates a new String object. In a loop of 10,000 iterations, that's 10,000 objects. Use <span class="keyword">StringBuilder</span> instead — it's mutable and backed by a resizable char array.</p>
 <p>Key String APIs: <span class="keyword">length()</span>, <span class="keyword">charAt()</span>, <span class="keyword">substring()</span>, <span class="keyword">indexOf()</span>, <span class="keyword">contains()</span>, <span class="keyword">replace()</span>, <span class="keyword">split()</span>, <span class="keyword">trim()</span>, <span class="keyword">toUpperCase()</span>, <span class="keyword">equals()</span>, <span class="keyword">equalsIgnoreCase()</span>, <span class="keyword">startsWith()</span>, <span class="keyword">endsWith()</span>, <span class="keyword">format()</span>.</p>
 <div class="tip-box"><strong>Performance Rule:</strong> String concatenation in a loop = O(n²). StringBuilder append = O(n). For building large strings, always use StringBuilder or StringJoiner.</div>`,
-  analogy:`A String is like a printed book — once published, the content is fixed. To "change" it, you print a new book. StringBuilder is a whiteboard — you can erase and rewrite efficiently. The String Pool is a library: why print a new book if one already exists on the shelf?`,
-  code:[{label:'Strings.java',lang:'java',src:`<span class="kw">public class</span> <span class="cl">Strings</span> {
+            analogy: `A String is like a printed book — once published, the content is fixed. To "change" it, you print a new book. StringBuilder is a whiteboard — you can erase and rewrite efficiently. The String Pool is a library: why print a new book if one already exists on the shelf?`,
+            code: [{
+                label: 'Strings.java', lang: 'java', src: `<span class="kw">public class</span> <span class="cl">Strings</span> {
     <span class="kw">public static void</span> <span class="fn">main</span>(<span class="ty">String</span>[] args) {
 
         <span class="cm">// ── Immutability & Pool ──</span>
@@ -1626,36 +2189,68 @@ java HelloWorld
         <span class="ty">String</span> report = <span class="ty">String</span>.<span class="fn">format</span>(<span class="st">"Name: %-15s Age: %3d"</span>, <span class="st">"Alice"</span>, <span class="num">30</span>);
         System.out.<span class="fn">println</span>(report);
     }
-}`}],
-  tasks:[
-    { level:'beginner', text:'Write a method that counts vowels in a String. Case-insensitive.' },
-    { level:'intermediate', text:'Write isPalindrome(String s) ignoring spaces and case. "Race a car" should return false. "A man a plan a canal Panama" → true.' },
-    { level:'advanced', text:'Write a method that compresses a string: "aaabbc" → "a3b2c1". If compressed is not shorter, return original.' }
-  ],
-  problems:[
-    { q:'Why is String immutable in Java? List 3 benefits of this design.', diff:'medium', hint:'Thread-safety (can be shared), String Pool possible, Secure (passwords can\'t be mutated by accident).' },
-    { q:'What is String.intern()? When would you use it?', diff:'hard', hint:'Forces a string to be in the pool. After intern(), == can be used. Useful for reducing memory with many duplicate strings.' },
-    { q:'What is the difference between String, StringBuilder, and StringBuffer?', diff:'medium', hint:'String: immutable. StringBuilder: mutable, not thread-safe (faster). StringBuffer: mutable, thread-safe (synchronized).' },
-    { q:'What does String.format("%.2f", 3.14159) produce?', diff:'easy', hint:'"3.14" — limits decimal places to 2.' },
-    { q:'How would you check if a String contains only digits?', diff:'medium', hint:'Option 1: s.matches("[0-9]+"). Option 2: Character.isDigit() for each char. Option 3: try Integer.parseInt(), catch exception.' }
-  ],
-  challenge:{ title:'String Parser & Analyzer', desc:'Build a text analyzer that reads a paragraph and reports: total words, unique words, most frequent word, longest word, average word length, and a word frequency map.', reqs:['Use split() for tokenizing','Use StringBuilder for output building','Case-insensitive word counting'] }
-},
+}`
+            }],
+            tasks: [
+                {level: 'beginner', text: 'Write a method that counts vowels in a String. Case-insensitive.'},
+                {
+                    level: 'intermediate',
+                    text: 'Write isPalindrome(String s) ignoring spaces and case. "Race a car" should return false. "A man a plan a canal Panama" → true.'
+                },
+                {
+                    level: 'advanced',
+                    text: 'Write a method that compresses a string: "aaabbc" → "a3b2c1". If compressed is not shorter, return original.'
+                }
+            ],
+            problems: [
+                {
+                    q: 'Why is String immutable in Java? List 3 benefits of this design.',
+                    diff: 'medium',
+                    hint: 'Thread-safety (can be shared), String Pool possible, Secure (passwords can\'t be mutated by accident).'
+                },
+                {
+                    q: 'What is String.intern()? When would you use it?',
+                    diff: 'hard',
+                    hint: 'Forces a string to be in the pool. After intern(), == can be used. Useful for reducing memory with many duplicate strings.'
+                },
+                {
+                    q: 'What is the difference between String, StringBuilder, and StringBuffer?',
+                    diff: 'medium',
+                    hint: 'String: immutable. StringBuilder: mutable, not thread-safe (faster). StringBuffer: mutable, thread-safe (synchronized).'
+                },
+                {
+                    q: 'What does String.format("%.2f", 3.14159) produce?',
+                    diff: 'easy',
+                    hint: '"3.14" — limits decimal places to 2.'
+                },
+                {
+                    q: 'How would you check if a String contains only digits?',
+                    diff: 'medium',
+                    hint: 'Option 1: s.matches("[0-9]+"). Option 2: Character.isDigit() for each char. Option 3: try Integer.parseInt(), catch exception.'
+                }
+            ],
+            challenge: {
+                title: 'String Parser & Analyzer',
+                desc: 'Build a text analyzer that reads a paragraph and reports: total words, unique words, most frequent word, longest word, average word length, and a word frequency map.',
+                reqs: ['Use split() for tokenizing', 'Use StringBuilder for output building', 'Case-insensitive word counting']
+            }
+        },
 
 // ═══════════════════ DAY 10 ═══════════════════
-{
-  day:10, phase:'p1',
-  topic:'String Manipulation Problems & Algorithms',
-  tags:['problem','challenge'],
-  theory:`<p>Day 10 is a <strong>pure problem-solving day</strong>. No new theory — only practice. String problems are the most common in technical interviews, and mastering them requires pattern recognition.</p>
+        {
+            day: 10, phase: 'p1',
+            topic: 'String Manipulation Problems & Algorithms',
+            tags: ['problem', 'challenge'],
+            theory: `<p>Day 10 is a <strong>pure problem-solving day</strong>. No new theory — only practice. String problems are the most common in technical interviews, and mastering them requires pattern recognition.</p>
 <p>Key patterns you'll use today:</p>
 <p><strong>Two Pointers</strong> — left and right indices moving toward each other. Classic for palindromes, reversals.</p>
 <p><strong>Frequency Map</strong> — count character occurrences using a HashMap or int[26] for lowercase letters.</p>
 <p><strong>Sliding Window</strong> — move a window of fixed/variable size through the string.</p>
 <p><strong>StringBuilder</strong> — for building result strings efficiently.</p>
 <div class="tip-box"><strong>Interview Strategy:</strong> For every string problem: (1) Clarify edge cases — null? empty? spaces? (2) Think brute force first. (3) Optimize. (4) Test with examples mentally before coding.</div>`,
-  analogy:`String algorithms are like puzzle pieces. Today you practice assembling them. Two-pointer is like two people reading a book from both ends to check if it's a palindrome. Frequency map is like counting tiles by color before playing Scrabble.`,
-  code:[{label:'StringProblems.java',lang:'java',src:`<span class="kw">import</span> java.util.*;
+            analogy: `String algorithms are like puzzle pieces. Today you practice assembling them. Two-pointer is like two people reading a book from both ends to check if it's a palindrome. Frequency map is like counting tiles by color before playing Scrabble.`,
+            code: [{
+                label: 'StringProblems.java', lang: 'java', src: `<span class="kw">import</span> java.util.*;
 
 <span class="kw">public class</span> <span class="cl">StringProblems</span> {
 
@@ -1695,120 +2290,154 @@ java HelloWorld
         System.out.<span class="fn">println</span>(<span class="fn">firstUnique</span>(<span class="st">"leetcode"</span>));         <span class="cm">// l</span>
         System.out.<span class="fn">println</span>(<span class="fn">reverseWords</span>(<span class="st">"the sky is blue"</span>));  <span class="cm">// blue is sky the</span>
     }
-}`}],
-  tasks:[
-    { level:'beginner', text:'Count occurrences of each character in a string. Print character → count.' },
-    { level:'intermediate', text:'Given a string, find the longest substring without repeating characters. E.g., "abcabcbb" → 3 ("abc").' },
-    { level:'advanced', text:'Check if one string is a rotation of another. E.g., "waterbottle" is a rotation of "erbottlewat". Hint: concatenate and search.' }
-  ],
-  problems:[
-    { q:'Write isAnagram() using sorting instead of a frequency array. What\'s the trade-off?', diff:'medium', hint:'Sort both strings, compare. O(n log n) time vs O(n) with array. But simpler code.' },
-    { q:'What does \\s+ mean as a split regex?', diff:'easy', hint:'One or more whitespace characters (space, tab, newline). Safer than just splitting on single space.' },
-    { q:'How would you find all permutations of a string?', diff:'hard', hint:'Recursion: fix first character, recurse on remainder. Or use iterative approach with swap.' },
-    { q:'What is the time complexity of checking if s2 contains s1 using s2.contains(s1)?', diff:'hard', hint:'Java uses Boyer-Moore-Horspool variant. Worst case O(n*m), average O(n+m).' },
-    { q:'How would you remove duplicates from a string while preserving order?', diff:'medium', hint:'LinkedHashSet preserves insertion order and removes duplicates. Convert back to string.' }
-  ],
-  challenge:{ title:'String Compression & Encoding', desc:'Implement run-length encoding AND decoding. encode("aaabbbcc") = "3a3b2c". decode("3a3b2c") = "aaabbbcc". Then implement Caesar cipher encode/decode.', reqs:['Handle single characters (1a → a, not 1a)', 'Caesar cipher wraps around z→a', 'Test round-trip: encode then decode returns original'] }
-}
-];
+}`
+            }],
+            tasks: [
+                {level: 'beginner', text: 'Count occurrences of each character in a string. Print character → count.'},
+                {
+                    level: 'intermediate',
+                    text: 'Given a string, find the longest substring without repeating characters. E.g., "abcabcbb" → 3 ("abc").'
+                },
+                {
+                    level: 'advanced',
+                    text: 'Check if one string is a rotation of another. E.g., "waterbottle" is a rotation of "erbottlewat". Hint: concatenate and search.'
+                }
+            ],
+            problems: [
+                {
+                    q: 'Write isAnagram() using sorting instead of a frequency array. What\'s the trade-off?',
+                    diff: 'medium',
+                    hint: 'Sort both strings, compare. O(n log n) time vs O(n) with array. But simpler code.'
+                },
+                {
+                    q: 'What does \\s+ mean as a split regex?',
+                    diff: 'easy',
+                    hint: 'One or more whitespace characters (space, tab, newline). Safer than just splitting on single space.'
+                },
+                {
+                    q: 'How would you find all permutations of a string?',
+                    diff: 'hard',
+                    hint: 'Recursion: fix first character, recurse on remainder. Or use iterative approach with swap.'
+                },
+                {
+                    q: 'What is the time complexity of checking if s2 contains s1 using s2.contains(s1)?',
+                    diff: 'hard',
+                    hint: 'Java uses Boyer-Moore-Horspool variant. Worst case O(n*m), average O(n+m).'
+                },
+                {
+                    q: 'How would you remove duplicates from a string while preserving order?',
+                    diff: 'medium',
+                    hint: 'LinkedHashSet preserves insertion order and removes duplicates. Convert back to string.'
+                }
+            ],
+            challenge: {
+                title: 'String Compression & Encoding',
+                desc: 'Implement run-length encoding AND decoding. encode("aaabbbcc") = "3a3b2c". decode("3a3b2c") = "aaabbbcc". Then implement Caesar cipher encode/decode.',
+                reqs: ['Handle single characters (1a → a, not 1a)', 'Caesar cipher wraps around z→a', 'Test round-trip: encode then decode returns original']
+            }
+        }
+    ];
 
-// Generate stub lessons for days 11–90
-const ALL_TOPICS = [
-  null, null, null, null, null, null, null, null, null, null, // 1-10 done above
-  {day:11,phase:'p1',topic:'Math Class & Number Formatting'},
-  {day:12,phase:'p1',topic:'Scanner & Console I/O Patterns'},
-  {day:13,phase:'p1',topic:'Varargs, Method Overloading & Signatures'},
-  {day:14,phase:'p1',topic:'Bitwise Operators & Bit Manipulation'},
-  {day:15,phase:'p1',topic:'Revision Day — Week 1–2 Consolidated'},
-  {day:16,phase:'p1',topic:'Classes & Objects — Blueprint & Instance'},
-  {day:17,phase:'p1',topic:'Constructors — Default, Parameterized, Copy'},
-  {day:18,phase:'p1',topic:'this Keyword — References & Chaining'},
-  {day:19,phase:'p1',topic:'static — Variables, Methods & Blocks'},
-  {day:20,phase:'p1',topic:'Access Modifiers & Encapsulation'},
-  {day:21,phase:'p1',topic:'Packages & Import Statements'},
-  {day:22,phase:'p1',topic:'Enums — Ordinal, Values & Methods'},
-  {day:23,phase:'p1',topic:'Records (Java 16+) — Immutable Data Classes'},
-  {day:24,phase:'p1',topic:'Wrapper Classes — Autoboxing & Unboxing'},
-  {day:25,phase:'p1',topic:'Exception Handling — try/catch/finally'},
-  {day:26,phase:'p1',topic:'Custom Exceptions & Exception Hierarchy'},
-  {day:27,phase:'p1',topic:'File I/O — FileReader, BufferedReader, Paths'},
-  {day:28,phase:'p1',topic:'Mini Project — Student Grade System'},
-  {day:29,phase:'p1',topic:'Mini Project — File-based Contact Book'},
-  {day:30,phase:'p1',topic:'Phase 1 Revision & Self-Assessment'},
-  {day:31,phase:'p2',topic:'Inheritance — extends, super, Method Override'},
-  {day:32,phase:'p2',topic:'Abstract Classes vs Concrete Classes'},
-  {day:33,phase:'p2',topic:'Interfaces — Default & Static Methods'},
-  {day:34,phase:'p2',topic:'Polymorphism — Runtime & Compile-time'},
-  {day:35,phase:'p2',topic:'instanceof & Pattern Matching (Java 16+)'},
-  {day:36,phase:'p2',topic:'Sealed Classes & Permits (Java 17)'},
-  {day:37,phase:'p2',topic:'Collections — List, Set, Queue Overview'},
-  {day:38,phase:'p2',topic:'ArrayList & LinkedList — Deep Dive'},
-  {day:39,phase:'p2',topic:'HashMap & LinkedHashMap — Internal Mechanics'},
-  {day:40,phase:'p2',topic:'HashSet & TreeSet — Unique Collections'},
-  {day:41,phase:'p2',topic:'Iterator & ListIterator — Traversal Patterns'},
-  {day:42,phase:'p2',topic:'Comparable & Comparator — Custom Sorting'},
-  {day:43,phase:'p2',topic:'Generics — Type Parameters, Bounds & Wildcards'},
-  {day:44,phase:'p2',topic:'Collections Utility Class — sort, shuffle, min'},
-  {day:45,phase:'p2',topic:'Stack, Queue, Deque — Interview Patterns'},
-  {day:46,phase:'p2',topic:'Revision — OOP & Collections Deep Dive'},
-  {day:47,phase:'p2',topic:'Functional Interfaces — Predicate, Function…'},
-  {day:48,phase:'p2',topic:'Lambda Expressions — Syntax & Use Cases'},
-  {day:49,phase:'p2',topic:'Stream API — filter, map, reduce, collect'},
-  {day:50,phase:'p2',topic:'Stream API — flatMap, groupingBy, partitioning'},
-  {day:51,phase:'p2',topic:'Optional — Null Safety & Chaining'},
-  {day:52,phase:'p2',topic:'Method References — 4 Types & Use Cases'},
-  {day:53,phase:'p2',topic:'Date & Time API — LocalDate, ZonedDateTime'},
-  {day:54,phase:'p2',topic:'Mini Project — Employee Payroll with Streams'},
-  {day:55,phase:'p2',topic:'Phase 2 Revision & Mock Assessment'},
-  {day:56,phase:'p3',topic:'Threads — Creation, Lifecycle & States'},
-  {day:57,phase:'p3',topic:'Synchronization — synchronized, volatile'},
-  {day:58,phase:'p3',topic:'Executors & Thread Pools — Best Practices'},
-  {day:59,phase:'p3',topic:'CompletableFuture — Async Programming'},
-  {day:60,phase:'p3',topic:'Concurrent Collections — ConcurrentHashMap…'},
-  {day:61,phase:'p3',topic:'Design Patterns — Singleton & Factory'},
-  {day:62,phase:'p3',topic:'Design Patterns — Builder, Prototype, Adapter'},
-  {day:63,phase:'p3',topic:'Design Patterns — Observer, Strategy, Facade'},
-  {day:64,phase:'p3',topic:'SOLID Principles — S, O, L'},
-  {day:65,phase:'p3',topic:'SOLID Principles — I, D & Refactoring Lab'},
-  {day:66,phase:'p3',topic:'JVM Internals — ClassLoader, JIT, GC Basics'},
-  {day:67,phase:'p3',topic:'Memory Model — Stack, Heap, Metaspace'},
-  {day:68,phase:'p3',topic:'Garbage Collection — G1, ZGC, Tuning Flags'},
-  {day:69,phase:'p3',topic:'Reflection API — Class, Method, Field'},
-  {day:70,phase:'p3',topic:'Annotations — Custom, Retention & Processing'},
-  {day:71,phase:'p3',topic:'Serialization — ObjectStream, JSON (manual)'},
-  {day:72,phase:'p3',topic:'Networking — Sockets, ServerSocket, HTTP'},
-  {day:73,phase:'p3',topic:'Unit Testing — JUnit 5, Assertions, Lifecycle'},
-  {day:74,phase:'p3',topic:'Mini Project — Multi-threaded File Downloader'},
-  {day:75,phase:'p3',topic:'Phase 3 Revision — Advanced Java Assessment'},
-  {day:76,phase:'p4',topic:'JDBC — Connection, PreparedStatement, ResultSet'},
-  {day:77,phase:'p4',topic:'Connection Pooling — HikariCP & Best Practices'},
-  {day:78,phase:'p4',topic:'SQL Revision — Joins, Indexes, Transactions'},
-  {day:79,phase:'p4',topic:'HTTP Fundamentals — REST Principles & Verbs'},
-  {day:80,phase:'p4',topic:'Build Tools — Maven, pom.xml, Lifecycle'},
-  {day:81,phase:'p4',topic:'Logging — SLF4J, Logback, Log Levels'},
-  {day:82,phase:'p4',topic:'JSON Handling — Jackson, ObjectMapper, Nodes'},
-  {day:83,phase:'p4',topic:'Git Workflow — Branching, PRs, Conventional Commits'},
-  {day:84,phase:'p4',topic:'Data Structures — LinkedList, BST, Trie (impl)'},
-  {day:85,phase:'p4',topic:'Algorithms — Sorting: Quick, Merge, Heap'},
-  {day:86,phase:'p4',topic:'Algorithms — Binary Search & Sliding Window'},
-  {day:87,phase:'p4',topic:'Algorithms — Graph BFS & DFS (Java impl)'},
-  {day:88,phase:'p4',topic:'Final Project — REST-style CLI CRUD Backend'},
-  {day:89,phase:'p4',topic:'Code Review & Refactor — Apply SOLID + Patterns'},
-  {day:90,phase:'p4',topic:'🎓 Graduation Day — Full Assessment & Roadmap'},
-];
+    // Generate stub lessons for days 11–90
+    const ALL_TOPICS = [
+        null, null, null, null, null, null, null, null, null, null, // 1-10 done above
+        {day: 11, phase: 'p1', topic: 'Math Class & Number Formatting'},
+        {day: 12, phase: 'p1', topic: 'Scanner & Console I/O Patterns'},
+        {day: 13, phase: 'p1', topic: 'Varargs, Method Overloading & Signatures'},
+        {day: 14, phase: 'p1', topic: 'Bitwise Operators & Bit Manipulation'},
+        {day: 15, phase: 'p1', topic: 'Revision Day — Week 1–2 Consolidated'},
+        {day: 16, phase: 'p1', topic: 'Classes & Objects — Blueprint & Instance'},
+        {day: 17, phase: 'p1', topic: 'Constructors — Default, Parameterized, Copy'},
+        {day: 18, phase: 'p1', topic: 'this Keyword — References & Chaining'},
+        {day: 19, phase: 'p1', topic: 'static — Variables, Methods & Blocks'},
+        {day: 20, phase: 'p1', topic: 'Access Modifiers & Encapsulation'},
+        {day: 21, phase: 'p1', topic: 'Packages & Import Statements'},
+        {day: 22, phase: 'p1', topic: 'Enums — Ordinal, Values & Methods'},
+        {day: 23, phase: 'p1', topic: 'Records (Java 16+) — Immutable Data Classes'},
+        {day: 24, phase: 'p1', topic: 'Wrapper Classes — Autoboxing & Unboxing'},
+        {day: 25, phase: 'p1', topic: 'Exception Handling — try/catch/finally'},
+        {day: 26, phase: 'p1', topic: 'Custom Exceptions & Exception Hierarchy'},
+        {day: 27, phase: 'p1', topic: 'File I/O — FileReader, BufferedReader, Paths'},
+        {day: 28, phase: 'p1', topic: 'Mini Project — Student Grade System'},
+        {day: 29, phase: 'p1', topic: 'Mini Project — File-based Contact Book'},
+        {day: 30, phase: 'p1', topic: 'Phase 1 Revision & Self-Assessment'},
+        {day: 31, phase: 'p2', topic: 'Inheritance — extends, super, Method Override'},
+        {day: 32, phase: 'p2', topic: 'Abstract Classes vs Concrete Classes'},
+        {day: 33, phase: 'p2', topic: 'Interfaces — Default & Static Methods'},
+        {day: 34, phase: 'p2', topic: 'Polymorphism — Runtime & Compile-time'},
+        {day: 35, phase: 'p2', topic: 'instanceof & Pattern Matching (Java 16+)'},
+        {day: 36, phase: 'p2', topic: 'Sealed Classes & Permits (Java 17)'},
+        {day: 37, phase: 'p2', topic: 'Collections — List, Set, Queue Overview'},
+        {day: 38, phase: 'p2', topic: 'ArrayList & LinkedList — Deep Dive'},
+        {day: 39, phase: 'p2', topic: 'HashMap & LinkedHashMap — Internal Mechanics'},
+        {day: 40, phase: 'p2', topic: 'HashSet & TreeSet — Unique Collections'},
+        {day: 41, phase: 'p2', topic: 'Iterator & ListIterator — Traversal Patterns'},
+        {day: 42, phase: 'p2', topic: 'Comparable & Comparator — Custom Sorting'},
+        {day: 43, phase: 'p2', topic: 'Generics — Type Parameters, Bounds & Wildcards'},
+        {day: 44, phase: 'p2', topic: 'Collections Utility Class — sort, shuffle, min'},
+        {day: 45, phase: 'p2', topic: 'Stack, Queue, Deque — Interview Patterns'},
+        {day: 46, phase: 'p2', topic: 'Revision — OOP & Collections Deep Dive'},
+        {day: 47, phase: 'p2', topic: 'Functional Interfaces — Predicate, Function…'},
+        {day: 48, phase: 'p2', topic: 'Lambda Expressions — Syntax & Use Cases'},
+        {day: 49, phase: 'p2', topic: 'Stream API — filter, map, reduce, collect'},
+        {day: 50, phase: 'p2', topic: 'Stream API — flatMap, groupingBy, partitioning'},
+        {day: 51, phase: 'p2', topic: 'Optional — Null Safety & Chaining'},
+        {day: 52, phase: 'p2', topic: 'Method References — 4 Types & Use Cases'},
+        {day: 53, phase: 'p2', topic: 'Date & Time API — LocalDate, ZonedDateTime'},
+        {day: 54, phase: 'p2', topic: 'Mini Project — Employee Payroll with Streams'},
+        {day: 55, phase: 'p2', topic: 'Phase 2 Revision & Mock Assessment'},
+        {day: 56, phase: 'p3', topic: 'Threads — Creation, Lifecycle & States'},
+        {day: 57, phase: 'p3', topic: 'Synchronization — synchronized, volatile'},
+        {day: 58, phase: 'p3', topic: 'Executors & Thread Pools — Best Practices'},
+        {day: 59, phase: 'p3', topic: 'CompletableFuture — Async Programming'},
+        {day: 60, phase: 'p3', topic: 'Concurrent Collections — ConcurrentHashMap…'},
+        {day: 61, phase: 'p3', topic: 'Design Patterns — Singleton & Factory'},
+        {day: 62, phase: 'p3', topic: 'Design Patterns — Builder, Prototype, Adapter'},
+        {day: 63, phase: 'p3', topic: 'Design Patterns — Observer, Strategy, Facade'},
+        {day: 64, phase: 'p3', topic: 'SOLID Principles — S, O, L'},
+        {day: 65, phase: 'p3', topic: 'SOLID Principles — I, D & Refactoring Lab'},
+        {day: 66, phase: 'p3', topic: 'JVM Internals — ClassLoader, JIT, GC Basics'},
+        {day: 67, phase: 'p3', topic: 'Memory Model — Stack, Heap, Metaspace'},
+        {day: 68, phase: 'p3', topic: 'Garbage Collection — G1, ZGC, Tuning Flags'},
+        {day: 69, phase: 'p3', topic: 'Reflection API — Class, Method, Field'},
+        {day: 70, phase: 'p3', topic: 'Annotations — Custom, Retention & Processing'},
+        {day: 71, phase: 'p3', topic: 'Serialization — ObjectStream, JSON (manual)'},
+        {day: 72, phase: 'p3', topic: 'Networking — Sockets, ServerSocket, HTTP'},
+        {day: 73, phase: 'p3', topic: 'Unit Testing — JUnit 5, Assertions, Lifecycle'},
+        {day: 74, phase: 'p3', topic: 'Mini Project — Multi-threaded File Downloader'},
+        {day: 75, phase: 'p3', topic: 'Phase 3 Revision — Advanced Java Assessment'},
+        {day: 76, phase: 'p4', topic: 'JDBC — Connection, PreparedStatement, ResultSet'},
+        {day: 77, phase: 'p4', topic: 'Connection Pooling — HikariCP & Best Practices'},
+        {day: 78, phase: 'p4', topic: 'SQL Revision — Joins, Indexes, Transactions'},
+        {day: 79, phase: 'p4', topic: 'HTTP Fundamentals — REST Principles & Verbs'},
+        {day: 80, phase: 'p4', topic: 'Build Tools — Maven, pom.xml, Lifecycle'},
+        {day: 81, phase: 'p4', topic: 'Logging — SLF4J, Logback, Log Levels'},
+        {day: 82, phase: 'p4', topic: 'JSON Handling — Jackson, ObjectMapper, Nodes'},
+        {day: 83, phase: 'p4', topic: 'Git Workflow — Branching, PRs, Conventional Commits'},
+        {day: 84, phase: 'p4', topic: 'Data Structures — LinkedList, BST, Trie (impl)'},
+        {day: 85, phase: 'p4', topic: 'Algorithms — Sorting: Quick, Merge, Heap'},
+        {day: 86, phase: 'p4', topic: 'Algorithms — Binary Search & Sliding Window'},
+        {day: 87, phase: 'p4', topic: 'Algorithms — Graph BFS & DFS (Java impl)'},
+        {day: 88, phase: 'p4', topic: 'Final Project — REST-style CLI CRUD Backend'},
+        {day: 89, phase: 'p4', topic: 'Code Review & Refactor — Apply SOLID + Patterns'},
+        {day: 90, phase: 'p4', topic: '🎓 Graduation Day — Full Assessment & Roadmap'},
+    ];
 
-// Merge rich lessons with stub data
-function buildStubLesson(info) {
-  return {
-    day: info.day,
-    phase: info.phase,
-    topic: info.topic,
-    tags: info.day % 3 === 0 ? ['theory','code','problem'] : ['theory','code'],
-    theory: `<p>This is <strong>Day ${info.day}</strong>: <em>${info.topic}</em>. Open your IDE, read your textbook on this topic, then return here to complete the tasks.</p>
+    // Merge rich lessons with stub data
+    function buildStubLesson(info) {
+        return {
+            day: info.day,
+            phase: info.phase,
+            topic: info.topic,
+            tags: info.day % 3 === 0 ? ['theory', 'code', 'problem'] : ['theory', 'code'],
+            theory: `<p>This is <strong>Day ${info.day}</strong>: <em>${info.topic}</em>. Open your IDE, read your textbook on this topic, then return here to complete the tasks.</p>
     <p>Your mentor's instruction: <strong>read deeply first</strong>, then code from scratch without copy-pasting. The discipline of typing code manually builds muscle memory that reading never will.</p>
     <div class="tip-box"><strong>Today's Discipline:</strong> Before you code, write a 5-line plain English summary of today's topic in the notes area below. Then code. Then review.</div>`,
-    analogy: `Each Java concept connects to a real-world engineering system. As you study today's topic, ask yourself: where does this appear in real backend services, APIs, or databases you use daily?`,
-    code: [{label:`Day${info.day}Example.java`, lang:'java', src:`<span class="cm">// Day ${info.day}: ${info.topic}</span>
+            analogy: `Each Java concept connects to a real-world engineering system. As you study today's topic, ask yourself: where does this appear in real backend services, APIs, or databases you use daily?`,
+            code: [{
+                label: `Day${info.day}Example.java`,
+                lang: 'java',
+                src: `<span class="cm">// Day ${info.day}: ${info.topic}</span>
 <span class="cm">// Write your code from scratch here.</span>
 <span class="cm">// Type every character — no copy-paste!</span>
 
@@ -1817,119 +2446,167 @@ function buildStubLesson(info) {
         <span class="cm">// TODO: Implement today's concept</span>
         System.out.<span class="fn">println</span>(<span class="st">"Day ${info.day} — ${info.topic}"</span>);
     }
-}`}],
-    tasks: [
-      { level:'beginner',     text:`Read and understand the core concept of: ${info.topic}. Write a basic example demonstrating it.` },
-      { level:'intermediate', text:`Apply ${info.topic} in a realistic scenario. Think: how would this appear in a real Java backend?` },
-      { level:'advanced',     text:`Combine today's concept with previous concepts. Create a mini-program that integrates at least 3 things you've learned.` }
-    ],
-    problems: [
-      { q:`What is the primary purpose of: ${info.topic}?`, diff:'easy', hint:'Think about what problem this concept solves. When would you reach for it?' },
-      { q:`What are 2 common mistakes beginners make with this concept?`, diff:'medium', hint:'Think edge cases: null handling, order of operations, performance traps.' },
-      { q:`How does this concept appear in a real Java backend application?`, diff:'medium', hint:'Think Spring Boot, REST APIs, database access, or multithreading scenarios.' },
-      { q:`What is the time/space complexity implication of using this feature?`, diff:'hard', hint:'Every feature has a cost. What does Java do under the hood? Any hidden allocations?' },
-      { q:`Write a test case that would break a naive implementation of this concept.`, diff:'hard', hint:'Edge cases: empty input, null, maximum values, concurrent access.' }
-    ],
-    challenge: { title:`Day ${info.day} Integration Challenge`, desc:`Take what you learned today about "${info.topic}" and build a small, working program that solves a realistic problem using it. This must be original code, typed from scratch.`, reqs:['Complete implementation (no stubs)', 'Handle at least one edge case', 'Add a comment explaining your approach'] }
-  };
-}
+}`
+            }],
+            tasks: [
+                {
+                    level: 'beginner',
+                    text: `Read and understand the core concept of: ${info.topic}. Write a basic example demonstrating it.`
+                },
+                {
+                    level: 'intermediate',
+                    text: `Apply ${info.topic} in a realistic scenario. Think: how would this appear in a real Java backend?`
+                },
+                {
+                    level: 'advanced',
+                    text: `Combine today's concept with previous concepts. Create a mini-program that integrates at least 3 things you've learned.`
+                }
+            ],
+            problems: [
+                {
+                    q: `What is the primary purpose of: ${info.topic}?`,
+                    diff: 'easy',
+                    hint: 'Think about what problem this concept solves. When would you reach for it?'
+                },
+                {
+                    q: `What are 2 common mistakes beginners make with this concept?`,
+                    diff: 'medium',
+                    hint: 'Think edge cases: null handling, order of operations, performance traps.'
+                },
+                {
+                    q: `How does this concept appear in a real Java backend application?`,
+                    diff: 'medium',
+                    hint: 'Think Spring Boot, REST APIs, database access, or multithreading scenarios.'
+                },
+                {
+                    q: `What is the time/space complexity implication of using this feature?`,
+                    diff: 'hard',
+                    hint: 'Every feature has a cost. What does Java do under the hood? Any hidden allocations?'
+                },
+                {
+                    q: `Write a test case that would break a naive implementation of this concept.`,
+                    diff: 'hard',
+                    hint: 'Edge cases: empty input, null, maximum values, concurrent access.'
+                }
+            ],
+            challenge: {
+                title: `Day ${info.day} Integration Challenge`,
+                desc: `Take what you learned today about "${info.topic}" and build a small, working program that solves a realistic problem using it. This must be original code, typed from scratch.`,
+                reqs: ['Complete implementation (no stubs)', 'Handle at least one edge case', 'Add a comment explaining your approach']
+            }
+        };
+    }
 
-const ALL_LESSONS = [];
-for (let d = 1; d <= 90; d++) {
-  const rich = LESSONS.find(l => l.day === d);
-  if (rich) { ALL_LESSONS.push(rich); continue; }
-  const info = ALL_TOPICS[d]; // index d (1-based is fine, array has null at 0..9)
-  if (info) ALL_LESSONS.push(buildStubLesson(info));
-}
+    const ALL_LESSONS = [];
+    for (let d = 1; d <= 90; d++) {
+        const rich = LESSONS.find(l => l.day === d);
+        if (rich) {
+            ALL_LESSONS.push(rich);
+            continue;
+        }
+        const info = ALL_TOPICS[d]; // index d (1-based is fine, array has null at 0..9)
+        if (info) ALL_LESSONS.push(buildStubLesson(info));
+    }
 
-// ══════════════════════════════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════════════════════════════
-const SK = 'java-mastery-v2';
-let state = { completed:{}, startDay: null };
-let currentDay = 1;
+    // ══════════════════════════════════════════════════════════════════
+    //  STATE
+    // ══════════════════════════════════════════════════════════════════
+    const SK = 'java-mastery-v2';
+    let state = {completed: {}, startDay: null};
+    let currentDay = 1;
 
-function loadState() {
-  try {
-    const r = localStorage.getItem(SK);
-    if (r) state = JSON.parse(r);
-    if (!state.startDay) state.startDay = new Date().toISOString().slice(0,10);
-  } catch(e) { state = { completed:{}, startDay: new Date().toISOString().slice(0,10) }; }
-}
+    function loadState() {
+        try {
+            const r = localStorage.getItem(SK);
+            if (r) state = JSON.parse(r);
+            if (!state.startDay) state.startDay = new Date().toISOString().slice(0, 10);
+        } catch (e) {
+            state = {completed: {}, startDay: new Date().toISOString().slice(0, 10)};
+        }
+    }
 
-function saveState() { localStorage.setItem(SK, JSON.stringify(state)); }
-function isCompleted(d) { return !!state.completed[d]; }
-function getTodayDay() {
-  const diff = Math.floor((new Date() - new Date(state.startDay)) / 86400000) + 1;
-  return Math.min(Math.max(diff, 1), 90);
-}
+    function saveState() {
+        localStorage.setItem(SK, JSON.stringify(state));
+    }
 
-// ══════════════════════════════════════════════════════════════════
-//  BUILD NAV
-// ══════════════════════════════════════════════════════════════════
-function buildNav() {
-  const container = document.getElementById('nav-list');
-  container.innerHTML = '';
-  PHASES.forEach(ph => {
-    const [s,e] = ph.days;
-    const phDiv = document.createElement('div');
-    phDiv.className = 'phase-group';
-    phDiv.innerHTML = `<div class="phase-header"><span class="phase-dot ${ph.dot}"></span>${ph.label}</div>`;
-    ALL_LESSONS.filter(l => l.day >= s && l.day <= e).forEach(l => {
-      const item = document.createElement('div');
-      item.className = 'nav-item' + (isCompleted(l.day) ? ' done' : '') + (l.day === currentDay ? ' active' : '');
-      item.dataset.day = l.day;
-      item.dataset.topic = l.topic.toLowerCase();
-      item.innerHTML = `<span class="nav-num">D${String(l.day).padStart(2,'0')}</span><span class="nav-topic">${l.topic}</span>`;
-      item.onclick = () => { goToDay(l.day); toggleSidebarClose(); };
-      phDiv.appendChild(item);
-    });
-    container.appendChild(phDiv);
-  });
-}
+    function isCompleted(d) {
+        return !!state.completed[d];
+    }
 
-function filterNav() {
-  const q = document.getElementById('nav-search').value.toLowerCase();
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.toggle('hidden-search', !!q && !item.dataset.topic.includes(q));
-  });
-}
+    function getTodayDay() {
+        const diff = Math.floor((new Date() - new Date(state.startDay)) / 86400000) + 1;
+        return Math.min(Math.max(diff, 1), 90);
+    }
 
-// ══════════════════════════════════════════════════════════════════
-//  RENDER LESSON
-// ══════════════════════════════════════════════════════════════════
-function renderLesson(lesson) {
-  const mc = document.getElementById('main-content');
+    // ══════════════════════════════════════════════════════════════════
+    //  BUILD NAV
+    // ══════════════════════════════════════════════════════════════════
+    function buildNav() {
+        const container = document.getElementById('nav-list');
+        container.innerHTML = '';
+        PHASES.forEach(ph => {
+            const [s, e] = ph.days;
+            const phDiv = document.createElement('div');
+            phDiv.className = 'phase-group';
+            phDiv.innerHTML = `<div class="phase-header"><span class="phase-dot ${ph.dot}"></span>${ph.label}</div>`;
+            ALL_LESSONS.filter(l => l.day >= s && l.day <= e).forEach(l => {
+                const item = document.createElement('div');
+                item.className = 'nav-item' + (isCompleted(l.day) ? ' done' : '') + (l.day === currentDay ? ' active' : '');
+                item.dataset.day = l.day;
+                item.dataset.topic = l.topic.toLowerCase();
+                item.innerHTML = `<span class="nav-num">D${String(l.day).padStart(2, '0')}</span><span class="nav-topic">${l.topic}</span>`;
+                item.onclick = () => {
+                    goToDay(l.day);
+                    toggleSidebarClose();
+                };
+                phDiv.appendChild(item);
+            });
+            container.appendChild(phDiv);
+        });
+    }
 
-  const tagHtml = (lesson.tags||[]).map(t => `<span class="lm-tag lmt-${t}">${t}</span>`).join('');
+    function filterNav() {
+        const q = document.getElementById('nav-search').value.toLowerCase();
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.toggle('hidden-search', !!q && !item.dataset.topic.includes(q));
+        });
+    }
 
-  const phaseLabel = PHASES.find(p=>p.id===lesson.phase)?.label || '';
-  let html = `
+    // ══════════════════════════════════════════════════════════════════
+    //  RENDER LESSON
+    // ══════════════════════════════════════════════════════════════════
+    function renderLesson(lesson) {
+        const mc = document.getElementById('main-content');
+
+        const tagHtml = (lesson.tags || []).map(t => `<span class="lm-tag lmt-${t}">${t}</span>`).join('');
+
+        const phaseLabel = PHASES.find(p => p.id === lesson.phase)?.label || '';
+        let html = `
   <div class="lesson active" id="lesson-${lesson.day}">
     <div class="lesson-eyebrow">${phaseLabel} &nbsp;/&nbsp; Day ${lesson.day} of 90</div>
     <h1 class="lesson-title">${lesson.topic}</h1>
     <div class="lesson-meta">${tagHtml}</div>`;
 
-  // ── Theory ──
-  html += buildSection('🧠', 'si-theory', 'Concept Explanation', `<div class="theory-text">${lesson.theory}</div>`);
+        // ── Theory ──
+        html += buildSection('🧠', 'si-theory', 'Concept Explanation', `<div class="theory-text">${lesson.theory}</div>`);
 
-  // ── Analogy ──
-  if (lesson.analogy) {
-    html += buildSection('💡', 'si-analogy', 'Real-World Analogy', `
+        // ── Analogy ──
+        if (lesson.analogy) {
+            html += buildSection('💡', 'si-analogy', 'Real-World Analogy', `
       <div class="analogy-box">
         <div class="analogy-label">Mentor's Analogy</div>
         <div class="analogy-quote">${lesson.analogy}</div>
       </div>`);
-  }
+        }
 
-  // ── Diagram ──
-  if (lesson.diagram) {
-    html += buildSection('📐', 'si-diagram', 'Concept Diagram', `<div class="diagram-wrap">${lesson.diagram}</div>`);
-  }
+        // ── Diagram ──
+        if (lesson.diagram) {
+            html += buildSection('📐', 'si-diagram', 'Concept Diagram', `<div class="diagram-wrap">${lesson.diagram}</div>`);
+        }
 
-  // ── Code ──
-  if (lesson.code && lesson.code.length) {
-    const codeHtml = lesson.code.map(c => `
+        // ── Code ──
+        if (lesson.code && lesson.code.length) {
+            const codeHtml = lesson.code.map(c => `
       <div class="code-wrap">
         <div class="code-toolbar">
           <span class="code-lang">${c.lang}</span>
@@ -1938,31 +2615,31 @@ function renderLesson(lesson) {
         </div>
         <pre class="code">${c.src}</pre>
       </div>`).join('');
-    html += buildSection('💻', 'si-code', 'Code Examples — Type Every Line', codeHtml);
-  }
+            html += buildSection('💻', 'si-code', 'Code Examples — Type Every Line', codeHtml);
+        }
 
-  // ── Tasks ──
-  if (lesson.tasks) {
-    const tid = `tasks-${lesson.day}`;
-    const savedTasks = JSON.parse(localStorage.getItem(tid)||'{}');
-    const tasksHtml = `<div class="tasks-list">${lesson.tasks.map((t,i) => {
-      const k = `t${i}`;
-      const done = savedTasks[k];
-      return `<div class="task-item${done?' done-task':''}" onclick="toggleTask(${lesson.day},${i},this)">
+        // ── Tasks ──
+        if (lesson.tasks) {
+            const tid = `tasks-${lesson.day}`;
+            const savedTasks = JSON.parse(localStorage.getItem(tid) || '{}');
+            const tasksHtml = `<div class="tasks-list">${lesson.tasks.map((t, i) => {
+                const k = `t${i}`;
+                const done = savedTasks[k];
+                return `<div class="task-item${done ? ' done-task' : ''}" onclick="toggleTask(${lesson.day},${i},this)">
         <div class="task-check"></div>
         <span class="task-level lvl-${t.level}">${t.level}</span>
         <span class="task-text">${t.text}</span>
       </div>`;
-    }).join('')}</div>`;
-    html += buildSection('📋', 'si-tasks', 'Coding Tasks', tasksHtml);
-  }
+            }).join('')}</div>`;
+            html += buildSection('📋', 'si-tasks', 'Coding Tasks', tasksHtml);
+        }
 
-  // ── Problems ──
-  if (lesson.problems) {
-    const probsHtml = `<div class="problems-list">${lesson.problems.map((p,i) => `
+        // ── Problems ──
+        if (lesson.problems) {
+            const probsHtml = `<div class="problems-list">${lesson.problems.map((p, i) => `
       <div class="problem-item" id="prob-${lesson.day}-${i}">
         <div class="problem-header" onclick="toggleProblem(${lesson.day},${i})">
-          <span class="problem-num">Q${i+1}</span>
+          <span class="problem-num">Q${i + 1}</span>
           <span class="problem-text">${p.q}</span>
           <span class="problem-diff diff-${p.diff}">${p.diff}</span>
         </div>
@@ -1971,69 +2648,69 @@ function renderLesson(lesson) {
           ${p.hint}
         </div>
       </div>`).join('')}</div>`;
-    html += buildSection('🎯', 'si-problems', 'Problem-Solving Questions', probsHtml);
-  }
+            html += buildSection('🎯', 'si-problems', 'Problem-Solving Questions', probsHtml);
+        }
 
-  // ── Challenge ──
-  if (lesson.challenge) {
-    const ch = lesson.challenge;
-    html += buildSection('⚡', 'si-challenge', 'Mini Challenge', `
+        // ── Challenge ──
+        if (lesson.challenge) {
+            const ch = lesson.challenge;
+            html += buildSection('⚡', 'si-challenge', 'Mini Challenge', `
       <div class="challenge-box">
         <div class="challenge-label">Today's Challenge</div>
         <div class="challenge-title">${ch.title}</div>
         <div class="challenge-desc">${ch.desc}</div>
         <div class="challenge-requirements">
-          ${(ch.reqs||[]).map(r=>`<div class="cr-item">${r}</div>`).join('')}
+          ${(ch.reqs || []).map(r => `<div class="cr-item">${r}</div>`).join('')}
         </div>
       </div>`);
-  }
+        }
 
-  // ── Daily Checklist ──
-  const clItems = [
-    {icon:'📖', text:'Read the concept carefully'},
-    {icon:'📝', text:'Write a summary in your own words'},
-    {icon:'📐', text:'Draw a diagram if applicable'},
-    {icon:'⌨️', text:'Type out all code examples (no copy-paste)'},
-    {icon:'▶️', text:'Run and observe the output'},
-    {icon:'🔬', text:'Modify the code and experiment'},
-  ];
-  const clKey = `cl-${lesson.day}`;
-  const savedCl = JSON.parse(localStorage.getItem(clKey)||'{}');
-  const clHtml = `<div class="daily-checklist">${clItems.map((it,i)=>{
-    const done = savedCl[i];
-    return `<div class="dcl-item${done?' checked':''}" onclick="toggleCL(${lesson.day},${i},this)">
+        // ── Daily Checklist ──
+        const clItems = [
+            {icon: '📖', text: 'Read the concept carefully'},
+            {icon: '📝', text: 'Write a summary in your own words'},
+            {icon: '📐', text: 'Draw a diagram if applicable'},
+            {icon: '⌨️', text: 'Type out all code examples (no copy-paste)'},
+            {icon: '▶️', text: 'Run and observe the output'},
+            {icon: '🔬', text: 'Modify the code and experiment'},
+        ];
+        const clKey = `cl-${lesson.day}`;
+        const savedCl = JSON.parse(localStorage.getItem(clKey) || '{}');
+        const clHtml = `<div class="daily-checklist">${clItems.map((it, i) => {
+            const done = savedCl[i];
+            return `<div class="dcl-item${done ? ' checked' : ''}" onclick="toggleCL(${lesson.day},${i},this)">
       <div class="dcl-box"></div>
       <span class="dcl-icon">${it.icon}</span>
       <span>${it.text}</span>
     </div>`;
-  }).join('')}</div>`;
-  html += buildSection('✅', 'si-checklist', 'Daily Learning Checklist', clHtml);
+        }).join('')}</div>`;
+        html += buildSection('✅', 'si-checklist', 'Daily Learning Checklist', clHtml);
 
-  // ── Notes ──
-  const savedNotes = localStorage.getItem(`java-notes-${lesson.day}`) || '';
-  html += `<div class="notes-section">
+        // ── Notes ──
+        const savedNotes = localStorage.getItem(`java-notes-${lesson.day}`) || '';
+        html += `<div class="notes-section">
     <div class="notes-label">📓 Your Notes — Day ${lesson.day}</div>
     <textarea class="notes-area" placeholder="Write your summary, questions, key insights, and 'aha moments' here…" oninput="saveNotes(${lesson.day},this.value)">${savedNotes}</textarea>
   </div>`;
 
-  // ── Nav ──
-  const prevDay = lesson.day > 1 ? lesson.day-1 : null;
-  const nextDay = lesson.day < 90 ? lesson.day+1 : null;
-  html += `<div class="lesson-nav">
+        // ── Nav ──
+        const prevDay = lesson.day > 1 ? lesson.day - 1 : null;
+        const nextDay = lesson.day < 90 ? lesson.day + 1 : null;
+        html += `<div class="lesson-nav">
     ${prevDay ? `<button class="nav-btn" onclick="goToDay(${prevDay})">← Day ${prevDay}</button>` : '<span></span>'}
-    <button class="complete-btn${isCompleted(lesson.day)?' done-btn':''}" onclick="toggleComplete(${lesson.day})">
+    <button class="complete-btn${isCompleted(lesson.day) ? ' done-btn' : ''}" onclick="toggleComplete(${lesson.day})">
       ${isCompleted(lesson.day) ? '✓ Completed' : 'Mark Complete'}
     </button>
     ${nextDay ? `<button class="nav-btn primary" onclick="goToDay(${nextDay})">Day ${nextDay} →</button>` : '<span></span>'}
   </div>`;
 
-  html += '</div>';
-  mc.innerHTML = html;
-  updateTopBar();
-}
+        html += '</div>';
+        mc.innerHTML = html;
+        updateTopBar();
+    }
 
-function buildSection(icon, iconCls, title, body) {
-  return `<div class="section">
+    function buildSection(icon, iconCls, title, body) {
+        return `<div class="section">
     <div class="section-header" onclick="toggleSection(this)">
       <div class="section-title">
         <div class="section-icon ${iconCls}">${icon}</div>
@@ -2043,117 +2720,123 @@ function buildSection(icon, iconCls, title, body) {
     </div>
     <div class="section-body">${body}</div>
   </div>`;
-}
+    }
 
-// ══════════════════════════════════════════════════════════════════
-//  INTERACTIONS
-// ══════════════════════════════════════════════════════════════════
-function toggleSection(header) {
-  header.closest('.section').classList.toggle('collapsed');
-}
+    // ══════════════════════════════════════════════════════════════════
+    //  INTERACTIONS
+    // ══════════════════════════════════════════════════════════════════
+    function toggleSection(header) {
+        header.closest('.section').classList.toggle('collapsed');
+    }
 
-function toggleProblem(day, idx) {
-  document.getElementById(`prob-${day}-${idx}`).classList.toggle('open');
-}
+    function toggleProblem(day, idx) {
+        document.getElementById(`prob-${day}-${idx}`).classList.toggle('open');
+    }
 
-function toggleTask(day, idx, el) {
-  const tid = `tasks-${day}`;
-  const saved = JSON.parse(localStorage.getItem(tid)||'{}');
-  saved[`t${idx}`] = !saved[`t${idx}`];
-  localStorage.setItem(tid, JSON.stringify(saved));
-  el.classList.toggle('done-task', !!saved[`t${idx}`]);
-}
+    function toggleTask(day, idx, el) {
+        const tid = `tasks-${day}`;
+        const saved = JSON.parse(localStorage.getItem(tid) || '{}');
+        saved[`t${idx}`] = !saved[`t${idx}`];
+        localStorage.setItem(tid, JSON.stringify(saved));
+        el.classList.toggle('done-task', !!saved[`t${idx}`]);
+    }
 
-function toggleCL(day, idx, el) {
-  const k = `cl-${day}`;
-  const saved = JSON.parse(localStorage.getItem(k)||'{}');
-  saved[idx] = !saved[idx];
-  localStorage.setItem(k, JSON.stringify(saved));
-  el.classList.toggle('checked', !!saved[idx]);
-  // Check if all 6 done
-  if (Object.values(saved).filter(Boolean).length === 6 && !isCompleted(day)) {
-    showToast('🎉 All checklist items done! Mark day complete?');
-  }
-}
+    function toggleCL(day, idx, el) {
+        const k = `cl-${day}`;
+        const saved = JSON.parse(localStorage.getItem(k) || '{}');
+        saved[idx] = !saved[idx];
+        localStorage.setItem(k, JSON.stringify(saved));
+        el.classList.toggle('checked', !!saved[idx]);
+        // Check if all 6 done
+        if (Object.values(saved).filter(Boolean).length === 6 && !isCompleted(day)) {
+            showToast('🎉 All checklist items done! Mark day complete?');
+        }
+    }
 
-function saveNotes(day, val) { localStorage.setItem(`java-notes-${day}`, val); }
+    function saveNotes(day, val) {
+        localStorage.setItem(`java-notes-${day}`, val);
+    }
 
-function copyCode(btn) {
-  const pre = btn.closest('.code-wrap').querySelector('pre');
-  const text = pre.innerText;
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'Copied!';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent='Copy'; btn.classList.remove('copied'); }, 2000);
-  });
-}
+    function copyCode(btn) {
+        const pre = btn.closest('.code-wrap').querySelector('pre');
+        const text = pre.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = 'Copy';
+                btn.classList.remove('copied');
+            }, 2000);
+        });
+    }
 
-function toggleComplete(day) {
-  if (isCompleted(day)) { delete state.completed[day]; }
-  else {
-    state.completed[day] = new Date().toISOString().slice(0,10);
-    showToast(`🎉 Day ${day} marked complete! On to Day ${day+1}!`);
-  }
-  saveState();
-  buildNav();
-  updateTopBar();
-  // Refresh complete button
-  const btn = document.querySelector('.complete-btn');
-  if (btn) {
-    btn.textContent = isCompleted(day) ? '✓ Completed' : 'Mark Complete';
-    btn.classList.toggle('done-btn', isCompleted(day));
-  }
-}
+    function toggleComplete(day) {
+        if (isCompleted(day)) {
+            delete state.completed[day];
+        } else {
+            state.completed[day] = new Date().toISOString().slice(0, 10);
+            showToast(`🎉 Day ${day} marked complete! On to Day ${day + 1}!`);
+        }
+        saveState();
+        buildNav();
+        updateTopBar();
+        // Refresh complete button
+        const btn = document.querySelector('.complete-btn');
+        if (btn) {
+            btn.textContent = isCompleted(day) ? '✓ Completed' : 'Mark Complete';
+            btn.classList.toggle('done-btn', isCompleted(day));
+        }
+    }
 
-function goToDay(day) {
-  currentDay = day;
-  const lesson = ALL_LESSONS.find(l => l.day === day);
-  if (lesson) {
-    renderLesson(lesson);
+    function goToDay(day) {
+        currentDay = day;
+        const lesson = ALL_LESSONS.find(l => l.day === day);
+        if (lesson) {
+            renderLesson(lesson);
+            buildNav();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            document.getElementById('main-content').scrollTop = 0;
+        }
+    }
+
+    function updateTopBar() {
+        const done = Object.keys(state.completed).length;
+        const pct = Math.round((done / 90) * 100);
+        document.getElementById('tb-fill').style.width = pct + '%';
+        document.getElementById('tb-pct').textContent = pct + '%';
+        document.getElementById('tb-day').textContent = `Day ${currentDay} / 90`;
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function toggleSidebarClose() {
+        if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    //  INIT
+    // ══════════════════════════════════════════════════════════════════
+    loadState();
+    currentDay = getTodayDay();
     buildNav();
-    window.scrollTo({top:0, behavior:'smooth'});
-    document.getElementById('main-content').scrollTop = 0;
-  }
-}
+    const startLesson = ALL_LESSONS.find(l => l.day === currentDay);
+    if (startLesson) renderLesson(startLesson);
+    updateTopBar();
 
-function updateTopBar() {
-  const done = Object.keys(state.completed).length;
-  const pct  = Math.round((done/90)*100);
-  document.getElementById('tb-fill').style.width = pct+'%';
-  document.getElementById('tb-pct').textContent  = pct+'%';
-  document.getElementById('tb-day').textContent  = `Day ${currentDay} / 90`;
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-}
-
-function toggleSidebarClose() {
-  if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
-}
-
-// ══════════════════════════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════════════════════════
-loadState();
-currentDay = getTodayDay();
-buildNav();
-const startLesson = ALL_LESSONS.find(l => l.day === currentDay);
-if (startLesson) renderLesson(startLesson);
-updateTopBar();
-
-document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
-  if (e.key === 'ArrowRight' && currentDay < 90) goToDay(currentDay+1);
-  if (e.key === 'ArrowLeft'  && currentDay > 1)  goToDay(currentDay-1);
-});
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+        if (e.key === 'ArrowRight' && currentDay < 90) goToDay(currentDay + 1);
+        if (e.key === 'ArrowLeft' && currentDay > 1) goToDay(currentDay - 1);
+    });
 </script>
 </body>
 </html>
