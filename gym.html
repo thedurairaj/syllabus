@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6-Day PPL Gym Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --push:  #C0392B;
+            --pull:  #1A5276;
+            --legs:  #1E8449;
+            --rest:  #7F8C8D;
+            --push-bg: #FADBD8;
+            --pull-bg: #D6EAF8;
+            --legs-bg: #D5F5E3;
+            --rest-bg: #F2F3F4;
+            --push-lt: #F5B7B1;
+            --pull-lt: #AED6F1;
+            --legs-lt: #A9DFBF;
+            --ink: #1a1a2e;
+            --muted: #6b7280;
+            --surface: #ffffff;
+            --page: #f7f8fa;
+            --border: #e5e7eb;
+            --compound-dot: #2C3E50;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--page);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            background: var(--ink);
+            color: #fff;
+            padding: 3rem 1.5rem 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                    90deg, transparent, transparent 59px,
+                    rgba(255,255,255,0.03) 59px, rgba(255,255,255,0.03) 60px
+            ),
+            repeating-linear-gradient(
+                    0deg, transparent, transparent 59px,
+                    rgba(255,255,255,0.03) 59px, rgba(255,255,255,0.03) 60px
+            );
+        }
+        .hero-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+        .hero-eyebrow {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+            color: rgba(255,255,255,.5); margin-bottom: 1rem;
+            font-family: 'Inter', sans-serif; font-weight: 500;
+        }
+        .hero-eyebrow span { width: 20px; height: 1px; background: rgba(255,255,255,.3); display: inline-block; }
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 6vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -.02em;
+            margin-bottom: .75rem;
+        }
+        .hero h1 em { font-style: normal; color: #F0B429; }
+        .hero-sub {
+            font-size: .9rem; color: rgba(255,255,255,.55);
+            line-height: 1.6;
+        }
+        .pill-row {
+            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+            margin-top: 1.5rem;
+        }
+        .pill {
+            padding: 4px 12px; border-radius: 99px;
+            font-size: 12px; font-weight: 500;
+            border: 1px solid rgba(255,255,255,.15);
+            color: rgba(255,255,255,.7);
+        }
+
+        /* ── Nav tabs ── */
+        .nav-wrap {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
+            overflow-x: auto;
+        }
+        .nav-tabs {
+            display: flex;
+            padding: 0 1rem;
+        }
+        .tab-btn {
+            flex-shrink: 0;
+            padding: 12px 16px;
+            font-size: 13px; font-weight: 500;
+            color: var(--muted);
+            background: none; border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer; transition: color .15s;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { color: var(--ink); }
+        .tab-btn.active { color: var(--ink); border-bottom-color: var(--ink); }
+        .tab-btn .dot {
+            display: inline-block; width: 7px; height: 7px;
+            border-radius: 50%; margin-right: 6px; vertical-align: middle;
+        }
+
+        /* ── Main content ── */
+        main { padding: 1.5rem 2rem 4rem; }
+
+        .day-section { display: none; }
+        .day-section.visible { display: block; }
+
+        /* ── Day card ── */
+        .day-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .day-header {
+            display: flex; align-items: stretch;
+            border-bottom: 1px solid var(--border);
+        }
+        .day-color-bar { width: 5px; flex-shrink: 0; }
+        .day-header-content { padding: 1.25rem 1.5rem; flex: 1; }
+        .day-badge {
+            display: inline-block;
+            font-size: 10px; font-weight: 600; letter-spacing: .1em;
+            text-transform: uppercase; padding: 2px 8px;
+            border-radius: 4px; margin-bottom: 6px;
+        }
+        .day-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem; font-weight: 700;
+            line-height: 1.1; letter-spacing: -.02em;
+            color: var(--ink); margin-bottom: 4px;
+        }
+        .day-meta { font-size: 13px; color: var(--muted); }
+        .day-meta strong { color: var(--ink); font-weight: 500; }
+
+        /* ── Exercise table ── */
+        .ex-table-wrap { overflow-x: auto; }
+        table {
+            width: 100%; border-collapse: collapse;
+            font-size: 14px;
+        }
+        thead th {
+            background: #f9fafb;
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 11px; font-weight: 600;
+            letter-spacing: .06em; text-transform: uppercase;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        thead th:not(:first-child) { text-align: center; }
+        tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #fafafa; }
+        td { padding: 11px 14px; vertical-align: middle; }
+        td:not(:first-child) { text-align: center; color: var(--muted); }
+        .ex-name { font-weight: 500; color: var(--ink); }
+        .type-badge {
+            display: inline-block;
+            font-size: 11px; font-weight: 500;
+            padding: 2px 8px; border-radius: 4px;
+        }
+        .type-compound {
+            background: #EEF2FF; color: #3730A3;
+        }
+        .type-isolation {
+            background: #f3f4f6; color: #6b7280;
+        }
+
+        /* ── HIIT note ── */
+        .hiit-note {
+            margin: 0; padding: 14px 18px 14px 20px;
+            border-top: 1px solid var(--border);
+            background: #FFFBEB;
+            font-size: 13px; color: #92400e;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .hiit-note .hiit-label {
+            background: #F59E0B; color: #fff;
+            font-size: 10px; font-weight: 700;
+            letter-spacing: .08em; text-transform: uppercase;
+            padding: 2px 7px; border-radius: 4px;
+            flex-shrink: 0; margin-top: 1px;
+        }
+
+        /* ── Rest section ── */
+        .rest-body {
+            padding: 2rem 1.5rem;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 1rem; text-align: center;
+        }
+        .rest-icon { font-size: 3rem; }
+        .rest-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem; font-weight: 700;
+            color: var(--ink);
+        }
+        .rest-text { font-size: 14px; color: var(--muted); max-width: 340px; line-height: 1.6; }
+
+        /* ── Notes section ── */
+        .notes-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .notes-header {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px; font-weight: 700;
+            color: var(--ink);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .notes-header svg { opacity: .4; }
+        .notes-list { padding: 4px 0 8px; }
+        .note-row {
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 10px 20px; font-size: 13.5px; color: #374151;
+            border-bottom: 1px solid var(--border);
+        }
+        .note-row:last-child { border-bottom: none; }
+        .note-icon { color: #9ca3af; flex-shrink: 0; margin-top: 1px; font-size: 15px; }
+
+        /* ── Notes only view ── */
+        #notes-section .notes-card { margin-top: 0; }
+
+        /* ── Responsive ── */
+        @media (max-width: 540px) {
+            .hero { padding: 2rem 1rem 2rem; }
+            .day-name { font-size: 1.3rem; }
+            table { font-size: 13px; }
+            td, thead th { padding: 9px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow"><span></span>Training Program<span></span></div>
+        <h1>6-Day <em>PPL</em><br>Gym Plan</h1>
+        <p class="hero-sub">Push · Pull · Legs × 2 &nbsp;|&nbsp; Old-school gym</p>
+        <div class="pill-row">
+            <span class="pill">HIIT: Mon · Tue · Thu · Fri</span>
+            <span class="pill">130–150g protein / day</span>
+            <span class="pill">Progressive overload</span>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-wrap" role="navigation" aria-label="Day navigation">
+    <div class="nav-tabs" id="navTabs">
+        <button class="tab-btn active" data-day="0"><span class="dot" style="background:var(--push)"></span>Mon</button>
+        <button class="tab-btn" data-day="1"><span class="dot" style="background:var(--pull)"></span>Tue</button>
+        <button class="tab-btn" data-day="2"><span class="dot" style="background:var(--legs)"></span>Wed</button>
+        <button class="tab-btn" data-day="3"><span class="dot" style="background:var(--push)"></span>Thu</button>
+        <button class="tab-btn" data-day="4"><span class="dot" style="background:var(--pull)"></span>Fri</button>
+        <button class="tab-btn" data-day="5"><span class="dot" style="background:var(--legs)"></span>Sat</button>
+        <button class="tab-btn" data-day="6"><span class="dot" style="background:var(--rest)"></span>Sun</button>
+        <button class="tab-btn" data-day="7">Notes</button>
+    </div>
+</nav>
+
+<main>
+
+    <!-- Monday: Push A -->
+    <section class="day-section visible" id="day-0">
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-color-bar" style="background:var(--push)"></div>
+                <div class="day-header-content">
+                    <div class="day-badge" style="background:var(--push-bg);color:var(--push)">Push A</div>
+                    <div class="day-name">Monday</div>
+                    <div class="day-meta">Chest · Shoulders · Triceps &nbsp;·&nbsp; <strong>HIIT (morning) + Weights (evening)</strong></div>
+                </div>
+            </div>
+            <div class="ex-table-wrap">
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Rest</th><th>Type</th></tr></thead>
+                    <tbody>
+                    <tr><td class="ex-name">Barbell bench press</td><td>4</td><td>6–8</td><td>2–3 min</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Barbell overhead press</td><td>4</td><td>6–8</td><td>2–3 min</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Incline dumbbell press</td><td>3</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Dumbbell lateral raise</td><td>3</td><td>15–20</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Weighted dips</td><td>3</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Skull crushers (EZ bar)</td><td>3</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="hiit-note"><span class="hiit-label">HIIT</span> 20–25 min sprint intervals or jump rope at 6–7 AM. Minimum 6 hrs gap before evening weights.</div>
+        </div>
+    </section>
+
+    <!-- Tuesday: Pull A -->
+    <section class="day-section" id="day-1">
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-color-bar" style="background:var(--pull)"></div>
+                <div class="day-header-content">
+                    <div class="day-badge" style="background:var(--pull-bg);color:var(--pull)">Pull A</div>
+                    <div class="day-name">Tuesday</div>
+                    <div class="day-meta">Back · Biceps · Rear Delts &nbsp;·&nbsp; <strong>HIIT (morning) + Weights (evening)</strong></div>
+                </div>
+            </div>
+            <div class="ex-table-wrap">
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Rest</th><th>Type</th></tr></thead>
+                    <tbody>
+                    <tr><td class="ex-name">Barbell bent-over row</td><td>4</td><td>6–8</td><td>2–3 min</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Weighted pull-ups</td><td>4</td><td>6–8</td><td>2–3 min</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Dumbbell single-arm row</td><td>3</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Rear delt dumbbell fly</td><td>3</td><td>15–20</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Barbell curl</td><td>3</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Hammer curl</td><td>3</td><td>12–15</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="hiit-note"><span class="hiit-label">HIIT</span> 20–25 min sprint intervals or jump rope at 6–7 AM. Minimum 6 hrs gap before evening weights.</div>
+        </div>
+    </section>
+
+    <!-- Wednesday: Legs A -->
+    <section class="day-section" id="day-2">
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-color-bar" style="background:var(--legs)"></div>
+                <div class="day-header-content">
+                    <div class="day-badge" style="background:var(--legs-bg);color:var(--legs)">Legs A</div>
+                    <div class="day-name">Wednesday</div>
+                    <div class="day-meta">Quads · Hamstrings · Calves · Core &nbsp;·&nbsp; <strong>Weights only (evening)</strong></div>
+                </div>
+            </div>
+            <div class="ex-table-wrap">
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Rest</th><th>Type</th></tr></thead>
+                    <tbody>
+                    <tr><td class="ex-name">Barbell back squat</td><td>4</td><td>6–8</td><td>2–3 min</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Romanian deadlift</td><td>3</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Dumbbell walking lunge</td><td>3</td><td>12 each</td><td>90 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Nordic hamstring curl</td><td>3</td><td>6–8</td><td>2 min</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Standing calf raise</td><td>4</td><td>15–20</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Hanging leg raise</td><td>3</td><td>15</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Thursday: Push B -->
+    <section class="day-section" id="day-3">
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-color-bar" style="background:var(--push)"></div>
+                <div class="day-header-content">
+                    <div class="day-badge" style="background:var(--push-bg);color:var(--push)">Push B</div>
+                    <div class="day-name">Thursday</div>
+                    <div class="day-meta">Chest · Shoulders · Triceps &nbsp;·&nbsp; <strong>HIIT (morning) + Weights (evening)</strong></div>
+                </div>
+            </div>
+            <div class="ex-table-wrap">
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Rest</th><th>Type</th></tr></thead>
+                    <tbody>
+                    <tr><td class="ex-name">Incline barbell press</td><td>4</td><td>8–10</td><td>2–3 min</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Dumbbell shoulder press</td><td>4</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Dumbbell flat fly</td><td>3</td><td>12–15</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Dumbbell lateral raise</td><td>3</td><td>15–20</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Close-grip bench press</td><td>3</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Overhead dumbbell extension</td><td>3</td><td>12–15</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="hiit-note"><span class="hiit-label">HIIT</span> 20–25 min sprint intervals or jump rope at 6–7 AM. Minimum 6 hrs gap before evening weights.</div>
+        </div>
+    </section>
+
+    <!-- Friday: Pull B -->
+    <section class="day-section" id="day-4">
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-color-bar" style="background:var(--pull)"></div>
+                <div class="day-header-content">
+                    <div class="day-badge" style="background:var(--pull-bg);color:var(--pull)">Pull B</div>
+                    <div class="day-name">Friday</div>
+                    <div class="day-meta">Back · Biceps · Rear Delts &nbsp;·&nbsp; <strong>HIIT (morning) + Weights (evening)</strong></div>
+                </div>
+            </div>
+            <div class="ex-table-wrap">
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Rest</th><th>Type</th></tr></thead>
+                    <tbody>
+                    <tr><td class="ex-name">Conventional deadlift</td><td>4</td><td>4–5</td><td>3 min</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Chin-ups</td><td>3</td><td>8–10</td><td>2 min</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">T-bar row (or barbell row)</td><td>3</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Incline dumbbell curl</td><td>3</td><td>12</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Reverse curl</td><td>3</td><td>12–15</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Face pull (band or cable)</td><td>3</td><td>15–20</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="hiit-note"><span class="hiit-label">HIIT</span> 20–25 min sprint intervals or jump rope at 6–7 AM. Minimum 6 hrs gap before evening weights.</div>
+        </div>
+    </section>
+
+    <!-- Saturday: Legs B -->
+    <section class="day-section" id="day-5">
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-color-bar" style="background:var(--legs)"></div>
+                <div class="day-header-content">
+                    <div class="day-badge" style="background:var(--legs-bg);color:var(--legs)">Legs B</div>
+                    <div class="day-name">Saturday</div>
+                    <div class="day-meta">Glutes · Hamstrings · Quads · Core &nbsp;·&nbsp; <strong>Weights only (evening)</strong></div>
+                </div>
+            </div>
+            <div class="ex-table-wrap">
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets</th><th>Reps</th><th>Rest</th><th>Type</th></tr></thead>
+                    <tbody>
+                    <tr><td class="ex-name">Barbell hip thrust</td><td>4</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Bulgarian split squat</td><td>3</td><td>10 each</td><td>2 min</td><td><span class="type-badge type-compound">Compound</span></td></tr>
+                    <tr><td class="ex-name">Front squat (or hack squat)</td><td>3</td><td>8–10</td><td>2 min</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Stiff-leg deadlift</td><td>3</td><td>10–12</td><td>90 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Single-leg calf raise</td><td>4</td><td>15–20</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    <tr><td class="ex-name">Ab wheel rollout</td><td>3</td><td>10–12</td><td>60 sec</td><td><span class="type-badge type-isolation">Isolation</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sunday: Rest -->
+    <section class="day-section" id="day-6">
+        <div class="day-card">
+            <div class="day-header">
+                <div class="day-color-bar" style="background:var(--rest)"></div>
+                <div class="day-header-content">
+                    <div class="day-badge" style="background:var(--rest-bg);color:var(--rest)">Rest</div>
+                    <div class="day-name">Sunday</div>
+                    <div class="day-meta">Full Rest &nbsp;·&nbsp; <strong>Recovery day</strong></div>
+                </div>
+            </div>
+            <div class="rest-body">
+                <div class="rest-icon">💤</div>
+                <div class="rest-title">Full rest day</div>
+                <p class="rest-text">Recovery is when adaptation occurs. Let your body repair and grow stronger. Optional: 20–30 min walk or light stretching.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notes -->
+    <section class="day-section" id="day-7" id="notes-section">
+        <div class="notes-card">
+            <div class="notes-header">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                General Notes
+            </div>
+            <div class="notes-list">
+                <div class="note-row">
+                    <span class="note-icon">📈</span>
+                    <span>Add weight when you reach the top of the rep range across all sets (progressive overload).</span>
+                </div>
+                <div class="note-row">
+                    <span class="note-icon">⏱️</span>
+                    <span>Compound lifts: 2–3 min rest. Isolation exercises: 60–90 sec rest.</span>
+                </div>
+                <div class="note-row">
+                    <span class="note-icon">🏃</span>
+                    <span>HIIT on Mon, Tue, Thu, Fri mornings only. No HIIT on Wed, Sat, or Sun.</span>
+                </div>
+                <div class="note-row">
+                    <span class="note-icon">😴</span>
+                    <span>Sunday is full rest — recovery is when adaptation actually happens.</span>
+                </div>
+                <div class="note-row">
+                    <span class="note-icon">🥩</span>
+                    <span>Target 130–150 g protein per day. Estimated cost ₹120–160/day (Indian market).</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.day-section');
+
+    tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const day = btn.dataset.day;
+            tabs.forEach(t => t.classList.remove('active'));
+            sections.forEach(s => s.classList.remove('visible'));
+            btn.classList.add('active');
+            document.getElementById('day-' + day).classList.add('visible');
+        });
+    });
+</script>
+
+</body>
+</html>
