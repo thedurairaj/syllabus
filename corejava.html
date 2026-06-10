@@ -552,12 +552,167 @@
         .hidden {
             display: none !important
         }
+
+        /* Responsive and Mobile-friendly Styles */
+        .mobile-toggle {
+            display: none;
+        }
+
+        .mobile-stats {
+            display: none;
+        }
+
+        .sidebar-overlay {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: none;
+                border: none;
+                color: var(--text-primary);
+                cursor: pointer;
+                padding: 8px;
+                margin-left: -8px;
+                border-radius: 6px;
+                transition: background 0.15s;
+            }
+
+            .mobile-toggle:hover {
+                background: var(--chip-bg);
+            }
+
+            .topbar-brand {
+                gap: 8px;
+            }
+
+            .topbar-stats {
+                display: none !important;
+            }
+
+            .mobile-stats {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                padding: 0 18px 16px;
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 16px;
+            }
+
+            .mobile-stats .stat-pill {
+                border: 1px solid var(--border-dark);
+                border-radius: 20px;
+                padding: 6px 12px;
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--text-secondary);
+                text-align: center;
+                background: var(--bg);
+            }
+
+            .mobile-stats .stat-pill strong {
+                color: var(--text-primary);
+            }
+
+            .sidebar {
+                position: fixed;
+                top: var(--header-h);
+                left: calc(-1 * var(--sidebar-w));
+                bottom: 0;
+                width: var(--sidebar-w);
+                z-index: 1000;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .sidebar.open {
+                transform: translateX(var(--sidebar-w));
+                box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+            }
+
+            .sidebar-overlay {
+                display: block;
+                position: fixed;
+                top: var(--header-h);
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(2px);
+                z-index: 999;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+
+            .sidebar-overlay.open {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .main-inner {
+                padding: 20px 16px;
+            }
+
+            .topbar {
+                padding: 0 16px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .subtopics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subtopic-item {
+                border-right: none !important;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .controls-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .ctrl-btn {
+                text-align: center;
+                padding: 10px;
+            }
+
+            .module-hero {
+                padding: 20px 16px;
+                border-radius: 10px;
+            }
+
+            .hero-title {
+                font-size: 22px;
+            }
+
+            .hero-desc {
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <!-- TOPBAR -->
 <header class="topbar">
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Menu">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
     <div class="topbar-brand">
         <div class="brand-icon">☕</div>
         <div>
@@ -575,6 +730,12 @@
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
+    <div class="mobile-stats">
+        <div class="stat-pill"><strong>15</strong> Modules</div>
+        <div class="stat-pill"><strong>72+</strong> Topic Groups</div>
+        <div class="stat-pill"><strong>290+</strong> Leaf Items</div>
+        <div class="stat-pill" id="mobile-active-module-pill">Module 1 of 15</div>
+    </div>
     <div class="sidebar-section-label">Modules</div>
     <button class="sidebar-module-btn active" onclick="showModule(0,this)"><span class="dot"></span>1. Platform &
         Environment
@@ -616,6 +777,7 @@
     <div class="sidebar-topic-label" id="sidebar-topics-label">Topic Groups</div>
     <div id="sidebar-topics"></div>
 </aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <!-- MAIN -->
 <main class="main">
@@ -1133,6 +1295,14 @@
             btn.onclick = () => {
                 const el = document.getElementById("topic-" + i);
                 if (el) el.scrollIntoView({behavior: "smooth", block: "start"});
+                
+                // Close sidebar on mobile
+                const sidebar = document.getElementById("sidebar");
+                const overlay = document.getElementById("sidebar-overlay");
+                if (sidebar && sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("open");
+                    overlay.classList.remove("open");
+                }
             };
             container.appendChild(btn);
         });
@@ -1141,7 +1311,11 @@
     function renderModule(idx) {
         activeModule = idx;
         const mod = modules[idx];
-        document.getElementById("active-module-pill").textContent = `Module ${idx + 1} of ${modules.length}`;
+        
+        const activePill = document.getElementById("active-module-pill");
+        if (activePill) activePill.textContent = `Module ${idx + 1} of ${modules.length}`;
+        const mobileActivePill = document.getElementById("mobile-active-module-pill");
+        if (mobileActivePill) mobileActivePill.textContent = `Module ${idx + 1} of ${modules.length}`;
         buildSidebarTopics(mod);
 
         const main = document.getElementById("main-inner");
@@ -1247,6 +1421,31 @@
         btn.classList.add("active");
         renderModule(idx);
         window.scrollTo({top: 0, behavior: "smooth"});
+
+        // Close sidebar on mobile
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebar-overlay");
+        if (sidebar && sidebar.classList.contains("open")) {
+            sidebar.classList.remove("open");
+            overlay.classList.remove("open");
+        }
+    }
+
+    // Mobile menu toggle logic
+    const toggleBtn = document.getElementById("mobile-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebar-overlay");
+
+    if (toggleBtn && sidebar && overlay) {
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            overlay.classList.toggle("open");
+        });
+
+        overlay.addEventListener("click", () => {
+            sidebar.classList.remove("open");
+            overlay.classList.remove("open");
+        });
     }
 
     // Init
