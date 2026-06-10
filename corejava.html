@@ -16,29 +16,33 @@
         }
 
         :root {
-            --bg: #FAFAF8;
-            --sidebar-bg: #FFFFFF;
-            --accent: #E07A3A;
-            --accent-light: #FEF3EA;
-            --accent-mid: #F5C99E;
-            --text-primary: #1A1A18;
-            --text-secondary: #5C5C58;
-            --text-tertiary: #9C9C96;
-            --border: #EAEAE6;
-            --border-dark: #D4D4CE;
-            --chip-bg: #F2F2EE;
-            --white: #FFFFFF;
-            --blue: #2A6DD9;
-            --blue-dot: #3B82F6;
+            --bg: #ffffff;
+            --sidebar-bg: #ffffff;
+            --accent: #1a73e8;
+            --accent-light: #e8f0fe;
+            --accent-mid: #d2e3fc;
+            --text-primary: #1a1d23;
+            --text-secondary: #3c4043;
+            --text-tertiary: #9aa0a6;
+            --border: #e8eaed;
+            --border-dark: #c5c8ce;
+            --chip-bg: #f8f9fa;
+            --white: #ffffff;
+            --blue: #1a73e8;
+            --blue-dot: #1a73e8;
             --sidebar-w: 280px;
             --header-h: 56px;
         }
 
         html {
+            font-size: 15px
+        }
+
+        body {
             font-family: 'DM Sans', sans-serif;
-            font-size: 15px;
             background: var(--bg);
             color: var(--text-primary);
+            min-height: 100vh;
             line-height: 1.6
         }
 
@@ -68,7 +72,7 @@
         .brand-icon {
             width: 34px;
             height: 34px;
-            background: linear-gradient(135deg, #FF8C42, #E07A3A);
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -160,7 +164,7 @@
         }
 
         .sidebar-module-btn:hover {
-            background: #F6F6F2;
+            background: var(--chip-bg);
             color: var(--text-primary)
         }
 
@@ -233,7 +237,7 @@
 
         .main-inner {
             padding: 28px 32px;
-            max-width: 960px
+            max-width: 100%
         }
 
         /* MODULE HERO */
@@ -424,7 +428,7 @@
         }
 
         .topic-header:hover {
-            background: #FAFAF8
+            background: var(--chip-bg)
         }
 
         .topic-num {
@@ -469,7 +473,7 @@
         .subtopics-wrap {
             display: none;
             border-top: 1px solid var(--border);
-            background: #FDFDFB
+            background: var(--white)
         }
 
         .subtopics-wrap.open {
@@ -503,7 +507,7 @@
         }
 
         .subtopic-item:hover {
-            background: #F6F6F2;
+            background: var(--chip-bg);
             color: var(--text-primary)
         }
 
