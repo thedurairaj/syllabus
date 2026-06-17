@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Java · Spring Boot · Microservices — Learning Path</title>
+    <meta name="description" content="A structured learning path from Java fundamentals to production-ready microservices, mapped from the freeCodeCamp System Design course."/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <style>
+        /* ── Reset ── */
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+
+        /* ── Tokens ── */
+        :root{
+            --bg:           #ffffff;
+            --bg-2:         #f6f8fa;
+            --bg-3:         #eef1f4;
+            --bg-hover:     #f0f3f6;
+            --border:       #d0d7de;
+            --border-2:     #b0bbc5;
+            --text:         #1f2328;
+            --text-2:       #656d76;
+            --text-3:       #9198a1;
+            --java:         #b36200;
+            --java-bg:      rgba(240,165,0,.10);
+            --java-bd:      rgba(180,120,0,.22);
+            --spring:       #3a7a1a;
+            --spring-bg:    rgba(109,179,63,.10);
+            --spring-bd:    rgba(80,150,40,.22);
+            --micro:        #0969da;
+            --micro-bg:     rgba(9,105,218,.09);
+            --micro-bd:     rgba(9,105,218,.22);
+            --db:           #c0372e;
+            --db-bg:        rgba(192,55,46,.09);
+            --db-bd:        rgba(192,55,46,.22);
+            --accent:       #0969da;
+            --r:            8px;
+            --r-lg:         12px;
+            --mono:         'JetBrains Mono',monospace;
+            --sans:         'Inter',system-ui,sans-serif;
+            --sidebar-w:    240px;
+            --mid-w:        300px;
+            --header-h:     112px;
+        }
+
+        body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+
+        /* ══ HEADER ══ */
+        .site-header{
+            position:sticky;top:0;z-index:200;
+            background:rgba(255,255,255,.92);
+            backdrop-filter:blur(14px);
+            border-bottom:1px solid var(--border);
+        }
+        .header-top{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:.75rem 1.5rem;
+            border-bottom:1px solid var(--border);
+        }
+        .brand{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:var(--text)}
+        .brand-icon{font-size:20px;line-height:1}
+        .brand em{font-style:normal;color:var(--accent)}
+        .header-stats{
+            display:flex;align-items:center;gap:0;
+        }
+        .hstat{
+            display:flex;flex-direction:column;align-items:center;
+            padding:0 1.25rem;border-right:1px solid var(--border);
+        }
+        .hstat:last-child{border-right:none}
+        .hstat-num{font-size:18px;font-weight:700;color:var(--text);line-height:1.1}
+        .hstat-lbl{font-size:10px;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+        .phase-indicator{
+            padding:.5rem 1.5rem;
+            font-size:11px;color:var(--text-2);
+            background:var(--bg-2);
+            display:flex;align-items:center;justify-content:space-between;
+        }
+        .phase-crumb{font-weight:500;color:var(--text)}
+        .phase-dur{color:var(--text-3)}
+
+        /* ══ LAYOUT ══ */
+        .layout{
+            display:grid;
+            grid-template-columns:var(--sidebar-w) var(--mid-w) 1fr;
+            min-height:calc(100vh - var(--header-h));
+            position:relative;
+        }
+
+        /* ══ LEFT — Phase list ══ */
+        .sidebar{
+            border-right:1px solid var(--border);
+            position:sticky;
+            top:var(--header-h);
+            height:calc(100vh - var(--header-h));
+            overflow-y:auto;
+            scrollbar-width:thin;
+            scrollbar-color:var(--border) transparent;
+            background:var(--bg);
+        }
+        .sidebar-label{
+            padding:.75rem 1rem .4rem;
+            font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+            color:var(--text-3);
+        }
+        .phase-item{
+            display:flex;align-items:center;gap:10px;
+            padding:.6rem 1rem;
+            cursor:pointer;
+            border-left:2px solid transparent;
+            transition:background .12s,border-color .12s,color .12s;
+            position:relative;
+        }
+        .phase-item:hover{background:var(--bg-hover);color:var(--text)}
+        .phase-item.active{
+            background:var(--bg-2);
+            border-left-color:var(--accent);
+            color:var(--text);
+        }
+        .phase-num{
+            width:22px;height:22px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-size:10px;font-weight:600;flex-shrink:0;
+            background:var(--bg-3);color:var(--text-2);
+            transition:background .12s,color .12s;
+        }
+        .phase-item.active .phase-num{background:var(--accent);color:#fff}
+        .phase-name{font-size:12px;color:var(--text-2);line-height:1.3;flex:1}
+        .phase-item.active .phase-name{color:var(--text)}
+        .phase-icon-sm{font-size:14px;flex-shrink:0}
+
+        /* ══ MID — Topic groups ══ */
+        .mid-panel{
+            border-right:1px solid var(--border);
+            position:sticky;
+            top:var(--header-h);
+            height:calc(100vh - var(--header-h));
+            overflow-y:auto;
+            scrollbar-width:thin;
+            scrollbar-color:var(--border) transparent;
+            background:var(--bg);
+        }
+        .mid-label{
+            padding:.75rem 1rem .4rem;
+            font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+            color:var(--text-3);
+        }
+        .topic-item{
+            display:flex;align-items:center;gap:10px;
+            padding:.6rem 1rem;
+            cursor:pointer;
+            border-left:2px solid transparent;
+            transition:background .12s,border-color .12s;
+        }
+        .topic-item:hover{background:var(--bg-hover)}
+        .topic-item.active{background:var(--bg-2);border-left-color:var(--accent)}
+        .topic-tag{
+            font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+            padding:2px 6px;border-radius:20px;flex-shrink:0;
+            border:1px solid transparent;
+        }
+        .tag-java  {color:var(--java);  background:var(--java-bg);  border-color:var(--java-bd)}
+        .tag-spring{color:var(--spring);background:var(--spring-bg);border-color:var(--spring-bd)}
+        .tag-micro {color:var(--micro); background:var(--micro-bg); border-color:var(--micro-bd)}
+        .tag-db    {color:var(--db);    background:var(--db-bg);    border-color:var(--db-bd)}
+        .topic-name{font-size:12px;color:var(--text-2);flex:1;line-height:1.35}
+        .topic-item.active .topic-name{color:var(--text)}
+        .topic-count{
+            font-size:10px;color:var(--text-3);
+            background:var(--bg-3);
+            padding:1px 6px;border-radius:10px;flex-shrink:0;
+            font-family:var(--mono);
+            border:1px solid var(--border);
+        }
+
+        /* ══ RIGHT — Detail panel ══ */
+        .detail-panel{
+            overflow-y:auto;
+            scrollbar-width:thin;
+            scrollbar-color:var(--border) transparent;
+            padding:1.5rem;
+            background:var(--bg);
+        }
+        .detail-empty{
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            height:60vh;color:var(--text-3);text-align:center;gap:.5rem;
+        }
+        .detail-empty-icon{font-size:2.5rem;opacity:.4}
+        .detail-empty-text{font-size:13px}
+
+        .detail-card{
+            background:var(--bg-2);
+            border:1px solid var(--border);
+            border-radius:var(--r-lg);
+            padding:1.5rem;
+            margin-bottom:1.25rem;
+        }
+        .detail-header{
+            display:flex;align-items:flex-start;gap:.75rem;
+            margin-bottom:1.25rem;
+        }
+        .detail-icon{font-size:1.75rem;line-height:1;flex-shrink:0;margin-top:2px}
+        .detail-title{font-size:17px;font-weight:600;color:var(--text);line-height:1.25;margin-bottom:.3rem}
+        .detail-desc{font-size:13px;color:var(--text-2);line-height:1.55}
+        .detail-meta{
+            display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.65rem;
+        }
+        .meta-chip{
+            display:inline-flex;align-items:center;gap:4px;
+            font-size:10px;font-weight:500;
+            padding:2px 8px;border-radius:20px;
+            background:var(--bg-3);border:1px solid var(--border-2);color:var(--text-2);
+        }
+
+        .section-title{
+            font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+            color:var(--text-3);margin-bottom:.65rem;
+            display:flex;align-items:center;gap:6px;
+        }
+        .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+        /* Technologies */
+        .tech-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+        .tech-chip{
+            font-family:var(--mono);font-size:11px;
+            color:var(--text-2);
+            background:var(--bg-2);
+            border:1px solid var(--border);
+            border-radius:var(--r);
+            padding:3px 9px;
+            transition:border-color .12s,color .12s;
+        }
+        .tech-chip:hover{border-color:var(--border-2);color:var(--text)}
+
+        /* Practice project */
+        .practice-card{
+            background:rgba(58,122,26,.05);
+            border:1px solid var(--spring-bd);
+            border-left:3px solid var(--spring);
+            border-radius:0 var(--r) var(--r) 0;
+            padding:.85rem 1rem;
+            margin-bottom:1.25rem;
+        }
+        .practice-label{
+            font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+            color:var(--spring);margin-bottom:4px;
+        }
+        .practice-text{font-size:13px;color:var(--text-2);line-height:1.55}
+
+        /* Leaf items */
+        .leaf-list{
+            display:flex;flex-direction:column;gap:4px;margin-bottom:1.25rem;
+        }
+        .leaf-item{
+            display:flex;align-items:flex-start;gap:8px;
+            padding:.45rem .65rem;
+            background:var(--bg-2);
+            border:1px solid var(--border);
+            border-radius:var(--r);
+            font-size:12px;color:var(--text-2);
+            transition:border-color .12s,color .12s;
+        }
+        .leaf-item:hover{border-color:var(--border-2);color:var(--text)}
+        .leaf-bullet{
+            width:5px;height:5px;border-radius:50%;
+            background:var(--text-3);flex-shrink:0;margin-top:5px;
+        }
+        .leaf-bullet.java-dot  {background:var(--java)}
+        .leaf-bullet.spring-dot{background:var(--spring)}
+        .leaf-bullet.micro-dot {background:var(--micro)}
+        .leaf-bullet.db-dot    {background:var(--db)}
+
+        /* Copy btn */
+        .copy-btn{
+            display:inline-flex;align-items:center;gap:5px;
+            font-size:11px;font-weight:500;
+            color:var(--text-2);
+            background:none;border:1px solid var(--border);border-radius:var(--r);
+            padding:4px 10px;cursor:pointer;
+            transition:color .12s,border-color .12s,background .12s;
+        }
+        .copy-btn:hover{color:var(--text);border-color:var(--border-2);background:var(--bg-hover)}
+        .copy-btn.copied{color:var(--spring);border-color:var(--spring-bd)}
+
+        /* Phase header in right panel */
+        .phase-banner{
+            background:var(--bg-2);
+            border:1px solid var(--border);
+            border-radius:var(--r-lg);
+            padding:1.25rem 1.5rem;
+            margin-bottom:1.25rem;
+            display:flex;align-items:flex-start;gap:1rem;
+        }
+        .phase-banner-icon{font-size:2rem;line-height:1;flex-shrink:0}
+        .phase-banner-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:.25rem}
+        .phase-banner-desc{font-size:12px;color:var(--text-2);line-height:1.55}
+        .phase-dur-pill{
+            margin-top:.5rem;display:inline-flex;align-items:center;gap:5px;
+            font-size:11px;color:var(--text-2);
+            background:var(--bg-3);border:1px solid var(--border);border-radius:20px;padding:2px 10px;
+        }
+
+        /* ══ MOBILE ══ */
+        @media(max-width:900px){
+            :root{--sidebar-w:200px;--mid-w:220px}
+        }
+        @media(max-width:640px){
+            .layout{grid-template-columns:1fr}
+            .sidebar,.mid-panel{
+                position:static;height:auto;
+                border-right:none;border-bottom:1px solid var(--border);
+            }
+            .detail-panel{padding:1rem}
+            .header-stats{display:none}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ SITE HEADER ══ -->
+<header class="site-header">
+    <div class="header-top">
+        <div class="brand">
+            <span class="brand-icon">☕</span>
+            Java · Spring Boot · Microservices <em>— Learning Path</em>
+        </div>
+        <div class="header-stats">
+            <div class="hstat"><span class="hstat-num">6</span><span class="hstat-lbl">Phases</span></div>
+            <div class="hstat"><span class="hstat-num">24</span><span class="hstat-lbl">Topics</span></div>
+            <div class="hstat"><span class="hstat-num">90+</span><span class="hstat-lbl">Leaf Items</span></div>
+            <div class="hstat"><span class="hstat-num">15–21w</span><span class="hstat-lbl">Duration</span></div>
+        </div>
+    </div>
+    <div class="phase-indicator">
+        <span id="crumbPhase" class="phase-crumb">Phase 1 — Single server setup &amp; Java foundations</span>
+        <span id="crumbDur" class="phase-dur">2–3 weeks · select a topic →</span>
+    </div>
+</header>
+
+<!-- ══ 3-COLUMN LAYOUT ══ -->
+<div class="layout">
+
+    <!-- LEFT: Phase list -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-label">Phases</div>
+        <!-- Populated by JS -->
+    </aside>
+
+    <!-- MID: Topic groups -->
+    <div class="mid-panel" id="midPanel">
+        <div class="mid-label">Topic Groups</div>
+        <!-- Populated by JS -->
+    </div>
+
+    <!-- RIGHT: Detail -->
+    <div class="detail-panel" id="detailPanel">
+        <div class="detail-empty" id="emptyState">
+            <div class="detail-empty-icon">📖</div>
+            <div class="detail-empty-text">Select a topic group to see details</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    /* ══════════════════════════════════════════════
+       DATA
+    ══════════════════════════════════════════════ */
+    const DATA = [
+        {
+            id:0, icon:"🏗️",
+            title:"Single server setup & Java foundations",
+            desc:"Understand how a single-server Java app works end-to-end before scaling out. The baseline every microservices architect must master.",
+            duration:"2–3 weeks",
+            topics:[
+                {
+                    title:"Java & OOP foundations", tag:"java",
+                    desc:"Classes, interfaces, generics, collections. The language primitives you will use inside every Spring Boot service you ever write.",
+                    techs:["Java 21","Records","Sealed classes","Streams API","Optional","var (local type inference)"],
+                    practice:"Build a basic inventory management console app using Java Collections and OOP principles.",
+                    leaves:[
+                        "JDK vs JRE vs JVM — what each does","Compile & run: javac → java lifecycle",
+                        "Primitive types, autoboxing, unboxing","Classes, objects, constructors, this keyword",
+                        "Interfaces & abstract classes — when to use which","Generics — bounded type params, wildcards",
+                        "Collections: List, Set, Map, Queue — pick the right one","Streams API — filter, map, reduce, collect",
+                        "Optional — avoid NullPointerException","Records — immutable data carriers (Java 14+)",
+                        "Sealed classes & pattern matching (Java 17+)","var for local type inference (Java 10+)"
+                    ]
+                },
+                {
+                    title:"Maven / Gradle build tools", tag:"java",
+                    desc:"Dependency management, build lifecycle, multi-module projects — essential before you touch Spring Boot.",
+                    techs:["Maven 3.x","Gradle 8.x","pom.xml","build.gradle","BOM imports","Wrapper scripts"],
+                    practice:"Create a multi-module Maven project with a shared 'commons' module used by two service modules.",
+                    leaves:[
+                        "Maven project structure & pom.xml layout","Dependency scopes: compile, test, provided, runtime",
+                        "Maven lifecycle phases: validate → compile → test → package → install → deploy",
+                        "Multi-module Maven projects — parent pom pattern","Bill of Materials (BOM) imports for version alignment",
+                        "Gradle build.gradle & settings.gradle","Gradle tasks vs Maven goals",
+                        "mvnw / gradlew wrapper scripts","Shade / fat-JAR plugin","Dependency conflict resolution"
+                    ]
+                },
+                {
+                    title:"Spring Boot basics", tag:"spring",
+                    desc:"Auto-configuration, application context, embedded Tomcat. Your single-server starting point from Spring Initializr.",
+                    techs:["Spring Boot 3.x","@SpringBootApplication","application.yml","Spring Initializr","Profiles","DevTools"],
+                    practice:"Bootstrap a REST API for a product catalog using Spring Initializr. Expose GET /products and POST /products.",
+                    leaves:[
+                        "@SpringBootApplication = @Configuration + @EnableAutoConfiguration + @ComponentScan",
+                        "Spring Initializr — generate skeleton project","application.yml vs application.properties",
+                        "Profiles: dev, staging, prod — activate with spring.profiles.active",
+                        "Dependency injection — @Autowired, constructor injection best practice",
+                        "@Component, @Service, @Repository, @Controller stereotypes","@Bean inside @Configuration",
+                        "Embedded Tomcat — no WAR deployment needed","Spring DevTools for hot reload",
+                        "Logging with SLF4J + Logback — log levels","@Value for injecting config properties",
+                        "Environment & ConfigurationProperties"
+                    ]
+                },
+                {
+                    title:"Single-server Docker deployment", tag:"micro",
+                    desc:"JAR packaging, Dockerfile for a Spring Boot app, deploy to a single VM or local Docker container. The starting point before clustering.",
+                    techs:["Docker","Dockerfile","docker-compose","java -jar","Actuator /health","Multi-stage builds"],
+                    practice:"Dockerize your Spring Boot app with a multi-stage Dockerfile and run it with docker-compose alongside PostgreSQL.",
+                    leaves:[
+                        "Spring Boot fat JAR — java -jar myapp.jar","Multi-stage Dockerfile — build stage + runtime stage",
+                        "Base image choice: eclipse-temurin:21-jre-alpine","COPY, ENTRYPOINT, EXPOSE directives",
+                        "docker build -t myapp . and docker run","docker-compose.yml — app + postgres + redis",
+                        "Environment variable injection via Docker","Volume mounts for persistent data",
+                        "Spring Actuator /actuator/health endpoint","Container resource limits: --memory, --cpus",
+                        "Docker networking — bridge vs host","Health check in docker-compose"
+                    ]
+                }
+            ]
+        },
+        {
+            id:1, icon:"🗄️",
+            title:"Databases: SQL, NoSQL & caching",
+            desc:"The System Design course covers SQL, NoSQL, and Graph DBs. Learn to choose the right database per microservice — a core microservices pattern.",
+            duration:"3–4 weeks",
+            topics:[
+                {
+                    title:"Spring Data JPA & SQL", tag:"db",
+                    desc:"Entity mapping, JPQL, transactions, connection pooling with HikariCP. PostgreSQL as the go-to relational backing store.",
+                    techs:["Spring Data JPA","Hibernate 6","PostgreSQL","HikariCP","@Transactional","JPQL","Flyway"],
+                    practice:"Build an Order service with JPA entities: Order, OrderItem, Customer. Implement CRUD repositories and paged queries.",
+                    leaves:[
+                        "@Entity, @Table, @Id, @GeneratedValue","Relationships: @OneToMany, @ManyToOne, @ManyToMany",
+                        "FetchType.LAZY vs EAGER — always prefer LAZY","N+1 problem — fix with JOIN FETCH or @EntityGraph",
+                        "@Transactional — propagation, isolation levels","JPQL vs Criteria API vs native queries",
+                        "Spring Data JPA repositories — CrudRepository, JpaRepository","Custom query methods — findByStatusAndCreatedAtAfter",
+                        "@Query annotation for custom JPQL","Paging and sorting with Pageable",
+                        "HikariCP connection pool tuning","Flyway database migrations",
+                        "spring.jpa.show-sql for debugging","DTO projections to avoid loading full entities"
+                    ]
+                },
+                {
+                    title:"Spring Data MongoDB (NoSQL)", tag:"db",
+                    desc:"Document-based modelling. When to prefer MongoDB over SQL — high write volume, flexible schema, per-service data isolation.",
+                    techs:["Spring Data MongoDB","MongoTemplate","@Document","Aggregation Pipeline","MongoDB Atlas","Indexes"],
+                    practice:"Build a Product Catalog service using MongoDB with nested embedded documents for variants and attributes.",
+                    leaves:[
+                        "@Document, @Field, @Id in Spring Data MongoDB","Embedded documents vs references — denormalization patterns",
+                        "MongoRepository — same interface as JpaRepository","MongoTemplate for advanced queries",
+                        "Aggregation pipeline: $match, $group, $project, $sort","Indexes: @Indexed, @CompoundIndex, text indexes",
+                        "When NoSQL beats SQL — high write throughput, flexible schema","Read preference & write concern settings",
+                        "GridFS for storing large files in MongoDB","Change streams for real-time event capture",
+                        "MongoDB Atlas free tier for dev/test"
+                    ]
+                },
+                {
+                    title:"Database per service pattern", tag:"micro",
+                    desc:"Each microservice owns its database. No shared DB. Understand the trade-offs and how to enforce bounded context isolation.",
+                    techs:["Flyway","Liquibase","Schema isolation","Saga pattern","Outbox pattern","Event sourcing intro"],
+                    practice:"Set up 3 services each with their own Postgres schema in docker-compose. Add Flyway migrations to each.",
+                    leaves:[
+                        "Why database-per-service: loose coupling, independent scaling","Schema-per-service in PostgreSQL — search_path",
+                        "Separate database server per service for full isolation","Flyway vs Liquibase — migration versioning",
+                        "Cross-service queries — use APIs, not DB joins","Distributed transactions problem — 2PC is impractical",
+                        "Saga pattern: choreography-based vs orchestration-based","Outbox pattern — reliable event publishing",
+                        "Event sourcing — store events not state","CQRS — separate read and write models",
+                        "Eventual consistency — embrace it, design around it"
+                    ]
+                },
+                {
+                    title:"Caching with Redis", tag:"spring",
+                    desc:"Spring Cache abstraction, @Cacheable, TTL strategies. Redis as a sidecar cache per service to handle repeated read patterns.",
+                    techs:["Spring Cache","Redis 7","@Cacheable","@CacheEvict","@CachePut","Lettuce client","RedisTemplate"],
+                    practice:"Add Redis caching to the Product Catalog service. Cache product lookups with 5-min TTL and evict on update.",
+                    leaves:[
+                        "@EnableCaching + @Cacheable — drop-in caching","@CacheEvict — invalidate on create/update/delete",
+                        "@CachePut — update cache without skipping method","Cache key generation — SpEL expressions",
+                        "Redis as distributed cache — shared across instances","TTL configuration per cache region",
+                        "Lettuce vs Jedis client — Lettuce is reactive-ready","RedisTemplate for manual cache operations",
+                        "Cache aside vs write-through vs write-behind patterns","Cache stampede — probabilistic early expiration",
+                        "Redis data structures: String, Hash, List, Set, SortedSet","Redis Pub/Sub for lightweight messaging"
+                    ]
+                }
+            ]
+        },
+        {
+            id:2, icon:"⚖️",
+            title:"Scaling, load balancing & resilience",
+            desc:"The course covers vertical vs horizontal scaling, load balancing, health checks and SPOF. Map these directly to Spring Boot and Kubernetes patterns.",
+            duration:"2–3 weeks",
+            topics:[
+                {
+                    title:"Vertical vs horizontal scaling", tag:"micro",
+                    desc:"JVM heap tuning for vertical scaling. Stateless Spring Boot services for horizontal scale-out. Session externalization to Redis.",
+                    techs:["JVM tuning","-Xmx/-Xms","G1GC/ZGC","Stateless design","Spring Session + Redis","GraalVM native"],
+                    practice:"Make your Order service stateless by externalizing session to Redis. Scale to 3 replicas in docker-compose.",
+                    leaves:[
+                        "Vertical scaling: more CPU/RAM on one machine","Horizontal scaling: more identical instances",
+                        "JVM heap: -Xms (initial) -Xmx (max)","GC tuning: G1GC for low-latency, ZGC for large heaps",
+                        "JVM thread count ceiling — CPU-bound vs I/O-bound","Stateless design — no in-memory session",
+                        "Spring Session — store session in Redis not Tomcat","Externalizing state: caches, sessions, file uploads",
+                        "Sticky sessions vs session replication — avoid both","Virtual threads (Java 21) — massive concurrency boost",
+                        "GraalVM native image — faster startup, lower memory"
+                    ]
+                },
+                {
+                    title:"Load balancing & service discovery", tag:"micro",
+                    desc:"Spring Cloud LoadBalancer, Eureka service registry. How services find each other without hardcoded URLs.",
+                    techs:["Spring Cloud LoadBalancer","Eureka Server","@LoadBalanced","Spring Cloud Netflix","Consul","k8s Service"],
+                    practice:"Run 3 instances of Order service behind Eureka. Configure Spring Cloud Gateway to load-balance across them.",
+                    leaves:[
+                        "Server-side LB (hardware/nginx) vs client-side LB (Ribbon/SCL)","Spring Cloud LoadBalancer — replaces Ribbon",
+                        "Eureka Server — service registry setup","@EnableEurekaServer, @EnableEurekaClient",
+                        "Service registration: appname + instanceId","Health check heartbeat interval & eviction",
+                        "@LoadBalanced RestTemplate / WebClient","Round-robin vs random vs weighted strategies",
+                        "Zone-aware routing for multi-region deployments","Consul as alternative to Eureka",
+                        "Kubernetes Service — built-in cluster DNS","DNS-based vs client-side discovery trade-offs"
+                    ]
+                },
+                {
+                    title:"Health checks & Spring Actuator", tag:"spring",
+                    desc:"Spring Boot Actuator endpoints for health, metrics, liveness/readiness probes. Required for any load balancer or Kubernetes.",
+                    techs:["Spring Actuator","/actuator/health","LivenessState","ReadinessState","Custom HealthIndicator","Micrometer"],
+                    practice:"Configure custom health indicators for DB, Redis, and downstream APIs. Wire liveness/readiness to Kubernetes probes.",
+                    leaves:[
+                        "/actuator/health — aggregate health status","Liveness probe — is the app alive? (restart if no)",
+                        "Readiness probe — is the app ready? (route traffic if yes)","management.endpoints.web.exposure.include",
+                        "Custom HealthIndicator — implement health() method","Securing actuator endpoints — IP filtering or auth",
+                        "/actuator/info — app version, git commit","management.health.diskspace / db / redis components",
+                        "Graceful shutdown — spring.lifecycle.timeout-per-shutdown-phase","Kubernetes livenessProbe / readinessProbe YAML",
+                        "/actuator/metrics — JVM, HTTP, DB metrics"
+                    ]
+                },
+                {
+                    title:"Circuit breaker & SPOF elimination", tag:"micro",
+                    desc:"Identify single points of failure. Use Resilience4j to handle cascading failures with circuit breakers, retries and bulkheads.",
+                    techs:["Resilience4j","@CircuitBreaker","@Retry","@Bulkhead","@RateLimiter","@TimeLimiter","Fallback methods"],
+                    practice:"Add Resilience4j circuit breaker + retry + fallback to Order → Payment service calls. Simulate failure and observe.",
+                    leaves:[
+                        "SPOF examples: single DB, single gateway, no retry","Circuit breaker states: CLOSED, OPEN, HALF_OPEN",
+                        "@CircuitBreaker(name, fallbackMethod)","Failure rate threshold & slow call threshold",
+                        "Wait duration in OPEN state before retry","@Retry — maxAttempts, waitDuration, exponential backoff",
+                        "@Bulkhead — limit concurrent calls (thread pool or semaphore)","@RateLimiter — requests per second cap",
+                        "@TimeLimiter — timeout wrapper","Fallback method signature must match original",
+                        "Resilience4j metrics with Micrometer","Testing resilience with Testcontainers + WireMock"
+                    ]
+                }
+            ]
+        },
+        {
+            id:3, icon:"🔌",
+            title:"API design, REST, GraphQL & Gateway",
+            desc:"The course dives deep into API protocols, RESTful APIs and GraphQL. In Spring Boot this is your core interface layer.",
+            duration:"3–4 weeks",
+            topics:[
+                {
+                    title:"RESTful API design with Spring", tag:"spring",
+                    desc:"Resource naming, HTTP verbs, status codes, HATEOAS, versioning strategies. Build APIs the course's best practices mandate.",
+                    techs:["Spring Web MVC","@RestController","ResponseEntity","springdoc-openapi","HATEOAS","Problem Detail RFC 7807"],
+                    practice:"Design a fully RESTful Product API with URI versioning (/api/v1/), OpenAPI docs, and RFC 7807 error responses.",
+                    leaves:[
+                        "REST constraints: stateless, uniform interface, layered","Resource naming: nouns not verbs — /orders not /getOrders",
+                        "HTTP verbs: GET (read), POST (create), PUT (replace), PATCH (update), DELETE","HTTP status codes: 200,201,204,400,401,403,404,409,500",
+                        "@RestController vs @Controller + @ResponseBody","ResponseEntity<T> for full control of status + headers",
+                        "URI versioning: /api/v1/ vs header versioning","springdoc-openapi — OpenAPI 3 Swagger UI",
+                        "HATEOAS — hypermedia links in responses","RFC 7807 ProblemDetail — standard error format",
+                        "@Valid + @ControllerAdvice + @ExceptionHandler","Pagination: Pageable + Page<T> response",
+                        "Content negotiation: JSON + XML support","Idempotency keys for POST safety"
+                    ]
+                },
+                {
+                    title:"Spring for GraphQL", tag:"spring",
+                    desc:"Schema-first GraphQL with Spring for GraphQL. Queries, mutations, subscriptions. Replace over-fetching in your BFF layer.",
+                    techs:["Spring for GraphQL","GraphQL schema (.graphqls)","@QueryMapping","@MutationMapping","DataLoader","Subscriptions"],
+                    practice:"Build a GraphQL BFF on top of Product + Order services. Implement queries, mutations, and a subscription for order status.",
+                    leaves:[
+                        "GraphQL vs REST — over-fetching vs under-fetching","Schema-first: define .graphqls schema files",
+                        "Types: Query, Mutation, Subscription, Object, Input, Enum, Scalar","@QueryMapping — maps to GraphQL query field",
+                        "@MutationMapping — maps to GraphQL mutation field","@SchemaMapping for nested field resolvers",
+                        "@Argument for input parameter binding","DataLoader — batch N+1 calls across resolvers",
+                        "Subscriptions via WebSocket","Authentication in GraphQL — pass JWT via HTTP headers",
+                        "Error handling: GraphQLError, DataFetchingException","Spring Boot GraphiQL playground for dev"
+                    ]
+                },
+                {
+                    title:"gRPC for inter-service calls", tag:"micro",
+                    desc:"The course covers TCP vs UDP transport. gRPC uses HTTP/2 (TCP) for low-latency binary inter-service communication.",
+                    techs:["gRPC","Protocol Buffers","spring-grpc","HTTP/2","Unary RPC","Server streaming","Client streaming","Bidirectional"],
+                    practice:"Define a protobuf schema for Payment service. Generate Java stubs. Call from Order service via gRPC unary RPC.",
+                    leaves:[
+                        "Why gRPC: binary protocol, strong typing, code generation","Protocol Buffers .proto file syntax",
+                        "gRPC service types: unary, server-streaming, client-streaming, bidirectional","protoc code generation — Java stubs",
+                        "gRPC vs REST: when to use each in microservices","spring-grpc — Spring Boot auto-configuration for gRPC",
+                        "gRPC server & client bean setup","Interceptors for auth (JWT) and logging",
+                        "gRPC error codes vs HTTP status codes","Deadlines & cancellation","gRPC health checking protocol",
+                        "gRPC reflection for debugging (grpcurl)","Load balancing gRPC — client-side vs proxy"
+                    ]
+                },
+                {
+                    title:"API Gateway with Spring Cloud", tag:"micro",
+                    desc:"Single entry point for all clients. Routing, rate limiting, request transformation, path rewriting, auth propagation.",
+                    techs:["Spring Cloud Gateway","Route predicates","GatewayFilter","Rate limiter (Redis)","Path rewriting","CORS config"],
+                    practice:"Set up Spring Cloud Gateway routing to 3 downstream services with per-route rate limiting and JWT auth filter.",
+                    leaves:[
+                        "API Gateway pattern — why it exists","Spring Cloud Gateway on Netty (reactive/non-blocking)",
+                        "Route definition: id, uri, predicates, filters","Path predicates: Path=/api/products/**",
+                        "RewritePath filter — strip gateway prefix","AddRequestHeader / AddResponseHeader filters",
+                        "Custom GatewayFilter for JWT validation","Redis-backed RequestRateLimiter filter",
+                        "CircuitBreaker filter with fallback URI","CORS configuration at gateway level",
+                        "Logging filter — trace ID injection","Websocket proxying through gateway",
+                        "Gateway + Eureka — lb://service-name routing","Actuator /actuator/gateway/routes"
+                    ]
+                }
+            ]
+        },
+        {
+            id:4, icon:"🔐",
+            title:"Authentication & authorization",
+            desc:"The course spends significant time on auth. Spring Security + OAuth2 is the industry standard for microservices auth.",
+            duration:"3–4 weeks",
+            topics:[
+                {
+                    title:"Spring Security fundamentals", tag:"spring",
+                    desc:"SecurityFilterChain, authentication providers, UserDetailsService. The security layer every Spring app needs before adding OAuth2.",
+                    techs:["Spring Security 6","SecurityFilterChain","UserDetailsService","BCryptPasswordEncoder","CSRF","Session management"],
+                    practice:"Secure your REST API: implement username/password auth with BCrypt, JWT generation, and stateless session management.",
+                    leaves:[
+                        "Spring Security filter chain — ordered chain of filters","SecurityFilterChain bean — replaces WebSecurityConfigurerAdapter",
+                        "AuthenticationManager and AuthenticationProvider","UserDetailsService — load user by username",
+                        "PasswordEncoder — always BCryptPasswordEncoder","formLogin vs httpBasic vs custom JWT filter",
+                        "antMatchers / requestMatchers — permit vs authenticated","SessionCreationPolicy.STATELESS for REST APIs",
+                        "CSRF — enabled by default, disable for stateless APIs","CORS configuration inside SecurityFilterChain",
+                        "OncePerRequestFilter — base for custom JWT filter","SecurityContext and SecurityContextHolder"
+                    ]
+                },
+                {
+                    title:"OAuth2 & JWT with Spring", tag:"spring",
+                    desc:"Resource server config, JWT validation, scope-based access. Implement flows with Spring Authorization Server.",
+                    techs:["Spring Authorization Server 1.x","spring-security-oauth2-resource-server","JWT","JWK Set URI","PKCE","Opaque tokens"],
+                    practice:"Set up Spring Authorization Server issuing JWTs. Configure 3 services as Resource Servers validating against the JWK endpoint.",
+                    leaves:[
+                        "OAuth2 roles: Authorization Server, Resource Server, Client","Grant types: authorization_code, client_credentials, refresh_token",
+                        "PKCE — Proof Key for Code Exchange for public clients","JWT structure: header.payload.signature",
+                        "JWT claims: sub, iss, aud, exp, iat, scope","JWK Set — public keys for JWT validation",
+                        "Spring Authorization Server setup — RegisteredClient, AuthorizationServerSettings","@EnableWebSecurity + oauth2ResourceServer() config",
+                        "spring.security.oauth2.resourceserver.jwt.jwk-set-uri","Scope vs Role in JWT claims",
+                        "Token introspection for opaque tokens","Refresh token rotation","Keycloak as external AS"
+                    ]
+                },
+                {
+                    title:"Authorization: RBAC & method security", tag:"spring",
+                    desc:"Role-based access, @PreAuthorize, @Secured, SpEL expressions. Fine-grained control beyond just 'is logged in'.",
+                    techs:["@PreAuthorize","@PostAuthorize","@EnableMethodSecurity","SpEL","@Secured","hasRole vs hasAuthority"],
+                    practice:"Apply method security: ADMIN role can DELETE products, USER role can only GET. Add @PostAuthorize to return own data only.",
+                    leaves:[
+                        "@EnableMethodSecurity — enables method-level security","@PreAuthorize('hasRole(ADMIN)') — before method runs",
+                        "@PostAuthorize('returnObject.userId == authentication.name') — after","SpEL in @PreAuthorize — #param, returnObject, authentication",
+                        "hasRole() prepends ROLE_ prefix — vs hasAuthority() which does not","@Secured(['ROLE_ADMIN','ROLE_USER']) — simpler alternative",
+                        "Custom PermissionEvaluator for domain-object permissions","SecurityExpressionHandler customization",
+                        "Testing: @WithMockUser, @WithUserDetails","Method security on @Repository — data layer enforcement"
+                    ]
+                },
+                {
+                    title:"Security across microservices", tag:"micro",
+                    desc:"Propagate JWT across service calls via Feign. mTLS between services. Keycloak as external identity provider.",
+                    techs:["JWT propagation","OpenFeign + JWT","mTLS","Keycloak","OIDC","Service accounts","Spring Cloud Security"],
+                    practice:"Configure OpenFeign client to forward JWT Bearer token from incoming request to all downstream service calls.",
+                    leaves:[
+                        "JWT as the portable identity across services","RequestInterceptor in Feign — add Authorization header",
+                        "Spring Cloud Security — OAuth2 token relay","TokenRelay filter in Spring Cloud Gateway",
+                        "Service-to-service auth: client_credentials grant","Service accounts in Keycloak — machine-to-machine auth",
+                        "mTLS — mutual TLS for zero-trust inter-service","Certificate management with cert-manager in Kubernetes",
+                        "Keycloak setup — realms, clients, roles, users","OIDC discovery endpoint — auto-configure resource server",
+                        "Token revocation — short-lived tokens + refresh","Centralized authorization with OPA (Open Policy Agent) intro"
+                    ]
+                }
+            ]
+        },
+        {
+            id:5, icon:"🛡️",
+            title:"Production security & observability",
+            desc:"The course's final section covers production security. Add observability — essential for debugging distributed microservices in prod.",
+            duration:"2–3 weeks",
+            topics:[
+                {
+                    title:"HTTPS, CORS & security headers", tag:"spring",
+                    desc:"Configure TLS in Spring Boot, CORS policies for browser clients, HSTS and security response headers.",
+                    techs:["SSL/TLS","server.ssl.*","CORS config","HSTS","CSP","X-Frame-Options","Let's Encrypt","Nginx TLS termination"],
+                    practice:"Enable HTTPS on your Gateway with a self-signed cert (dev). Configure CORS for a React SPA on a different origin.",
+                    leaves:[
+                        "TLS termination options: in Spring Boot vs at reverse proxy","server.ssl.key-store — configure PKCS12 keystore",
+                        "Let's Encrypt free certs — certbot or cert-manager","CORS — cross-origin resource sharing headers",
+                        "Access-Control-Allow-Origin — never * in production","HSTS — HTTP Strict Transport Security header",
+                        "Content-Security-Policy — prevent XSS","X-Frame-Options: DENY — prevent clickjacking",
+                        "X-Content-Type-Options: nosniff","Referrer-Policy header","Spring Security .headers() config",
+                        "OWASP Top 10 — know each vulnerability","Dependency scanning: OWASP dependency-check plugin"
+                    ]
+                },
+                {
+                    title:"Input validation & API hardening", tag:"spring",
+                    desc:"Jakarta Bean Validation, @Valid, @Validated. Prevent injection attacks, abuse, and malformed payload exploitation.",
+                    techs:["Jakarta Validation","@Valid","@NotNull","@Size","@Pattern","@Validated","ProblemDetail","Rate limiting"],
+                    practice:"Add @Valid DTO validation to all endpoints. Build a global @ExceptionHandler returning RFC 7807 ProblemDetail responses.",
+                    leaves:[
+                        "@Valid on @RequestBody — triggers bean validation","@NotNull, @NotBlank, @Size, @Min, @Max, @Email",
+                        "@Pattern(regexp) for format validation","Custom @Constraint annotation for business rules",
+                        "Validation groups — different rules for create vs update","@Validated on service methods — validate method params",
+                        "@ExceptionHandler(MethodArgumentNotValidException) — handle validation errors","RFC 7807 ProblemDetail — standardized error body",
+                        "SQL injection prevention — use parameterized queries always","Mass assignment protection — never bind directly to entity",
+                        "Rate limiting at gateway — Redis RequestRateLimiter","Request size limiting — spring.servlet.multipart.max-file-size"
+                    ]
+                },
+                {
+                    title:"Distributed tracing", tag:"micro",
+                    desc:"Trace a request across 5 services. Micrometer Tracing, Zipkin, structured JSON logging with correlation IDs via MDC.",
+                    techs:["Micrometer Tracing","Brave / OpenTelemetry","Zipkin","Grafana Tempo","Logback JSON","MDC","TraceId","SpanId"],
+                    practice:"Add distributed tracing to 3 services using Micrometer + Zipkin. Correlate logs with traceId. Visualize the full trace.",
+                    leaves:[
+                        "Why tracing: which service caused the latency?","Trace ID — one per request, propagated in HTTP headers",
+                        "Span — a single unit of work within a trace","B3 propagation headers: X-B3-TraceId, X-B3-SpanId",
+                        "W3C TraceContext headers — modern standard","Micrometer Tracing — vendor-neutral tracing facade",
+                        "Brave bridge for Zipkin — micrometer-tracing-bridge-brave","OpenTelemetry bridge for Grafana Tempo",
+                        "Zipkin server — UI for viewing traces","Log correlation — inject traceId into MDC for every log line",
+                        "Structured JSON logging with Logback — logstash-logback-encoder","Sampling rate — 10% in prod to reduce overhead",
+                        "Custom Span creation with Tracer","Baggage propagation — carry custom values across services"
+                    ]
+                },
+                {
+                    title:"Metrics, Prometheus & Grafana", tag:"micro",
+                    desc:"Expose JVM, HTTP, and custom business metrics. Scrape with Prometheus, visualize in Grafana, alert on SLO breaches.",
+                    techs:["Micrometer","Prometheus","Grafana","@Timed","Counter","Gauge","Histogram","PromQL","AlertManager"],
+                    practice:"Build a Grafana dashboard for Order service: request rate, error rate, p95 latency, active orders gauge.",
+                    leaves:[
+                        "Micrometer — metrics facade (like SLF4J for metrics)","Counter — total count, monotonically increasing",
+                        "Gauge — current value (queue size, active connections)","Timer — latency + throughput combined",
+                        "Distribution summary — for non-time measurements","@Timed annotation — auto-time a method",
+                        "Custom metrics: MeterRegistry.counter(), .gauge(), .timer()","micrometer-registry-prometheus — Prometheus format",
+                        "/actuator/prometheus — Prometheus scrape endpoint","Prometheus scrape config — prometheus.yml",
+                        "PromQL basics: rate(), irate(), histogram_quantile()","Grafana dashboard: import JVM Micrometer dashboard (id 4701)",
+                        "SLO alerting: error rate > 1% for 5min","AlertManager — route alerts to Slack/PagerDuty"
+                    ]
+                }
+            ]
+        }
+    ];
+
+    /* ══════════════════════════════════════════════
+       STATE
+    ══════════════════════════════════════════════ */
+    let activePhase = 0;
+    let activeTopic = 0;
+
+    /* ══════════════════════════════════════════════
+       RENDER
+    ══════════════════════════════════════════════ */
+    function renderSidebar() {
+        const sb = document.getElementById('sidebar');
+        sb.innerHTML = '<div class="sidebar-label">Phases</div>' +
+            DATA.map((p, i) => `
+      <div class="phase-item${i===activePhase?' active':''}" onclick="selectPhase(${i})" title="${p.title}">
+        <div class="phase-num">${i+1}</div>
+        <div class="phase-name">${p.icon} ${p.title}</div>
+      </div>
+    `).join('');
+    }
+
+    function renderMid() {
+        const ph = DATA[activePhase];
+        const mid = document.getElementById('midPanel');
+        mid.innerHTML = '<div class="mid-label">Topic Groups</div>' +
+            ph.topics.map((t, i) => `
+      <div class="topic-item${i===activeTopic?' active':''}" onclick="selectTopic(${i})">
+        <span class="topic-tag tag-${t.tag}">${t.tag}</span>
+        <span class="topic-name">${t.title}</span>
+        <span class="topic-count">${t.leaves.length}</span>
+      </div>
+    `).join('');
+    }
+
+    function renderDetail() {
+        const ph  = DATA[activePhase];
+        const top = ph.topics[activeTopic];
+        const dotClass = {java:'java-dot',spring:'spring-dot',micro:'micro-dot',db:'db-dot'}[top.tag]||'micro-dot';
+
+        document.getElementById('emptyState') && (document.getElementById('emptyState').style.display='none');
+
+        document.getElementById('detailPanel').innerHTML = `
+    <div class="phase-banner">
+      <div class="phase-banner-icon">${ph.icon}</div>
+      <div>
+        <div class="phase-banner-title">${ph.title}</div>
+        <div class="phase-banner-desc">${ph.desc}</div>
+        <div class="phase-dur-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ${ph.duration}
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-header">
+        <div style="display:flex;flex-direction:column;gap:.4rem;flex:1">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="topic-tag tag-${top.tag}">${top.tag}</span>
+            <span class="detail-title">${top.title}</span>
+          </div>
+          <div class="detail-desc">${top.desc}</div>
+          <div class="detail-meta">
+            <span class="meta-chip">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              ${top.leaves.length} leaf items
+            </span>
+            <span class="meta-chip">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="9 9 15 9 15 15 9 15 9 9"/></svg>
+              ${top.techs.length} technologies
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Technologies</div>
+      <div class="tech-grid">
+        ${top.techs.map(t=>`<span class="tech-chip">${t}</span>`).join('')}
+      </div>
+
+      <div class="section-title">Practice project</div>
+      <div class="practice-card">
+        <div class="practice-label">🛠 Hands-on project</div>
+        <div class="practice-text" id="practiceText">${top.practice}</div>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyPractice()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy project brief
+      </button>
+    </div>
+
+    <div class="section-title" style="padding:0 0 .4rem">Leaf Items — ${top.leaves.length} topics</div>
+    <div class="leaf-list">
+      ${top.leaves.map(l=>`
+        <div class="leaf-item">
+          <span class="leaf-bullet ${dotClass}"></span>
+          <span>${l}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+    }
+
+    function renderCrumb() {
+        const ph = DATA[activePhase];
+        document.getElementById('crumbPhase').textContent = `Phase ${activePhase+1} — ${ph.title}`;
+        document.getElementById('crumbDur').textContent = `${ph.duration} · topic ${activeTopic+1} of ${ph.topics.length}`;
+    }
+
+    function selectPhase(i) {
+        activePhase = i;
+        activeTopic = 0;
+        renderSidebar();
+        renderMid();
+        renderDetail();
+        renderCrumb();
+    }
+
+    function selectTopic(i) {
+        activeTopic = i;
+        renderMid();
+        renderDetail();
+        renderCrumb();
+    }
+
+    function copyPractice() {
+        const ph  = DATA[activePhase];
+        const top = ph.topics[activeTopic];
+        navigator.clipboard.writeText(top.practice).then(()=>{
+            const btn = document.getElementById('copyBtn');
+            btn.classList.add('copied');
+            btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+            setTimeout(()=>{
+                btn.classList.remove('copied');
+                btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy project brief`;
+            }, 2000);
+        });
+    }
+
+    /* Init */
+    renderSidebar();
+    renderMid();
+    renderDetail();
+    renderCrumb();
+</script>
+</body>
+</html>
