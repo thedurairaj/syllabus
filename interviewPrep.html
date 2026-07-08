@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Backend // Interview Prep Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg: #ffffff;
+            --surface: #f7f8fa;
+            --surface-2: #eef0f4;
+            --border: #dfe3ea;
+            --text: #1b1e27;
+            --muted: #6b7280;
+            --amber: #c2650a;
+            --amber-soft: #fdf1e2;
+            --green: #1f8b4c;
+            --green-soft: #e7f6ec;
+            --rose: #b8253f;
+            --mono: 'JetBrains Mono', ui-monospace, monospace;
+            --sans: 'Inter', -apple-system, sans-serif;
+        }
+        *{box-sizing:border-box;}
+        html,body{margin:0;padding:0;}
+        body{
+            background:var(--bg);
+            color:var(--text);
+            font-family:var(--sans);
+            line-height:1.5;
+            min-height:100vh;
+        }
+        a{color:var(--amber);}
+
+        .term{
+            max-width:1080px;
+            margin:28px auto 0;
+            padding:0 20px;
+        }
+        .term-window{
+            background:var(--surface);
+            border:1px solid var(--border);
+            border-radius:10px;
+            overflow:hidden;
+            box-shadow:0 12px 40px -24px rgba(20,20,30,0.18);
+        }
+        .term-bar{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            padding:10px 14px;
+            background:var(--surface-2);
+            border-bottom:1px solid var(--border);
+        }
+        .dot{width:10px;height:10px;border-radius:50%;}
+        .dot.r{background:#e6675a;}
+        .dot.y{background:#e6b95a;}
+        .dot.g{background:#3fae6b;}
+        .term-title{
+            margin-left:8px;
+            font-family:var(--mono);
+            font-size:12px;
+            color:var(--muted);
+        }
+        .term-body{
+            padding:22px 24px 26px;
+            font-family:var(--mono);
+        }
+        .term-line{
+            color:var(--muted);
+            font-size:13px;
+            margin-bottom:4px;
+        }
+        .term-line .prompt{color:var(--green);}
+        .term-line .path{color:var(--amber);}
+        h1.term-h1{
+            font-family:var(--mono);
+            font-size:clamp(22px, 3.4vw, 32px);
+            font-weight:800;
+            margin:10px 0 4px;
+            letter-spacing:-0.02em;
+            color:var(--text);
+        }
+        .term-sub{
+            color:var(--muted);
+            font-size:14px;
+            margin:0 0 18px;
+            font-family:var(--sans);
+        }
+        .cursor{
+            display:inline-block;
+            width:8px;height:16px;
+            background:var(--amber);
+            margin-left:2px;
+            vertical-align:-2px;
+            animation:blink 1s steps(1) infinite;
+        }
+        @keyframes blink{50%{opacity:0;}}
+
+        .overall{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            flex-wrap:wrap;
+            margin-top:6px;
+        }
+        .bracket{
+            font-family:var(--mono);
+            font-size:15px;
+            letter-spacing:1px;
+            white-space:nowrap;
+        }
+        .bracket .fill{color:var(--amber);}
+        .bracket .empty{color:#d7dae0;}
+        .overall-pct{
+            font-family:var(--mono);
+            font-weight:700;
+            font-size:15px;
+            color:var(--amber);
+        }
+        .overall-count{
+            font-family:var(--mono);
+            font-size:12px;
+            color:var(--muted);
+        }
+
+        .toolbar{
+            display:flex;
+            gap:10px;
+            margin-top:16px;
+            flex-wrap:wrap;
+            align-items:center;
+        }
+        .btn{
+            font-family:var(--mono);
+            font-size:12px;
+            background:#ffffff;
+            border:1px solid var(--border);
+            color:var(--text);
+            padding:7px 12px;
+            border-radius:6px;
+            cursor:pointer;
+            transition:border-color .15s, color .15s;
+        }
+        .btn:hover{border-color:var(--amber); color:var(--amber);}
+        .btn.active{border-color:var(--green); color:var(--green);}
+
+        .wrap{max-width:1080px;margin:0 auto;padding:22px 20px 80px;}
+        .tabs{
+            display:flex;
+            gap:8px;
+            border-bottom:1px solid var(--border);
+            margin-bottom:20px;
+            flex-wrap:wrap;
+        }
+        .tab{
+            font-family:var(--mono);
+            font-size:13px;
+            font-weight:600;
+            padding:10px 16px;
+            color:var(--muted);
+            cursor:pointer;
+            border-bottom:2px solid transparent;
+            transform:translateY(1px);
+            user-select:none;
+        }
+        .tab:hover{color:var(--text);}
+        .tab.active{color:var(--amber); border-color:var(--amber);}
+        .tab .tab-pct{font-size:11px; color:var(--muted); margin-left:6px;}
+
+        .roadmap{display:none;}
+        .roadmap.active{display:block;}
+
+        .section{
+            background:#ffffff;
+            border:1px solid var(--border);
+            border-radius:10px;
+            margin-bottom:12px;
+            overflow:hidden;
+        }
+        .section-head{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:14px 16px;
+            cursor:pointer;
+            user-select:none;
+        }
+        .section-num{
+            font-family:var(--mono);
+            font-size:12px;
+            color:#ffffff;
+            background:var(--amber);
+            min-width:26px;
+            height:26px;
+            border-radius:6px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:700;
+            flex:none;
+        }
+        .section.done .section-num{background:var(--green);}
+        .section-title{
+            font-weight:600;
+            font-size:14.5px;
+            flex:1;
+        }
+        .section-stars{
+            font-size:12px;
+            color:var(--muted);
+            letter-spacing:1px;
+            flex:none;
+        }
+        .section-progress{
+            font-family:var(--mono);
+            font-size:11.5px;
+            color:var(--muted);
+            flex:none;
+            min-width:44px;
+            text-align:right;
+        }
+        .chev{
+            flex:none;
+            color:var(--muted);
+            transition:transform .18s;
+            font-size:11px;
+        }
+        .section.open .chev{transform:rotate(90deg);}
+
+        .section-body{
+            display:none;
+            padding:2px 16px 14px 16px;
+            border-top:1px solid var(--border);
+        }
+        .section.open .section-body{display:block;}
+
+        .item{
+            display:flex;
+            align-items:flex-start;
+            gap:10px;
+            padding:8px 4px;
+            border-radius:6px;
+            cursor:pointer;
+        }
+        .item:hover{background:var(--surface);}
+        .item.hide{display:none;}
+        .box{
+            flex:none;
+            width:18px;height:18px;
+            margin-top:2px;
+            border:1.5px solid #c7cbd3;
+            border-radius:4px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-family:var(--mono);
+            font-size:12px;
+            color:transparent;
+            transition:all .12s;
+        }
+        .item.checked .box{
+            background:var(--green);
+            border-color:var(--green);
+            color:#ffffff;
+        }
+        .item-text{font-size:14px;}
+        .item.checked .item-text{
+            text-decoration:line-through;
+            text-decoration-color:var(--green);
+            color:var(--muted);
+        }
+        code{
+            font-family:var(--mono);
+            background:var(--amber-soft);
+            padding:1px 5px;
+            border-radius:4px;
+            font-size:12.5px;
+            color:var(--amber);
+        }
+        .item.checked code{color:var(--muted); background:transparent;}
+
+        .focus{
+            background:#ffffff;
+            border:1px solid var(--rose);
+            border-radius:10px;
+            padding:16px 18px 18px;
+            margin-top:20px;
+        }
+        .focus h3{
+            font-family:var(--mono);
+            font-size:13px;
+            color:var(--rose);
+            margin:0 0 10px;
+            letter-spacing:0.5px;
+            text-transform:uppercase;
+        }
+        .focus-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:6px 20px;
+        }
+        @media(max-width:560px){.focus-grid{grid-template-columns:1fr;}}
+        .focus-item{
+            display:flex;
+            gap:8px;
+            align-items:baseline;
+            font-size:13.5px;
+            padding:5px 0;
+            border-bottom:1px dashed var(--border);
+        }
+        .focus-item .n{
+            font-family:var(--mono);
+            color:var(--rose);
+            font-size:12px;
+            min-width:18px;
+        }
+
+        footer{
+            text-align:center;
+            color:var(--muted);
+            font-family:var(--mono);
+            font-size:12px;
+            padding:30px 20px 40px;
+        }
+        footer a{color:var(--muted); text-decoration:underline;}
+    </style>
+</head>
+<body>
+
+<div class="term">
+    <div class="term-window">
+        <div class="term-bar">
+            <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+            <div class="term-title">~/backend-prep — tracker.sh</div>
+        </div>
+        <div class="term-body">
+            <div class="term-line"><span class="prompt">$</span> <span class="path">~/interview-prep</span> ./track --status</div>
+            <h1 class="term-h1">Java Backend Prep Tracker<span class="cursor"></span></h1>
+            <p class="term-sub">Spring Data JPA + Spring Framework / Spring Boot + Microservices — production-ordered roadmap for 3–6 yrs Java backend interviews. Check off a topic once you've covered it; it strikes through and locks in your progress.</p>
+
+            <div class="overall">
+                <span class="bracket" id="bracket"></span>
+                <span class="overall-pct" id="overallPct">0%</span>
+                <span class="overall-count" id="overallCount">0 / 0 topics</span>
+            </div>
+
+            <div class="toolbar">
+                <button class="btn" id="hideBtn">Hide completed</button>
+                <button class="btn" id="expandBtn">Expand all</button>
+                <button class="btn" id="resetBtn">Reset progress</button>
+                <label class="btn" style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                    Font:
+                    <select id="fontSelect" style="font-family:inherit;font-size:12px;border:none;background:transparent;color:inherit;cursor:pointer;">
+                        <option value="default">Default</option>
+                        <option value="comic">Comic Sans</option>
+                        <option value="mono">Monospace</option>
+                        <option value="serif">Serif</option>
+                    </select>
+                </label>
+                <label class="btn" style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                    Text color:
+                    <input type="color" id="colorPicker" value="#1b1e27" style="width:22px;height:22px;padding:0;border:none;background:none;cursor:pointer;">
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrap">
+    <div class="tabs" id="tabs"></div>
+    <div id="roadmaps"></div>
+</div>
+
+<footer>Progress is saved locally in this browser (localStorage) · built for GitHub Pages</footer>
+
+<script>
+    const DATA = [
+        {
+            id: "corejava",
+            title: "Core Java",
+            focusTitle: "High-Priority Core Java Topics (Must Master)",
+            focus: [
+                "OOP Pillars","Immutability","`equals()` & `hashCode()`","String Pool","Collections Framework",
+                "HashMap Internals","Generics","Exception Handling","Multithreading Basics","`synchronized` & Locks",
+                "Executor Framework","`volatile` & Memory Model","Streams API","Functional Interfaces & Lambdas",
+                "Garbage Collection","JVM Memory Model","`equals` vs `==`","Wrapper Classes & Autoboxing",
+                "Comparable vs Comparator","Java Version Features (8/11/17/21)"
+            ],
+            sections: [
+                { title:"OOP Fundamentals", stars:5, items:["Encapsulation","Inheritance","Polymorphism (Compile-time & Runtime)","Abstraction","`this` vs `super`","Constructor Chaining","Access Modifiers","Composition vs Inheritance"] },
+                { title:"Classes & Objects", stars:5, items:["Class vs Object","Static vs Instance Members","Static Blocks & Initialization Order","Inner Classes","Static Nested Classes","Anonymous Classes","Local Classes","Singleton Pattern"] },
+                { title:"Interfaces & Abstract Classes", stars:5, items:["Abstract Class vs Interface","Default Methods","Static Methods in Interfaces","Functional Interfaces","Marker Interfaces","Multiple Inheritance via Interfaces"] },
+                { title:"Object Class Methods", stars:5, items:["`equals()`","`hashCode()`","`toString()`","`equals()` & `hashCode()` Contract","`clone()`","Shallow vs Deep Copy","`getClass()`"] },
+                { title:"String Handling", stars:5, items:["String Immutability","String Pool","`String` vs `StringBuilder` vs `StringBuffer`","`intern()`","String Comparison (`==` vs `equals`)","String Formatting","Text Blocks (Java 15+)"] },
+                { title:"Exception Handling", stars:5, items:["Checked vs Unchecked Exceptions","`try-catch-finally`","`try-with-resources`","Custom Exceptions","Exception Chaining","Multi-catch","`throw` vs `throws`","Best Practices"] },
+                { title:"Collections Framework", stars:5, items:["`List` (`ArrayList`, `LinkedList`)","`Set` (`HashSet`, `LinkedHashSet`, `TreeSet`)","`Map` (`HashMap`, `LinkedHashMap`, `TreeMap`)","`Queue` & `Deque`","`Iterator` vs `ListIterator`","Fail-Fast vs Fail-Safe","`Collections` Utility Class"] },
+                { title:"HashMap Internals", stars:5, items:["Hashing Mechanism","Bucket Structure","Load Factor & Resizing","Collision Handling (Chaining)","Treeification (Java 8+)","`HashMap` vs `Hashtable` vs `ConcurrentHashMap`","`HashMap` vs `TreeMap` vs `LinkedHashMap`"] },
+                { title:"Generics", stars:5, items:["Generic Classes & Methods","Bounded Type Parameters","Wildcards (`?`, `? extends`, `? super`)","Type Erasure","Generic Arrays Limitation"] },
+                { title:"Comparable & Comparator", stars:4, items:["`Comparable` Interface","`Comparator` Interface","`compareTo()` vs `compare()`","Chaining Comparators","Sorting Collections"] },
+                { title:"Wrapper Classes & Autoboxing", stars:4, items:["Autoboxing & Unboxing","Wrapper Class Caching","`Integer` Cache (-128 to 127)","Boxing Performance Pitfalls","Parsing & Conversion Methods"] },
+                { title:"Multithreading Fundamentals", stars:5, items:["Thread Creation (`Thread` vs `Runnable`)","Thread Lifecycle","`start()` vs `run()`","Thread Priority","Daemon Threads","Thread Sleep, Join, Interrupt","Race Conditions"] },
+                { title:"Synchronization & Locks", stars:5, items:["`synchronized` Method & Block","Intrinsic Lock (Monitor)","`ReentrantLock`","`ReadWriteLock`","Deadlock, Livelock, Starvation","Producer-Consumer Problem"] },
+                { title:"Concurrency Utilities", stars:5, items:["Executor Framework","`ExecutorService`","Thread Pools (Fixed, Cached, Scheduled)","`Future` & `Callable`","`CompletableFuture`","`CountDownLatch`","`Semaphore`","`CyclicBarrier`"] },
+                { title:"Concurrent Collections", stars:4, items:["`ConcurrentHashMap`","`CopyOnWriteArrayList`","`BlockingQueue`","`ConcurrentLinkedQueue`","Atomic Variables (`AtomicInteger`, etc.)"] },
+                { title:"JVM Memory Model", stars:5, items:["Heap vs Stack","Young Gen vs Old Gen","Metaspace","`volatile` Keyword","Happens-Before Relationship","Memory Visibility","Escape Analysis (concept)"] },
+                { title:"Garbage Collection", stars:5, items:["GC Algorithms (Serial, Parallel, G1, ZGC)","Minor vs Major GC","Object Reachability","Strong, Weak, Soft, Phantom References","`finalize()` (deprecated)","GC Tuning Basics"] },
+                { title:"Java 8 Features", stars:5, items:["Lambda Expressions","Functional Interfaces (`Function`, `Predicate`, `Supplier`, `Consumer`)","Method References","Streams API","`Optional`","Default & Static Interface Methods","`java.time` API"] },
+                { title:"Streams API", stars:5, items:["Intermediate vs Terminal Operations","`map`, `filter`, `reduce`","`collect()` & Collectors","Parallel Streams","Stream Pipelines","Lazy Evaluation"] },
+                { title:"Modern Java Features", stars:4, items:["`var` (Java 10)","Records (Java 14+)","Sealed Classes (Java 17)","Pattern Matching for `instanceof`","Switch Expressions","Text Blocks","Virtual Threads (Java 21)"] },
+                { title:"Java I/O & NIO", stars:3, items:["`InputStream` / `OutputStream`","`Reader` / `Writer`","Serialization","`java.nio` Buffers & Channels","`Files` Utility Class"] },
+                { title:"Production Best Practices", stars:5, items:["Prefer Immutability","Favor Composition over Inheritance","Use `Optional` Instead of Null Checks","Proper Exception Handling (no swallowing)","Use `try-with-resources` for Closeable Resources","Thread-Safety in Shared State","Avoid Premature Optimization","Effective Logging","Meaningful `equals`/`hashCode` for Domain Objects","Avoid Overusing Checked Exceptions"] }
+            ]
+        },
+        {
+            id: "jpa",
+            title: "Spring Data JPA",
+            focusTitle: "High-Priority JPA Topics (Must Master)",
+            focus: [
+                "Persistence Context","Entity Lifecycle","Dirty Checking","Flush vs Commit","First Level Cache",
+                "Lazy vs Eager Loading","Cascade Types","Orphan Removal","N+1 Problem","JPQL vs Native Query",
+                "DTO Projection","Fetch Join","Transactions","Optimistic vs Pessimistic Locking","Pagination",
+                "EntityGraph","Specifications","Batch Processing","Indexing","Performance Tuning"
+            ],
+            sections: [
+                { title:"JPA Fundamentals", stars:5, items:["ORM","Entity Lifecycle","Persistence Context","Entity States","First Level Cache","Dirty Checking","Flush","Clear","Detach","Merge","Refresh"] },
+                { title:"Entity Mapping", stars:5, items:["`@Entity`","`@Table`","`@Id`","`@GeneratedValue`","UUID vs Long ID","`@Column`","`@Enumerated`","`@Embedded`","`@Embeddable`","`@Transient`","`@Lob`"] },
+                { title:"Relationship Mapping", stars:5, items:["`@OneToOne`","`@OneToMany`","`@ManyToOne`","`@ManyToMany`","Owning Side","`mappedBy`","Cascade Types","Orphan Removal","Fetch Types","Bidirectional vs Unidirectional"] },
+                { title:"Repository Layer", stars:5, items:["`JpaRepository`","`CrudRepository`","`PagingAndSortingRepository`","Derived Query Methods","Query Method Keywords","`existsBy...`","`countBy...`","Delete Methods"] },
+                { title:"Query Techniques", stars:5, items:["JPQL","Native SQL","`@Query`","Named Queries","Parameters (positional & named)","`IN` Clause","`LIKE`","`CASE`","`EXISTS`","`JOIN`","`GROUP BY`","`HAVING`"] },
+                { title:"Fetching Strategies", stars:5, items:["Lazy Loading","Eager Loading","Fetch Join","`@EntityGraph`","N+1 Problem","Batch Fetching","Projection","DTO Projection"] },
+                { title:"Pagination & Sorting", stars:5, items:["`Pageable`","`Page`","`Slice`","`Sort`","Offset Pagination","Cursor Pagination"] },
+                { title:"Transactions", stars:5, items:["`@Transactional`","Read-Only Transaction","Propagation","Isolation","Rollback","Nested Transactions","Transaction Boundaries"] },
+                { title:"Locking", stars:4, items:["Optimistic Locking","Pessimistic Locking","`@Version`","Lock Modes","Deadlocks"] },
+                { title:"Auditing", stars:4, items:["Created Date","Updated Date","Created By","Last Modified By","`AuditingEntityListener`"] },
+                { title:"Validation", stars:4, items:["Bean Validation","`@NotNull`","`@NotBlank`","`@Size`","`@Pattern`","Custom Validation"] },
+                { title:"Performance Optimization", stars:5, items:["N+1 Detection","Fetch Size","JDBC Batch Insert","Batch Update","Batch Delete","Bulk Operations","Streaming Results","Read-Only Queries","Second Level Cache","Query Cache"] },
+                { title:"Specifications & Dynamic Queries", stars:4, items:["Specification API","Criteria API","Dynamic Filtering","Dynamic Sorting","Search APIs"] },
+                { title:"Custom Repository", stars:4, items:["Repository Customization","`EntityManager` injection","Custom Implementation","Native Operations"] },
+                { title:"EntityManager", stars:5, items:["`persist()`","`merge()`","`remove()`","`find()`","`getReference()`","`flush()`","`clear()`","`detach()`","`refresh()`"] },
+                { title:"Database Design Best Practices", stars:5, items:["Primary Keys","Foreign Keys","Composite Keys","Unique Constraints","Indexes","Check Constraints","Naming Strategy"] },
+                { title:"Soft Delete", stars:4, items:["Logical Delete","Global Filters","Restore Data"] },
+                { title:"Exception Handling", stars:4, items:["`DataIntegrityViolationException`","`OptimisticLockException`","`EntityNotFoundException`","`ConstraintViolationException`"] },
+                { title:"Testing", stars:4, items:["`@DataJpaTest`","Testcontainers","H2 Database","Repository Testing"] },
+                { title:"Production Best Practices", stars:5, items:["Avoid Open Session In View","DTO instead of Entity in API responses","Avoid `EAGER` Fetch by default","Avoid `CascadeType.ALL` by default","Index Frequently Queried Columns","Pagination for Large Data","Batch Processing","Proper Transaction Boundaries","Logging SQL (development only)","Connection Pool Tuning","Flyway / Liquibase","Read vs Write Separation (concept)","Multi-Tenancy (concept)"] }
+            ]
+        },
+        {
+            id: "spring",
+            title: "Spring Framework + Boot",
+            focusTitle: "High-Priority Spring Topics (Must Master)",
+            focus: [
+                "IoC & Dependency Injection","Bean Lifecycle","Bean Scopes","Constructor vs Field Injection",
+                "Spring Boot Auto Configuration","`@SpringBootApplication`","Spring MVC Request Flow","REST API Development",
+                "Exception Handling","Validation","Profiles & Configuration","Logging & MDC","Actuator","AOP",
+                "Scheduling","Async Processing","Events","Caching","Testing","Production Best Practices"
+            ],
+            sections: [
+                { title:"Spring Core", stars:5, items:["IoC (Inversion of Control)","Dependency Injection (DI)","Bean","Bean Scope","Bean Lifecycle","Spring Container","`ApplicationContext`","`BeanFactory`","`@Component`","`@Service`","`@Repository`","`@Controller`","`@Configuration`","`@Bean`","`@Primary`","`@Qualifier`","`@Lazy`"] },
+                { title:"Dependency Injection", stars:5, items:["Constructor Injection","Setter Injection","Field Injection (why to avoid)","Circular Dependency","Optional Dependencies","Bean Naming","Bean Resolution"] },
+                { title:"Spring Boot Fundamentals", stars:5, items:["Spring Boot Architecture","Starter Dependencies","Auto Configuration","`SpringApplication`","`@SpringBootApplication`","Embedded Tomcat","Fat JAR","Convention over Configuration"] },
+                { title:"Configuration Management", stars:5, items:["`application.properties`","`application.yml` (concept)","`@Value`","`@ConfigurationProperties`","Profiles","`Environment`","External Configuration","Command Line Arguments"] },
+                { title:"Spring Boot Auto Configuration", stars:5, items:["AutoConfiguration","Conditional Annotations","`@ConditionalOnClass`","`@ConditionalOnBean`","`@ConditionalOnMissingBean`","Custom Auto Configuration (concept)"] },
+                { title:"REST API Development", stars:5, items:["`@RestController`","`@RequestMapping`","`@GetMapping`","`@PostMapping`","`@PutMapping`","`@DeleteMapping`","`@PatchMapping`","`@PathVariable`","`@RequestParam`","`@RequestBody`","`ResponseEntity`","`HttpStatus`"] },
+                { title:"Validation", stars:5, items:["`@Valid`","`@Validated`","Bean Validation","`@NotNull`","`@NotBlank`","`@Size`","`@Email`","Custom Validation"] },
+                { title:"Exception Handling", stars:5, items:["`@ExceptionHandler`","`@ControllerAdvice`","`@RestControllerAdvice`","Global Exception Handling","Custom Exceptions","Standard Error Response (RFC 7807 / Problem Details)"] },
+                { title:"Spring AOP", stars:4, items:["Aspect Oriented Programming","Advice Types","Pointcuts","Join Points","Around Advice","Logging","Auditing"] },
+                { title:"Spring MVC", stars:5, items:["`DispatcherServlet`","Request Flow","`HandlerMapping`","`HandlerAdapter`","Message Converters","Content Negotiation"] },
+                { title:"Spring Boot Actuator", stars:5, items:["Health Endpoint","Metrics","Info","Prometheus Integration","Custom Health Indicator"] },
+                { title:"Logging", stars:5, items:["SLF4J","Logback","Log4j2","Logging Levels","MDC","Correlation ID","Structured Logging (JSON)"] },
+                { title:"Spring Boot Profiles", stars:5, items:["`dev`","`test`","`prod`","Profile-specific Properties","Active Profiles"] },
+                { title:"Scheduling", stars:4, items:["`@EnableScheduling`","`@Scheduled`","Fixed Rate","Fixed Delay","Cron Expression"] },
+                { title:"Asynchronous Processing", stars:4, items:["`@EnableAsync`","`@Async`","`ThreadPoolTaskExecutor`","`CompletableFuture`"] },
+                { title:"Spring Events", stars:4, items:["`ApplicationEvent`","`@EventListener`","Transactional Event Listener","Event Publishing"] },
+                { title:"Spring Caching", stars:4, items:["`@EnableCaching`","`@Cacheable`","`@CachePut`","`@CacheEvict`","Cache Manager","Redis Cache (concept)"] },
+                { title:"File Upload & Download", stars:4, items:["`MultipartFile`","Streaming","Resource API"] },
+                { title:"Spring Boot Testing", stars:5, items:["Unit Testing","Integration Testing","`@SpringBootTest`","`@WebMvcTest`","`MockMvc`","Mockito","Testcontainers (concept)"] },
+                { title:"Production Configuration", stars:5, items:["Graceful Shutdown","Externalized Configuration","Environment Variables","Connection Pool (HikariCP)","Thread Pool Configuration","Time Zone Configuration","UTF-8 Configuration"] },
+                { title:"Monitoring & Observability", stars:5, items:["Spring Boot Actuator","Micrometer","Prometheus","Grafana","Health Checks","Liveness & Readiness Probes","Distributed Tracing (concept)"] },
+                { title:"Production Best Practices", stars:5, items:["Constructor Injection only","Layered Architecture","DTO Pattern","Global Exception Handling","Validation at API Layer","Meaningful Logging","Correlation ID","Externalized Configuration","Avoid Business Logic in Controllers","Stateless Services","Idempotent APIs","API Versioning (concept)","Graceful Shutdown","Secure Configuration"] }
+            ]
+        },
+        {
+            id: "microservices",
+            title: "Microservices",
+            focusTitle: "High-Priority Microservices Topics (Must Master)",
+            focus: [
+                "Monolith vs Microservices","Service Communication (Sync vs Async)","API Gateway","Service Discovery (Eureka)",
+                "Circuit Breaker (Resilience4j)","Retry & Bulkhead Patterns","Saga Pattern (Choreography vs Orchestration)",
+                "Distributed Transactions","Database per Service","Event-Driven Architecture (Kafka)","Idempotent Consumers",
+                "Distributed Logging & Correlation ID","Distributed Tracing","Spring Cloud Config","Security (OAuth2 / JWT)",
+                "Docker & Kubernetes Basics","API Versioning","Contract Testing","CQRS","Production Best Practices"
+            ],
+            sections: [
+                { title:"Microservices Fundamentals", stars:5, items:["Monolith vs Microservices","Single Responsibility per Service","Bounded Context (Domain-Driven Design)","Database per Service","Decentralized Governance","Independent Deployability","Trade-offs (complexity vs scalability)"] },
+                { title:"Service Communication", stars:5, items:["Synchronous Communication (REST, gRPC)","Asynchronous Communication (messaging/events)","`RestTemplate` vs `WebClient`","`OpenFeign`","gRPC & Protocol Buffers (concept)","Request/Response vs Fire-and-Forget","Timeout Configuration"] },
+                { title:"API Gateway", stars:5, items:["Single Entry Point Pattern","Spring Cloud Gateway","Routing","Request Filtering","Rate Limiting","Authentication at the Gateway","Backend for Frontend (BFF)"] },
+                { title:"Service Discovery", stars:5, items:["Client-Side Discovery","Server-Side Discovery","Eureka Server / Client","Service Registry","Health Checks for Registration","Kubernetes-native Discovery (DNS-based)"] },
+                { title:"Load Balancing", stars:4, items:["Client-Side Load Balancing (Spring Cloud LoadBalancer)","Server-Side Load Balancing","Round Robin","Weighted Balancing","Sticky Sessions (concept)"] },
+                { title:"Resilience & Fault Tolerance", stars:5, items:["Circuit Breaker Pattern","Resilience4j","`@CircuitBreaker`","Retry Pattern","`@Retry`","Bulkhead Pattern","Rate Limiter","Time Limiter","Fallback Methods","Cascading Failure Prevention"] },
+                { title:"Centralized Configuration", stars:4, items:["Spring Cloud Config Server","Config Client","Git-backed Configuration","Environment-specific Config","Dynamic Refresh (`@RefreshScope`)","Config Encryption (secrets)"] },
+                { title:"Event-Driven Architecture", stars:5, items:["Publish/Subscribe Model","Apache Kafka Fundamentals","Topics, Partitions, Consumer Groups","Producer/Consumer Configuration","RabbitMQ Fundamentals","Exchanges & Queues","Message Ordering","At-Least-Once vs Exactly-Once Delivery","Dead Letter Queue (DLQ)","Event Sourcing (concept)"] },
+                { title:"Distributed Data Management", stars:5, items:["Database per Service Pattern","Shared Database Anti-Pattern","Data Consistency Challenges","CQRS (Command Query Responsibility Segregation)","Eventual Consistency","Data Duplication Across Services"] },
+                { title:"Distributed Transactions", stars:5, items:["Two-Phase Commit (2PC) — why it's avoided","Saga Pattern","Choreography-based Saga","Orchestration-based Saga","Compensating Transactions","Idempotent Consumers"] },
+                { title:"Security", stars:5, items:["OAuth2","JWT (JSON Web Tokens)","Spring Security for Microservices","Token Propagation Between Services","mTLS (Mutual TLS)","API Key Management","Securing Service-to-Service Calls"] },
+                { title:"Containerization", stars:5, items:["Docker Fundamentals","Dockerfile","Multi-Stage Builds","Docker Compose","Image Layers & Caching","Container Networking (concept)"] },
+                { title:"Orchestration (Kubernetes)", stars:5, items:["Pods, Deployments, Services","ConfigMaps & Secrets","Horizontal Pod Autoscaling","Liveness & Readiness Probes","Rolling Updates","Ingress","Namespaces"] },
+                { title:"Service Mesh", stars:4, items:["Sidecar Pattern","Istio (concept)","Traffic Management","mTLS via Service Mesh","Observability via Service Mesh"] },
+                { title:"API Versioning & Contracts", stars:4, items:["URI Versioning","Header Versioning","Backward Compatibility","Consumer-Driven Contract Testing","Spring Cloud Contract (concept)"] },
+                { title:"Distributed Logging & Tracing", stars:5, items:["Correlation ID","Centralized Logging (ELK / EFK Stack)","Distributed Tracing (concept)","Spring Cloud Sleuth / Micrometer Tracing","Zipkin / Jaeger (concept)","Trace ID & Span ID"] },
+                { title:"Monitoring & Observability", stars:5, items:["Spring Boot Actuator (in microservices context)","Micrometer Metrics","Prometheus","Grafana Dashboards","Alerting","Health Check Aggregation"] },
+                { title:"Testing Microservices", stars:4, items:["Unit Testing per Service","Integration Testing","Contract Testing","Testcontainers","WireMock (stubbing dependencies)","End-to-End Testing Challenges"] },
+                { title:"CI/CD for Microservices", stars:4, items:["Independent Pipelines per Service","Blue-Green Deployment","Canary Deployment","Rolling Deployment","Feature Flags (concept)","Artifact Versioning"] },
+                { title:"Common Design Patterns", stars:5, items:["Strangler Fig Pattern","Backend for Frontend (BFF)","Sidecar Pattern","Aggregator Pattern","Ambassador Pattern","Saga Pattern","CQRS","API Gateway Pattern","Circuit Breaker Pattern"] },
+                { title:"Production Best Practices", stars:5, items:["Design for Failure","Idempotent APIs","Stateless Services","Timeout & Retry Tuning","Avoid Chatty Communication (minimize hops)","Graceful Shutdown","Correlation IDs on Every Request","Externalized Configuration","Health Checks for Every Service","Versioned, Backward-Compatible APIs","Observability from Day One"] }
+            ]
+        }
+    ];
+
+    const STORAGE_KEY = "javaBackendPrepProgress_v1";
+    let state = {};
+    try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e){ state = {}; }
+    let hideCompleted = false;
+    let activeTab = DATA[0].id;
+    let openSections = new Set();
+
+    function slug(s){ return s.replace(/[^a-z0-9]+/gi,'-').toLowerCase(); }
+    function mdInline(s){ return s.replace(/`([^`]+)`/g, '<code>$1<\/code>'); }
+    function stars(n){ return "★★★★★".slice(0,n) + "☆☆☆☆☆".slice(0, 5-n); }
+
+    function save(){
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+    }
+
+    function totalCounts(){
+        let total=0, done=0;
+        DATA.forEach(r => r.sections.forEach(s => s.items.forEach((it,i) => {
+            total++;
+            const id = r.id+"__"+slug(s.title)+"__"+i;
+            if(state[id]) done++;
+        })));
+        return {total, done};
+    }
+    function roadmapCounts(r){
+        let total=0, done=0;
+        r.sections.forEach(s => s.items.forEach((it,i) => {
+            total++;
+            const id = r.id+"__"+slug(s.title)+"__"+i;
+            if(state[id]) done++;
+        }));
+        return {total, done};
+    }
+    function sectionCounts(r, s){
+        let total=s.items.length, done=0;
+        s.items.forEach((it,i) => {
+            const id = r.id+"__"+slug(s.title)+"__"+i;
+            if(state[id]) done++;
+        });
+        return {total, done};
+    }
+
+    function renderBracket(pct){
+        const width = 24;
+        const filled = Math.round((pct/100)*width);
+        return "[" + "<span class='fill'>"+"█".repeat(filled)+"<\/span>" + "<span class='empty'>"+"░".repeat(width-filled)+"<\/span>" + "]";
+    }
+
+    function renderTabs(){
+        const tabs = document.getElementById('tabs');
+        tabs.innerHTML = DATA.map(r => {
+            const c = roadmapCounts(r);
+            const pct = c.total ? Math.round((c.done/c.total)*100) : 0;
+            return `<div class="tab ${r.id===activeTab?'active':''}" data-tab="${r.id}">${r.title}<span class="tab-pct">${pct}%<\/span></div>`;
+        }).join('');
+        tabs.querySelectorAll('.tab').forEach(el => {
+            el.addEventListener('click', () => { activeTab = el.dataset.tab; renderAll(); });
+        });
+    }
+
+    function renderOverall(){
+        const {total, done} = totalCounts();
+        const pct = total ? Math.round((done/total)*100) : 0;
+        document.getElementById('bracket').innerHTML = renderBracket(pct);
+        document.getElementById('overallPct').textContent = pct + "%";
+        document.getElementById('overallCount').textContent = done + " / " + total + " topics";
+    }
+
+    function renderRoadmaps(){
+        const container = document.getElementById('roadmaps');
+        container.innerHTML = DATA.map(r => {
+            const sectionsHtml = r.sections.map((s, si) => {
+                const sc = sectionCounts(r, s);
+                const isDone = sc.done === sc.total;
+                const itemsHtml = s.items.map((it, ii) => {
+                    const id = r.id+"__"+slug(s.title)+"__"+ii;
+                    const checked = !!state[id];
+                    return `<div class="item ${checked?'checked':''} ${hideCompleted && checked ? 'hide':''}" data-id="${id}">
+          <div class="box">✓<\/div>
+          <div class="item-text">${mdInline(it)}<\/div>
+        <\/div>`;
+                }).join('');
+                const sectionKey = r.id+"-"+si;
+                const isOpen = openSections.has(sectionKey);
+                return `<div class="section ${isDone?'done':''} ${isOpen?'open':''}" data-section="${sectionKey}">
+        <div class="section-head">
+          <div class="section-num">${si+1}<\/div>
+          <div class="section-title">${s.title}<\/div>
+          <div class="section-stars">${stars(s.stars)}<\/div>
+          <div class="section-progress">${sc.done}/${sc.total}<\/div>
+          <div class="chev">▸<\/div>
+        <\/div>
+        <div class="section-body">${itemsHtml}<\/div>
+      <\/div>`;
+            }).join('');
+
+            const focusHtml = r.focus.map((f,i) => `<div class="focus-item"><span class="n">${i+1}<\/span><span>${mdInline(f)}<\/span><\/div>`).join('');
+
+            return `<div class="roadmap ${r.id===activeTab?'active':''}" data-roadmap="${r.id}">
+      ${sectionsHtml}
+      <div class="focus">
+        <h3>${r.focusTitle}<\/h3>
+        <div class="focus-grid">${focusHtml}<\/div>
+      <\/div>
+    <\/div>`;
+        }).join('');
+
+        container.querySelectorAll('.section-head').forEach(head => {
+            head.addEventListener('click', () => {
+                const key = head.parentElement.dataset.section;
+                if(openSections.has(key)) openSections.delete(key);
+                else openSections.add(key);
+                head.parentElement.classList.toggle('open');
+            });
+        });
+        container.querySelectorAll('.item').forEach(item => {
+            item.addEventListener('click', () => {
+                const id = item.dataset.id;
+                state[id] = !state[id];
+                save();
+                renderAll();
+            });
+        });
+    }
+
+    function renderAll(){
+        renderTabs();
+        renderOverall();
+        renderRoadmaps();
+    }
+
+    document.getElementById('hideBtn').addEventListener('click', function(){
+        hideCompleted = !hideCompleted;
+        this.classList.toggle('active', hideCompleted);
+        this.textContent = hideCompleted ? "Show completed" : "Hide completed";
+        renderRoadmaps();
+    });
+
+    document.getElementById('expandBtn').addEventListener('click', function(){
+        const sections = document.querySelectorAll('.roadmap.active .section');
+        const anyClosed = Array.from(sections).some(s => !s.classList.contains('open'));
+        sections.forEach(s => {
+            s.classList.toggle('open', anyClosed);
+            const key = s.dataset.section;
+            if(anyClosed) openSections.add(key);
+            else openSections.delete(key);
+        });
+        this.textContent = anyClosed ? "Collapse all" : "Expand all";
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', function(){
+        if(confirm("Reset all progress? This clears every checked topic in this browser.")){
+            state = {};
+            save();
+            renderAll();
+        }
+    });
+
+    const FONT_MAP = {
+        default: "'Inter', -apple-system, sans-serif",
+        comic: "'Comic Sans MS', 'Comic Neue', cursive, sans-serif",
+        mono: "'JetBrains Mono', ui-monospace, monospace",
+        serif: "Georgia, 'Times New Roman', serif"
+    };
+    const STYLE_KEY = "javaBackendPrepStyle_v1";
+    let styleState = {};
+    try { styleState = JSON.parse(localStorage.getItem(STYLE_KEY)) || {}; } catch(e){ styleState = {}; }
+
+    function applyStyle(){
+        const root = document.documentElement;
+        root.style.setProperty('--sans', FONT_MAP[styleState.font || 'default']);
+        root.style.setProperty('--text', styleState.color || '#1b1e27');
+        document.getElementById('fontSelect').value = styleState.font || 'default';
+        document.getElementById('colorPicker').value = styleState.color || '#1b1e27';
+    }
+    function saveStyle(){
+        try { localStorage.setItem(STYLE_KEY, JSON.stringify(styleState)); } catch(e){}
+    }
+
+    document.getElementById('fontSelect').addEventListener('change', function(){
+        styleState.font = this.value;
+        applyStyle();
+        saveStyle();
+    });
+    document.getElementById('colorPicker').addEventListener('input', function(){
+        styleState.color = this.value;
+        applyStyle();
+        saveStyle();
+    });
+    applyStyle();
+
+    DATA.forEach(r => { if(r.sections.length) openSections.add(r.id+"-0"); });
+    renderAll();
+</script>
+</body>
+</html>
