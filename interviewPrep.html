@@ -318,6 +318,14 @@
             min-width:18px;
         }
 
+        .level-days{
+            font-family:var(--mono);
+            font-size:11px;
+            color:var(--muted);
+            flex:none;
+            margin-right:4px;
+        }
+
         footer{
             text-align:center;
             color:var(--muted);
@@ -339,7 +347,7 @@
         <div class="term-body">
             <div class="term-line"><span class="prompt">$</span> <span class="path">~/interview-prep</span> ./track --status</div>
             <h1 class="term-h1">Java Backend Prep Tracker<span class="cursor"></span></h1>
-            <p class="term-sub">Spring Data JPA + Spring Framework / Spring Boot + Microservices — production-ordered roadmap for 3–6 yrs Java backend interviews. Check off a topic once you've covered it; it strikes through and locks in your progress.</p>
+            <p class="term-sub">Problem-Solving Techniques + Core Java + Spring Data JPA + Spring Framework / Spring Boot + Microservices — production-ordered roadmap for 3–6 yrs Java backend interviews. Check off a topic once you've covered it; it strikes through and locks in your progress.</p>
 
             <div class="overall">
                 <span class="bracket" id="bracket"></span>
@@ -378,6 +386,31 @@
 
 <script>
     const DATA = [
+        {
+            id: "problemsolving",
+            title: "Problem-Solving Techniques",
+            focusTitle: "High-Priority Interview Topics (Must Master)",
+            focus: [
+                "Linear Scan & Compare Current vs Previous","Two Pointers (Opposite Direction)","Fast & Slow Pointers",
+                "Fixed & Variable Sliding Window","Frequency Map (HashMap counting)","Complement Technique (e.g. Two Sum)",
+                "Duplicate Detection via Hashing","Prefix Sum","Difference Array / Range Update","Sort + Two Pointers",
+                "Interval Merging","Greedy After Sorting","Modulo Arithmetic Tricks","Base Case + Recursive State Design",
+                "Backtracking Template (Choice → Explore → Undo)","Memoization vs Tabulation","1D & 2D DP State Transitions",
+                "BFS / DFS Traversal Logic","Union-Find (Disjoint Set)","Brute → Optimized Transformation Explanation"
+            ],
+            sections: [
+                { title:"Core Scanning & Control (Days 1–15)", stars:5, items:["Linear Scan","Reverse Traversal","Early Break / Continue","Flag / Boolean Logic","Single Counter","Multiple Counters","Track Min / Max","Compare Current vs Previous","Index Tracking","Prefix / Running Result"] },
+                { title:"Pointer & Window Mastery (Days 16–30)", stars:5, items:["Two Counters (Left & Right)","Two Pointers (Opposite Direction)","Fast & Slow Pointers","Fixed Sliding Window","Variable Sliding Window","Window Expansion & Shrinking"] },
+                { title:"Hashing & Lookup Thinking (Days 31–40)", stars:5, items:["Frequency Map","Presence Checking","First / Last Occurrence","Duplicate Detection","Index Mapping","Complement Technique","Hash + Window Combination"] },
+                { title:"Prefix, Accumulation & Range Logic (Days 41–50)", stars:4, items:["Running Sum","Prefix Sum","Suffix Sum","Difference Array","Carry Forward Technique","Range Query Logic"] },
+                { title:"Sorting-Driven Problem Solving (Days 51–58)", stars:4, items:["Sort + Linear Scan","Sort + Two Pointers","Adjacent Comparison","Grouping After Sort","Interval Merging","Greedy After Sorting"] },
+                { title:"Mathematical & Logical Optimization (Days 59–65)", stars:3, items:["Modulo Arithmetic","Divisibility Logic","Even–Odd Optimization","Greedy Choice Property","Constraint-Driven Optimization","Invariant Logic"] },
+                { title:"Recursion & Backtracking (Days 66–72)", stars:4, items:["Base Case Identification","Recursive State Design","Choice → Explore → Undo","Backtracking Templates","Subproblem Decomposition"] },
+                { title:"Dynamic Programming (Days 73–82)", stars:5, items:["Overlapping Subproblems","Optimal Substructure","Memoization","Tabulation","1D DP Patterns","2D DP Patterns","State Transition Thinking"] },
+                { title:"Graph & Advanced Patterns (Days 83–87)", stars:3, items:["BFS / DFS Thinking","Topological Thinking","Union-Find Logic","Shortest Path Intuition"] },
+                { title:"Interview & Real-World Mastery (Days 88–90)", stars:5, items:["Brute → Optimized Transformation","Edge-Case First Thinking","Complexity Trade-off Explanation","Clean Code Under Pressure","Verbal Problem Decomposition"] }
+            ]
+        },
         {
             id: "corejava",
             title: "Core Java",
