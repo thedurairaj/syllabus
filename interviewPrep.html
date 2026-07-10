@@ -24,21 +24,20 @@
             --sans: 'Inter', -apple-system, sans-serif;
         }
         *{box-sizing:border-box;}
-        html,body{margin:0;padding:0;width:100%;}
+        html,body{margin:0;padding:0;}
         body{
             background:var(--bg);
             color:var(--text);
             font-family:var(--sans);
             line-height:1.5;
             min-height:100vh;
-            width:100%;
         }
         a{color:var(--amber);}
 
         .term{
-            width:100%;
-            margin:0;
-            padding:16px 16px 0;
+            max-width:1080px;
+            margin:28px auto 0;
+            padding:0 20px;
         }
         .term-window{
             background:var(--surface);
@@ -55,7 +54,7 @@
             background:var(--surface-2);
             border-bottom:1px solid var(--border);
         }
-        .dot{width:10px;height:10px;border-radius:50%;flex:none;}
+        .dot{width:10px;height:10px;border-radius:50%;}
         .dot.r{background:#e6675a;}
         .dot.y{background:#e6b95a;}
         .dot.g{background:#3fae6b;}
@@ -64,25 +63,21 @@
             font-family:var(--mono);
             font-size:12px;
             color:var(--muted);
-            overflow:hidden;
-            text-overflow:ellipsis;
-            white-space:nowrap;
         }
         .term-body{
-            padding:18px 16px 22px;
+            padding:22px 24px 26px;
             font-family:var(--mono);
         }
         .term-line{
             color:var(--muted);
-            font-size:12px;
+            font-size:13px;
             margin-bottom:4px;
-            word-break:break-all;
         }
         .term-line .prompt{color:var(--green);}
         .term-line .path{color:var(--amber);}
         h1.term-h1{
             font-family:var(--mono);
-            font-size:clamp(20px, 5.5vw, 32px);
+            font-size:clamp(22px, 3.4vw, 32px);
             font-weight:800;
             margin:10px 0 4px;
             letter-spacing:-0.02em;
@@ -90,7 +85,7 @@
         }
         .term-sub{
             color:var(--muted);
-            font-size:13.5px;
+            font-size:14px;
             margin:0 0 18px;
             font-family:var(--sans);
         }
@@ -107,17 +102,15 @@
         .overall{
             display:flex;
             align-items:center;
-            gap:12px;
+            gap:14px;
             flex-wrap:wrap;
             margin-top:6px;
         }
         .bracket{
             font-family:var(--mono);
-            font-size:13px;
+            font-size:15px;
             letter-spacing:1px;
             white-space:nowrap;
-            overflow-x:auto;
-            max-width:100%;
         }
         .bracket .fill{color:var(--amber);}
         .bracket .empty{color:#d7dae0;}
@@ -146,38 +139,32 @@
             background:#ffffff;
             border:1px solid var(--border);
             color:var(--text);
-            padding:8px 12px;
+            padding:7px 12px;
             border-radius:6px;
             cursor:pointer;
             transition:border-color .15s, color .15s;
-            white-space:nowrap;
         }
         .btn:hover{border-color:var(--amber); color:var(--amber);}
         .btn.active{border-color:var(--green); color:var(--green);}
 
-        .wrap{width:100%;margin:0;padding:18px 16px 80px;}
+        .wrap{max-width:1080px;margin:0 auto;padding:22px 20px 80px;}
         .tabs{
             display:flex;
-            gap:6px;
+            gap:8px;
             border-bottom:1px solid var(--border);
             margin-bottom:20px;
-            flex-wrap:nowrap;
-            overflow-x:auto;
-            -webkit-overflow-scrolling:touch;
-            scrollbar-width:thin;
+            flex-wrap:wrap;
         }
         .tab{
             font-family:var(--mono);
-            font-size:12.5px;
+            font-size:13px;
             font-weight:600;
-            padding:10px 14px;
+            padding:10px 16px;
             color:var(--muted);
             cursor:pointer;
             border-bottom:2px solid transparent;
             transform:translateY(1px);
             user-select:none;
-            white-space:nowrap;
-            flex:none;
         }
         .tab:hover{color:var(--text);}
         .tab.active{color:var(--amber); border-color:var(--amber);}
@@ -196,11 +183,10 @@
         .section-head{
             display:flex;
             align-items:center;
-            gap:10px;
-            padding:14px;
+            gap:12px;
+            padding:14px 16px;
             cursor:pointer;
             user-select:none;
-            flex-wrap:wrap;
         }
         .section-num{
             font-family:var(--mono);
@@ -219,12 +205,11 @@
         .section.done .section-num{background:var(--green);}
         .section-title{
             font-weight:600;
-            font-size:14px;
-            flex:1 1 140px;
-            min-width:0;
+            font-size:14.5px;
+            flex:1;
         }
         .section-stars{
-            font-size:11px;
+            font-size:12px;
             color:var(--muted);
             letter-spacing:1px;
             flex:none;
@@ -234,7 +219,7 @@
             font-size:11.5px;
             color:var(--muted);
             flex:none;
-            min-width:40px;
+            min-width:44px;
             text-align:right;
         }
         .chev{
@@ -247,7 +232,7 @@
 
         .section-body{
             display:none;
-            padding:2px 14px 14px 14px;
+            padding:2px 16px 14px 16px;
             border-top:1px solid var(--border);
         }
         .section.open .section-body{display:block;}
@@ -256,7 +241,7 @@
             display:flex;
             align-items:flex-start;
             gap:10px;
-            padding:9px 4px;
+            padding:8px 4px;
             border-radius:6px;
             cursor:pointer;
         }
@@ -281,7 +266,7 @@
             border-color:var(--green);
             color:#ffffff;
         }
-        .item-text{font-size:13.5px;word-break:break-word;}
+        .item-text{font-size:14px;}
         .item.checked .item-text{
             text-decoration:line-through;
             text-decoration-color:var(--green);
@@ -292,7 +277,7 @@
             background:var(--amber-soft);
             padding:1px 5px;
             border-radius:4px;
-            font-size:12px;
+            font-size:12.5px;
             color:var(--amber);
         }
         .item.checked code{color:var(--muted); background:transparent;}
@@ -301,12 +286,12 @@
             background:#ffffff;
             border:1px solid var(--rose);
             border-radius:10px;
-            padding:16px 16px 18px;
+            padding:16px 18px 18px;
             margin-top:20px;
         }
         .focus h3{
             font-family:var(--mono);
-            font-size:12.5px;
+            font-size:13px;
             color:var(--rose);
             margin:0 0 10px;
             letter-spacing:0.5px;
@@ -317,11 +302,12 @@
             grid-template-columns:1fr 1fr;
             gap:6px 20px;
         }
+        @media(max-width:560px){.focus-grid{grid-template-columns:1fr;}}
         .focus-item{
             display:flex;
             gap:8px;
             align-items:baseline;
-            font-size:13px;
+            font-size:13.5px;
             padding:5px 0;
             border-bottom:1px dashed var(--border);
         }
@@ -332,47 +318,22 @@
             min-width:18px;
         }
 
+        .level-days{
+            font-family:var(--mono);
+            font-size:11px;
+            color:var(--muted);
+            flex:none;
+            margin-right:4px;
+        }
+
         footer{
             text-align:center;
             color:var(--muted);
             font-family:var(--mono);
-            font-size:11px;
-            padding:30px 16px 40px;
+            font-size:12px;
+            padding:30px 20px 40px;
         }
         footer a{color:var(--muted); text-decoration:underline;}
-
-        /* ===== Larger screens: full-width app layout, just roomier spacing ===== */
-        @media (min-width:900px){
-            .term{padding:28px 40px 0;}
-            .term-body{padding:22px 24px 26px;}
-            .term-line{font-size:13px;}
-            .wrap{padding:22px 40px 80px;}
-            .section-head{padding:14px 16px;flex-wrap:nowrap;}
-            .section-title{font-size:14.5px;}
-            .focus{padding:16px 18px 18px;}
-            #roadmaps .roadmap.active{
-                display:grid;
-                grid-template-columns:1fr 1fr;
-                gap:0 20px;
-                align-items:start;
-            }
-            #roadmaps .roadmap.active .focus{grid-column:1 / -1;}
-        }
-        @media (min-width:1400px){
-            .term{padding:28px 64px 0;}
-            .wrap{padding:22px 64px 80px;}
-            #roadmaps .roadmap.active{grid-template-columns:1fr 1fr 1fr;}
-            #roadmaps .roadmap.active .focus{grid-column:1 / -1;}
-        }
-
-        /* ===== Mobile refinements ===== */
-        @media (max-width:560px){
-            .focus-grid{grid-template-columns:1fr;}
-            .toolbar{gap:8px;}
-            .btn{flex:1 1 auto;text-align:center;justify-content:center;}
-            .btn[style]{flex:1 1 100%;}
-            .overall-count{width:100%;}
-        }
     </style>
 </head>
 <body>
@@ -386,7 +347,7 @@
         <div class="term-body">
             <div class="term-line"><span class="prompt">$</span> <span class="path">~/interview-prep</span> ./track --status</div>
             <h1 class="term-h1">Java Backend Prep Tracker<span class="cursor"></span></h1>
-            <p class="term-sub">Problem-Solving Techniques + Core Java + Spring Data JPA + Spring Framework / Spring Boot + Microservices + AWS for Java — production-ordered roadmap for 3–6 yrs Java backend interviews. Check off a topic once you've covered it; it strikes through and locks in your progress.</p>
+            <p class="term-sub">Problem-Solving Techniques + Core Java + Spring Data JPA + Spring Framework / Spring Boot + Microservices + AWS for Java + PostgreSQL + MongoDB + Redis Cache — production-ordered roadmap for 3–6 yrs Java backend interviews. Check off a topic once you've covered it; it strikes through and locks in your progress.</p>
 
             <div class="overall">
                 <span class="bracket" id="bracket"></span>
@@ -618,6 +579,83 @@
                 { title:"Monitoring & Logging", stars:5, items:["CloudWatch Logs","CloudWatch Metrics & Alarms","CloudWatch Dashboards (concept)","X-Ray (Distributed Tracing — concept)","Structured Logging from Java Apps","Log Groups / Log Streams (Lambda & ECS)"] },
                 { title:"Java SDK & Spring Cloud AWS", stars:4, items:["AWS SDK for Java (v2) Basics","Client Builders (`S3Client`, `SqsClient`, `DynamoDbClient`)","Credentials Chain (concept)","Spring Cloud AWS — S3/SQS/SNS Integration","`@SqsListener` (concept)","Retry & Backoff in SDK Calls","Local Testing with LocalStack (concept)"] },
                 { title:"CI/CD & Deployment", stars:4, items:["CodePipeline / CodeBuild (concept)","Deploying Spring Boot JAR to Elastic Beanstalk","Deploying Docker Image to ECS","Blue-Green Deployment (concept)","Infrastructure as Code — CloudFormation/Terraform (concept)","Environment Promotion (dev → staging → prod)"] }
+            ]
+        },
+        {
+            id: "postgres",
+            title: "PostgreSQL",
+            focusTitle: "High-Priority PostgreSQL Topics (Must Master)",
+            focus: [
+                "ACID Properties in Practice","Primary Key vs Unique Constraint vs Index","B-Tree Index — When It Helps vs Doesn't",
+                "Composite Index Column Order","`EXPLAIN ANALYZE` — Reading a Query Plan","Isolation Levels & Default in Postgres",
+                "Dirty Read / Non-Repeatable Read / Phantom Read","`SELECT ... FOR UPDATE` & Row Locking","Deadlocks — Causes & Prevention",
+                "Connection Pooling (HikariCP) & Leaks","N+1 Query Problem in JPA","`JSONB` vs Relational Columns — When to Use",
+                "`UPSERT` (`ON CONFLICT`)","Keyset vs Offset Pagination","Flyway/Liquibase for Schema Migration"
+            ],
+            sections: [
+                { title:"PostgreSQL Fundamentals", stars:5, items:["RDBMS Basics Recap","PostgreSQL vs MySQL (concept)","Databases, Schemas, Tables","`psql` CLI Basics","ACID Properties in Postgres"] },
+                { title:"Data Types & Schema Design", stars:4, items:["Numeric Types (`INT`, `BIGINT`, `NUMERIC`, `SERIAL`)","Text Types (`VARCHAR`, `TEXT`)","Date/Time Types (`TIMESTAMP`, `TIMESTAMPTZ`)","`BOOLEAN`, `UUID`, `JSON`/`JSONB`","Arrays (concept)","`ENUM` Types","Normalization Basics (1NF–3NF, concept)","When to Denormalize"] },
+                { title:"Indexes", stars:5, items:["B-Tree Index (default)","Unique Index","Composite Index","Partial Index","Index on Expression (concept)","`GIN`/`GiST` Index for JSONB & Full-Text (concept)","When an Index Is NOT Used (query planner basics)","`EXPLAIN` / `EXPLAIN ANALYZE`"] },
+                { title:"Constraints & Keys", stars:5, items:["Primary Key","Foreign Key","Unique Constraint","Not Null Constraint","Check Constraint","Composite Keys","`ON DELETE CASCADE` / `SET NULL` / `RESTRICT`"] },
+                { title:"Query Writing & Joins", stars:5, items:["`SELECT`, `WHERE`, `ORDER BY`, `LIMIT`/`OFFSET`","`INNER JOIN` vs `LEFT JOIN` vs `RIGHT JOIN`","`GROUP BY` & `HAVING`","Subqueries","Common Table Expressions (`WITH` / CTEs)","Window Functions (concept)","`UPSERT` (`ON CONFLICT DO UPDATE`)"] },
+                { title:"Transactions & Isolation", stars:5, items:["`BEGIN` / `COMMIT` / `ROLLBACK`","ACID in Practice","Isolation Levels (Read Committed, Repeatable Read, Serializable)","Default Isolation Level in Postgres","Dirty Read, Non-Repeatable Read, Phantom Read (concept)","Savepoints (concept)"] },
+                { title:"Locking", stars:3, items:["Row-Level Locking","`SELECT ... FOR UPDATE`","Optimistic vs Pessimistic Locking (application-level)","Deadlocks — Causes & Avoidance","MVCC (Multi-Version Concurrency Control) — concept only"] },
+                { title:"Connection Management", stars:4, items:["Connection Pooling — Why It's Needed","HikariCP Basics (Spring Boot default)","Pool Sizing (concept)","`max_connections` (concept)","PgBouncer (concept)","Connection Leaks — Causes & Detection"] },
+                { title:"JDBC & Spring Data JPA Integration", stars:5, items:["JDBC Driver Basics","`DataSource` Configuration in Spring Boot","Spring Data JPA + PostgreSQL Dialect","Native Queries vs JPQL for Postgres-Specific Features","Mapping `JSONB` Columns (concept)","Batch Insert/Update via JDBC","Flyway / Liquibase for Schema Migration"] },
+                { title:"Performance & Query Tuning", stars:4, items:["Reading `EXPLAIN ANALYZE` Output (basic)","Sequential Scan vs Index Scan","N+1 Query Problem (Java/JPA context)","Avoiding `SELECT *` in Production","Pagination (`LIMIT`/`OFFSET` vs Keyset Pagination)","Query Timeout Configuration","Slow Query Logging (concept)"] },
+                { title:"Replication & High Availability (Concept)", stars:2, items:["Primary–Replica Replication (concept)","Read Replicas for Scaling Reads","Failover Basics (concept)","Read/Write Splitting from a Java App (concept)"] },
+                { title:"Backup & Migration Tools", stars:3, items:["`pg_dump` / `pg_restore` (concept)","Flyway Basics","Liquibase Basics","Versioned Migrations in CI/CD (concept)"] },
+                { title:"Production Best Practices", stars:5, items:["Always Use Connection Pooling","Index Foreign Keys","Avoid Long-Running Transactions","Use `TIMESTAMPTZ` Over `TIMESTAMP`","Paginate Large Result Sets","Avoid `SELECT *` in Application Code","Use Migrations, Never Manual Schema Changes in Prod","Monitor Slow Queries","Set Sensible Statement/Query Timeouts"] }
+            ]
+        },
+        {
+            id: "mongodb",
+            title: "MongoDB",
+            focusTitle: "High-Priority MongoDB Topics (Must Master)",
+            focus: [
+                "SQL vs MongoDB — When to Choose Which","Embedding vs Referencing","Document Modeling for Access Patterns",
+                "Single-Document Atomicity","Multi-Document Transactions — When Needed","Compound Index Design",
+                "Aggregation Pipeline (`$match`, `$group`, `$lookup`)","`explain()` — Query Plan Basics","TTL Index (auto-expiring data)",
+                "Schema Validation","`MongoRepository` vs `MongoTemplate` — When to Use Which","Pagination in MongoDB",
+                "Replica Set Basics (Primary/Secondary)","Sharding — Why & Shard Key Basics","Read/Write Concern (concept)"
+            ],
+            sections: [
+                { title:"MongoDB Fundamentals", stars:5, items:["NoSQL vs SQL (concept)","Document Database Model","Database, Collection, Document Structure","BSON vs JSON","When to Choose MongoDB vs a Relational DB","`mongosh` CLI Basics"] },
+                { title:"Document Modeling", stars:5, items:["Embedding vs Referencing","One-to-Few, One-to-Many, One-to-Squillions (concept)","Denormalization Trade-offs","`_id` Field & `ObjectId`","Schema Flexibility — Pros & Risks","Schema Validation (`$jsonSchema` — concept)"] },
+                { title:"CRUD Operations", stars:5, items:["`insertOne` / `insertMany`","`find` / `findOne`","`updateOne` / `updateMany`","`deleteOne` / `deleteMany`","`upsert` Option","Bulk Write Operations (concept)"] },
+                { title:"Query Operators & Aggregation", stars:5, items:["Comparison Operators (`$eq`, `$gt`, `$in`, `$ne`)","Logical Operators (`$and`, `$or`, `$not`)","Projection (select specific fields)","Sorting & Pagination (`sort`, `skip`, `limit`)","Aggregation Pipeline Basics (`$match`, `$group`, `$project`)","`$lookup` (Join-like Operation — concept)","`$unwind` (concept)"] },
+                { title:"Indexes", stars:5, items:["Single Field Index","Compound Index","Unique Index","Text Index (concept)","TTL Index (auto-expiring documents)","`explain()` — Reading a Query Plan (basic)","When an Index Isn't Used"] },
+                { title:"Schema Design Patterns", stars:4, items:["Embedded Document Pattern","Reference Pattern","Bucket Pattern (concept)","Polymorphic Pattern (concept)","Avoiding Unbounded Arrays"] },
+                { title:"Transactions", stars:3, items:["Single-Document Atomicity (default guarantee)","Multi-Document Transactions (concept)","Session-Based Transactions","When to Avoid Multi-Document Transactions (design smell)"] },
+                { title:"Replication & Sharding (Concept)", stars:2, items:["Replica Sets — Primary & Secondary (concept)","Read Preference (concept)","Sharding Basics — Why & When (concept)","Shard Key Selection (concept only)"] },
+                { title:"Spring Data MongoDB Integration", stars:5, items:["`MongoRepository`","`@Document`, `@Id`, `@Field`","Derived Query Methods","`MongoTemplate` for Complex Queries","`@Query` Annotation (custom queries)","Mapping Embedded Objects","Auditing (`@CreatedDate`, `@LastModifiedDate`)"] },
+                { title:"Performance & Query Tuning", stars:4, items:["Covered Queries (concept)","Avoiding Full Collection Scans","Index Selectivity (concept)","Connection Pooling in Java Driver","Read/Write Concern Basics (concept)","Batch Reads/Writes for Large Data"] },
+                { title:"Production Best Practices", stars:5, items:["Design Documents Around Access Patterns, Not Normalization","Index Fields Used in Frequent Queries","Avoid Unbounded Array Growth","Use Pagination for Large Result Sets","Set Sensible Read/Write Concerns for the Use Case","Monitor Slow Queries","Use Schema Validation for Critical Collections"] }
+            ]
+        },
+        {
+            id: "redis",
+            title: "Redis Cache",
+            focusTitle: "High-Priority Redis Topics (Must Master)",
+            focus: [
+                "Why Use a Cache — Latency & DB Load","Cache-Aside vs Write-Through vs Write-Behind","Cache Invalidation Strategies",
+                "Cache Stampede Problem & Mitigation","TTL & Eviction Policies","Choosing the Right Data Structure (String/Hash/Set/Sorted Set)",
+                "Sorted Sets for Leaderboard/Ranking Use Cases","Distributed Locking with Redis (`SETNX` pattern)","`@Cacheable` / `@CacheEvict` in Spring Boot",
+                "Serialization Choice for Cached Objects","Graceful Degradation When Cache Is Down","Avoiding `KEYS *` in Production",
+                "Redis Pub/Sub vs a Real Message Queue","Redis Sentinel vs Redis Cluster (concept)","When NOT to Cache Something"
+            ],
+            sections: [
+                { title:"Redis Fundamentals", stars:5, items:["In-Memory Key-Value Store — Concept","Why Use a Cache (latency, DB load reduction)","Single-Threaded Execution Model (concept)","`redis-cli` Basics","Redis vs Traditional Database — When to Use Which"] },
+                { title:"Core Data Structures", stars:5, items:["Strings (`SET`, `GET`, `INCR`)","Hashes (`HSET`, `HGET`, `HGETALL`)","Lists (`LPUSH`, `RPUSH`, `LRANGE`)","Sets (`SADD`, `SISMEMBER`)","Sorted Sets (`ZADD`, `ZRANGE`) — leaderboards/ranking use case","Choosing the Right Data Structure for a Use Case"] },
+                { title:"Expiry & Eviction", stars:5, items:["`TTL` / `EXPIRE` / `PEXPIRE`","Key Expiry Semantics","Eviction Policies (`allkeys-lru`, `volatile-lru` — concept)","`maxmemory` Configuration (concept)","Choosing an Eviction Policy for a Cache Use Case"] },
+                { title:"Caching Patterns", stars:5, items:["Cache-Aside (Lazy Loading) Pattern","Read-Through Cache","Write-Through Cache","Write-Behind (Write-Back) Cache — concept","Cache Stampede Problem & Mitigation","Choosing TTL Values in Practice"] },
+                { title:"Cache Invalidation Strategies", stars:5, items:["TTL-Based Expiry","Explicit Invalidation on Write","Event-Driven Invalidation (concept)","Stale-While-Revalidate (concept)","\"Two Hard Things\" — Cache Invalidation Trade-offs"] },
+                { title:"Pub/Sub & Streams (Concept)", stars:2, items:["Pub/Sub Basics (`PUBLISH`/`SUBSCRIBE`)","Use Cases (notifications, real-time updates)","Redis Streams — Concept Only (vs Kafka)","When Redis Pub/Sub Is NOT a Message Queue"] },
+                { title:"Distributed Locking", stars:4, items:["`SETNX` / `SET key value NX EX` Pattern","Lock Expiry to Avoid Deadlocks","Redlock Algorithm (concept only)","Use Cases (preventing duplicate job processing)"] },
+                { title:"Persistence (Concept)", stars:2, items:["RDB Snapshots (concept)","AOF (Append-Only File) (concept)","Why Redis Persistence Matters Even for \"Just a Cache\"","Trade-off: Cache-Only vs Durable Store Use Case"] },
+                { title:"Replication & Clustering (Concept)", stars:2, items:["Primary-Replica Replication (concept)","Redis Sentinel — High Availability (concept)","Redis Cluster — Sharding (concept)","When You'd Need Clustering vs a Single Instance"] },
+                { title:"Spring Boot Integration", stars:5, items:["Spring Data Redis — `RedisTemplate`","`@EnableCaching` + `@Cacheable` / `@CachePut` / `@CacheEvict`","`CacheManager` Configuration","Serialization (JSON vs default Java serialization)","Setting TTL per Cache in Spring","Lettuce vs Jedis Client (concept)"] },
+                { title:"Performance & Production Best Practices", stars:5, items:["Avoid Large Keys/Values (memory & latency impact)","Avoid `KEYS *` in Production (use `SCAN`)","Set TTL on Every Cache Entry (avoid unbounded growth)","Use Connection Pooling","Monitor Hit Rate vs Miss Rate","Graceful Degradation When Redis Is Down (fallback to DB)","Avoid Caching Highly Volatile Data"] }
             ]
         }
     ];
