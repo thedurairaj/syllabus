@@ -347,7 +347,7 @@
         <div class="term-body">
             <div class="term-line"><span class="prompt">$</span> <span class="path">~/interview-prep</span> ./track --status</div>
             <h1 class="term-h1">Java Backend Prep Tracker<span class="cursor"></span></h1>
-            <p class="term-sub">Problem-Solving Techniques + Core Java + Spring Data JPA + Spring Framework / Spring Boot + Microservices — production-ordered roadmap for 3–6 yrs Java backend interviews. Check off a topic once you've covered it; it strikes through and locks in your progress.</p>
+            <p class="term-sub">Problem-Solving Techniques + Core Java + Spring Data JPA + Spring Framework / Spring Boot + Microservices + AWS for Java — production-ordered roadmap for 3–6 yrs Java backend interviews. Check off a topic once you've covered it; it strikes through and locks in your progress.</p>
 
             <div class="overall">
                 <span class="bracket" id="bracket"></span>
@@ -549,6 +549,36 @@
                 { title:"CI/CD for Microservices", stars:4, items:["Independent Pipelines per Service","Blue-Green Deployment","Canary Deployment","Rolling Deployment","Feature Flags (concept)","Artifact Versioning"] },
                 { title:"Common Design Patterns", stars:5, items:["Strangler Fig Pattern","Backend for Frontend (BFF)","Sidecar Pattern","Aggregator Pattern","Ambassador Pattern","Saga Pattern","CQRS","API Gateway Pattern","Circuit Breaker Pattern"] },
                 { title:"Production Best Practices", stars:5, items:["Design for Failure","Idempotent APIs","Stateless Services","Timeout & Retry Tuning","Avoid Chatty Communication (minimize hops)","Graceful Shutdown","Correlation IDs on Every Request","Externalized Configuration","Health Checks for Every Service","Versioned, Backward-Compatible APIs","Observability from Day One"] }
+            ]
+        },
+        {
+            id: "aws",
+            title: "AWS for Java",
+            focusTitle: "High-Priority AWS Topics (Must Master)",
+            focus: [
+                "IAM Roles vs Access Keys","EC2 vs ECS/Fargate vs Lambda","Lambda Cold Start & Mitigation",
+                "S3 Pre-Signed URLs","S3 Bucket Policy vs IAM Policy","RDS Multi-AZ vs Read Replica",
+                "DynamoDB Partition Key vs Sort Key","RDS vs DynamoDB — When to Choose","SQS Standard vs FIFO",
+                "SQS Visibility Timeout & DLQ","SNS + SQS Fan-Out Pattern","API Gateway + Lambda Integration",
+                "Security Groups vs NACLs","Public vs Private Subnet Design","Secrets Manager vs Parameter Store",
+                "CloudWatch Logs & Alarms","Auto Scaling Groups & Load Balancer","AWS SDK for Java — Client & Retry",
+                "Spring Cloud AWS Integration (S3/SQS)","Deploying a Spring Boot App to AWS"
+            ],
+            sections: [
+                { title:"AWS Fundamentals", stars:5, items:["Cloud Computing (IaaS / PaaS / SaaS)","AWS Global Infrastructure — Regions & AZs","AWS Free Tier & Pricing Model (concept)","AWS Console vs CLI vs SDK","Shared Responsibility Model","Core Services Overview"] },
+                { title:"IAM & Security", stars:5, items:["Users, Groups, Roles","IAM Policies (JSON structure — concept)","Principle of Least Privilege","Instance Roles vs Access Keys","Cross-Account Roles (concept)","Security Groups vs NACLs","KMS (Key Management Service)","Secrets Manager vs Parameter Store"] },
+                { title:"Compute (EC2 / Elastic Beanstalk)", stars:4, items:["EC2 Instance Basics","Instance Types (concept)","AMI (Amazon Machine Image)","Auto Scaling Groups","Load Balancer Basics (ALB vs NLB)","Elastic Beanstalk (Java app deployment)","EC2 vs Containers vs Serverless — when to use what"] },
+                { title:"Containers (ECS / EKS / Fargate)", stars:4, items:["Docker Recap (image, container, registry)","ECS Task & Service","Fargate vs EC2 Launch Type","ECR (Elastic Container Registry)","EKS (Kubernetes on AWS) — concept","Service Discovery in ECS (concept)"] },
+                { title:"Serverless (Lambda)", stars:5, items:["Lambda Function Basics","Java Lambda Handler (`RequestHandler`)","Cold Start Problem & Mitigation","Triggers (S3, SQS, API Gateway, EventBridge)","Lambda Layers (concept)","Timeout & Memory Configuration","When to Use Lambda vs EC2/ECS"] },
+                { title:"Storage (S3)", stars:5, items:["Buckets & Objects","Storage Classes (concept)","Pre-Signed URLs","Bucket Policies vs IAM Policies","Versioning","Lifecycle Rules","Java S3 Upload/Download (SDK usage)","Event Notifications (S3 → Lambda/SQS)"] },
+                { title:"Databases (RDS / DynamoDB)", stars:5, items:["RDS Basics (MySQL/Postgres on AWS)","Multi-AZ vs Read Replicas","Connection Pooling from Java (RDS Proxy — concept)","DynamoDB Basics (NoSQL)","Partition Key vs Sort Key","DynamoDB Read/Write Capacity","When to Choose RDS vs DynamoDB","Java SDK for DynamoDB (basic CRUD)"] },
+                { title:"Messaging (SQS / SNS)", stars:5, items:["SQS Standard vs FIFO Queue","Visibility Timeout","Dead Letter Queue (DLQ)","SNS Topics & Subscriptions","SNS + SQS Fan-Out Pattern","Java Producer/Consumer for SQS (SDK usage)","EventBridge (concept)"] },
+                { title:"API Layer (API Gateway / ALB)", stars:4, items:["API Gateway Basics (REST API)","API Gateway + Lambda Integration","Request/Response Mapping (concept)","Throttling & Rate Limiting","Custom Authorizers (JWT/Lambda — concept)","Application Load Balancer Basics","Health Checks"] },
+                { title:"Networking Basics (VPC)", stars:3, items:["VPC, Subnets (Public vs Private)","Internet Gateway vs NAT Gateway","Route Tables (concept)","Security Groups (Stateful) vs NACLs (Stateless)","VPC Endpoints (concept)","Why Private Subnets for DB/Backend Services"] },
+                { title:"Configuration & Secrets", stars:4, items:["Systems Manager Parameter Store","Secrets Manager (rotation — concept)","Environment Variables in Lambda/ECS","Externalizing Config from Spring Boot Apps","Config Precedence in Production"] },
+                { title:"Monitoring & Logging", stars:5, items:["CloudWatch Logs","CloudWatch Metrics & Alarms","CloudWatch Dashboards (concept)","X-Ray (Distributed Tracing — concept)","Structured Logging from Java Apps","Log Groups / Log Streams (Lambda & ECS)"] },
+                { title:"Java SDK & Spring Cloud AWS", stars:4, items:["AWS SDK for Java (v2) Basics","Client Builders (`S3Client`, `SqsClient`, `DynamoDbClient`)","Credentials Chain (concept)","Spring Cloud AWS — S3/SQS/SNS Integration","`@SqsListener` (concept)","Retry & Backoff in SDK Calls","Local Testing with LocalStack (concept)"] },
+                { title:"CI/CD & Deployment", stars:4, items:["CodePipeline / CodeBuild (concept)","Deploying Spring Boot JAR to Elastic Beanstalk","Deploying Docker Image to ECS","Blue-Green Deployment (concept)","Infrastructure as Code — CloudFormation/Terraform (concept)","Environment Promotion (dev → staging → prod)"] }
             ]
         }
     ];
